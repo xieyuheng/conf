@@ -4,12 +4,12 @@
 
 
 * ===========================================
-* *note*
+* note
   * keep it simple
   * try to do not change default key-binding
   * add a thing only when you really need it
-* *lib*
-** *xyh-emacs-lib*
+* lib
+** xyh-emacs-lib
    #+begin_src emacs-lisp :tangle "~/.emacs"
    ;; (add-to-list 'load-path "~/.emacs.d/xyh-emacs-lib/")
    (require 'xyh-emacs-lib)
@@ -177,7 +177,7 @@
    #+begin_src emacs-lisp :tangle "~/.emacs"
    (add-to-list 'load-path "~/.emacs.d/package/")
    #+end_src
-* *key binding*
+* key binding
 ** prefix-command and examples
    #+begin_src emacs-lisp :tangle "~/.emacs"
    (define-prefix-command 'C-s-map)
@@ -234,6 +234,21 @@
 
    (global-set-key (kbd "M-p") 'backward-paragraph)
    (global-set-key (kbd "M-n") 'forward-paragraph)
+   #+end_src
+** window resizing
+   #+begin_src emacs-lisp :tangle "~/.emacs"   
+   (global-set-key (kbd "C-M-h") 'shrink-window-horizontally)
+   (global-set-key (kbd "C-M-l") 'enlarge-window-horizontally)
+   (global-set-key (kbd "C-M-j") 'shrink-window)
+   (global-set-key (kbd "C-M-k") 'enlarge-window)
+   #+end_src
+** path
+   #+begin_src emacs-lisp :tangle "~/.emacs"
+   (global-set-key (kbd "<C-M-return>") 'pwd)
+   #+end_src
+** line wrap
+   #+begin_src emacs-lisp :tangle "~/.emacs"
+   (global-set-key (kbd "C-M-g") 'global-visual-line-mode)
    #+end_src
 ** comment
    #+begin_src emacs-lisp :tangle "~/.emacs"
@@ -316,7 +331,7 @@
      (insert "\n")
      (backward-char 1))
    #+end_src
-* *general setting*
+* general setting
 ** personal information
    #+begin_src emacs-lisp :tangle "~/.emacs"
    (setq user-full-name "Xie Yuheng"
@@ -409,7 +424,7 @@
            inferior-cicada-mode
            ))
    #+end_src
-* *little input method*
+* little input method
 ** note
    输入法和文本编辑器相辅相成同等重要
    emcas因一个bug而不能使用input method framework
@@ -1079,7 +1094,7 @@
             (local-set-key (kbd "<f2> z") 'insert-ζ)
             ))
    #+end_src
-* *language*
+* language
 ** ----------------------------------
 ** load progmodes
    #+begin_src emacs-lisp :tangle "~/.emacs"
@@ -1565,15 +1580,20 @@
            (1 . define-primitive)
            ))
    #+end_src
-** ----------------------------------
 ** racket
    #+begin_src emacs-lisp :tangle "~/.emacs"
    (add-to-list 'load-path "~/.emacs.d/racket-mode/")
    (require 'racket-mode)
    #+end_src
+** ----------------------------------
 ** common lisp
    #+begin_src emacs-lisp :tangle "~/.emacs"
-   (setq inferior-lisp-program "/usr/local/bin/sbcl --noinform")
+   ;; (setq inferior-lisp-program "/usr/local/bin/clisp")
+   ;; (setq inferior-lisp-program "/usr/local/bin/sbcl")
+   ;; (setq inferior-lisp-program "/usr/local/bin/sbcl --dynamic-space-size 1000")
+   ;; (setq inferior-lisp-program "/usr/local/bin/mkcl")
+   ;; (setq inferior-lisp-program "~/lang/lisp/ccl/lx86cl64")
+   (setq inferior-lisp-program "ccl")
 
    (add-hook 'lisp-mode-hook
              (lambda ()
@@ -1603,6 +1623,8 @@
    (lisp-add-keywords
     'font-lock-keyword-face
     '(
+      (1 . quote)
+      (1 . function)
       (2 . deftest)
       (3 . ensure)
       ))
@@ -1652,11 +1674,11 @@
 
 
 
-   (add-hook
-    'slime-mode-hook
-    (lambda ()
-      (local-set-key (kbd "C-x C-e") 'slime-send-last-sexp-split-window)
-      ))
+   ;; (add-hook
+   ;;  'slime-mode-hook
+   ;;  (lambda ()
+   ;;    (local-set-key (kbd "C-x C-e") 'slime-send-last-sexp-split-window)
+   ;;    ))
    #+end_src
 ** ----------------------------------
 ** elisp
@@ -1741,9 +1763,9 @@
       ))
    #+end_src
 ** ----------------------------------
-** dos
-   #+begin_src emacs-lisp :tangle "~/.emacs"
-   (add-to-list 'load-path "~/.emacs.d/dos/")
+** [not using] DOS
+   #+begin_src emacs-lisp
+   (add-to-list 'load-path "~/.emacs.d/DOS/")
    (require 'ntcmd)
    (add-to-list 'auto-mode-alist '("\\.cmd$" . ntcmd-mode))
    (add-to-list 'auto-mode-alist '("\\.bas$" . ntcmd-mode))
@@ -2757,7 +2779,7 @@
          )
    #+end_src
 ** ----------------------------------
-* *org*
+* org
 ** [prefix-command] C-o
    #+begin_src emacs-lisp :tangle "~/.emacs"
    (define-prefix-command 'C-o-map)
@@ -2843,12 +2865,12 @@
    ;; (setq org-agenda-window-setup )
    ;; (setq org-agenda-restore-windows-after-quit )
    #+end_src
-** todo keywords
+** todo-keyword
    #+begin_src emacs-lisp :tangle "~/.emacs"
    (setq org-todo-keywords
-             '((sequence "><" "><><" "><><><" "|")
-           (sequence "TODO" "|" "DONE")
-           ;; (sequence "WAITING(w@/!)" "SOMEDAY(S)" "PROJECT(P@)" "|" "CANCELLED(c@/!)")
+         '((sequence "><" "|" "><><" "|" "><><><")
+           (sequence "todo" "|" "done")
+           (sequence "note" "|" "test")
            ))
    #+end_src
 ** [babel] load-language
@@ -3143,10 +3165,10 @@
            (:padline . "no")
            ))
    #+end_src
-** [agenda]
-   file:/home/xyh/.org-agenda-files
+** [agenda] setting
    #+begin_src emacs-lisp :tangle "~/.emacs"
    (setq org-agenda-files "~/.org-agenda-files")
+
    (global-set-key (kbd "C-M-o") 'org-cycle-agenda-files)
    (global-set-key (kbd "C-o C-b") 'org-iswitchb)
    (global-set-key (kbd "C-c a") 'org-agenda)
@@ -3159,6 +3181,9 @@
        (local-set-key (kbd "C-,") 'ska-jump-to-register)
        ))
    #+end_src
+** [agenda] org-agenda-files
+   tangle take too long so just edit  
+   file:~/.org-agenda-files
 ** org to html & pdf
 *** s5
     #+begin_src emacs-lisp :tangle "~/.emacs"
@@ -3188,8 +3213,8 @@
     (setq org-reveal-root "/home/xyh/software/reveal.js/")
     (setq org-reveal-hlevel 2)
     #+end_src
-* *feature*
-** [installed by pacman] emacs-w3m
+* feature
+** w3m [installed by pacman] 
    #+begin_src emacs-lisp :tangle "~/.emacs"
    (require 'w3m-load)
    (setq browse-url-browser-function 'w3m-browse-url)
@@ -3199,9 +3224,23 @@
    (add-hook
     'w3m-mode-hook
     (lambda ()
-      (local-set-key (kbd "M-n") 'w3m-next-buffer)
-      (local-set-key (kbd "M-p") 'w3m-previous-buffer)
+      (local-set-key (kbd "M-n") 'forward-paragraph)
+      (local-set-key (kbd "M-p") 'backward-paragraph)
+
+      (local-set-key (kbd "C-M-n") 'w3m-next-buffer)
+      (local-set-key (kbd "C-M-p") 'w3m-previous-buffer)
+
+      ;; (local-set-key (kbd "<right>") 'w3m-next-buffer)
+      ;; (local-set-key (kbd "<left>") 'w3m-previous-buffer)
+
+      (local-set-key (kbd "<C-tab>") 'w3m-next-buffer)
+      (local-set-key (kbd "<C-iso-lefttab>") 'w3m-previous-buffer)
+
       (local-set-key (kbd "q") 'quit-window)
+
+      ;; in default setting 
+      ;; C-t is a prefix
+      (local-set-key (kbd "C-t") 'isearch-forward)
       ))
    #+end_src
 ** hippie-expand
@@ -3435,6 +3474,7 @@
                         "#cicada-language"
                         "#scheme"
                         "#lisp"
+                        "#ccl"
                         ;; "#coq"
                         "#shen"
                         ;; "#haskell"
@@ -3624,7 +3664,7 @@
    (require 'hlinum)
    (hlinum-activate)
    #+end_src
-* *emacs server & eshell*
+* emacs server & eshell
 ** -------------------------------------
 ** note
    * 需要與 bash 或 zsh 配合使用
@@ -3981,7 +4021,7 @@
      (pcomplete-here* pcmpl-git-commands))
    #+end_src
 ** -------------------------------------
-* *looks like*
+* looks like
 ** font
 *** note
     用下面所使用的连个函数配置emacs的字体的时候
