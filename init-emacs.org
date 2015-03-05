@@ -2,8 +2,7 @@
 #+AUTHOR: 謝宇恆 / XIE Yuheng
 #+EMAIL:  xyheme@gmail.com
 
-
-* ===========================================
+* ===================================
 * note
   * keep it simple
   * try to do not change default key-binding
@@ -178,6 +177,11 @@
    (add-to-list 'load-path "~/.emacs.d/package/")
    #+end_src
 * key binding
+** unbinding
+   #+begin_src emacs-lisp :tangle "~/.emacs"
+   ;; orientally: transpose-words
+   (global-set-key (kbd "M-t") 'nil)
+   #+end_src
 ** prefix-command and examples
    #+begin_src emacs-lisp :tangle ~/.emacs
    (define-prefix-command 'C-s-map)
@@ -236,7 +240,7 @@
    (global-set-key (kbd "M-n") 'forward-paragraph)
    #+end_src
 ** window resizing
-   #+begin_src emacs-lisp :tangle ~/.emacs   
+   #+begin_src emacs-lisp :tangle ~/.emacs
    (global-set-key (kbd "C-M-h") 'shrink-window-horizontally)
    (global-set-key (kbd "C-M-l") 'enlarge-window-horizontally)
    (global-set-key (kbd "C-M-j") 'shrink-window)
@@ -1593,6 +1597,8 @@
    ;; (setq inferior-lisp-program "/usr/local/bin/sbcl --dynamic-space-size 1000")
    ;; (setq inferior-lisp-program "/usr/local/bin/mkcl")
    ;; (setq inferior-lisp-program "~/lang/lisp/ccl/lx86cl64")
+   ;; (setq inferior-lisp-program "sbcl")
+   ;; (setq inferior-lisp-program "ecl")
    (setq inferior-lisp-program "ccl")
 
    (add-hook 'lisp-mode-hook
@@ -1620,15 +1626,40 @@
                     (car x)))
            keyword-rules))
 
+   ;; note that
+   ;; a macro will be turned into keyword by slime
+   ;; slime will override the following definition
+   ;; but slime does not help some of the colors
    (lisp-add-keywords
     'font-lock-keyword-face
     '(
-      (1 . quote)
-      (1 . function)
-      (2 . deftest)
-      (3 . ensure)
+      (0 . quote)
+      (0 . function)
+      (0 . values)
+
       (1 . defin)
       (1 . with)
+
+      (1 . apply)
+      (1 . funcall)
+
+      (2 . deftest)
+      (3 . ensure)
+
+      (1 . cat)
+      (1 . orz)
+
+      (1 . add1!)
+      (1 . sub1!)
+      (2 . set!)
+      (2 . set-car!)
+      (2 . set-cdr!)
+      (2 . set-end-car!)
+      (2 . set-end-cdr!)
+
+      (1 . multiple-value-let)
+      ;; (1 . let-fun)
+      (1 . help)
       ))
    #+end_src
 ** slime
@@ -1837,6 +1868,33 @@
                      'cicada-send-region-and-split-window)
       (local-set-key (kbd "C-<tab>")
                      'cicada-send-line-and-split-window-and-goto-next-line)))
+   #+end_src
+** cicada-nymph
+   #+begin_src emacs-lisp :tangle ~/.emacs
+   (add-to-list 'load-path "~/.emacs.d/cicada-nymph-mode/")
+   (require 'cicada-nymph-mode)
+   (require 'inferior-cicada-nymph-mode)
+
+   ;; (define-prefix-command 'C-s-map)
+   ;; (global-set-key (kbd "C-s") 'C-s-map)
+   (defun switch-to-buffer-*cicada-nymph* ()
+     (interactive)
+     (if (member-string? "*cicada-nymph*" (mapcar 'buffer-name (buffer-list)))
+             (let ()
+           (switch-to-buffer "*cicada-nymph*")
+           (local-set-key (kbd "C-s C-d") 'previous-buffer))
+           (let ()
+             (run-cicada-nymph "cicada-nymph"))))
+   (global-set-key (kbd "C-s C-d") 'switch-to-buffer-*cicada-nymph*)
+
+   (add-hook 'cicada-nymph-mode-hook
+    (lambda ()
+      (local-set-key (kbd "C-h") 'hippie-expand)
+      (local-set-key (kbd "M-q") 'query-replace)
+      (local-set-key (kbd "C-c C-c")
+                     'cicada-nymph-send-region-and-split-window)
+      (local-set-key (kbd "C-<tab>")
+                     'cicada-nymph-send-line-and-split-window-and-goto-next-line)))
    #+end_src
 ** ----------------------------------
 ** retro
@@ -2201,8 +2259,9 @@
              (lambda ()
                    ;; (setq tab-width 13)
                    ;; (setq indent-tabs-mode t)
-                   (local-set-key (kbd "<tab>") 'fasm-indent-line)
-                   (local-set-key (kbd "C-<tab>") 'fasm-indent-line-and-next-line)
+                   ;; (local-set-key (kbd "<tab>") 'fasm-indent-line)
+                   ;; (local-set-key (kbd "C-<tab>") 'fasm-indent-line-and-next-line)
+                   ;; (turn-off-indent)
                    ))
    #+end_src
 ** nasm
@@ -2345,11 +2404,10 @@
    (add-to-list 'load-path "~/.emacs.d/clojure-mode/")
    (require 'clojure-mode)
    #+end_src
-** cider (not using)
-   CIDER (formerly nrepl.el) is the Clojure IDE and REPL for Emacs
-   built on top of nREPL(the Clojure networked REPL server)
-   CIDER depends on clojure-mode, dash.el and pkg-info
-   :tangle ~/.emacs
+** [not using] cider
+   * CIDER (formerly nrepl.el) is the Clojure IDE and REPL for Emacs
+     built on top of nREPL(the Clojure networked REPL server)
+     CIDER depends on clojure-mode, dash.el and pkg-info
    #+begin_src emacs-lisp
    (add-to-list 'load-path "~/.emacs.d/cider/")
    (require 'cider)
@@ -2418,20 +2476,19 @@
    ;; where CIDER will not attempt to match the correct REPL buffer
    ;; based on underlying project directories:
    ;; (setq cider-switch-to-repl-command 'cider-switch-to-current-repl-buffer)
+
+
+   ;; to make the REPL history wrap around when its end is reached:
+   (setq cider-repl-wrap-history t)
+
+   ;; To adjust the maximum number of items kept in the REPL history:
+   (setq cider-repl-history-size 1000) ; the default is 500
+
+   ;; To store the REPL history in a file:
+   ;; (setq cider-repl-history-file "path/to/file")
+   ;; Note that the history is written to the file when you kill the REPL buffer
+   ;; (which includes invoking cider-quit) or you quit Emacs
    #+end_src
-*** REPL History
-    #+begin_src emacs-lisp :tangle ~/.emacs
-    ;; to make the REPL history wrap around when its end is reached:
-    (setq cider-repl-wrap-history t)
-
-    ;; To adjust the maximum number of items kept in the REPL history:
-    (setq cider-repl-history-size 1000) ; the default is 500
-
-    ;; To store the REPL history in a file:
-    ;; (setq cider-repl-history-file "path/to/file")
-    ;; Note that the history is written to the file when you kill the REPL buffer
-    ;; (which includes invoking cider-quit) or you quit Emacs
-    #+end_src
 ** ----------------------------------
 ** erlang
    #+begin_src emacs-lisp :tangle ~/.emacs
@@ -2915,8 +2972,13 @@
    #+begin_src emacs-lisp :tangle ~/.emacs
    (setq org-todo-keywords
          '((sequence "><" "|" "><><" "|" "><><><")
+
            (sequence "todo")
+           (sequence "待")
+
            (sequence "note" "|" "test")
+           (sequence "記" "|" "測")
+           (sequence "记" "|" "测")
            ))
    #+end_src
 ** [babel] load-language
@@ -3043,8 +3105,12 @@
     (setq org-structure-template-forth-family
           '(
             ;; cicada
-            ("cicadaf" "#+end_src\n?\n#+begin_src cicada" "<src lang=\"?\">\n\n</src>")
-            ("cicada" "#+begin_src cicada\n?\n#+end_src" "<src lang=\"?\">\n\n</src>")
+            ("cf" "#+end_src\n?\n#+begin_src cicada" "<src lang=\"?\">\n\n</src>")
+            ("c" "#+begin_src cicada\n?\n#+end_src" "<src lang=\"?\">\n\n</src>")
+
+            ;; cicada-nymph
+            ("cnf" "#+end_src\n?\n#+begin_src cicada-nymph" "<src lang=\"?\">\n\n</src>")
+            ("cn" "#+begin_src cicada\n?\n#+end_src" "<src lang=\"?\">\n\n</src>")
 
             ;; forth
             ("forthf" "#+end_src\n?\n#+begin_src forth" "<src lang=\"?\">\n\n</src>")
@@ -3098,9 +3164,9 @@
     #+begin_src emacs-lisp :tangle ~/.emacs
     (setq org-structure-template-c-family
           '(
-            ;; c
-            ("cf" "#+end_src\n?\n#+begin_src C" "<src lang=\"?\">\n\n</src>")
-            ("c" "#+begin_src C\n?\n#+end_src" "<src lang=\"?\">\n\n</src>")
+            ;; C
+            ("Cf" "#+end_src\n?\n#+begin_src C" "<src lang=\"?\">\n\n</src>")
+            ("C" "#+begin_src C\n?\n#+end_src" "<src lang=\"?\">\n\n</src>")
 
             ;; java
             ("javaf" "#+end_src\n?\n#+begin_src java" "<src lang=\"?\">\n\n</src>")
@@ -3232,7 +3298,7 @@
        ))
    #+end_src
 ** [agenda] org-agenda-files
-   tangle take too long so just edit  
+   tangle take too long so just edit
    file:~/.org-agenda-files
 ** org to html & pdf
 *** s5
@@ -3264,7 +3330,7 @@
     (setq org-reveal-hlevel 2)
     #+end_src
 * feature
-** w3m [installed by pacman] 
+** w3m [installed by pacman]
    #+begin_src emacs-lisp :tangle ~/.emacs
    (require 'w3m-load)
    (setq browse-url-browser-function 'w3m-browse-url)
@@ -3279,7 +3345,12 @@
 
       (local-set-key (kbd "<down>") 'forward-paragraph)
       (local-set-key (kbd "<up>") 'backward-paragraph)
-   
+
+      (local-set-key (kbd "j") 'w3m-view-previous-page)
+      (local-set-key (kbd "l") 'w3m-view-next-page)
+      (local-set-key (kbd "i") 'w3m-previous-anchor)
+      (local-set-key (kbd "k") 'w3m-next-anchor)
+
       (local-set-key (kbd "C-M-n") 'w3m-next-buffer)
       (local-set-key (kbd "C-M-p") 'w3m-previous-buffer)
 
@@ -3291,7 +3362,7 @@
 
       (local-set-key (kbd "q") 'quit-window)
 
-      ;; in default setting 
+      ;; in default setting
       ;; C-t is a prefix
       (local-set-key (kbd "C-t") 'isearch-forward)
       ))
@@ -3525,11 +3596,13 @@
           '(("irc.freenode.net" :port 6697 :encryption tls
              :channels ("#forth"
                         "#cicada-language"
+                        "#szdiy"
                         "#scheme"
-                        "#lisp"
+                        ;; "#guile"
+                        ;; "#lisp"
                         "#ccl"
                         ;; "#coq"
-                        "#shen"
+                        ;; "#shen"
                         ;; "#haskell"
                         ;; "#minikanren"
                         ;; "#erlang"
@@ -4165,55 +4238,55 @@
      sdasddassaas|
      λλλλλλλλλλλλ|
      #+begin_src emacs-lisp
-     ;; 文泉驿点阵宋体, :size 14 已经是最大号了
-     (set-fontset-font t 'han (font-spec :name "WenQuanYi Bitmap Song" :size 14))
+     ;; 文泉驿点阵宋体, :size 16 已经是最大号了
+     (set-fontset-font t 'han (font-spec :name "WenQuanYi Bitmap Song" :size 16))
 
      ;; 文泉驿微米黑
-     (set-fontset-font t 'han (font-spec :name "WenQuanYi Micro Hei Mono" :size 16))
+     (set-fontset-font t 'han (font-spec :name "WenQuanYi Micro Hei Mono" :size 20))
 
      ;; 文鼎PL简中楷
-     (set-fontset-font t 'han (font-spec :name "AR PL KaitiM GB" :size 16))
+     (set-fontset-font t 'han (font-spec :name "AR PL KaitiM GB" :size 20))
 
      ;; 文鼎PL简报宋
-     (set-fontset-font t 'han (font-spec :name "AR PL SungtiL GB" :size 16))
+     (set-fontset-font t 'han (font-spec :name "AR PL SungtiL GB" :size 20))
 
      ;; 覆盖范围广 不错的楷体
-     (set-fontset-font t 'han (font-spec :name "MS Song" :size 16))
+     (set-fontset-font t 'han (font-spec :name "MS Song" :size 20))
 
      ;; 华秀月明 覆盖很广
-     (set-fontset-font t 'han (font-spec :name "H\-秀月" :size 16))
+     (set-fontset-font t 'han (font-spec :name "H\-秀月" :size 20))
 
-     (set-fontset-font t 'han (font-spec :name "H\-雲林呉竹体" :size 16))
+     (set-fontset-font t 'han (font-spec :name "H\-雲林呉竹体" :size 20))
 
-     (set-fontset-font t 'han (font-spec :name "H\-儷黑" :size 16))
+     (set-fontset-font t 'han (font-spec :name "H\-儷黑" :size 20))
 
-     (set-fontset-font t 'han (font-spec :name "H\-新雅蘭" :size 16))
+     (set-fontset-font t 'han (font-spec :name "H\-新雅蘭" :size 20))
 
      ;; 有点不适合印刷
-     (set-fontset-font t 'han (font-spec :name "H\-宮書" :size 16))
+     (set-fontset-font t 'han (font-spec :name "H\-宮書" :size 20))
 
-     (set-fontset-font t 'han (font-spec :name "PMingLiU\-TW" :size 16))
-     (set-fontset-font t 'han (font-spec :name "臺灣新細明體" :size 16))
+     (set-fontset-font t 'han (font-spec :name "PMingLiU\-TW" :size 20))
+     (set-fontset-font t 'han (font-spec :name "臺灣新細明體" :size 20))
 
-     (set-fontset-font t 'han (font-spec :name "H\-明蘭" :size 16))
+     (set-fontset-font t 'han (font-spec :name "H\-明蘭" :size 20))
 
-     (set-fontset-font t 'han (font-spec :name "simsun" :size 16))
+     (set-fontset-font t 'han (font-spec :name "simsun" :size 20))
 
-     (set-fontset-font t 'han (font-spec :name "" :size 16))
-     (set-fontset-font t 'han (font-spec :name "" :size 16))
-     (set-fontset-font t 'han (font-spec :name "" :size 16))
-     (set-fontset-font t 'han (font-spec :name "" :size 16))
-     (set-fontset-font t 'han (font-spec :name "" :size 16))
-     (set-fontset-font t 'han (font-spec :name "" :size 16))
-     (set-fontset-font t 'han (font-spec :name "" :size 16))
-     (set-fontset-font t 'han (font-spec :name "" :size 16))
-     (set-fontset-font t 'han (font-spec :name "" :size 16))
-     (set-fontset-font t 'han (font-spec :name "" :size 16))
-     (set-fontset-font t 'han (font-spec :name "" :size 16))
-     (set-fontset-font t 'han (font-spec :name "" :size 16))
-     (set-fontset-font t 'han (font-spec :name "" :size 16))
-     (set-fontset-font t 'han (font-spec :name "" :size 16))
-     (set-fontset-font t 'han (font-spec :name "" :size 16))
+     (set-fontset-font t 'han (font-spec :name "" :size 20))
+     (set-fontset-font t 'han (font-spec :name "" :size 20))
+     (set-fontset-font t 'han (font-spec :name "" :size 20))
+     (set-fontset-font t 'han (font-spec :name "" :size 20))
+     (set-fontset-font t 'han (font-spec :name "" :size 20))
+     (set-fontset-font t 'han (font-spec :name "" :size 20))
+     (set-fontset-font t 'han (font-spec :name "" :size 20))
+     (set-fontset-font t 'han (font-spec :name "" :size 20))
+     (set-fontset-font t 'han (font-spec :name "" :size 20))
+     (set-fontset-font t 'han (font-spec :name "" :size 20))
+     (set-fontset-font t 'han (font-spec :name "" :size 20))
+     (set-fontset-font t 'han (font-spec :name "" :size 20))
+     (set-fontset-font t 'han (font-spec :name "" :size 20))
+     (set-fontset-font t 'han (font-spec :name "" :size 20))
+     (set-fontset-font t 'han (font-spec :name "" :size 20))
      #+end_src
 *** 英文
     #+begin_src emacs-lisp :tangle ~/.emacs
@@ -4370,4 +4443,4 @@
 
    ;; (global-rainbow-delimiters-mode)
    #+end_src
-* ===========================================
+* ===================================
