@@ -336,11 +336,6 @@
      (backward-char 1))
    #+end_src
 * general setting
-** personal information
-   #+begin_src emacs-lisp :tangle ~/.emacs
-   (setq user-full-name "Xie Yuheng"
-             user-mail-address "xyheme@gmail.com")
-   #+end_src
 ** variable
    #+begin_src emacs-lisp :tangle ~/.emacs
    (setq case-fold-search nil)
@@ -1896,6 +1891,11 @@
       (local-set-key (kbd "C-<tab>")
                      'cicada-nymph-send-line-and-split-window-and-goto-next-line)))
    #+end_src
+** return-stack
+   #+begin_src emacs-lisp :tangle "~/.emacs"
+   (add-to-list 'load-path "~/.emacs.d/return-stack-mode/")
+   (require 'return-stack-mode)
+   #+end_src
 ** ----------------------------------
 ** retro
    #+begin_src emacs-lisp :tangle ~/.emacs
@@ -2883,6 +2883,24 @@
    #+end_src
 ** ----------------------------------
 * org
+** load-path
+   #+begin_src emacs-lisp :tangle "~/.emacs"
+   (add-to-list 'load-path "~/.emacs.d/org-mode/lisp")
+   (add-to-list 'load-path "~/.emacs.d/org-mode/contrib/lisp" t)
+   #+end_src
+** publishing
+   #+begin_src emacs-lisp :tangle "~/.emacs"
+   (setq org-publish-project-alist
+         '(("the-little-language-designer"
+            :base-directory "~/cicada-nymph/"
+            :publishing-directory "~/cicada-nymph/"
+            :publishing-function org-html-publish-to-html
+            :section-numbers nil
+            :with-toc nil
+            :html-head "<link rel=\"stylesheet\"
+                       href=\"../other/mystyle.css\"
+                       type=\"text/css\"/>")))
+   #+end_src
 ** [prefix-command] C-o
    #+begin_src emacs-lisp :tangle ~/.emacs
    (define-prefix-command 'C-o-map)
@@ -3033,27 +3051,17 @@
     2. begin_src <lang-name> 会去搜索<lang-name>的major-mode
        只要能搜索到就都能用编辑功能
     3. ob-<lang-name>.el是用来提供更多的关于语言的其他功能的
-*** org-structure-template-erlang-family
-    #+begin_src emacs-lisp :tangle ~/.emacs
-    (setq org-structure-template-erlang-family
-          '(
-            ;; erlang
-            ("erlangf" "#+end_src\n?\n#+begin_src erlang" "<src lang=\"?\">\n\n</src>")
-            ("erlang" "#+begin_src erlang\n?\n#+end_src" "<src lang=\"?\">\n\n</src>")
-
-            ;; erlang
-            ("lfef" "#+end_src\n?\n#+begin_src lfe" "<src lang=\"?\">\n\n</src>")
-            ("lfe" "#+begin_src lfe\n?\n#+end_src" "<src lang=\"?\">\n\n</src>")
-
-            ))
-    #+end_src
-*** org-structure-template-basic
+*** basic
     #+begin_src emacs-lisp :tangle ~/.emacs
     (setq org-structure-template-basic
           '(
             ;; just src
             ("sf" "#+end_src\n?\n#+begin_src" "<src lang=\"?\">\n\n</src>")
             ("s" "#+begin_src\n?\n#+end_src" "<src lang=\"?\">\n\n</src>")
+
+            ;; picture
+            ("picturef" "#+end_src\n?\n#+begin_src picture" "<src lang=\"?\">\n\n</src>")
+            ("picture" "#+begin_src picture\n?\n#+end_src" "<src lang=\"?\">\n\n</src>")
 
             ;; not using
             ;; ("e" "#+begin_example\n?\n#+end_example" "<example>\n?\n</example>")
@@ -3072,7 +3080,21 @@
 
             ))
     #+end_src
-*** org-structure-template-lisp-family
+*** erlang-family
+    #+begin_src emacs-lisp :tangle ~/.emacs
+    (setq org-structure-template-erlang-family
+          '(
+            ;; erlang
+            ("erlangf" "#+end_src\n?\n#+begin_src erlang" "<src lang=\"?\">\n\n</src>")
+            ("erlang" "#+begin_src erlang\n?\n#+end_src" "<src lang=\"?\">\n\n</src>")
+
+            ;; lfe
+            ("lfef" "#+end_src\n?\n#+begin_src lfe" "<src lang=\"?\">\n\n</src>")
+            ("lfe" "#+begin_src lfe\n?\n#+end_src" "<src lang=\"?\">\n\n</src>")
+
+            ))
+    #+end_src
+*** lisp-family
     #+begin_src emacs-lisp :tangle ~/.emacs
     (setq org-structure-template-lisp-family
           '(
@@ -3093,14 +3115,14 @@
             ("clojure" "#+begin_src clojure\n?\n#+end_src" "<src lang=\"?\">\n\n</src>")
 
             ;; emacs-lisp
-            ("seef" "#+end_src\n?\n#+begin_src emacs-lisp :tangle \"~/.emacs\"" "<src lang=\"?\">\n\n</src>")
-            ("see" "#+begin_src emacs-lisp :tangle \"~/.emacs\"\n?\n#+end_src" "<src lang=\"?\">\n\n</src>")
+            ("seef" "#+end_src\n?\n#+begin_src emacs-lisp :tangle ~/.emacs" "<src lang=\"?\">\n\n</src>")
+            ("see" "#+begin_src emacs-lisp :tangle ~/.emacs\n?\n#+end_src" "<src lang=\"?\">\n\n</src>")
             ("sef" "#+end_src\n?\n#+begin_src emacs-lisp" "<src lang=\"?\">\n\n</src>")
             ("se" "#+begin_src emacs-lisp\n?\n#+end_src" "<src lang=\"?\">\n\n</src>")
 
             ))
     #+end_src
-*** org-structure-template-forth-family
+*** forth-family
     #+begin_src emacs-lisp :tangle ~/.emacs
     (setq org-structure-template-forth-family
           '(
@@ -3110,7 +3132,7 @@
 
             ;; cicada-nymph
             ("cnf" "#+end_src\n?\n#+begin_src cicada-nymph" "<src lang=\"?\">\n\n</src>")
-            ("cn" "#+begin_src cicada\n?\n#+end_src" "<src lang=\"?\">\n\n</src>")
+            ("cn" "#+begin_src cicada-nymph\n?\n#+end_src" "<src lang=\"?\">\n\n</src>")
 
             ;; forth
             ("forthf" "#+end_src\n?\n#+begin_src forth" "<src lang=\"?\">\n\n</src>")
@@ -3118,7 +3140,7 @@
 
             ))
     #+end_src
-*** org-structure-template-ml-family
+*** ml-family
     #+begin_src emacs-lisp :tangle ~/.emacs
     (setq org-structure-template-ml-family
           '(
@@ -3132,7 +3154,7 @@
 
             ))
     #+end_src
-*** org-structure-template-asm-family
+*** asm-family
     #+begin_src emacs-lisp :tangle ~/.emacs
     (setq org-structure-template-asm-family
           '(
@@ -3146,7 +3168,7 @@
 
             ))
     #+end_src
-*** org-structure-template-mark-language
+*** mark-language
     #+begin_src emacs-lisp :tangle ~/.emacs
     (setq org-structure-template-mark-language
           '(
@@ -3160,7 +3182,7 @@
 
             ))
     #+end_src
-*** org-structure-template-c-family
+*** c-family
     #+begin_src emacs-lisp :tangle ~/.emacs
     (setq org-structure-template-c-family
           '(
@@ -3190,7 +3212,7 @@
 
             ))
     #+end_src
-*** org-structure-template-human-language
+*** human-language
     #+begin_src emacs-lisp :tangle ~/.emacs
     (setq org-structure-template-human-language
           '(
@@ -3200,7 +3222,7 @@
 
             ))
     #+end_src
-*** org-structure-template-proof-language
+*** proof-language
     #+begin_src emacs-lisp :tangle ~/.emacs
     (setq org-structure-template-proof-language
           '(
@@ -3210,7 +3232,7 @@
 
             ))
     #+end_src
-*** org-structure-template-other-family
+*** other-family
     #+begin_src emacs-lisp :tangle ~/.emacs
     (setq org-structure-template-other-family
           '(
@@ -3619,6 +3641,32 @@
    ;; If you’re getting this warning, add the following to your init file:
    (setq gnutls-min-prime-bits 1024)
    #+end_src
+** circe
+   #+begin_src emacs-lisp :tangle "~/.emacs"
+   (add-to-list 'load-path "~/.emacs.d/circe/lisp")
+   (require 'circe)
+
+   (setq circe-network-options
+         `(("Freenode"
+            :nick "xyh"
+            :channels ("#forth"
+                       "#cicada-language"
+                       "#szdiy"
+                       "#scheme"
+                       ;; "#guile"
+                       ;; "#lisp"
+                       ;; "#ccl"
+                       ;; "#coq"
+                       ;; "#shen"
+                       ;; "#haskell"
+                       ;; "#minikanren"
+                       ;; "#erlang"
+                       ;; "#erlang-lisp"
+                       ;; "#osdev"
+                       ;; "#fcitx"
+                       "#archlinux-cn"
+                       ))))
+   #+end_src
 ** muse
    #+begin_src emacs-lisp :tangle ~/.emacs
    (add-to-list 'load-path "~/.emacs.d/muse/lisp/")
@@ -3718,27 +3766,29 @@
 
    (global-set-key (kbd "C-x g") 'magit-status)
    #+end_src
-** [NOT USING] mail
-   #+begin_src emacs-lisp
-   (send-mail-function 'smtpmail-send-it)
-   (smtpmail-smtp-server "smtp.gmail.com")
-   (smtpmail-smtp-service 25)
-   #+end_src
-
-   #+begin_src emacs-lisp
+** send mail
+   * Gmail SMTP server address: smtp.gmail.com
+     Gmail SMTP user name: Your full Gmail address (e.g. example@gmail.com)
+     Gmail SMTP password: Your Gmail password
+     Gmail SMTP port: 465
+     Gmail SMTP TLS/SSL required: yes
+   * Gmail IMAP server address: imap.gmail.com
+     Gmail IMAP user name: Your full Gmail address (e.g. "me@gmail.com")
+     Gmail IMAP password: Your Gmail password
+     Gmail IMAP port: 993
+     Gmail IMAP TLS/SSL required: yes
+   #+begin_src emacs-lisp :tangle ~/.emacs
    ;; (setq send-mail-function 'mailclient-send-it)
+   (setq send-mail-function 'smtpmail-send-it)
+   (setq smtpmail-smtp-server "smtp.gmail.com")
+   (setq smtpmail-smtp-service 25)
    #+end_src
-   Gmail SMTP server address: smtp.gmail.com
-   Gmail SMTP user name: Your full Gmail address (e.g. example@gmail.com)
-   Gmail SMTP password: Your Gmail password
-   Gmail SMTP port: 465
-   Gmail SMTP TLS/SSL required: yes
-
-   Gmail IMAP server address: imap.gmail.com
-   Gmail IMAP user name: Your full Gmail address (e.g. "me@gmail.com")
-   Gmail IMAP password: Your Gmail password
-   Gmail IMAP port: 993
-   Gmail IMAP TLS/SSL required: yes
+** message
+   #+begin_src emacs-lisp :tangle ~/.emacs
+   (setq user-full-name "XIE Yuheng"
+         user-mail-address "xyheme@gmail.com"
+         message-auto-save-directory "~/mail/draft")
+   #+end_src
 ** [NOT USING] gnus
 *** tangle to ~/.emacs
     #+begin_src emacs-lisp :tangle ~/.emacs
@@ -3913,7 +3963,6 @@
      ;; 用这个名字打开一个eshell
       (eshell t)
      #+end_src
-
 **** about rename-buffer
      #+begin_src emacs-lisp
      ;; 下面将使 使用已经存在的buffer的名字时不报错
@@ -3939,13 +3988,11 @@
      ;; 所以我需要的是下面的一句
      (generate-new-buffer-name "*eshell*")
      #+end_src
-
 **** about buffer-name
      #+begin_src emacs-lisp
      (insert (buffer-name))
      (switch-to-buffer "*eshell*")
      #+end_src
-
 **** about frame-parameter
      #+begin_src emacs-lisp
      (frame-parameter nil 'title)
@@ -3957,7 +4004,6 @@
 
      (set-frame-parameter nil 'name "kkk")
      #+end_src
-
 *** open-eshell-in-emacsclient
     1. 为emacsclient而开的有eshell的frame
        frame name与其中的eshell name统一
@@ -4226,6 +4272,9 @@
      ;; (set-fontset-font t 'han (font-spec :name "HanaMinA" :size 20))
      ;; (set-fontset-font t 'han (font-spec :name "HAN NOM A" :size 20))
 
+     ;; for the show
+     ;; (set-fontset-font t 'han (font-spec :name "MS Song" :size 32))
+
      (set-fontset-font t 'han (font-spec :name "MS Song" :size 20))
      ;; (set-fontset-font t 'han (font-spec :name "MS Song" :size 16))
      ;; 下面的两行是为了保险
@@ -4293,6 +4342,9 @@
     ;; (set-face-attribute 'default nil :family "monaco" :height 120)
     ;; (set-face-attribute 'default nil :family "mono" :height 120)
     (set-face-attribute 'default nil :family "monofur" :height 140)
+
+    ;; for the show
+    ;; (set-face-attribute 'default nil :family "monofur" :height 240)
     #+end_src
 *** 符号
     #+begin_src emacs-lisp :tangle ~/.emacs
