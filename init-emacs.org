@@ -3343,6 +3343,40 @@
     #+begin_src emacs-lisp :tangle ~/.emacs
     (add-to-list 'load-path "~/.emacs.d/org-tree-slide/")
     (require 'org-tree-slide)
+
+    (add-hook
+     'org-tree-slide-mode-play-hook
+     (lambda ()
+       (local-set-key (kbd "<f9>") 'org-tree-slide-move-previous-tree)
+       (local-set-key (kbd "<f10>") 'org-tree-slide-move-next-tree)
+       (local-set-key (kbd "<f11>") 'org-tree-slide-content)
+       ))
+
+    (global-set-key (kbd "<f8>") 'org-tree-slide-mode)
+
+    (defvar *toggle-font-for-the-show* nil)
+    (defun toggle-font-for-the-show ()
+      (interactive)
+      (if (eq *toggle-font-for-the-show* t)
+          (progn
+            (set-fontset-font t 'han (font-spec :name "MS Song" :size 20))
+            (set-face-attribute 'default nil :family "monofur" :height 140)
+            (setq *toggle-font-for-the-show* nil))
+          (progn
+            (set-fontset-font t 'han (font-spec :name "MS Song" :size 32))
+            (set-face-attribute 'default nil :family "monofur" :height 240)
+            (setq *toggle-font-for-the-show* t))))
+    (global-set-key (kbd "<f7>") 'toggle-font-for-the-show)
+
+    ;; (define-key org-tree-slide-mode-map )
+
+    ;; Reset the default setting
+
+    ;; (define-key org-tree-slide-mode-map (kbd "<left>")  'backward-char)
+    ;; (define-key org-tree-slide-mode-map (kbd "<right>") 'forward-char)
+    ;; (setq org-tree-slide-skip-outline-level 4)
+    ;; (org-tree-slide-narrowing-control-profile)
+    ;; (setq org-tree-slide-skip-done nil)
     #+end_src
 *** org-reveal
     #+begin_src emacs-lisp :tangle ~/.emacs
@@ -4407,9 +4441,9 @@
    ;; (require 'color-theme)
    ;; (color-theme-initialize)
    #+end_src
-** translucent (not using)
+** translucent
    #+begin_src emacs-lisp :tangle ~/.emacs
-   (global-set-key (kbd "<f10>") 'loop-alpha)
+   (global-set-key (kbd "<f12>") 'loop-alpha)
    ;; 当前窗口和非当前窗口时透明度
    (setq alpha-list '((85 60) (100 100)))
    (defun loop-alpha ()
@@ -4424,10 +4458,8 @@
    ;; 启动窗口时时自动开启窗口半透明效果
    (loop-alpha)
    #+end_src
-** frame title (not-using)
-   display buffer name or absolute file path name in the frame title
-
-   :tangle ~/.emacs
+** [not using] frame title
+   * display buffer name or absolute file path name in the frame title
    #+begin_src emacs-lisp
    (defun frame-title-string ()
      "Return the file name of current buffer, using ~ if under home directory"
@@ -4458,22 +4490,6 @@
 
    (fset 'yes-or-no-p 'y-or-n-p)
    #+end_src
-
-   if the value is a string
-   visit the specified file
-   or directory using `find-file'
-   if t
-   open the `*scratch*'
-   buffer
-   if the value is nil
-   and `inhibit-startup-screen' is nil
-   show the startup screen
-
-   :tangle ~/.emacs
-   #+begin_src emacs-lisp
-   (setq initial-buffer-choice "kkk")
-   #+end_src
-
 ** cursor-type
    #+begin_src emacs-lisp :tangle ~/.emacs
    (set-frame-parameter nil 'cursor-type 'hollow)
