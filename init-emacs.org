@@ -3033,9 +3033,7 @@
    #+begin_src emacs-lisp :tangle ~/.emacs
    (add-hook 'org-mode-hook (setq org-src-preserve-indentation nil))
    (add-hook 'org-mode-hook (setq org-edit-src-content-indentation 0))
-
    (add-hook 'org-mode-hook (setq org-src-window-setup 'current-window))
-
    (add-hook 'org-mode-hook (setq org-src-fontify-natively t))
 
    ;; (add-hook 'org-mode-hook (setq org-src-tab-acts-natively t))
@@ -3176,6 +3174,10 @@
             ("yamlf" "#+end_src\n?\n#+begin_src yaml" "<src lang=\"?\">\n\n</src>")
             ("yaml" "#+begin_src yaml\n?\n#+end_src" "<src lang=\"?\">\n\n</src>")
 
+            ;; css
+            ("cssf" "#+end_src\n?\n#+begin_src css" "<src lang=\"?\">\n\n</src>")
+            ("css" "#+begin_src css\n?\n#+end_src" "<src lang=\"?\">\n\n</src>")
+
             ;; bnf
             ("bnff" "#+end_src\n?\n#+begin_src bnf" "<src lang=\"?\">\n\n</src>")
             ("bnf" "#+begin_src bnf\n?\n#+end_src" "<src lang=\"?\">\n\n</src>")
@@ -3300,7 +3302,9 @@
            (:tangle  . "no")
 
            ;; shebang `#!' needs the following
-           (:padline . "no")
+           ;; (:padline . "no")
+
+           (:padline . "yes")
            ))
    #+end_src
 ** [agenda] setting
@@ -3353,20 +3357,6 @@
        ))
 
     (global-set-key (kbd "<f8>") 'org-tree-slide-mode)
-
-    (defvar *toggle-font-for-the-show* nil)
-    (defun toggle-font-for-the-show ()
-      (interactive)
-      (if (eq *toggle-font-for-the-show* t)
-          (progn
-            (set-fontset-font t 'han (font-spec :name "MS Song" :size 20))
-            (set-face-attribute 'default nil :family "monofur" :height 140)
-            (setq *toggle-font-for-the-show* nil))
-          (progn
-            (set-fontset-font t 'han (font-spec :name "MS Song" :size 32))
-            (set-face-attribute 'default nil :family "monofur" :height 240)
-            (setq *toggle-font-for-the-show* t))))
-    (global-set-key (kbd "<f7>") 'toggle-font-for-the-show)
 
     ;; (define-key org-tree-slide-mode-map )
 
@@ -3696,7 +3686,7 @@
                        ;; "#minikanren"
                        ;; "#erlang"
                        ;; "#erlang-lisp"
-                       ;; "#osdev"
+                       "#osdev"
                        ;; "#fcitx"
                        "#archlinux-cn"
                        ))))
@@ -4229,6 +4219,28 @@
 ** -------------------------------------
 * looks like
 ** font
+*** <f7>
+    #+begin_src emacs-lisp :tangle ~/.emacs
+    (defvar *toggle-font-for-the-show* nil)
+    (defun toggle-font-for-the-show ()
+      (interactive)
+      (if (eq *toggle-font-for-the-show* t)
+          (progn
+            ;; (set-fontset-font t 'han (font-spec :name "MS Song" :size 20))
+            ;; (set-fontset-font t 'han (font-spec :name "H\-明蘭" :size 20))
+            (set-fontset-font t 'han (font-spec :name "臺灣新細明體" :size 20))
+            ;; (set-face-attribute 'default nil :family "monofur" :height 140)
+            (set-face-attribute 'default nil :family "Envy Code R" :height 140)
+            (setq *toggle-font-for-the-show* nil))
+          (progn
+            ;; (set-fontset-font t 'han (font-spec :name "MS Song" :size 32))
+            ;; (set-fontset-font t 'han (font-spec :name "H\-明蘭" :size 32))
+            (set-fontset-font t 'han (font-spec :name "臺灣新細明體" :size 32))
+            ;; (set-face-attribute 'default nil :family "monofur" :height 240)
+            (set-face-attribute 'default nil :family "Envy Code R" :height 240)
+            (setq *toggle-font-for-the-show* t))))
+    (global-set-key (kbd "<f7>") 'toggle-font-for-the-show)
+    #+end_src
 *** note
     用下面所使用的连个函数配置emacs的字体的时候
     其他一些程序(比如firefox)的字体配置也会跟着改变
@@ -4242,7 +4254,6 @@
     "WenQuanYi Micro Hei" 文泉驿微米黑
     "WenQuanYi Zen Hei" 文泉驿正黑
     "WenQuanYi Bitmap Song" 文泉驿点阵宋体
-
 
     (set-fontset-font NAME TARGET FONT-SPEC &optional FRAME ADD)
     + NAME is a fontset name string
@@ -4265,164 +4276,67 @@
          In that case
          use FONT-SPEC for any characters
          for that no FONT-SPEC is specified
-
-
     use the following function in *ielm* buffer
     to print script name symbol in emacs
     #+begin_src emacs-lisp
     (char-table-extra-slot char-script-table 0)
     #+end_src
-
-*** after-make-frame-functions
-    利用after-make-frame-functions这个hook
-    在使用emacs --daemon的时候设置emacsclient的字体
+*** test
+    λλλλλλ|
+    中英等宽测试|
+    sdasddassaas|
+    λλλλλλλλλλλλ|
+*** 楷
     #+begin_src emacs-lisp :tangle ~/.emacs
-    (defun frame-setting ()
-      ;; 英文
-      (set-face-attribute 'default nil :family "monaco" :height 100)
-      ;; 中文
-      (set-fontset-font t 'han (font-spec :name "MS Song" :size 16))
-      (set-fontset-font t 'cjk-misc (font-spec :name "MS Song"))
-      (set-fontset-font t 'kana (font-spec :name "MS Song"))
-      ;; 符号
-      (set-fontset-font t 'symbol (font-spec :name "mono"))
-      ;; 希腊字母
-      (set-fontset-font t 'greek (font-spec :name "FreeMono"))
-      ;; 光标样式
-      (set-frame-parameter nil 'cursor-type '(bar . 2))
-      )
-
-    (if (and (fboundp 'daemonp) (daemonp))
-            (add-hook 'after-make-frame-functions
-                      (lambda (frame)
-                    (with-selected-frame frame
-                      (frame-setting))))
-      (frame-setting))
+    ;; (set-fontset-font t 'han (font-spec :name "MS Song" :size 20))
+    ;; (set-fontset-font t 'han (font-spec :name "H\-宮書" :size 20))
     #+end_src
-*** 中文
-**** using
-     #+begin_src emacs-lisp :tangle ~/.emacs
-     ;; (set-fontset-font t 'han (font-spec :name "H\-雲林呉竹体" :size 20))
-     ;; (set-fontset-font t 'han (font-spec :name "HanaMinA" :size 20))
-     ;; (set-fontset-font t 'han (font-spec :name "HAN NOM A" :size 20))
-
-     ;; for the show
-     ;; (set-fontset-font t 'han (font-spec :name "MS Song" :size 32))
-
-     (set-fontset-font t 'han (font-spec :name "MS Song" :size 20))
-     ;; (set-fontset-font t 'han (font-spec :name "MS Song" :size 16))
-     ;; 下面的两行是为了保险
-     (set-fontset-font t 'cjk-misc (font-spec :name "MS Song"))
-     (set-fontset-font t 'kana (font-spec :name "MS Song"))
-     #+end_src
-**** playing
-     λλλλλλ|
-     中英等宽测试|
-     sdasddassaas|
-     λλλλλλλλλλλλ|
-     #+begin_src emacs-lisp
-     ;; 文泉驿点阵宋体, :size 16 已经是最大号了
-     (set-fontset-font t 'han (font-spec :name "WenQuanYi Bitmap Song" :size 16))
-
-     ;; 文泉驿微米黑
-     (set-fontset-font t 'han (font-spec :name "WenQuanYi Micro Hei Mono" :size 20))
-
-     ;; 文鼎PL简中楷
-     (set-fontset-font t 'han (font-spec :name "AR PL KaitiM GB" :size 20))
-
-     ;; 文鼎PL简报宋
-     (set-fontset-font t 'han (font-spec :name "AR PL SungtiL GB" :size 20))
-
-     ;; 覆盖范围广 不错的楷体
-     (set-fontset-font t 'han (font-spec :name "MS Song" :size 20))
-
-     ;; 华秀月明 覆盖很广
-     (set-fontset-font t 'han (font-spec :name "H\-秀月" :size 20))
-
-     (set-fontset-font t 'han (font-spec :name "H\-雲林呉竹体" :size 20))
-
-     (set-fontset-font t 'han (font-spec :name "H\-儷黑" :size 20))
-
-     (set-fontset-font t 'han (font-spec :name "H\-新雅蘭" :size 20))
-
-     ;; 有点不适合印刷
-     (set-fontset-font t 'han (font-spec :name "H\-宮書" :size 20))
-
-     (set-fontset-font t 'han (font-spec :name "PMingLiU\-TW" :size 20))
-     (set-fontset-font t 'han (font-spec :name "臺灣新細明體" :size 20))
-
-     (set-fontset-font t 'han (font-spec :name "H\-明蘭" :size 20))
-
-     (set-fontset-font t 'han (font-spec :name "simsun" :size 20))
-
-     (set-fontset-font t 'han (font-spec :name "" :size 20))
-     (set-fontset-font t 'han (font-spec :name "" :size 20))
-     (set-fontset-font t 'han (font-spec :name "" :size 20))
-     (set-fontset-font t 'han (font-spec :name "" :size 20))
-     (set-fontset-font t 'han (font-spec :name "" :size 20))
-     (set-fontset-font t 'han (font-spec :name "" :size 20))
-     (set-fontset-font t 'han (font-spec :name "" :size 20))
-     (set-fontset-font t 'han (font-spec :name "" :size 20))
-     (set-fontset-font t 'han (font-spec :name "" :size 20))
-     (set-fontset-font t 'han (font-spec :name "" :size 20))
-     (set-fontset-font t 'han (font-spec :name "" :size 20))
-     (set-fontset-font t 'han (font-spec :name "" :size 20))
-     (set-fontset-font t 'han (font-spec :name "" :size 20))
-     (set-fontset-font t 'han (font-spec :name "" :size 20))
-     (set-fontset-font t 'han (font-spec :name "" :size 20))
-     #+end_src
-*** 英文
+*** 宋
+    #+begin_src emacs-lisp :tangle ~/.emacs
+    ;; (set-fontset-font t 'han (font-spec :name "HanaMinA" :size 32))
+    ;; (set-fontset-font t 'han (font-spec :name "HAN NOM A" :size 32))
+    ;; (set-fontset-font t 'han (font-spec :name "H\-秀月" :size 32))
+    ;; (set-fontset-font t 'han (font-spec :name "simsun" :size 32))
+    (set-fontset-font t 'han (font-spec :name "臺灣新細明體" :size 20))
+    #+end_src
+*** 黑
+    #+begin_src emacs-lisp :tangle ~/.emacs
+    ;; (set-fontset-font t 'han (font-spec :name "H\-雲林呉竹体" :size 20))
+    ;; (set-fontset-font t 'han (font-spec :name "H\-明蘭" :size 20))
+    ;; (set-fontset-font t 'han (font-spec :name "WenQuanYi Micro Hei Mono" :size 20))
+    ;; (set-fontset-font t 'han (font-spec :name "H\-儷黑" :size 20))
+    ;; (set-fontset-font t 'han (font-spec :name "H\-新雅蘭" :size 20))
+    #+end_src
+*** 英
     #+begin_src emacs-lisp :tangle ~/.emacs
     ;; (set-face-attribute 'default nil :family "monaco" :height 120)
     ;; (set-face-attribute 'default nil :family "mono" :height 120)
-    (set-face-attribute 'default nil :family "monofur" :height 140)
-
-    ;; for the show
-    ;; (set-face-attribute 'default nil :family "monofur" :height 240)
+    ;; (set-face-attribute 'default nil :family "monofur" :height 140)
+    ;; (set-face-attribute 'default nil :family "lmmono10" :height 140)
+    ;; (set-face-attribute 'default nil :family "lmmonocaps10" :height 140)
+    ;; (set-face-attribute 'default nil :family "lmmonolt10" :height 140)
+    (set-face-attribute 'default nil :family "Envy Code R" :height 140)
     #+end_src
-*** 符号
+*** 符
     #+begin_src emacs-lisp :tangle ~/.emacs
     (set-fontset-font t 'symbol (font-spec :name "mono"))
     ;; (set-fontset-font t 'symbol (font-spec :name "STIXGeneral"))
     #+end_src
-*** greek
+*** 希臘
     #+begin_src emacs-lisp :tangle ~/.emacs
     ;; (set-fontset-font t 'greek (font-spec :name "Porson"))
     ;; (set-fontset-font t 'greek (font-spec :name "mono"))
     ;; (set-fontset-font t 'greek (font-spec :name "STIXGeneral"))
     ;; (set-fontset-font t 'greek (font-spec :name "Code2000"))
     ;; (set-fontset-font t 'greek (font-spec :name "ALPHA\-Demo"))
-
-    ;; 下面的字体是等宽的 并且又和monaco有明显的区别
     (set-fontset-font t 'greek (font-spec :name "FreeMono"))
-    #+end_src
-**** test
-     α  Α
-     β  Β
-     γ  Γ
-     δ  Δ
-     ε  Ε
-     ζ  Ζ
-     η  Η
-     θ  Θ
-     ι  Ι
-     κ  Κ
-     λ  Λ
-     μ  Μ
-     ν  Ν
-     ξ  Ξ
-     ο  Ο
-     π  Π
-     ρ  Ρ
-     ς  ΢
-     σ  Σ
-     τ  Τ
-     υ  Υ
-     φ  Φ
-     χ  Χ
-     ψ  Ψ
-     ω  Ω
 
+    ;; α  Α     β  Β     γ  Γ     δ  Δ     ε  Ε
+    ;; ζ  Ζ     η  Η     θ  Θ     ι  Ι     κ  Κ
+    ;; λ  Λ     μ  Μ     ν  Ν     ξ  Ξ     ο  Ο
+    ;; π  Π     ρ  Ρ     ς  ΢     σ  Σ     τ  Τ
+    ;; υ  Υ     φ  Φ     χ  Χ     ψ  Ψ     ω  Ω
+    #+end_src
 ** theme
    [[~/.emacs.d/theme/molokai/molokai-theme.el]]
    #+begin_src emacs-lisp :tangle ~/.emacs
@@ -4492,8 +4406,8 @@
    #+end_src
 ** cursor-type
    #+begin_src emacs-lisp :tangle ~/.emacs
-   (set-frame-parameter nil 'cursor-type 'hollow)
-   ;; (set-frame-parameter nil 'cursor-type 'box)
+   ;; (set-frame-parameter nil 'cursor-type 'hollow)
+   (set-frame-parameter nil 'cursor-type 'box)
    ;; (set-frame-parameter nil 'cursor-type 'bar)
    ;; (set-frame-parameter nil 'cursor-type '(bar . 2))
    ;; (set-frame-parameter nil 'cursor-type 'hbar)
