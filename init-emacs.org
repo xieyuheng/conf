@@ -2404,11 +2404,16 @@
    (add-to-list 'load-path "~/.emacs.d/clojure-mode/")
    (require 'clojure-mode)
    #+end_src
+** queue
+   #+begin_src emacs-lisp :tangle ~/.emacs
+   (add-to-list 'load-path "~/.emacs.d/queue/")
+   (require 'queue)
+   #+end_src
 ** [not using] cider
    * CIDER (formerly nrepl.el) is the Clojure IDE and REPL for Emacs
      built on top of nREPL(the Clojure networked REPL server)
      CIDER depends on clojure-mode, dash.el and pkg-info
-   #+begin_src emacs-lisp
+   #+begin_src emacs-lisp :tangle ~/.emacs
    (add-to-list 'load-path "~/.emacs.d/cider/")
    (require 'cider)
 
@@ -3686,7 +3691,7 @@
                        ;; "#minikanren"
                        ;; "#erlang"
                        ;; "#erlang-lisp"
-                       "#osdev"
+                       ;; "#osdev"
                        ;; "#fcitx"
                        "#archlinux-cn"
                        ))))
@@ -4235,7 +4240,7 @@
           (progn
             ;; (set-fontset-font t 'han (font-spec :name "MS Song" :size 32))
             ;; (set-fontset-font t 'han (font-spec :name "H\-明蘭" :size 32))
-            (set-fontset-font t 'han (font-spec :name "臺灣新細明體" :size 32))
+            (set-fontset-font t 'han (font-spec :name "臺灣新細明體" :size 34))
             ;; (set-face-attribute 'default nil :family "monofur" :height 240)
             (set-face-attribute 'default nil :family "Envy Code R" :height 240)
             (setq *toggle-font-for-the-show* t))))
