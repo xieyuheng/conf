@@ -4233,14 +4233,16 @@
           (progn
             ;; (set-fontset-font t 'han (font-spec :name "MS Song" :size 20))
             ;; (set-fontset-font t 'han (font-spec :name "H\-明蘭" :size 20))
-            (set-fontset-font t 'han (font-spec :name "臺灣新細明體" :size 20))
+            ;; (set-fontset-font t 'han (font-spec :name "臺灣新細明體" :size 20))
+            (set-fontset-font t 'han (font-spec :name "H\-明蘭" :size 20))
             ;; (set-face-attribute 'default nil :family "monofur" :height 140)
             (set-face-attribute 'default nil :family "Envy Code R" :height 140)
             (setq *toggle-font-for-the-show* nil))
           (progn
             ;; (set-fontset-font t 'han (font-spec :name "MS Song" :size 32))
             ;; (set-fontset-font t 'han (font-spec :name "H\-明蘭" :size 32))
-            (set-fontset-font t 'han (font-spec :name "臺灣新細明體" :size 34))
+            ;; (set-fontset-font t 'han (font-spec :name "臺灣新細明體" :size 34))
+            (set-fontset-font t 'han (font-spec :name "H\-明蘭" :size 34))
             ;; (set-face-attribute 'default nil :family "monofur" :height 240)
             (set-face-attribute 'default nil :family "Envy Code R" :height 240)
             (setq *toggle-font-for-the-show* t))))
@@ -4302,12 +4304,12 @@
     ;; (set-fontset-font t 'han (font-spec :name "HAN NOM A" :size 32))
     ;; (set-fontset-font t 'han (font-spec :name "H\-秀月" :size 32))
     ;; (set-fontset-font t 'han (font-spec :name "simsun" :size 32))
-    (set-fontset-font t 'han (font-spec :name "臺灣新細明體" :size 20))
+    ;; (set-fontset-font t 'han (font-spec :name "臺灣新細明體" :size 20))
     #+end_src
 *** 黑
     #+begin_src emacs-lisp :tangle ~/.emacs
     ;; (set-fontset-font t 'han (font-spec :name "H\-雲林呉竹体" :size 20))
-    ;; (set-fontset-font t 'han (font-spec :name "H\-明蘭" :size 20))
+    (set-fontset-font t 'han (font-spec :name "H\-明蘭" :size 20))
     ;; (set-fontset-font t 'han (font-spec :name "WenQuanYi Micro Hei Mono" :size 20))
     ;; (set-fontset-font t 'han (font-spec :name "H\-儷黑" :size 20))
     ;; (set-fontset-font t 'han (font-spec :name "H\-新雅蘭" :size 20))
