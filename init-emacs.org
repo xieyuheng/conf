@@ -10,7 +10,7 @@
 * lib
 ** xyh-emacs-lib
    #+begin_src emacs-lisp :tangle ~/.emacs
-   ;; (add-to-list 'load-path "~/.emacs.d/xyh-emacs-lib/")
+   (add-to-list 'load-path "~/.emacs.d/xyh-emacs-lib/")
    (require 'xyh-emacs-lib)
 
    (global-set-key (kbd "M-u") 'move-line-backword)
@@ -178,7 +178,7 @@
    #+end_src
 * key binding
 ** unbinding
-   #+begin_src emacs-lisp :tangle "~/.emacs"
+   #+begin_src emacs-lisp :tangle ~/.emacs
    ;; orientally: transpose-words
    (global-set-key (kbd "M-t") 'nil)
    #+end_src
@@ -215,7 +215,6 @@
            (save-buffer)
            (kill-emacs)))
    #+end_src
-
 ** cruise
    #+begin_src emacs-lisp :tangle ~/.emacs
    (defun window-> () (interactive) (other-window +1))
@@ -1892,7 +1891,7 @@
                      'cicada-nymph-send-line-and-split-window-and-goto-next-line)))
    #+end_src
 ** return-stack
-   #+begin_src emacs-lisp :tangle "~/.emacs"
+   #+begin_src emacs-lisp :tangle ~/.emacs
    (add-to-list 'load-path "~/.emacs.d/return-stack-mode/")
    (require 'return-stack-mode)
    #+end_src
@@ -1982,7 +1981,7 @@
    #+end_src
 ** ----------------------------------
 ** tcl
-   #+begin_src emacs-lisp :tangle "~/.emacs"
+   #+begin_src emacs-lisp :tangle ~/.emacs
    (setq tcl-application "tclsh")
 
 
@@ -2887,14 +2886,20 @@
          )
    #+end_src
 ** ----------------------------------
+** fish
+   #+begin_src emacs-lisp :tangle ~/.emacs
+   (add-to-list 'load-path "~/.emacs.d/fish-mode/")
+   (require 'fish-mode)
+   #+end_src
+** ----------------------------------
 * org
 ** load-path
-   #+begin_src emacs-lisp :tangle "~/.emacs"
+   #+begin_src emacs-lisp :tangle ~/.emacs
    (add-to-list 'load-path "~/.emacs.d/org-mode/lisp")
    (add-to-list 'load-path "~/.emacs.d/org-mode/contrib/lisp" t)
    #+end_src
 ** publishing
-   #+begin_src emacs-lisp :tangle "~/.emacs"
+   #+begin_src emacs-lisp :tangle ~/.emacs
    (setq org-publish-project-alist
          '(("the-little-language-designer"
             :base-directory "~/cicada-nymph/"
@@ -3001,7 +3006,7 @@
 
            (sequence "note" "|" "test")
            (sequence "記" "|" "測")
-           (sequence "记" "|" "测")
+           ;; (sequence "记" "|" "测")
            ))
    #+end_src
 ** [babel] load-language
@@ -3243,9 +3248,13 @@
     #+begin_src emacs-lisp :tangle ~/.emacs
     (setq org-structure-template-other-family
           '(
+            ;; fish
+            ("fishf" "#+end_src\n?\n#+begin_src fish" "<src lang=\"?\">\n\n</src>")
+            ("fish" "#+begin_src fish\n?\n#+end_src" "<src lang=\"?\">\n\n</src>")
+
             ;; sql
-            ("sqlf" "#+end_src\n?\n#+begin_src sql :result value" "<src lang=\"?\">\n\n</src>")
-            ("sql" "#+begin_src sql :result value\n?\n#+end_src" "<src lang=\"?\">\n\n</src>")
+            ("sqlf" "#+end_src\n?\n#+begin_src sql" "<src lang=\"?\">\n\n</src>")
+            ("sql" "#+begin_src sql\n?\n#+end_src" "<src lang=\"?\">\n\n</src>")
 
             ;; ruby
             ("rubyf" "#+end_src\n?\n#+begin_src ruby" "<src lang=\"?\">\n\n</src>")
@@ -3644,24 +3653,24 @@
    (setq rcirc-default-full-name "XIE Yuheng")
 
    (setq rcirc-server-alist
-          '(("irc.freenode.net" :port 6697 :encryption tls
-             :channels ("#forth"
-                        "#cicada-language"
-                        "#szdiy"
-                        "#scheme"
-                        ;; "#guile"
-                        ;; "#lisp"
-                        "#ccl"
-                        ;; "#coq"
-                        ;; "#shen"
-                        ;; "#haskell"
-                        ;; "#minikanren"
-                        ;; "#erlang"
-                        ;; "#erlang-lisp"
-                        ;; "#osdev"
-                        ;; "#fcitx"
-                        "#archlinux-cn"
-                        ))))
+         '(("irc.freenode.net" :port 6697 :encryption tls
+            :channels ("#forth"
+                       "#cicada-language"
+                       "#szdiy"
+                       ;; "#scheme"
+                       ;; "#guile"
+                       ;; "#lisp"
+                       "#ccl"
+                       ;; "#coq"
+                       ;; "#shen"
+                       ;; "#haskell"
+                       ;; "#minikanren"
+                       ;; "#erlang"
+                       ;; "#erlang-lisp"
+                       ;; "#osdev"
+                       ;; "#fcitx"
+                       "#archlinux-cn"
+                       ))))
 
    ;; gnutls.c: [1] Note that
    ;; the security level of the Diffie-Hellman key exchange
@@ -3671,7 +3680,7 @@
    (setq gnutls-min-prime-bits 1024)
    #+end_src
 ** circe
-   #+begin_src emacs-lisp :tangle "~/.emacs"
+   #+begin_src emacs-lisp :tangle ~/.emacs
    (add-to-list 'load-path "~/.emacs.d/circe/lisp")
    (require 'circe)
 
@@ -3681,7 +3690,7 @@
             :channels ("#forth"
                        "#cicada-language"
                        "#szdiy"
-                       "#scheme"
+                       ;; "#scheme"
                        ;; "#guile"
                        ;; "#lisp"
                        ;; "#ccl"
@@ -3694,7 +3703,12 @@
                        ;; "#osdev"
                        ;; "#fcitx"
                        "#archlinux-cn"
-                       ))))
+                       ))
+           ;; ("OFTC"
+           ;;  :nick "xyh"
+           ;;  :channels ("#fish"
+           ;;             ))
+           ))
    #+end_src
 ** muse
    #+begin_src emacs-lisp :tangle ~/.emacs
@@ -3935,17 +3949,16 @@
     The only benefit autojump offers is that it sorts the entries
     by how often you switched there instead of when you switched there.
 ** alias
+   * the auto-correcting aliasing
+     if you type an invalid command too many times
+     (governed by eshell-bad-command-tolerance, which is 3 by default)
+     Eshell will offer to alias it to its intended command for you
    #+begin_src emacs-lisp :tangle ~/.emacs
    ;; eshell will write the alias definitions to eshell-aliases-file
    (setq eshell-aliases-file "~/.emacs.d/eshell/alias")
    ;; which in turn is governed by the eshell-directory-name
    (setq eshell-directory-name "~/.emacs.d/eshell/")
    #+end_src
-   [[~/.emacs.d/eshell/alias]]
-   Another useful thing to know is the auto-correcting aliasing.
-   If you type an invalid command too many times
-   (governed by eshell-bad-command-tolerance, which is 3 by default)
-   Eshell will offer to alias it to its intended command for you
 ** commands history
    to use ido-completing-read to access to eshells history
    #+begin_src emacs-lisp :tangle ~/.emacs
@@ -4034,24 +4047,25 @@
      (set-frame-parameter nil 'name "kkk")
      #+end_src
 *** open-eshell-in-emacsclient
-    1. 为emacsclient而开的有eshell的frame
-       frame name与其中的eshell name统一
-    2. 每次为emacsclient而开一个frame之后
-       就可以用(frame-parameter nil 'name)来使用这个字符串了
-    3. 但是下面解决问题的方法又用到了eshell
-       因为emacs的dynamic-scope太让人心烦了
+    1. 为 emacsclient 而开的有 eshell 的 frame
+       frame name 与其中的 eshell name 统一
+    2. 每次为 emacsclient 而开一个 frame 之后
+       就可以用 (frame-parameter nil 'name) 来使用这个字符串了
+    3. 但是下面解决问题的方法又用到了 eshell
+       因为 emacs 的 dynamic-scope 太让人心烦了
     4. 尽管如此这样也是合理的
-       是要在emacsclient中打开eshell
-       既然打开了eshell就让这个eshell做点事儿吧
+       是要在 emacsclient 中打开 eshell
+       既然打开了 eshell 就让这个 eshell 做点事儿吧
     #+begin_src emacs-lisp :tangle ~/.emacs
     (defun open-eshell-in-emacsclient ()
       (progn
             (eshell t)
-            (insert "(set-frame-parameter nil 'name (buffer-name))")
-            (eshell-send-input)
-            (insert "(set-frame-parameter nil 'cursor-type 'hollow)")
-            (eshell-send-input)
+            ;; ;; (set-frame-parameter nil 'name (buffer-name))
+            ;; (insert "(set-frame-parameter nil 'name (buffer-name))")
+            ;; (eshell-send-input)
             ))
+
+            (defun open-eshell-in-emacsclient () (eshell t))
     #+end_src
 *** my-switch-to-eshell
     下面是黄金搭档``previous-buffer''
@@ -4109,7 +4123,7 @@
       (function
        (lambda ()
          (concat (number-to-string eshell-last-command-status)
-                 ": " (eshell/pwd) " "
+                 "  " (eshell/pwd) " "
                  (newline)
                  ;; (if (= (user-uid) 0) " # " " $ ")
                  ))))
@@ -4292,6 +4306,7 @@
     λλλλλλ|
     中英等宽测试|
     sdasddassaas|
+    iiiiiiiiiiii|
     λλλλλλλλλλλλ|
 *** 楷
     #+begin_src emacs-lisp :tangle ~/.emacs
@@ -4310,19 +4325,35 @@
     #+begin_src emacs-lisp :tangle ~/.emacs
     ;; (set-fontset-font t 'han (font-spec :name "H\-雲林呉竹体" :size 20))
     (set-fontset-font t 'han (font-spec :name "H\-明蘭" :size 20))
+    ;; (set-fontset-font t 'han (font-spec :name "SourceHanSans" :size 20))
     ;; (set-fontset-font t 'han (font-spec :name "WenQuanYi Micro Hei Mono" :size 20))
     ;; (set-fontset-font t 'han (font-spec :name "H\-儷黑" :size 20))
     ;; (set-fontset-font t 'han (font-spec :name "H\-新雅蘭" :size 20))
     #+end_src
 *** 英
     #+begin_src emacs-lisp :tangle ~/.emacs
-    ;; (set-face-attribute 'default nil :family "monaco" :height 120)
-    ;; (set-face-attribute 'default nil :family "mono" :height 120)
+    ;; (set-face-attribute 'default nil :family "monaco" :height 130)
+    ;; (set-face-attribute 'default nil :family "Envy Code R" :height 140)
+    ;; (set-face-attribute 'default nil :family "Source Code Pro" :height 130)
+    ;; (set-face-attribute 'default nil :family "Sauce Code Powerline" :height 130)
+    (set-face-attribute 'default nil :family "Source Code Pro for Powerline" :height 130)
+    ;; (set-face-attribute 'default nil :family "Droid Sans Mono" :height 130)
+    ;; (set-face-attribute 'default nil :family "FiraMono" :height 130)
+    ;; (set-face-attribute 'default nil :family "mono" :height 140)
     ;; (set-face-attribute 'default nil :family "monofur" :height 140)
     ;; (set-face-attribute 'default nil :family "lmmono10" :height 140)
     ;; (set-face-attribute 'default nil :family "lmmonocaps10" :height 140)
     ;; (set-face-attribute 'default nil :family "lmmonolt10" :height 140)
-    (set-face-attribute 'default nil :family "Envy Code R" :height 140)
+    ;; (set-face-attribute 'default nil :family "Inconsolata" :height 140)
+    ;; (set-face-attribute 'default nil :family "Cousine" :height 140)
+    ;; (set-face-attribute 'default nil :family "PT Mono" :height 140)
+    ;; (set-face-attribute 'default nil :family "Anonymous Pro" :height 140)
+    ;; (set-face-attribute 'default nil :family "Nova Mono" :height 140)
+    ;; (set-face-attribute 'default nil :family "Fira Mono" :height 140)
+    ;; (set-face-attribute 'default nil :family "Cutive Mono" :height 140)
+    ;; (set-face-attribute 'default nil :family "Oxygen Mono" :height 140)
+    ;; (set-face-attribute 'default nil :family "Share Tech Mono" :height 140)
+    ;; (set-face-attribute 'default nil :family "Anonymous Pro" :height 140)
     #+end_src
 *** 符
     #+begin_src emacs-lisp :tangle ~/.emacs
@@ -4345,22 +4376,10 @@
     ;; υ  Υ     φ  Φ     χ  Χ     ψ  Ψ     ω  Ω
     #+end_src
 ** theme
-   [[~/.emacs.d/theme/molokai/molokai-theme.el]]
    #+begin_src emacs-lisp :tangle ~/.emacs
-   (add-to-list 'custom-theme-load-path "~/.emacs.d/theme/molokai/")
-
+   (add-to-list 'custom-theme-load-path "~/.emacs.d/molokai-theme/")
    (setq molokai-theme-kit t)
    (load-theme 'molokai t)
-
-   ;; (load-file  "~/.emacs.d/theme/chocolate-rain/chocolate-rain.el")
-
-
-   ;; (add-to-list 'custom-theme-load-path "~/.emacs.d/theme/color-theme-molokai/")
-   ;; (load-theme 'molokai t)
-
-   ;; (add-to-list 'load-path "~/.emacs.d/theme/color-theme-6.6.0/")
-   ;; (require 'color-theme)
-   ;; (color-theme-initialize)
    #+end_src
 ** translucent
    #+begin_src emacs-lisp :tangle ~/.emacs
@@ -4377,7 +4396,7 @@
            (setq alpha-list (cdr (append alpha-list (list h))))
            ))
    ;; 启动窗口时时自动开启窗口半透明效果
-   (loop-alpha)
+   ;; (loop-alpha)
    #+end_src
 ** [not using] frame title
    * display buffer name or absolute file path name in the frame title
@@ -4431,5 +4450,16 @@
    ;; (add-hook 'cicada-mode-hook 'rainbow-delimiters-mode)
 
    ;; (global-rainbow-delimiters-mode)
+   #+end_src
+** [not using] display
+   #+begin_src emacs-lisp :tangle ~/.emacs
+   ;; (display-battery-mode t)
+   ;; (display-time-mode t)
+   #+end_src
+** symon
+   #+begin_src emacs-lisp :tangle ~/.emacs
+   (add-to-list 'load-path "~/.emacs.d/symon/")
+   (require 'symon)
+   (symon-mode)
    #+end_src
 * ===================================
