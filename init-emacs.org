@@ -1360,8 +1360,7 @@
      'scheme-mode-hook
      (lambda ()
        (local-set-key (kbd "C-x C-e") 'scheme-send-last-sexp-split-window)
-       (local-set-key (kbd "C-c C-e") 'scheme-send-definition-split-window)
-       ))
+       (local-set-key (kbd "C-c C-e") 'scheme-send-definition-split-window)))
     #+end_src
 *** scheme-here
     #+begin_src emacs-lisp :tangle ~/.emacs
@@ -1871,21 +1870,23 @@
 
    ;; (define-prefix-command 'C-s-map)
    ;; (global-set-key (kbd "C-s") 'C-s-map)
+
    (defun switch-to-buffer-*cicada-nymph* ()
      (interactive)
      (if (member-string? "*cicada-nymph*" (mapcar 'buffer-name (buffer-list)))
-             (let ()
+         (let ()
            (switch-to-buffer "*cicada-nymph*")
-           (local-set-key (kbd "C-s C-d") 'previous-buffer))
-           (let ()
-             (run-cicada-nymph "cicada-nymph"))))
-   (global-set-key (kbd "C-s C-d") 'switch-to-buffer-*cicada-nymph*)
+           (local-set-key (kbd "C-s C-c") 'previous-buffer))
+         (run-cicada-nymph
+          (read-string "* run cicada-nymph : "
+                       cicada-nymph-program-name))))
+   (global-set-key (kbd "C-s C-c") 'switch-to-buffer-*cicada-nymph*)
 
    (add-hook 'cicada-nymph-mode-hook
     (lambda ()
       (local-set-key (kbd "C-h") 'hippie-expand)
       (local-set-key (kbd "M-q") 'query-replace)
-      (local-set-key (kbd "C-c C-c")
+      (local-set-key (kbd "C-c C-e")
                      'cicada-nymph-send-region-and-split-window)
       (local-set-key (kbd "C-<tab>")
                      'cicada-nymph-send-line-and-split-window-and-goto-next-line)))
@@ -1909,13 +1910,9 @@
    (defun switch-to-buffer-*forth* ()
      (interactive)
      (if (member-string? "*forth*" (mapcar 'buffer-name (buffer-list)))
-             (switch-to-buffer "*forth*")
-           (let ((forth-name
-              ;; "gforth"
-              ;; "retro"
-              (read-from-minibuffer "run which forth? : ")
-              ))
-             (run-forth forth-name)))
+         (switch-to-buffer "*forth*")
+         (let ((forth-name (read-from-minibuffer "run which forth? : ")))
+           (run-forth forth-name)))
      (local-set-key (kbd "C-s C-f") 'previous-buffer))
    (global-set-key (kbd "C-s C-f") 'switch-to-buffer-*forth*)
    #+end_src
@@ -2325,10 +2322,10 @@
                      :test 'equal)
             (switch-to-buffer "*haskell*")
               (progn (run-haskell) (delete-other-windows)))
-            (local-set-key (kbd "C-s C-c") (lambda ()
+            (local-set-key (kbd "C-s C-h") (lambda ()
                                              (interactive)
                                              (switch-to-buffer the-buffer-before-switch-to-buffer-*haskell*)))))
-    (global-set-key (kbd "C-s C-c") 'switch-to-buffer-*haskell*)
+    (global-set-key (kbd "C-s C-h") 'switch-to-buffer-*haskell*)
     #+end_src
 *** compile
     When invoked, ‘haskell-compile’ tries to guess how to compile the
@@ -2538,6 +2535,11 @@
 ** C
    #+begin_src emacs-lisp :tangle ~/.emacs
    (setq-default c-basic-offset 2)
+   #+end_src
+** python
+   #+begin_src emacs-lisp :tangle ~/.emacs
+   (setq py-install-directory "~/.emacs.d/python-el/")
+   (require 'python)
    #+end_src
 ** java
    #+begin_src emacs-lisp :tangle ~/.emacs
@@ -3008,6 +3010,10 @@
            (sequence "記" "|" "測")
            ;; (sequence "记" "|" "测")
            ))
+   #+end_src
+** tag
+   #+begin_src emacs-lisp :tangle ~/.emacs
+   (setq org-tags-column 38)
    #+end_src
 ** [babel] load-language
    #+begin_src emacs-lisp :tangle ~/.emacs
