@@ -3666,7 +3666,7 @@
                        ;; "#scheme"
                        ;; "#guile"
                        ;; "#lisp"
-                       "#ccl"
+                       ;; "#ccl"
                        ;; "#coq"
                        ;; "#shen"
                        ;; "#haskell"
@@ -3675,7 +3675,6 @@
                        ;; "#erlang-lisp"
                        ;; "#osdev"
                        ;; "#fcitx"
-                       "#archlinux-cn"
                        ))))
 
    ;; gnutls.c: [1] Note that
@@ -3708,7 +3707,6 @@
                        ;; "#erlang-lisp"
                        ;; "#osdev"
                        ;; "#fcitx"
-                       "#archlinux-cn"
                        ))
            ;; ("OFTC"
            ;;  :nick "xyh"
