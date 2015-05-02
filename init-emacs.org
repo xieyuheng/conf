@@ -422,26 +422,27 @@
            inferior-cicada-mode
            ))
    #+end_src
-* little input method
+* note little input method
+  输入法和文本编辑器相辅相成同等重要
+  emcas因一个bug而不能使用input method framework
+  启动emcas前需要更改环境变量LC_CTYPE来弥补这个问题
+  #+begin_src sh
+  LC_CTYPE=zh_CN.UTF-8 emacs
+  #+end_src
+
+  #+begin_src sh
+  export LC_CTYPE=zh_CN.UTF-8
+  emacs &
+  #+end_src
+
+  有的时候能直接用
+  有的时候必须要用上面的方法
+* <f1>
 ** note
-   输入法和文本编辑器相辅相成同等重要
-   emcas因一个bug而不能使用input method framework
-   启动emcas前需要更改环境变量LC_CTYPE来弥补这个问题
-   #+begin_src sh
-   LC_CTYPE=zh_CN.UTF-8 emacs
-   #+end_src
-
-   #+begin_src sh
-   export LC_CTYPE=zh_CN.UTF-8
-   emacs &
-   #+end_src
-
-   有的时候能直接用
-   有的时候必须要用上面的方法
-** <f1>
    point-to-register: C-x r SPC
    jump-to-register: C-x r j
    get-register
+** init-<f1>
    #+begin_src emacs-lisp :tangle ~/.emacs
    ;; (define-prefix-command '<f1>-map)
    ;; (global-set-key (kbd "<f1>") '<f1>-map)
@@ -450,8 +451,11 @@
    (defun init-<f1> ()
      (interactive)
      (progn
-           (cond ((memq major-mode modes-about-lisp)
+       (cond ((memq major-mode modes-about-lisp)
               (init-<f1>-for-lisp))
+
+             ((eq major-mode 'cicada-nymph-mode)
+              (init-<f1>-for-cicada-nymph))          
 
              ((eq major-mode 'org-mode)
               ;; for i am a LISPer
@@ -475,8 +479,9 @@
              )))
 
    (global-set-key (kbd "<f1>") 'init-<f1>)
-
-
+   #+end_src
+** insert things
+   #+begin_src emacs-lisp :tangle ~/.emacs
    (defun insert-lambda () (interactive) (insert "lambda"))
 
    ;; first-order-logic
@@ -525,7 +530,57 @@
    ;; mics
    (defun insert-ߊ () (interactive) (insert "ߊ"))
    (defun insert-▓ () (interactive) (insert "▓"))
+   #+end_src
+** init-<f1>-for-cicada-nymph
+   #+begin_src emacs-lisp :tangle ~/.emacs
+   (defun init-<f1>-for-cicada-nymph ()
+     (interactive)
+     (progn
+       ;; 需要快捷输入lambda    
+       (local-set-key
+        (kbd "<f1> <f1>")
+        (lambda ()
+          (interactive)       
+          (insert ": ")
+          (point-to-register ?c)       
+          (insert "\n") 
+          (insert "  << -- >>\n")
+          (insert "  \n")
+          (insert "  end\n")
+          (insert "; define-function\n")      
+          (jump-to-register ?c)
+          ))
 
+       ;; connectives
+       (local-set-key (kbd "<f1> c") 'insert-∧);; conjunction
+       (local-set-key (kbd "<f1> d") 'insert-∨);; disjunction
+       (local-set-key (kbd "<f1> -") 'insert-¬);; negation
+       (local-set-key (kbd "<f1> <right>") 'insert-→);; implication
+       (local-set-key (kbd "<f1> <S-right>") 'insert-↔);; equivalence
+       ;; quantifiers
+       (local-set-key (kbd "<f1> a") 'insert-∀);; all
+       (local-set-key (kbd "<f1> e") 'insert-∃);; exist
+
+       ;; set thoery
+       (local-set-key (kbd "<f1> b") 'insert-∈);; belong to
+       (local-set-key (kbd "<f1> 0") 'insert-∅)
+       (local-set-key (kbd "<f1> [") 'insert-⊂)
+       (local-set-key (kbd "<f1> ]") 'insert-⊃)
+       (local-set-key (kbd "<f1> u") 'insert-∪)
+       (local-set-key (kbd "<f1> n") 'insert-∩)
+
+
+       (local-set-key (kbd "<f1> k") 'insert-√);; check
+       (local-set-key (kbd "<f1> =") 'insert-≡)
+       (local-set-key (kbd "<f1> i") 'insert-ͱ);; inference
+
+       ;; _ and ^
+       (local-set-key (kbd "<f1> o") 'insert-°)
+       (local-set-key (kbd "<f1> 9") 'insert-∞)
+       ))
+   #+end_src
+** init-<f1>-for-lisp
+   #+begin_src emacs-lisp :tangle ~/.emacs
    (defun init-<f1>-for-lisp ()
      (interactive)
      (progn
@@ -559,8 +614,9 @@
            (local-set-key (kbd "<f1> o") 'insert-°)
            (local-set-key (kbd "<f1> 9") 'insert-∞)
            ))
-
-
+   #+end_src
+** init-<f1>-for-haskell
+   #+begin_src emacs-lisp :tangle ~/.emacs
    (defun init-<f1>-for-haskell ()
      (interactive)
      (progn
@@ -590,8 +646,9 @@
            ;; _ and ^
            (local-set-key (kbd "<f1> o") 'insert-°)
            ))
-
-
+   #+end_src
+** init-<f1>-for-C
+   #+begin_src emacs-lisp :tangle ~/.emacs
    (defun init-<f1>-for-C ()
       (interactive)
       (progn
@@ -674,7 +731,9 @@
             ;; _ and ^
             (local-set-key (kbd "<f1> o") 'insert-°)
             ))
-
+   #+end_src
+** init-<f1>-for-coq
+   #+begin_src emacs-lisp :tangle ~/.emacs
    (defun init-<f1>-for-coq ()
      (interactive)
      (progn
@@ -685,14 +744,14 @@
                            (insert "Eval compute in\n")
                            (indent-for-tab-command))))
            (local-set-key (kbd "<f1> p")
-                      (lambda ()
-                             (interactive)
-                             (progn
-                           (insert "Proof.\n")
-                           (indent-for-tab-command)
-                           (point-to-register ?c)
-                           (insert "\nQed.")
-                           (jump-to-register ?c))))
+                          (lambda ()
+                            (interactive)
+                            (progn
+                              (insert "Proof.\n")
+                              (indent-for-tab-command)
+                              (point-to-register ?c)
+                              (insert "\nQed.")
+                              (jump-to-register ?c))))
 
            ;; connectives
            (local-set-key (kbd "<f1> c") 'insert-∧);; conjunction
@@ -717,8 +776,9 @@
            ;; _ and ^
            (local-set-key (kbd "<f1> o") 'insert-°)
            ))
-
-
+   #+end_src
+** init-<f1>-for-caml
+   #+begin_src emacs-lisp :tangle ~/.emacs
    (defun init-<f1>-for-caml ()
      (interactive)
      (progn
@@ -765,282 +825,290 @@
            (local-set-key (kbd "<f1> 9") 'insert-∞)
            ))
    #+end_src
-** <f2>
+* <f2>
+** init-<f2>
    #+begin_src emacs-lisp :tangle ~/.emacs
-    ;; (define-prefix-command '<f2>-map)
-    ;; (global-set-key (kbd "<f2>") '<f2>-map)
+   ;; (define-prefix-command '<f2>-map)
+   ;; (global-set-key (kbd "<f2>") '<f2>-map)
 
-    (defun init-<f2> ()
-          (interactive)
-          (cond ((memq major-mode modes-about-lisp)
-             (init-<f2>-for-lisp))
+   (defun init-<f2> ()
+     (interactive)
+     (cond ((memq major-mode modes-about-lisp)
+            (init-<f2>-for-lisp))
 
-            ((memq major-mode modes-about-cicada)
-             (init-<f2>-for-cicada))
+           ((eq major-mode 'cicada-nymph-mode)
+            (init-<f2>-for-cicada-nymph))
 
-            ((eq major-mode 'org-mode)
-             ;; for i am a LISPer
-             (init-<f2>-for-lisp))
+           ((eq major-mode 'org-mode)
+            ;; for i am a LISPer
+            (init-<f2>-for-lisp))
 
-            ((eq major-mode 'coq-mode)
-             (init-<f2>-for-coq))
+           ((eq major-mode 'coq-mode)
+            (init-<f2>-for-coq))
 
-            ((eq major-mode 'caml-mode)
-             (init-<f2>-for-caml))
+           ((eq major-mode 'caml-mode)
+            (init-<f2>-for-caml))
 
-            ((memq major-mode modes-about-haskell)
-             (init-<f2>-for-haskell))
+           ((memq major-mode modes-about-haskell)
+            (init-<f2>-for-haskell))
 
-            (t
-             (message "<f2> have do nothing in this major mode"))
+           (t
+            (message "<f2> have do nothing in this major mode"))
 
-            ))
+           ))
    (global-set-key (kbd "<f2>") 'init-<f2>)
+   #+end_src
+** insert things
+   #+begin_src emacs-lisp :tangle ~/.emacs
+   (defun insert-α () (interactive) (insert "α"))
+   (defun insert-β () (interactive) (insert "β"))
+   (defun insert-γ () (interactive) (insert "γ"))
+   (defun insert-δ () (interactive) (insert "δ"))
+   (defun insert-ε () (interactive) (insert "ε"))
+   (defun insert-θ () (interactive) (insert "θ"))
+   (defun insert-Θ () (interactive) (insert "Θ"))
+   (defun insert-ι () (interactive) (insert "ι"))
+   (defun insert-κ () (interactive) (insert "κ"))
+   (defun insert-λ () (interactive) (insert "λ"))
+   (defun insert-Λ () (interactive) (insert "Λ"))
+   (defun insert-σ () (interactive) (insert "σ"))
+   (defun insert-ς () (interactive) (insert "ς"))
+   (defun insert-Σ () (interactive) (insert "Σ"))
+   (defun insert-τ () (interactive) (insert "τ"))
+   (defun insert-ζ () (interactive) (insert "ζ"))
+   (defun insert-ω () (interactive) (insert "ω"))
+   (defun insert-Ω () (interactive) (insert "Ω"))
+   (defun insert-π () (interactive) (insert "π"))
+   (defun insert-Π () (interactive) (insert "Π"))
+   (defun insert-ρ () (interactive) (insert "ρ"))
+   (defun insert-φ () (interactive) (insert "φ"))
+   (defun insert-Φ () (interactive) (insert "Φ"))
+   (defun insert-υ () (interactive) (insert "υ"))
+   (defun insert-ν () (interactive) (insert "ν"))
+   (defun insert-χ () (interactive) (insert "χ"))
+   (defun insert-Ψ () (interactive) (insert "Ψ"))
+   (defun insert-ψ () (interactive) (insert "ψ"))
+   (defun insert-μ () (interactive) (insert "μ"))
+   (defun insert-η () (interactive) (insert "η"))
+   (defun insert-Γ () (interactive) (insert "Γ"))
+   (defun insert-Δ () (interactive) (insert "Δ"))
+   (defun insert-ξ () (interactive) (insert "ξ"))
+   (defun insert-Ξ () (interactive) (insert "Ξ"))
+   #+end_src
+** init-<f2>-for-cicada-nymph
+   #+begin_src emacs-lisp :tangle ~/.emacs
+   (defun init-<f2>-for-cicada-nymph ()
+     (interactive)
+     (progn
+       ;; 需要快捷输入λ
+       (local-set-key (kbd "<f2> <f2>") 'insert-λ)
 
+       (local-set-key (kbd "<f2> a") 'insert-α)
+       (local-set-key (kbd "<f2> b") 'insert-β)
+       (local-set-key (kbd "<f2> c") 'insert-γ)
+       (local-set-key (kbd "<f2> C") 'insert-Γ)
+       (local-set-key (kbd "<f2> g") 'insert-γ)
+       (local-set-key (kbd "<f2> G") 'insert-Γ)
+       (local-set-key (kbd "<f2> d") 'insert-δ)
+       (local-set-key (kbd "<f2> D") 'insert-Δ)
+       (local-set-key (kbd "<f2> e") 'insert-ε)
+       (local-set-key (kbd "<f2> f") 'insert-φ)
+       (local-set-key (kbd "<f2> F") 'insert-Φ)
+       ;; th = Θ, θ
+       (local-set-key (kbd "<f2> h") 'insert-θ)
+       (local-set-key (kbd "<f2> H") 'insert-Θ)
+       (local-set-key (kbd "<f2> i") 'insert-η)
+       ;;(local-set-key (kbd "<f2> i") 'insert-ι)
+       (local-set-key (kbd "<f2> k") 'insert-κ)
+       (local-set-key (kbd "<f2> l") 'insert-λ)
+       (local-set-key (kbd "<f2> L") 'insert-Λ)
+       (local-set-key (kbd "<f2> m") 'insert-μ)
+       (local-set-key (kbd "<f2> n") 'insert-ν)
+       (local-set-key (kbd "<f2> o") 'insert-ω)
+       (local-set-key (kbd "<f2> O") 'insert-Ω)
+       (local-set-key (kbd "<f2> p") 'insert-π)
+       (local-set-key (kbd "<f2> P") 'insert-Π)
+       (local-set-key (kbd "<f2> r") 'insert-ρ)
+       (local-set-key (kbd "<f2> s") 'insert-σ)
+       ;; final sigma
+       ;;(local-set-key (kbd "<f2> s") 'insert-ς)
+       (local-set-key (kbd "<f2> S") 'insert-Σ)
+       (local-set-key (kbd "<f2> t") 'insert-τ)
+       (local-set-key (kbd "<f2> u") 'insert-υ)
+       (local-set-key (kbd "<f2> v") nil)
+       (local-set-key (kbd "<f2> x") 'insert-ξ)
+       (local-set-key (kbd "<f2> X") 'insert-Ξ)
+       ;; ps = ψ, Ψ
+       (local-set-key (kbd "<f2> y") 'insert-Ψ)
+       (local-set-key (kbd "<f2> Y") 'insert-ψ)
+       (local-set-key (kbd "<f2> z") 'insert-ζ)
+       ))
+   #+end_src
+** init-<f2>-for-lisp
+   #+begin_src emacs-lisp :tangle ~/.emacs
+   (defun init-<f2>-for-lisp ()
+     (interactive)
+     (progn
+       ;; 需要快捷输入λ
+       (local-set-key (kbd "<f2> <f2>") 'insert-λ)
 
-    (defun insert-α () (interactive) (insert "α"))
-    (defun insert-β () (interactive) (insert "β"))
-    (defun insert-γ () (interactive) (insert "γ"))
-    (defun insert-δ () (interactive) (insert "δ"))
-    (defun insert-ε () (interactive) (insert "ε"))
-    (defun insert-θ () (interactive) (insert "θ"))
-    (defun insert-Θ () (interactive) (insert "Θ"))
-    (defun insert-ι () (interactive) (insert "ι"))
-    (defun insert-κ () (interactive) (insert "κ"))
-    (defun insert-λ () (interactive) (insert "λ"))
-    (defun insert-Λ () (interactive) (insert "Λ"))
-    (defun insert-σ () (interactive) (insert "σ"))
-    (defun insert-ς () (interactive) (insert "ς"))
-    (defun insert-Σ () (interactive) (insert "Σ"))
-    (defun insert-τ () (interactive) (insert "τ"))
-    (defun insert-ζ () (interactive) (insert "ζ"))
-    (defun insert-ω () (interactive) (insert "ω"))
-    (defun insert-Ω () (interactive) (insert "Ω"))
-    (defun insert-π () (interactive) (insert "π"))
-    (defun insert-Π () (interactive) (insert "Π"))
-    (defun insert-ρ () (interactive) (insert "ρ"))
-    (defun insert-φ () (interactive) (insert "φ"))
-    (defun insert-Φ () (interactive) (insert "Φ"))
-    (defun insert-υ () (interactive) (insert "υ"))
-    (defun insert-ν () (interactive) (insert "ν"))
-    (defun insert-χ () (interactive) (insert "χ"))
-    (defun insert-Ψ () (interactive) (insert "Ψ"))
-    (defun insert-ψ () (interactive) (insert "ψ"))
-    (defun insert-μ () (interactive) (insert "μ"))
-    (defun insert-η () (interactive) (insert "η"))
-    (defun insert-Γ () (interactive) (insert "Γ"))
-    (defun insert-Δ () (interactive) (insert "Δ"))
-    (defun insert-ξ () (interactive) (insert "ξ"))
-    (defun insert-Ξ () (interactive) (insert "Ξ"))
-
-    (defun init-<f2>-for-lisp ()
-          (interactive)
-          (progn
-            ;; 需要快捷输入λ
-            (local-set-key (kbd "<f2> <f2>") 'insert-λ)
-
-            (local-set-key (kbd "<f2> a") 'insert-α)
-            (local-set-key (kbd "<f2> b") 'insert-β)
-            (local-set-key (kbd "<f2> c") 'insert-γ)
-            (local-set-key (kbd "<f2> C") 'insert-Γ)
-            (local-set-key (kbd "<f2> g") 'insert-γ)
-            (local-set-key (kbd "<f2> G") 'insert-Γ)
-            (local-set-key (kbd "<f2> d") 'insert-δ)
-            (local-set-key (kbd "<f2> D") 'insert-Δ)
-            (local-set-key (kbd "<f2> e") 'insert-ε)
-            (local-set-key (kbd "<f2> f") 'insert-φ)
-            (local-set-key (kbd "<f2> F") 'insert-Φ)
-            ;; th = Θ, θ
-            (local-set-key (kbd "<f2> h") 'insert-θ)
-            (local-set-key (kbd "<f2> H") 'insert-Θ)
-            (local-set-key (kbd "<f2> i") 'insert-η)
-            ;;(local-set-key (kbd "<f2> i") 'insert-ι)
-            (local-set-key (kbd "<f2> k") 'insert-κ)
-            (local-set-key (kbd "<f2> l") 'insert-λ)
-            (local-set-key (kbd "<f2> L") 'insert-Λ)
-            (local-set-key (kbd "<f2> m") 'insert-μ)
-            (local-set-key (kbd "<f2> n") 'insert-ν)
-            (local-set-key (kbd "<f2> o") 'insert-ω)
-            (local-set-key (kbd "<f2> O") 'insert-Ω)
-            (local-set-key (kbd "<f2> p") 'insert-π)
-            (local-set-key (kbd "<f2> P") 'insert-Π)
-            (local-set-key (kbd "<f2> r") 'insert-ρ)
-            (local-set-key (kbd "<f2> s") 'insert-σ)
-            ;; final sigma
-            ;;(local-set-key (kbd "<f2> s") 'insert-ς)
-            (local-set-key (kbd "<f2> S") 'insert-Σ)
-            (local-set-key (kbd "<f2> t") 'insert-τ)
-            (local-set-key (kbd "<f2> u") 'insert-υ)
-            (local-set-key (kbd "<f2> v") nil)
-            (local-set-key (kbd "<f2> x") 'insert-ξ)
-            (local-set-key (kbd "<f2> X") 'insert-Ξ)
-            ;; ps = ψ, Ψ
-            (local-set-key (kbd "<f2> y") 'insert-Ψ)
-            (local-set-key (kbd "<f2> Y") 'insert-ψ)
-            (local-set-key (kbd "<f2> z") 'insert-ζ)
-            ))
-
-   (defun init-<f2>-for-cicada ()
-          (interactive)
-          (progn
-            ;; 需要快捷输入λ
-            (local-set-key (kbd "<f2> <f2>") 'insert-λ)
-
-            (local-set-key (kbd "<f2> a") 'insert-α)
-            (local-set-key (kbd "<f2> b") 'insert-β)
-            (local-set-key (kbd "<f2> c") 'insert-γ)
-            (local-set-key (kbd "<f2> C") 'insert-Γ)
-            (local-set-key (kbd "<f2> g") 'insert-γ)
-            (local-set-key (kbd "<f2> G") 'insert-Γ)
-            (local-set-key (kbd "<f2> d") 'insert-δ)
-            (local-set-key (kbd "<f2> D") 'insert-Δ)
-            (local-set-key (kbd "<f2> e") 'insert-ε)
-            (local-set-key (kbd "<f2> f") 'insert-φ)
-            (local-set-key (kbd "<f2> F") 'insert-Φ)
-            ;; th = Θ, θ
-            (local-set-key (kbd "<f2> h") 'insert-θ)
-            (local-set-key (kbd "<f2> H") 'insert-Θ)
-            (local-set-key (kbd "<f2> i") 'insert-η)
-            ;;(local-set-key (kbd "<f2> i") 'insert-ι)
-            (local-set-key (kbd "<f2> k") 'insert-κ)
-            (local-set-key (kbd "<f2> l") 'insert-λ)
-            (local-set-key (kbd "<f2> L") 'insert-Λ)
-            (local-set-key (kbd "<f2> m") 'insert-μ)
-            (local-set-key (kbd "<f2> n") 'insert-ν)
-            (local-set-key (kbd "<f2> o") 'insert-ω)
-            (local-set-key (kbd "<f2> O") 'insert-Ω)
-            (local-set-key (kbd "<f2> p") 'insert-π)
-            (local-set-key (kbd "<f2> P") 'insert-Π)
-            (local-set-key (kbd "<f2> r") 'insert-ρ)
-            (local-set-key (kbd "<f2> s") 'insert-σ)
-            ;; final sigma
-            ;;(local-set-key (kbd "<f2> s") 'insert-ς)
-            (local-set-key (kbd "<f2> S") 'insert-Σ)
-            (local-set-key (kbd "<f2> t") 'insert-τ)
-            (local-set-key (kbd "<f2> u") 'insert-υ)
-            (local-set-key (kbd "<f2> v") nil)
-            (local-set-key (kbd "<f2> x") 'insert-ξ)
-            (local-set-key (kbd "<f2> X") 'insert-Ξ)
-            ;; ps = ψ, Ψ
-            (local-set-key (kbd "<f2> y") 'insert-Ψ)
-            (local-set-key (kbd "<f2> Y") 'insert-ψ)
-            (local-set-key (kbd "<f2> z") 'insert-ζ)
-            ))
-
-
-
-    (defun init-<f2>-for-haskell ()
-          (interactive)
-          (progn
-            ;; 需要快捷输入λ
-            (local-set-key (kbd "<f2> <f2>") (lambda ()
-                                           (interactive)
-                                           (insert "(\\ -> )")
-                                           (left-char 5)))
-            (local-set-key (kbd "<f2> <right>") (lambda ()
-                                                  (interactive)
-                                                  (insert "->")))
-            (local-set-key (kbd "<f2> <left>") (lambda ()
+       (local-set-key (kbd "<f2> a") 'insert-α)
+       (local-set-key (kbd "<f2> b") 'insert-β)
+       (local-set-key (kbd "<f2> c") 'insert-γ)
+       (local-set-key (kbd "<f2> C") 'insert-Γ)
+       (local-set-key (kbd "<f2> g") 'insert-γ)
+       (local-set-key (kbd "<f2> G") 'insert-Γ)
+       (local-set-key (kbd "<f2> d") 'insert-δ)
+       (local-set-key (kbd "<f2> D") 'insert-Δ)
+       (local-set-key (kbd "<f2> e") 'insert-ε)
+       (local-set-key (kbd "<f2> f") 'insert-φ)
+       (local-set-key (kbd "<f2> F") 'insert-Φ)
+       ;; th = Θ, θ
+       (local-set-key (kbd "<f2> h") 'insert-θ)
+       (local-set-key (kbd "<f2> H") 'insert-Θ)
+       (local-set-key (kbd "<f2> i") 'insert-η)
+       ;;(local-set-key (kbd "<f2> i") 'insert-ι)
+       (local-set-key (kbd "<f2> k") 'insert-κ)
+       (local-set-key (kbd "<f2> l") 'insert-λ)
+       (local-set-key (kbd "<f2> L") 'insert-Λ)
+       (local-set-key (kbd "<f2> m") 'insert-μ)
+       (local-set-key (kbd "<f2> n") 'insert-ν)
+       (local-set-key (kbd "<f2> o") 'insert-ω)
+       (local-set-key (kbd "<f2> O") 'insert-Ω)
+       (local-set-key (kbd "<f2> p") 'insert-π)
+       (local-set-key (kbd "<f2> P") 'insert-Π)
+       (local-set-key (kbd "<f2> r") 'insert-ρ)
+       (local-set-key (kbd "<f2> s") 'insert-σ)
+       ;; final sigma
+       ;;(local-set-key (kbd "<f2> s") 'insert-ς)
+       (local-set-key (kbd "<f2> S") 'insert-Σ)
+       (local-set-key (kbd "<f2> t") 'insert-τ)
+       (local-set-key (kbd "<f2> u") 'insert-υ)
+       (local-set-key (kbd "<f2> v") nil)
+       (local-set-key (kbd "<f2> x") 'insert-ξ)
+       (local-set-key (kbd "<f2> X") 'insert-Ξ)
+       ;; ps = ψ, Ψ
+       (local-set-key (kbd "<f2> y") 'insert-Ψ)
+       (local-set-key (kbd "<f2> Y") 'insert-ψ)
+       (local-set-key (kbd "<f2> z") 'insert-ζ)
+       ))
+   #+end_src
+** init-<f2>-for-haskell
+   #+begin_src emacs-lisp :tangle ~/.emacs
+   (defun init-<f2>-for-haskell ()
+     (interactive)
+     (progn
+       ;; 需要快捷输入λ
+       (local-set-key (kbd "<f2> <f2>") (lambda ()
+                                          (interactive)
+                                          (insert "(\\ -> )")
+                                          (left-char 5)))
+       (local-set-key (kbd "<f2> <right>") (lambda ()
                                              (interactive)
-                                             (insert "<-")))
+                                             (insert "->")))
+       (local-set-key (kbd "<f2> <left>") (lambda ()
+                                            (interactive)
+                                            (insert "<-")))
 
-            (local-set-key (kbd "<f2> a") 'insert-α)
-            (local-set-key (kbd "<f2> b") 'insert-β)
-            (local-set-key (kbd "<f2> c") 'insert-γ)
-            (local-set-key (kbd "<f2> C") 'insert-Γ)
-            (local-set-key (kbd "<f2> g") 'insert-γ)
-            (local-set-key (kbd "<f2> G") 'insert-Γ)
-            (local-set-key (kbd "<f2> d") 'insert-δ)
-            (local-set-key (kbd "<f2> D") 'insert-Δ)
-            (local-set-key (kbd "<f2> e") 'insert-ε)
-            (local-set-key (kbd "<f2> f") 'insert-φ)
-            (local-set-key (kbd "<f2> F") 'insert-Φ)
-            ;; th = Θ, θ
-            (local-set-key (kbd "<f2> h") 'insert-θ)
-            (local-set-key (kbd "<f2> H") 'insert-Θ)
-            (local-set-key (kbd "<f2> i") 'insert-η)
-            ;;(local-set-key (kbd "<f2> i") 'insert-ι)
-            (local-set-key (kbd "<f2> k") 'insert-κ)
-            (local-set-key (kbd "<f2> l") 'insert-λ)
-            (local-set-key (kbd "<f2> L") 'insert-Λ)
-            (local-set-key (kbd "<f2> m") 'insert-μ)
-            (local-set-key (kbd "<f2> n") 'insert-ν)
-            (local-set-key (kbd "<f2> o") 'insert-ω)
-            (local-set-key (kbd "<f2> O") 'insert-Ω)
-            (local-set-key (kbd "<f2> p") 'insert-π)
-            (local-set-key (kbd "<f2> P") 'insert-Π)
-            (local-set-key (kbd "<f2> r") 'insert-ρ)
-            (local-set-key (kbd "<f2> s") 'insert-σ)
-            ;; final sigma
-            ;;(local-set-key (kbd "<f2> s") 'insert-ς)
-            (local-set-key (kbd "<f2> S") 'insert-Σ)
-            (local-set-key (kbd "<f2> t") 'insert-τ)
-            (local-set-key (kbd "<f2> u") 'insert-υ)
-            (local-set-key (kbd "<f2> v") nil)
-            (local-set-key (kbd "<f2> x") 'insert-ξ)
-            (local-set-key (kbd "<f2> X") 'insert-Ξ)
-            ;; ps = ψ, Ψ
-            (local-set-key (kbd "<f2> y") 'insert-Ψ)
-            (local-set-key (kbd "<f2> Y") 'insert-ψ)
-            (local-set-key (kbd "<f2> z") 'insert-ζ)
-            ))
+       (local-set-key (kbd "<f2> a") 'insert-α)
+       (local-set-key (kbd "<f2> b") 'insert-β)
+       (local-set-key (kbd "<f2> c") 'insert-γ)
+       (local-set-key (kbd "<f2> C") 'insert-Γ)
+       (local-set-key (kbd "<f2> g") 'insert-γ)
+       (local-set-key (kbd "<f2> G") 'insert-Γ)
+       (local-set-key (kbd "<f2> d") 'insert-δ)
+       (local-set-key (kbd "<f2> D") 'insert-Δ)
+       (local-set-key (kbd "<f2> e") 'insert-ε)
+       (local-set-key (kbd "<f2> f") 'insert-φ)
+       (local-set-key (kbd "<f2> F") 'insert-Φ)
+       ;; th = Θ, θ
+       (local-set-key (kbd "<f2> h") 'insert-θ)
+       (local-set-key (kbd "<f2> H") 'insert-Θ)
+       (local-set-key (kbd "<f2> i") 'insert-η)
+       ;;(local-set-key (kbd "<f2> i") 'insert-ι)
+       (local-set-key (kbd "<f2> k") 'insert-κ)
+       (local-set-key (kbd "<f2> l") 'insert-λ)
+       (local-set-key (kbd "<f2> L") 'insert-Λ)
+       (local-set-key (kbd "<f2> m") 'insert-μ)
+       (local-set-key (kbd "<f2> n") 'insert-ν)
+       (local-set-key (kbd "<f2> o") 'insert-ω)
+       (local-set-key (kbd "<f2> O") 'insert-Ω)
+       (local-set-key (kbd "<f2> p") 'insert-π)
+       (local-set-key (kbd "<f2> P") 'insert-Π)
+       (local-set-key (kbd "<f2> r") 'insert-ρ)
+       (local-set-key (kbd "<f2> s") 'insert-σ)
+       ;; final sigma
+       ;;(local-set-key (kbd "<f2> s") 'insert-ς)
+       (local-set-key (kbd "<f2> S") 'insert-Σ)
+       (local-set-key (kbd "<f2> t") 'insert-τ)
+       (local-set-key (kbd "<f2> u") 'insert-υ)
+       (local-set-key (kbd "<f2> v") nil)
+       (local-set-key (kbd "<f2> x") 'insert-ξ)
+       (local-set-key (kbd "<f2> X") 'insert-Ξ)
+       ;; ps = ψ, Ψ
+       (local-set-key (kbd "<f2> y") 'insert-Ψ)
+       (local-set-key (kbd "<f2> Y") 'insert-ψ)
+       (local-set-key (kbd "<f2> z") 'insert-ζ)
+       ))
+   #+end_src
+** init-<f2>-for-coq
+   #+begin_src emacs-lisp :tangle ~/.emacs
+   (defun init-<f2>-for-coq ()
+     (interactive)
+     (progn
+       ;; 需要快捷输入λ
+       (local-set-key (kbd "<f2> <f2>") 'insert-λ)
 
-
-    (defun init-<f2>-for-coq ()
-          (interactive)
-          (progn
-            ;; 需要快捷输入λ
-            (local-set-key (kbd "<f2> <f2>") 'insert-λ)
-
-            (local-set-key (kbd "<f2> a") 'insert-α)
-            (local-set-key (kbd "<f2> b") 'insert-β)
-            (local-set-key (kbd "<f2> c") 'insert-γ)
-            (local-set-key (kbd "<f2> C") 'insert-Γ)
-            (local-set-key (kbd "<f2> g") 'insert-γ)
-            (local-set-key (kbd "<f2> G") 'insert-Γ)
-            (local-set-key (kbd "<f2> d") 'insert-δ)
-            (local-set-key (kbd "<f2> D") 'insert-Δ)
-            (local-set-key (kbd "<f2> e") 'insert-ε)
-            (local-set-key (kbd "<f2> f") 'insert-φ)
-            (local-set-key (kbd "<f2> F") 'insert-Φ)
-            ;; th = Θ, θ
-            (local-set-key (kbd "<f2> h") 'insert-θ)
-            (local-set-key (kbd "<f2> H") 'insert-Θ)
-            (local-set-key (kbd "<f2> i") 'insert-η)
-            ;;(local-set-key (kbd "<f2> i") 'insert-ι)
-            (local-set-key (kbd "<f2> k") 'insert-κ)
-            (local-set-key (kbd "<f2> l") 'insert-λ)
-            (local-set-key (kbd "<f2> L") 'insert-Λ)
-            (local-set-key (kbd "<f2> m") 'insert-μ)
-            (local-set-key (kbd "<f2> n") 'insert-ν)
-            (local-set-key (kbd "<f2> o") 'insert-ω)
-            (local-set-key (kbd "<f2> O") 'insert-Ω)
-            (local-set-key (kbd "<f2> p") 'insert-π)
-            (local-set-key (kbd "<f2> P") 'insert-Π)
-            (local-set-key (kbd "<f2> r") 'insert-ρ)
-            (local-set-key (kbd "<f2> s") 'insert-σ)
-            ;; final sigma
-            ;;(local-set-key (kbd "<f2> s") 'insert-ς)
-            (local-set-key (kbd "<f2> S") 'insert-Σ)
-            (local-set-key (kbd "<f2> t") 'insert-τ)
-            (local-set-key (kbd "<f2> u") 'insert-υ)
-            (local-set-key (kbd "<f2> v") nil)
-            (local-set-key (kbd "<f2> x") 'insert-ξ)
-            (local-set-key (kbd "<f2> X") 'insert-Ξ)
-            ;; ps = ψ, Ψ
-            (local-set-key (kbd "<f2> y") 'insert-Ψ)
-            (local-set-key (kbd "<f2> Y") 'insert-ψ)
-            (local-set-key (kbd "<f2> z") 'insert-ζ)
-            ))
-
-
+       (local-set-key (kbd "<f2> a") 'insert-α)
+       (local-set-key (kbd "<f2> b") 'insert-β)
+       (local-set-key (kbd "<f2> c") 'insert-γ)
+       (local-set-key (kbd "<f2> C") 'insert-Γ)
+       (local-set-key (kbd "<f2> g") 'insert-γ)
+       (local-set-key (kbd "<f2> G") 'insert-Γ)
+       (local-set-key (kbd "<f2> d") 'insert-δ)
+       (local-set-key (kbd "<f2> D") 'insert-Δ)
+       (local-set-key (kbd "<f2> e") 'insert-ε)
+       (local-set-key (kbd "<f2> f") 'insert-φ)
+       (local-set-key (kbd "<f2> F") 'insert-Φ)
+       ;; th = Θ, θ
+       (local-set-key (kbd "<f2> h") 'insert-θ)
+       (local-set-key (kbd "<f2> H") 'insert-Θ)
+       (local-set-key (kbd "<f2> i") 'insert-η)
+       ;;(local-set-key (kbd "<f2> i") 'insert-ι)
+       (local-set-key (kbd "<f2> k") 'insert-κ)
+       (local-set-key (kbd "<f2> l") 'insert-λ)
+       (local-set-key (kbd "<f2> L") 'insert-Λ)
+       (local-set-key (kbd "<f2> m") 'insert-μ)
+       (local-set-key (kbd "<f2> n") 'insert-ν)
+       (local-set-key (kbd "<f2> o") 'insert-ω)
+       (local-set-key (kbd "<f2> O") 'insert-Ω)
+       (local-set-key (kbd "<f2> p") 'insert-π)
+       (local-set-key (kbd "<f2> P") 'insert-Π)
+       (local-set-key (kbd "<f2> r") 'insert-ρ)
+       (local-set-key (kbd "<f2> s") 'insert-σ)
+       ;; final sigma
+       ;;(local-set-key (kbd "<f2> s") 'insert-ς)
+       (local-set-key (kbd "<f2> S") 'insert-Σ)
+       (local-set-key (kbd "<f2> t") 'insert-τ)
+       (local-set-key (kbd "<f2> u") 'insert-υ)
+       (local-set-key (kbd "<f2> v") nil)
+       (local-set-key (kbd "<f2> x") 'insert-ξ)
+       (local-set-key (kbd "<f2> X") 'insert-Ξ)
+       ;; ps = ψ, Ψ
+       (local-set-key (kbd "<f2> y") 'insert-Ψ)
+       (local-set-key (kbd "<f2> Y") 'insert-ψ)
+       (local-set-key (kbd "<f2> z") 'insert-ζ)
+       ))
+   #+end_src
+** init-<f2>-for-caml
+   #+begin_src emacs-lisp :tangle ~/.emacs
    (defun init-<f2>-for-caml ()
-          (interactive)
-          (progn
-            (local-set-key (kbd "<f2> <f2>")
-                           (lambda ()
-                            (interactive)
-                            (progn
+     (interactive)
+     (progn
+       (local-set-key (kbd "<f2> <f2>")
+                      (lambda ()
+                        (interactive)
+                        (progn
                           (insert "| ")
                           (insert "(")
                           (point-to-register ?m)
@@ -1051,46 +1119,46 @@
                           (caml-indent-command)
                           (jump-to-register ?m))))
 
-            (local-set-key (kbd "<f2> a") 'insert-α)
-            (local-set-key (kbd "<f2> b") 'insert-β)
-            (local-set-key (kbd "<f2> c") 'insert-γ)
-            (local-set-key (kbd "<f2> C") 'insert-Γ)
-            (local-set-key (kbd "<f2> g") 'insert-γ)
-            (local-set-key (kbd "<f2> G") 'insert-Γ)
-            (local-set-key (kbd "<f2> d") 'insert-δ)
-            (local-set-key (kbd "<f2> D") 'insert-Δ)
-            (local-set-key (kbd "<f2> e") 'insert-ε)
-            (local-set-key (kbd "<f2> f") 'insert-φ)
-            (local-set-key (kbd "<f2> F") 'insert-Φ)
-            ;; th = Θ, θ
-            (local-set-key (kbd "<f2> h") 'insert-θ)
-            (local-set-key (kbd "<f2> H") 'insert-Θ)
-            (local-set-key (kbd "<f2> i") 'insert-η)
-            ;;(local-set-key (kbd "<f2> i") 'insert-ι)
-            (local-set-key (kbd "<f2> k") 'insert-κ)
-            (local-set-key (kbd "<f2> l") 'insert-λ)
-            (local-set-key (kbd "<f2> L") 'insert-Λ)
-            (local-set-key (kbd "<f2> m") 'insert-μ)
-            (local-set-key (kbd "<f2> n") 'insert-ν)
-            (local-set-key (kbd "<f2> o") 'insert-ω)
-            (local-set-key (kbd "<f2> O") 'insert-Ω)
-            (local-set-key (kbd "<f2> p") 'insert-π)
-            (local-set-key (kbd "<f2> P") 'insert-Π)
-            (local-set-key (kbd "<f2> r") 'insert-ρ)
-            (local-set-key (kbd "<f2> s") 'insert-σ)
-            ;; final sigma
-            ;;(local-set-key (kbd "<f2> s") 'insert-ς)
-            (local-set-key (kbd "<f2> S") 'insert-Σ)
-            (local-set-key (kbd "<f2> t") 'insert-τ)
-            (local-set-key (kbd "<f2> u") 'insert-υ)
-            (local-set-key (kbd "<f2> v") nil)
-            (local-set-key (kbd "<f2> x") 'insert-ξ)
-            (local-set-key (kbd "<f2> X") 'insert-Ξ)
-            ;; ps = ψ, Ψ
-            (local-set-key (kbd "<f2> y") 'insert-Ψ)
-            (local-set-key (kbd "<f2> Y") 'insert-ψ)
-            (local-set-key (kbd "<f2> z") 'insert-ζ)
-            ))
+       (local-set-key (kbd "<f2> a") 'insert-α)
+       (local-set-key (kbd "<f2> b") 'insert-β)
+       (local-set-key (kbd "<f2> c") 'insert-γ)
+       (local-set-key (kbd "<f2> C") 'insert-Γ)
+       (local-set-key (kbd "<f2> g") 'insert-γ)
+       (local-set-key (kbd "<f2> G") 'insert-Γ)
+       (local-set-key (kbd "<f2> d") 'insert-δ)
+       (local-set-key (kbd "<f2> D") 'insert-Δ)
+       (local-set-key (kbd "<f2> e") 'insert-ε)
+       (local-set-key (kbd "<f2> f") 'insert-φ)
+       (local-set-key (kbd "<f2> F") 'insert-Φ)
+       ;; th = Θ, θ
+       (local-set-key (kbd "<f2> h") 'insert-θ)
+       (local-set-key (kbd "<f2> H") 'insert-Θ)
+       (local-set-key (kbd "<f2> i") 'insert-η)
+       ;;(local-set-key (kbd "<f2> i") 'insert-ι)
+       (local-set-key (kbd "<f2> k") 'insert-κ)
+       (local-set-key (kbd "<f2> l") 'insert-λ)
+       (local-set-key (kbd "<f2> L") 'insert-Λ)
+       (local-set-key (kbd "<f2> m") 'insert-μ)
+       (local-set-key (kbd "<f2> n") 'insert-ν)
+       (local-set-key (kbd "<f2> o") 'insert-ω)
+       (local-set-key (kbd "<f2> O") 'insert-Ω)
+       (local-set-key (kbd "<f2> p") 'insert-π)
+       (local-set-key (kbd "<f2> P") 'insert-Π)
+       (local-set-key (kbd "<f2> r") 'insert-ρ)
+       (local-set-key (kbd "<f2> s") 'insert-σ)
+       ;; final sigma
+       ;;(local-set-key (kbd "<f2> s") 'insert-ς)
+       (local-set-key (kbd "<f2> S") 'insert-Σ)
+       (local-set-key (kbd "<f2> t") 'insert-τ)
+       (local-set-key (kbd "<f2> u") 'insert-υ)
+       (local-set-key (kbd "<f2> v") nil)
+       (local-set-key (kbd "<f2> x") 'insert-ξ)
+       (local-set-key (kbd "<f2> X") 'insert-Ξ)
+       ;; ps = ψ, Ψ
+       (local-set-key (kbd "<f2> y") 'insert-Ψ)
+       (local-set-key (kbd "<f2> Y") 'insert-ψ)
+       (local-set-key (kbd "<f2> z") 'insert-ζ)
+       ))
    #+end_src
 * language
 ** ----------------------------------
@@ -4340,7 +4408,11 @@
     ;; (set-face-attribute 'default nil :family "Envy Code R" :height 140)
     ;; (set-face-attribute 'default nil :family "Source Code Pro" :height 130)
     ;; (set-face-attribute 'default nil :family "Sauce Code Powerline" :height 130)
-    (set-face-attribute 'default nil :family "Source Code Pro for Powerline" :height 130)
+
+    ;; (set-face-attribute 'default nil :family "Source Code Pro for Powerline" :height 130)
+
+    (set-face-attribute 'default nil :family "Input" :height 120)
+
     ;; (set-face-attribute 'default nil :family "Droid Sans Mono" :height 130)
     ;; (set-face-attribute 'default nil :family "FiraMono" :height 130)
     ;; (set-face-attribute 'default nil :family "mono" :height 140)
