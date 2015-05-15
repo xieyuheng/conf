@@ -8,7 +8,7 @@
   * try to do not change default key-binding
   * add a thing only when you really need it
 * lib
-** xyh-emacs-lib
+** my functions
    #+begin_src emacs-lisp :tangle ~/.emacs
    (defmacro rgx-opt (&rest lis)
      `(regexp-opt (quote ,lis)))
@@ -2066,7 +2066,7 @@
      (cond ((null l) nil)
            ((string-equal x (car l))
             t)
-           (else
+           (:else
             (member-string? x (cdr l)))
            ))
 
