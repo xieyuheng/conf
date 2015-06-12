@@ -1891,6 +1891,11 @@
    (add-to-list 'load-path "~/.emacs.d/racket-mode/")
    (require 'racket-mode)
    #+end_src
+** dylan
+   #+begin_src emacs-lisp :tangle ~/.emacs
+   (add-to-list 'load-path "~/.emacs.d/dylan-mode/")
+   (require 'dime)
+   #+end_src
 ** ----------------------------------
 ** common lisp
    #+begin_src emacs-lisp :tangle ~/.emacs
@@ -2177,6 +2182,13 @@
    #+begin_src emacs-lisp :tangle ~/.emacs
    (add-to-list 'load-path "~/.emacs.d/return-stack-mode/")
    (require 'return-stack-mode)
+   #+end_src
+** ----------------------------------
+** rust
+   #+begin_src emacs-lisp :tangle ~/.emacs
+   (add-to-list 'load-path "~/.emacs.d/rust-mode/")
+   (autoload 'rust-mode "rust-mode" nil t)
+   (add-to-list 'auto-mode-alist '("\\.rs\\'" . rust-mode))
    #+end_src
 ** ----------------------------------
 ** retro
@@ -3274,6 +3286,7 @@
    #+end_src
 ** variable
    #+begin_src emacs-lisp :tangle ~/.emacs
+   (add-hook 'org-mode-hook (setq case-fold-search nil))
    ;(setq org-startup-indented t)
    (setq org-startup-indented nil)
    (setq org-babel-no-eval-on-ctrl-c-ctrl-c t)
@@ -4611,7 +4624,7 @@
     #+begin_src emacs-lisp :tangle ~/.emacs
     ;; (set-fontset-font t 'han (font-spec :name "H\-雲林呉竹体" :size 20))
     (set-fontset-font t 'han (font-spec :name "H\-明蘭" :size 20))
-    ;; (set-fontset-font t 'han (font-spec :name "SourceHanSans" :size 20))
+    ;; (set-fontset-font t 'han (font-spec :name "SourceHanSans" :size 32))
     ;; (set-fontset-font t 'han (font-spec :name "WenQuanYi Micro Hei Mono" :size 20))
     ;; (set-fontset-font t 'han (font-spec :name "H\-儷黑" :size 20))
     ;; (set-fontset-font t 'han (font-spec :name "H\-新雅蘭" :size 20))
@@ -4666,11 +4679,17 @@
     ;; υ  Υ     φ  Φ     χ  Χ     ψ  Ψ     ω  Ω
     #+end_src
 ** theme
-   #+begin_src emacs-lisp :tangle ~/.emacs
-   (add-to-list 'custom-theme-load-path "~/.emacs.d/molokai-theme/")
-   (setq molokai-theme-kit t)
-   (load-theme 'molokai t)
-   #+end_src
+*** molokai
+    #+begin_src emacs-lisp :tangle ~/.emacs
+    (add-to-list 'custom-theme-load-path "~/.emacs.d/molokai-theme/")
+    (setq molokai-theme-kit t)
+    (load-theme 'molokai t)
+    #+end_src
+*** zenburn
+    #+begin_src emacs-lisp
+    (add-to-list 'custom-theme-load-path "~/.emacs.d/zenburn-emacs/")
+    (load-theme 'zenburn t)
+    #+end_src
 ** translucent
    #+begin_src emacs-lisp :tangle ~/.emacs
    (global-set-key (kbd "<f12>") 'loop-alpha)
