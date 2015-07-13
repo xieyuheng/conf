@@ -3189,11 +3189,6 @@
    #+end_src
 ** ----------------------------------
 * org
-** load-path
-   #+begin_src emacs-lisp :tangle ~/.emacs
-   (add-to-list 'load-path "~/.emacs.d/org-mode/lisp")
-   (add-to-list 'load-path "~/.emacs.d/org-mode/contrib/lisp" t)
-   #+end_src
 ** publishing
    #+begin_src emacs-lisp :tangle ~/.emacs
    (setq org-publish-project-alist
@@ -3642,8 +3637,8 @@
    tangle take too long so just edit
    file:~/.org-agenda-files
 ** org to html & pdf
-*** s5
-    #+begin_src emacs-lisp :tangle ~/.emacs
+*** s5                                :no:
+    #+begin_src emacs-lisp
     (add-to-list 'load-path "~/.emacs.d/org-mode/contrib/lisp/")
     (require 'ox-s5)
     ;; (setq org-s5-theme "railscast")   ; based off `color-theme-railscasts'
@@ -3931,6 +3926,10 @@
    ;; Enable guide-key-mode
    (guide-key-mode 1)
    #+end_src
+** erc
+   #+begin_src emacs-lisp :tangle ~/.emacs
+   (setq erc-autojoin-channels-alist '(("freenode.net" "#constructive-math" "##categorytheory" "##typetheory")))
+   #+end_src
 ** rcirc
    #+begin_src emacs-lisp :tangle ~/.emacs
    (add-to-list 'load-path "~/.emacs.d/irc/")
@@ -3987,6 +3986,7 @@
    (setq circe-network-options
          `(("Freenode"
             :nick "xyh"
+            :port 6666
             :channels ("#forth"
                        "#cicada-language"
                        "#szdiy"
@@ -4093,13 +4093,15 @@
      (hg-log-repo (hg-root))
      (vc-hg-log-view-mode))
    #+end_src
-** magit
+** magit                              :no:
    * compile by
      EFLAGS="-L ~/.emacs.d/git-modes" make lisp
-   #+begin_src emacs-lisp :tangle ~/.emacs
+   #+begin_src emacs-lisp
    (add-to-list 'load-path "~/.emacs.d/git-modes/")
    (add-to-list 'load-path "~/.emacs.d/magit/")
    (require 'magit)
+
+   (setq magit-last-seen-setup-instructions "1.4.0")
 
    ;; And optionally tell `info` about the documentation
    (eval-after-load 'info
