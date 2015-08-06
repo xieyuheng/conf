@@ -1,6 +1,5 @@
 #+TITLE:  init emacs ^-^
 #+AUTHOR: 謝宇恆 / XIE Yuheng
-#+EMAIL:  xyheme@gmail.com
 
 * ===================================
 * note
@@ -3619,7 +3618,7 @@
    #+end_src
 ** [agenda] setting
    #+begin_src emacs-lisp :tangle ~/.emacs
-   (setq org-agenda-files "~/.org-agenda-files")
+   (setq org-agenda-files "~/.agenda-files")
 
    (global-set-key (kbd "C-M-o") 'org-cycle-agenda-files)
    (global-set-key (kbd "C-o C-b") 'org-iswitchb)
@@ -3928,7 +3927,7 @@
    #+end_src
 ** erc
    #+begin_src emacs-lisp :tangle ~/.emacs
-   (setq erc-autojoin-channels-alist '(("freenode.net" "#constructive-math" "##categorytheory" "##typetheory")))
+   (setq erc-autojoin-channels-alist '(("freenode.net" "#constructive-math" "##categorytheory" "##typetheory" "#szdiy" "#archlinux-cn" "#forth")))
    #+end_src
 ** rcirc
    #+begin_src emacs-lisp :tangle ~/.emacs
@@ -3987,9 +3986,17 @@
          `(("Freenode"
             :nick "xyh"
             :port 6666
-            :channels ("#forth"
-                       "#cicada-language"
+            :channels (
                        "#szdiy"
+                       "#archlinux-cn"
+                       "#osdev"
+
+                       "#constructive-math"
+                       "##categorytheory"
+                       "##typetheory"
+
+                       "#forth"
+                       "#cicada-language"
                        ;; "#scheme"
                        ;; "#guile"
                        ;; "#lisp"
@@ -4000,14 +4007,9 @@
                        ;; "#minikanren"
                        ;; "#erlang"
                        ;; "#erlang-lisp"
-                       ;; "#osdev"
+
                        ;; "#fcitx"
-                       ))
-           ;; ("OFTC"
-           ;;  :nick "xyh"
-           ;;  :channels ("#fish"
-           ;;             ))
-           ))
+                       ))))
    #+end_src
 ** muse
    #+begin_src emacs-lisp :tangle ~/.emacs
