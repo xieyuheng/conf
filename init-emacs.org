@@ -406,7 +406,7 @@
    ;; orientally: transpose-words
    (global-set-key (kbd "M-t") 'nil)
    #+end_src
-** prefix-command and examples
+** prefix-command
    #+begin_src emacs-lisp :tangle ~/.emacs
    (define-prefix-command 'C-s-map)
    (global-set-key (kbd "C-s") 'C-s-map)
@@ -417,7 +417,7 @@
    ;; "C-s C-c" : switch-to-buffer-*haskell*
    ;; "C-s C-e" : my-switch-to-eshell
    #+end_src
-
+** example of prefix-command
    #+begin_src emacs-lisp
    (define-prefix-command '存-map)
    (global-set-key (kbd "存") '存-map)
@@ -573,6 +573,10 @@
       (interactive)
       (message "* (whitespace-cleanup)")
       (whitespace-cleanup)))
+   #+end_src
+** mania
+   #+begin_src emacs-lisp :tangle ~/.emacs
+   (global-set-key (kbd "C-s C-x") 'save-buffer)
    #+end_src
 * general setting
 ** variable
@@ -1628,9 +1632,9 @@
 
     (defun switch-to-buffer-*scheme* ()
       (interactive)
-      (switch-to-scheme 1);; (switch-to-buffer "*scheme*")
-      (local-set-key (kbd "C-s C-x") 'previous-buffer))
-    (global-set-key (kbd "C-s C-x") 'switch-to-buffer-*scheme*)
+      (switch-to-scheme 1) ;; (switch-to-buffer "*scheme*")
+      (local-set-key (kbd "C-s C-v") 'previous-buffer))
+    (global-set-key (kbd "C-s C-v") 'switch-to-buffer-*scheme*)
 
     (defun split-window-with-named-buffer (buffer-name-string)
       (interactive)
@@ -2105,6 +2109,31 @@
            (switch-to-shen t))
      (local-set-key (kbd "C-s C-w") 'previous-buffer))
    (global-set-key (kbd "C-s C-w") 'switch-to-buffer-*inferior-shen*)
+   #+end_src
+** ----------------------------------
+** js2-mode
+   #+begin_src emacs-lisp :tangle ~/.emacs
+   (add-to-list 'load-path "~/.emacs.d/js2-mode/")
+   (require 'js2-mode)
+   (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
+   (add-hook 'js-mode-hook 'js2-minor-mode)
+   (add-to-list 'interpreter-mode-alist '("node" . js2-mode))
+   #+end_src
+** emacs-web-server
+   #+begin_src emacs-lisp :tangle ~/.emacs
+   (add-to-list 'load-path "~/.emacs.d/emacs-web-server/")
+   (require 'simple-httpd)
+   ;; (setq httpd-root "/var/www")
+   ;; (httpd-start)
+   #+end_src
+** skewer-mode
+   #+begin_src emacs-lisp :tangle ~/.emacs
+   (add-to-list 'load-path "~/.emacs.d/skewer-mode/")
+   (require 'skewer-mode)
+   (add-hook 'js-mode-hook 'skewer-mode)
+   (add-hook 'js2-mode-hook 'skewer-mode)
+   (add-hook 'css-mode-hook 'skewer-css-mode)
+   (add-hook 'html-mode-hook 'skewer-html-mode)
    #+end_src
 ** ----------------------------------
 ** sawfish (not using)
@@ -3629,6 +3658,7 @@
 
    (global-set-key (kbd "C-M-o") 'org-cycle-agenda-files)
    (global-set-key (kbd "C-o C-b") 'org-iswitchb)
+   (global-set-key (kbd "C-o C-l") 'org-toggle-link-display)
    (global-set-key (kbd "C-c a") 'org-agenda)
 
     (add-hook
@@ -3695,8 +3725,10 @@
 ** w3m [installed by pacman]
    #+begin_src emacs-lisp :tangle ~/.emacs
    (require 'w3m-load)
-   (setq browse-url-browser-function 'w3m-browse-url)
-   (autoload 'w3m-browse-url "w3m" "Ask a WWW browser to show a URL." t)
+
+   ;; (setq browse-url-browser-function 'w3m-browse-url)
+   ;; (autoload 'w3m-browse-url "w3m" "Ask a WWW browser to show a URL." t)
+
    ;; optional keyboard short-cut
 
    (add-hook
