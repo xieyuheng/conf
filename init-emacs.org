@@ -558,21 +558,33 @@
      (insert "\n")
      (backward-char 1))
    #+end_src
-** whitespace-cleanup
+** whitespace
    #+begin_src emacs-lisp :tangle ~/.emacs
-   (global-set-key
-    (kbd "C-M-w")
-    (lambda ()
-      (interactive)
-      (message "* (whitespace-cleanup)")
-      (whitespace-cleanup)))
+   ;; (global-set-key
+   ;;  (kbd "C-M-w")
+   ;;  (lambda ()
+   ;;    (interactive)
+   ;;    (message "* (whitespace-cleanup)")
+   ;;    (whitespace-cleanup)))
 
-   (global-set-key
-    (kbd "M-W")
-    (lambda ()
-      (interactive)
-      (message "* (whitespace-cleanup)")
-      (whitespace-cleanup)))
+   ;; (global-set-key
+   ;;  (kbd "M-W")
+   ;;  (lambda ()
+   ;;    (interactive)
+   ;;    (message "* (whitespace-cleanup)")
+   ;;    (whitespace-cleanup)))
+
+
+   ;; 有了下面的設置 每次 C-x C-s 時 就會自動清除 whitespace
+   ;; 上面的
+
+   ;; automatically clean up bad whitespace
+   (setq whitespace-action '(auto-cleanup))
+   ;; only show bad whitespace
+   (setq whitespace-style '(trailing space-before-tab indentation empty space-after-tab))
+
+   (whitespace-mode t)
+   (global-whitespace-mode t)
    #+end_src
 ** mania
    #+begin_src emacs-lisp :tangle ~/.emacs
@@ -2134,6 +2146,13 @@
    (add-hook 'js2-mode-hook 'skewer-mode)
    (add-hook 'css-mode-hook 'skewer-css-mode)
    (add-hook 'html-mode-hook 'skewer-html-mode)
+   #+end_src
+** coffee-mode
+   #+begin_src emacs-lisp :tangle ~/.emacs
+   (add-to-list 'load-path "~/.emacs.d/coffee-mode/")
+   (require 'coffee-mode)
+   (add-to-list 'auto-mode-alist '("\\.coffee\\'" . coffee-mode))
+   (custom-set-variables '(coffee-tab-width 2))
    #+end_src
 ** ----------------------------------
 ** sawfish (not using)
