@@ -4691,7 +4691,7 @@
    (defun my-switch-to-eshell ()
      (interactive)
      (cond
-       ((not (frame-parameter nil 'explicit-name))
+       ((not (member-string? (frame-eshell-name) (mapcar 'buffer-name (buffer-list))))
         (open-eshell-for-frame))
        (:else
         (switch-to-buffer (frame-eshell-name))))
