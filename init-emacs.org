@@ -361,17 +361,22 @@
      (interactive)
      (forward-word)
      (delete-char 1)
-     (insert "-")
-     )
+     (insert "-"))
    (global-set-key (kbd "<C-f1>") 'my-<C-f1>)
 
    (defun my-<C-f2> ()
      (interactive)
      (forward-word)
      (delete-char 1)
-     (insert "_")
-     )
+     (insert "_"))
    (global-set-key (kbd "<C-f2>") 'my-<C-f2>)
+   #+end_src
+** generator
+   #+begin_src emacs-lisp :tangle ~/.emacs
+   (defvar number-generator:*counter* 0)
+   (defun number-generator ()
+     (setq number-generator:*counter* (+ number-generator:*counter* 1))
+     number-generator:*counter*)
    #+end_src
 ** dash (needed by something)
    #+begin_src emacs-lisp :tangle ~/.emacs
@@ -4051,14 +4056,17 @@
             :channels (
                        "#szdiy"
                        "#archlinux-cn"
-                       "#osdev"
+                       ;; "#osdev"
 
                        "#constructive-math"
-                       "##categorytheory"
-                       "##typetheory"
+                       ;; "##categorytheory"
+                       ;; "##typetheory"
 
                        "#forth"
                        "#cicada-language"
+
+                       "##Orz"
+
                        ;; "#scheme"
                        ;; "#guile"
                        ;; "#lisp"
@@ -4407,7 +4415,7 @@
    #+begin_src emacs-lisp :tangle ~/.emacs
    ;; 当前窗口和非当前窗口时透明度
    (setq alpha-list '((85 60) (100 100)))
-   (defun loop-alpha ()
+   (defun translucent ()
      (interactive)
      (let* ((h (car alpha-list))
             (a (car h))
@@ -4417,7 +4425,7 @@
            (setq alpha-list (cdr (append alpha-list (list h))))))
 
    (setq alpha-list-on '((85 60) (100 100)))
-   (defun loop-alpha-on ()
+   (defun translucent-on ()
      (interactive)
      (let* ((h (car alpha-list-on))
             (a (car h))
@@ -4426,7 +4434,7 @@
            (add-to-list 'default-frame-alist (cons 'alpha (list a ab)))))
 
    (setq alpha-list-off '((100 100) (85 60)))
-   (defun loop-alpha-off ()
+   (defun translucent-off ()
      (interactive)
      (let* ((h (car alpha-list-off))
             (a (car h))
@@ -4434,10 +4442,10 @@
            (set-frame-parameter (selected-frame) 'alpha (list a ab))
            (add-to-list 'default-frame-alist (cons 'alpha (list a ab)))))
 
-   ;; (loop-alpha-on)
-   (loop-alpha-off)
+   ;; (translucent-on)
+   (translucent-off)
 
-   (global-set-key (kbd "<f12>") 'loop-alpha)
+   (global-set-key (kbd "<f12>") 'translucent)
    #+end_src
 ** [not using] frame title
    * display buffer name or absolute file path name in the frame title
@@ -4602,169 +4610,46 @@
       ;;   '(require 'eshell-autojump nil t))
       #+end_src
 ** -------------------------------------
-** make multi eshell work much easier
-*** note
-    通过于窗口管理器(xmonad)合作来完成这个任务
-    即 在窗口管理器中绑定使用emacsclient的快捷键
-    并让emacsclient在启动时执行(eshell t)
-*** experiment
-**** about eshell
-     #+begin_src emacs-lisp
-     (setq eshell-buffer-name "*eshell*")
+* make multi eshell work much easier
+** eshell/delete-char-or-kill-buffer
+   1. (goto-char (point-max)) == (end-of-buffer)
+   2. 在emacs中efb的识别方式有很多 比如:
+      1. (eq (following-char) 0)
+         (char-equal (following-char) 0)
+      2. (eq (point-max) (point))
+   #+begin_src emacs-lisp :tangle ~/.emacs
+   (defun eshell/delete-char-or-kill-buffer ()
+     (interactive)
 
-     ;; 打开名字为*eshell*的eshell
-     ;; 如果已经有了就转到那个buffer
-     (eshell)
-     ;; == (eshell nil)
+     (point-to-register ?e)
+     (eshell-bol)
 
-     ;; 打开名字为*eshell*<3>的eshell
-     ;; 如果已经有了就转到那个buffer
-     (eshell 3)
+     (if (eq (point-max) (point))
+             (progn
+           (kill-buffer)
+           (delete-frame))
+           (progn
+             (jump-to-register ?e)
+             (delete-char 1))))
 
-     ;; (generate-new-buffer-name "*eshell*")返回一个名字
-     ;; 用这个名字打开一个eshell
-      (eshell t)
-     #+end_src
-**** about rename-buffer
-     #+begin_src emacs-lisp
-     ;; 下面将使 使用已经存在的buffer的名字时不报错
-     ;; 而是用generate-new-buffer-name函数生成具有唯一性的新名字
-     (rename-buffer "*eshell*" t)
-
-
-     ;; 已经有名为*eshell*的buffer的时候测试下面三句
-     (generate-new-buffer-name "*eshell*")
-     (eshell 2)
-     (generate-new-buffer-name "*eshell*")
-
-     ;; 已经有名为* eshell*的buffer的时候测试下面一句
-     ;; 要知道名字的第一个字符是带空格的buffer是用户在一般情况下不能触及的
-     (generate-new-buffer-name " *eshell*")
-
-
-     ;; 下面这句也调用上面的函数
-     ;; 但是是真正打开一个buffer
-     ;; 而上面只是返回名字
-     (generate-new-buffer "kkk")
-
-     ;; 所以我需要的是下面的一句
-     (generate-new-buffer-name "*eshell*")
-     #+end_src
-**** about buffer-name
-     #+begin_src emacs-lisp
-     (insert (buffer-name))
-     (switch-to-buffer "*eshell*")
-     #+end_src
-**** about frame-parameter
-     #+begin_src emacs-lisp
-     (frame-parameter nil 'title)
-
-     (frame-parameter nil 'cursor-type)
-
-     (frame-parameter nil 'name)
-     (frame-parameter nil 'explicit-name)
-
-     (set-frame-parameter nil 'name "kkk")
-     #+end_src
-*** open-eshell-in-emacsclient
-    1. 为 emacsclient 而开的有 eshell 的 frame
-       frame name 与其中的 eshell name 统一
-    2. 每次为 emacsclient 而开一个 frame 之后
-       就可以用 (frame-parameter nil 'name) 来使用这个字符串了
-    3. 但是下面解决问题的方法又用到了 eshell
-       因为 emacs 的 dynamic-scope 太让人心烦了
-    4. 尽管如此这样也是合理的
-       是要在 emacsclient 中打开 eshell
-       既然打开了 eshell 就让这个 eshell 做点事儿吧
-    #+begin_src emacs-lisp :tangle ~/.emacs
-    (defun open-eshell-in-emacsclient ()
-      (progn
-        (eshell t)
-        ;; ;; (set-frame-parameter nil 'name (buffer-name))
-        ;; (insert "(set-frame-parameter nil 'name (buffer-name))")
-        ;; (eshell-send-input)
-        (loop-alpha-on)))
-    #+end_src
-*** my-switch-to-eshell
-    下面是黄金搭档``previous-buffer''
-    + scheme的repl也是这样开启的
-    也就是说C-s C-e这个键绑定的切换函数
-    只帮助在当前buffer和主要的那个名叫*eshell*的buffer之间切换
-    并且在这之间到别的buffer的切换就将破坏这个函数的效果
-    这也许是合理的 也许不是
-    #+begin_src emacs-lisp :tangle ~/.emacs
-    (defun my-switch-to-eshell ()
-      (interactive)
-
-      (cond
-       ((not (frame-parameter nil 'explicit-name))
-        (eshell))
-       (t
-        ;; at most, 9 eshell, opened by emacsclient, with eshell as frame-name
-        (eshell
-         (- (elt (string-to-vector (frame-parameter nil 'name))
-                 9)
-            48))))
-
-      (local-set-key (kbd "C-s C-e") 'previous-buffer))
-
-    (global-set-key (kbd "C-s C-e") 'my-switch-to-eshell)
-    #+end_src
-*** eshell/delete-char-or-kill-buffer
-    1. (goto-char (point-max)) == (end-of-buffer)
-    2. 在emacs中efb的识别方式有很多 比如:
-       1. (eq (following-char) 0)
-          (char-equal (following-char) 0)
-       2. (eq (point-max) (point))
-    #+begin_src emacs-lisp :tangle ~/.emacs
-    (defun eshell/delete-char-or-kill-buffer ()
-      (interactive)
-
-      (point-to-register ?e)
-      (eshell-bol)
-
-      (if (eq (point-max) (point))
-              (progn
-            (kill-buffer)
-            (delete-frame))
-            (progn
-              (jump-to-register ?e)
-              (delete-char 1))))
-
-    (add-hook 'eshell-mode-hook
-              (lambda ()
-                    (local-set-key (kbd "C-d") 'eshell/delete-char-or-kill-buffer)))
-    #+end_src
-*** eshell-prompt-function
-    #+begin_src emacs-lisp :tangle ~/.emacs
-    (set 'eshell-prompt-function
-      (function
-       (lambda ()
-         (concat (number-to-string eshell-last-command-status)
-                 "  " (eshell/pwd) " "
-                 (newline)
-                 ;; (if (= (user-uid) 0) " # " " $ ")
-                 ))))
-    #+end_src
-** -------------------------------------
-** self-defun (before eshell open)
-*** take-opera-downloaded
-    #+begin_src emacs-lisp :tangle ~/.emacs
-    (defun my-opera-downloaded-taker ()
-      (interactive)
-
-      (setq current-path (eshell/pwd))
-      (eshell/cd "~/.opera/temporary_downloads/")
-
-      (insert "mv * ")
-      (insert current-path)
-      (eshell-send-input)
-
-      (insert current-path)
-      (eshell-send-input)
-      )
-    #+end_src
-*** ``cd ..''
+   (add-hook 'eshell-mode-hook
+             (lambda ()
+                   (local-set-key (kbd "C-d") 'eshell/delete-char-or-kill-buffer)))
+   #+end_src
+** eshell-prompt-function
+   #+begin_src emacs-lisp :tangle ~/.emacs
+   (set 'eshell-prompt-function
+     (function
+      (lambda ()
+        (concat (newline)
+                (number-to-string eshell-last-command-status)
+                "  " (eshell/pwd) " "
+                (newline)
+                ;; (if (= (user-uid) 0) " # " " $ ")
+                ))))
+   #+end_src
+** self-defun [before eshell]
+*** my-cd-back
     #+begin_src emacs-lisp :tangle ~/.emacs
     (defun my-cd-back ()
       (interactive)
@@ -4780,73 +4665,41 @@
               (lambda ()
                     (local-set-key (kbd "C-S-a") 'move-beginning-of-line)))
     #+end_src
-** init a eshell when open emacs
-*** using
-    #+begin_src emacs-lisp :tangle ~/.emacs
-    (eshell)
-    #+end_src
-*** init with something               :no:
-    #+begin_src emacs-lisp
-    ;; for this line in my ~/.xinitrc do not work
-    (insert "xmodmap ~/.xmodmap")
-    ;; 每次都插入这一句就起到保险的效果
-    ;; 同时也给出一个快速重新加载~/.xmodmap的方法
-    ;; xmodmap是一个非常底层的工具 并不了解键盘布局的设置
-    ;; 对X11来说 键盘布局是建立在一组预设文件上
-    ;; 当预设文件加载时 所有通过xmodmap加载的配置都将被覆盖
-    ;; 所有进行键盘布局设置的工具都是如此
-    ;; 比如当fcitx启动时
-    (eshell-send-input)
-    #+end_src
-*** for my ~/.xinitrc do not work
-    #+begin_src emacs-lisp
-    (insert "xmodmap ~/.xmodmap && \
-             xrdb -load ~/.Xresource && \
-             ~/wallpaper/random-wallpaper.sh && \
-             xcompmgr &")
-    (eshell-send-input)
-    #+end_src
-*** 每次tangle之后都要重设~/.eshell-open-with-script.sh的权限
-    #+begin_src emacs-lisp
-    (eshell-command "chmod 777 ~/.eshell-open-with-script.sh")
-    #+end_src
-*** ~/.eshell-open-with-script.sh
-    #+begin_src sh
-    xcompmgr &
-    ~/wallpaper/random-wallpaper.sh &
-    #+end_src
-** var-setting (after open eshell)
-*** to avoid completion cycling (using completion cycling)
-    :tangle ~/.emacs
-    #+begin_src emacs-lisp
-    (setq eshell-cmpl-cycle-completions nil)
-    #+end_src
-*** visual commands
-    1. eshell will run a term session
-       when you invoke a command eshell considers visual
-       to support these commands
-    2. to modify the list of visual commands
-       you can alter eshell-visual-commands
-    #+begin_src emacs-lisp :tangle ~/.emacs
-    (add-to-list 'eshell-visual-commands "ranger")
-    (add-to-list 'eshell-visual-commands "w3m")
-    #+end_src
-*** bash history save
-    #+begin_src emacs-lisp :tangle ~/.emacs
-    (setq eshell-hist-ignoredups t)
-    #+end_src
-** -------------------------------------
-** pcomplete/git
+** open-eshell-for-frame
    #+begin_src emacs-lisp :tangle ~/.emacs
-   (defconst pcmpl-git-commands
-     '("add" "bisect" "branch" "checkout" "clone"
-           "commit" "diff" "fetch" "grep"
-           "init" "log" "merge" "mv" "pull" "push" "rebase"
-           "reset" "rm" "show" "status" "tag" )
-     "List of `git' commands")
-   (defun pcomplete/git ()
-     "Completion for `git'"
-     (pcomplete-here* pcmpl-git-commands))
+   (defun frame-eshell-name ()
+     (concatenate 'string "eshell:" (frame-parameter nil 'name)))
+
+   (defun open-eshell-for-frame (&optional translucent)
+     (progn
+       (set-frame-parameter nil 'name (number-to-string (number-generator)))
+       (eshell t)
+       (insert "* (eshell:" (frame-parameter nil 'name) ")\n")
+       (eshell-interrupt-process)
+       (rename-buffer (frame-eshell-name))
+       (cond ((eq translucent :on) (translucent-on))
+             ((eq translucent :off) (translucent-off))
+             (:else :do-nothing))))
+
+   ;; in ~/.xbindkeysrc.scm
+   ;; I have the following
+   ;; (xbindkey '(shift mod4 x) "LC_CTYPE=zh_CN.UTF-8 emacsclient -c -e \"(open-eshell-for-frame :on)\"")
    #+end_src
-** -------------------------------------
+** my-switch-to-eshell
+   * 下面是黄金搭档 previous-buffer
+   #+begin_src emacs-lisp :tangle ~/.emacs
+   (defun my-switch-to-eshell ()
+     (interactive)
+     (cond
+       ((not (frame-parameter nil 'explicit-name))
+        (open-eshell-for-frame))
+       (:else
+        (switch-to-buffer (frame-eshell-name))))
+     (local-set-key (kbd "C-s C-e") 'previous-buffer))
+   (global-set-key (kbd "C-s C-e") 'my-switch-to-eshell)
+   #+end_src
+** init call to (open-eshell-for-frame)
+   #+begin_src emacs-lisp :tangle ~/.emacs
+   (open-eshell-for-frame :off)
+   #+end_src
 * ===================================
