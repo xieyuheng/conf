@@ -560,26 +560,25 @@
    #+end_src
 ** whitespace
    #+begin_src emacs-lisp :tangle ~/.emacs
-   ;; (global-set-key
-   ;;  (kbd "C-M-w")
-   ;;  (lambda ()
-   ;;    (interactive)
-   ;;    (message "* (whitespace-cleanup)")
-   ;;    (whitespace-cleanup)))
+   (global-set-key
+    (kbd "C-M-w")
+    (lambda ()
+      (interactive)
+      (message "* (whitespace-cleanup)")
+      (whitespace-cleanup)))
 
-   ;; (global-set-key
-   ;;  (kbd "M-W")
-   ;;  (lambda ()
-   ;;    (interactive)
-   ;;    (message "* (whitespace-cleanup)")
-   ;;    (whitespace-cleanup)))
+   (global-set-key
+    (kbd "M-W")
+    (lambda ()
+      (interactive)
+      (message "* (whitespace-cleanup)")
+      (whitespace-cleanup)))
 
 
    ;; 有了下面的設置 每次 C-x C-s 時 就會自動清除 whitespace
-   ;; 上面的
-
    ;; automatically clean up bad whitespace
-   (setq whitespace-action '(auto-cleanup))
+   ;; (setq whitespace-action '(auto-cleanup))
+
    ;; only show bad whitespace
    (setq whitespace-style '(trailing space-before-tab indentation empty space-after-tab))
 
@@ -2153,6 +2152,11 @@
    (require 'coffee-mode)
    (add-to-list 'auto-mode-alist '("\\.coffee\\'" . coffee-mode))
    (custom-set-variables '(coffee-tab-width 2))
+   #+end_src
+** sibilant-mode
+   #+begin_src emacs-lisp :tangle ~/.emacs
+   (add-to-list 'load-path "~/.emacs.d/sibilant-mode/")
+   (require 'sibilant-mode)
    #+end_src
 ** ----------------------------------
 ** sawfish (not using)
@@ -4244,6 +4248,261 @@
    (require 'hlinum)
    (hlinum-activate)
    #+end_src
+* looks like
+** font
+*** <f7>
+    #+begin_src emacs-lisp :tangle ~/.emacs
+    (defvar *toggle-font-for-the-show* nil)
+    (defun toggle-font-for-the-show ()
+      (interactive)
+      (if (eq *toggle-font-for-the-show* t)
+          (progn
+            ;; (set-fontset-font t 'han (font-spec :name "MS Song" :size 20))
+            ;; (set-fontset-font t 'han (font-spec :name "H\-明蘭" :size 20))
+            ;; (set-fontset-font t 'han (font-spec :name "臺灣新細明體" :size 20))
+            (set-fontset-font t 'han (font-spec :name "H\-明蘭" :size 20))
+            ;; (set-face-attribute 'default nil :family "monofur" :height 140)
+            (set-face-attribute 'default nil :family "Envy Code R" :height 140)
+            (setq *toggle-font-for-the-show* nil))
+          (progn
+            ;; (set-fontset-font t 'han (font-spec :name "MS Song" :size 32))
+            ;; (set-fontset-font t 'han (font-spec :name "H\-明蘭" :size 32))
+            ;; (set-fontset-font t 'han (font-spec :name "臺灣新細明體" :size 34))
+            (set-fontset-font t 'han (font-spec :name "H\-明蘭" :size 34))
+            ;; (set-face-attribute 'default nil :family "monofur" :height 240)
+            (set-face-attribute 'default nil :family "Envy Code R" :height 240)
+            (setq *toggle-font-for-the-show* t))))
+    (global-set-key (kbd "<f7>") 'toggle-font-for-the-show)
+    #+end_src
+*** note
+    用下面所使用的连个函数配置emacs的字体的时候
+    其他一些程序(比如firefox)的字体配置也会跟着改变
+
+    "AR PL SungtiL GB" 文鼎PL简报宋
+    "AR PL KaitiM GB" 文鼎PL简中楷
+
+    "AR PL UKai" 文鼎PL中楷
+    "AR PL UMing" 文鼎PL细上海宋
+
+    "WenQuanYi Micro Hei" 文泉驿微米黑
+    "WenQuanYi Zen Hei" 文泉驿正黑
+    "WenQuanYi Bitmap Song" 文泉驿点阵宋体
+
+    (set-fontset-font NAME TARGET FONT-SPEC &optional FRAME ADD)
+    + NAME is a fontset name string
+      nil for the fontset of FRAME
+      or t for the default fontset
+    + TARGET
+      1. may be a cons: (FROM . TO)
+         where FROM and TO are characters
+         In that case
+         use FONT-SPEC for all characters
+         in the range FROM and TO (inclusive)
+      2. may be a script name symbol
+         In that case
+         use FONT-SPEC for all characters
+         that belong to the script
+      3. may be a charset
+         In that case
+         use FONT-SPEC for all characters in the charset
+      4. may be nil
+         In that case
+         use FONT-SPEC for any characters
+         for that no FONT-SPEC is specified
+    use the following function in *ielm* buffer
+    to print script name symbol in emacs
+    #+begin_src emacs-lisp
+    (char-table-extra-slot char-script-table 0)
+    #+end_src
+*** test
+    λλλλλλ|
+    中英等宽测试|
+    sdasddassaas|
+    iiiiiiiiiiii|
+    λλλλλλλλλλλλ|
+*** 楷
+    #+begin_src emacs-lisp :tangle ~/.emacs
+    ;; (set-fontset-font t 'han (font-spec :name "MS Song" :size 20))
+    ;; (set-fontset-font t 'han (font-spec :name "H\-宮書" :size 20))
+    #+end_src
+*** 宋
+    #+begin_src emacs-lisp :tangle ~/.emacs
+    ;; (set-fontset-font t 'han (font-spec :name "HanaMinA" :size 32))
+    ;; (set-fontset-font t 'han (font-spec :name "HAN NOM A" :size 32))
+    ;; (set-fontset-font t 'han (font-spec :name "H\-秀月" :size 32))
+    ;; (set-fontset-font t 'han (font-spec :name "simsun" :size 32))
+    ;; (set-fontset-font t 'han (font-spec :name "臺灣新細明體" :size 20))
+    #+end_src
+*** 黑
+    #+begin_src emacs-lisp :tangle ~/.emacs
+    ;; (set-fontset-font t 'han (font-spec :name "H\-雲林呉竹体" :size 20))
+    (set-fontset-font t 'han (font-spec :name "H\-明蘭" :size 20))
+    ;; (set-fontset-font t 'han (font-spec :name "SourceHanSans" :size 32))
+    ;; (set-fontset-font t 'han (font-spec :name "WenQuanYi Micro Hei Mono" :size 20))
+    ;; (set-fontset-font t 'han (font-spec :name "H\-儷黑" :size 20))
+    ;; (set-fontset-font t 'han (font-spec :name "H\-新雅蘭" :size 20))
+    #+end_src
+*** 英
+    #+begin_src emacs-lisp :tangle ~/.emacs
+    ;; (set-face-attribute 'default nil :family "monaco" :height 130)
+    ;; (set-face-attribute 'default nil :family "Envy Code R" :height 140)
+    ;; (set-face-attribute 'default nil :family "Source Code Pro" :height 130)
+    ;; (set-face-attribute 'default nil :family "Sauce Code Powerline" :height 130)
+
+    ;; (set-face-attribute 'default nil :family "Source Code Pro for Powerline" :height 130)
+
+    (set-face-attribute 'default nil :family "Input" :height 120)
+
+    ;; (set-face-attribute 'default nil :family "Droid Sans Mono" :height 130)
+    ;; (set-face-attribute 'default nil :family "FiraMono" :height 130)
+    ;; (set-face-attribute 'default nil :family "mono" :height 140)
+    ;; (set-face-attribute 'default nil :family "monofur" :height 140)
+    ;; (set-face-attribute 'default nil :family "lmmono10" :height 140)
+    ;; (set-face-attribute 'default nil :family "lmmonocaps10" :height 140)
+    ;; (set-face-attribute 'default nil :family "lmmonolt10" :height 140)
+    ;; (set-face-attribute 'default nil :family "Inconsolata" :height 140)
+    ;; (set-face-attribute 'default nil :family "Cousine" :height 140)
+    ;; (set-face-attribute 'default nil :family "PT Mono" :height 140)
+    ;; (set-face-attribute 'default nil :family "Anonymous Pro" :height 140)
+    ;; (set-face-attribute 'default nil :family "Nova Mono" :height 140)
+    ;; (set-face-attribute 'default nil :family "Fira Mono" :height 140)
+    ;; (set-face-attribute 'default nil :family "Cutive Mono" :height 140)
+    ;; (set-face-attribute 'default nil :family "Oxygen Mono" :height 140)
+    ;; (set-face-attribute 'default nil :family "Share Tech Mono" :height 140)
+    ;; (set-face-attribute 'default nil :family "Anonymous Pro" :height 140)
+    #+end_src
+*** 符
+    #+begin_src emacs-lisp :tangle ~/.emacs
+    (set-fontset-font t 'symbol (font-spec :name "mono"))
+    ;; (set-fontset-font t 'symbol (font-spec :name "STIXGeneral"))
+    #+end_src
+*** 希臘
+    #+begin_src emacs-lisp :tangle ~/.emacs
+    ;; (set-fontset-font t 'greek (font-spec :name "Porson"))
+    ;; (set-fontset-font t 'greek (font-spec :name "mono"))
+    ;; (set-fontset-font t 'greek (font-spec :name "STIXGeneral"))
+    ;; (set-fontset-font t 'greek (font-spec :name "Code2000"))
+    ;; (set-fontset-font t 'greek (font-spec :name "ALPHA\-Demo"))
+    (set-fontset-font t 'greek (font-spec :name "FreeMono"))
+
+    ;; α  Α     β  Β     γ  Γ     δ  Δ     ε  Ε
+    ;; ζ  Ζ     η  Η     θ  Θ     ι  Ι     κ  Κ
+    ;; λ  Λ     μ  Μ     ν  Ν     ξ  Ξ     ο  Ο
+    ;; π  Π     ρ  Ρ     ς  ΢     σ  Σ     τ  Τ
+    ;; υ  Υ     φ  Φ     χ  Χ     ψ  Ψ     ω  Ω
+    #+end_src
+** theme
+*** molokai
+    #+begin_src emacs-lisp :tangle ~/.emacs
+    (add-to-list 'custom-theme-load-path "~/.emacs.d/molokai-theme/")
+    (setq molokai-theme-kit t)
+    (load-theme 'molokai t)
+    #+end_src
+*** zenburn
+    #+begin_src emacs-lisp
+    (add-to-list 'custom-theme-load-path "~/.emacs.d/zenburn-emacs/")
+    (load-theme 'zenburn t)
+    #+end_src
+** translucent
+   #+begin_src emacs-lisp :tangle ~/.emacs
+   ;; 当前窗口和非当前窗口时透明度
+   (setq alpha-list '((85 60) (100 100)))
+   (defun loop-alpha ()
+     (interactive)
+     (let* ((h (car alpha-list))
+            (a (car h))
+            (ab (car (cdr h))))
+           (set-frame-parameter (selected-frame) 'alpha (list a ab))
+           (add-to-list 'default-frame-alist (cons 'alpha (list a ab)))
+           (setq alpha-list (cdr (append alpha-list (list h))))))
+
+   (setq alpha-list-on '((85 60) (100 100)))
+   (defun loop-alpha-on ()
+     (interactive)
+     (let* ((h (car alpha-list-on))
+            (a (car h))
+            (ab (car (cdr h))))
+           (set-frame-parameter (selected-frame) 'alpha (list a ab))
+           (add-to-list 'default-frame-alist (cons 'alpha (list a ab)))))
+
+   (setq alpha-list-off '((100 100) (85 60)))
+   (defun loop-alpha-off ()
+     (interactive)
+     (let* ((h (car alpha-list-off))
+            (a (car h))
+            (ab (car (cdr h))))
+           (set-frame-parameter (selected-frame) 'alpha (list a ab))
+           (add-to-list 'default-frame-alist (cons 'alpha (list a ab)))))
+
+   ;; (loop-alpha-on)
+   (loop-alpha-off)
+
+   (global-set-key (kbd "<f12>") 'loop-alpha)
+   #+end_src
+** [not using] frame title
+   * display buffer name or absolute file path name in the frame title
+   #+begin_src emacs-lisp
+   (defun frame-title-string ()
+     "Return the file name of current buffer, using ~ if under home directory"
+     (let
+             ((fname (or
+                      (buffer-file-name (current-buffer))
+                      (buffer-name)))
+              (max-len 100))
+           (when (string-match (getenv "HOME") fname)
+             (setq fname (replace-match "~" t t fname)))
+           (if (> (length fname) max-len)
+           (setq fname
+                     (concat "..."
+                             (substring fname (- (length fname) max-len)))))
+           fname))
+   ;; (setq frame-title-format '(:eval (frame-title-string)))
+   (setq frame-title-format '("emacs-pirate@"(:eval (frame-title-string))))
+   #+end_src
+** no-bother
+   #+begin_src emacs-lisp :tangle ~/.emacs
+   (mouse-avoidance-mode 'animate)
+   (setq inhibit-startup-message t)
+   (setq initial-scratch-message "")
+
+   (tool-bar-mode -1)
+   (menu-bar-mode -1)
+   (scroll-bar-mode -1)
+
+   (fset 'yes-or-no-p 'y-or-n-p)
+   #+end_src
+** cursor-type
+   #+begin_src emacs-lisp :tangle ~/.emacs
+   ;; (set-frame-parameter nil 'cursor-type 'hollow)
+   (set-frame-parameter nil 'cursor-type 'box)
+   ;; (set-frame-parameter nil 'cursor-type 'bar)
+   ;; (set-frame-parameter nil 'cursor-type '(bar . 2))
+   ;; (set-frame-parameter nil 'cursor-type 'hbar)
+   ;; (set-frame-parameter nil 'cursor-type '(hbar . 8))
+   #+end_src
+** rainbow-delimiters
+   #+begin_src emacs-lisp :tangle ~/.emacs
+   (add-to-list 'load-path "~/.emacs.d/rainbow-delimiters/")
+   (require 'rainbow-delimiters)
+
+   (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
+   (add-hook 'lfe-mode-hook 'rainbow-delimiters-mode)
+
+   ;; (add-hook 'cicada-mode-hook 'rainbow-delimiters-mode)
+
+   ;; (global-rainbow-delimiters-mode)
+   #+end_src
+** [not using] display
+   #+begin_src emacs-lisp :tangle ~/.emacs
+   ;; (display-battery-mode t)
+   ;; (display-time-mode t)
+   #+end_src
+** symon                              :no:
+   #+begin_src emacs-lisp
+   (add-to-list 'load-path "~/.emacs.d/symon/")
+   (require 'symon)
+   (symon-mode)
+   #+end_src
 * emacs server & eshell
 ** -------------------------------------
 ** note
@@ -4420,13 +4679,11 @@
     #+begin_src emacs-lisp :tangle ~/.emacs
     (defun open-eshell-in-emacsclient ()
       (progn
-            (eshell t)
-            ;; ;; (set-frame-parameter nil 'name (buffer-name))
-            ;; (insert "(set-frame-parameter nil 'name (buffer-name))")
-            ;; (eshell-send-input)
-            ))
-
-            (defun open-eshell-in-emacsclient () (eshell t))
+        (eshell t)
+        ;; ;; (set-frame-parameter nil 'name (buffer-name))
+        ;; (insert "(set-frame-parameter nil 'name (buffer-name))")
+        ;; (eshell-send-input)
+        (loop-alpha-on)))
     #+end_src
 *** my-switch-to-eshell
     下面是黄金搭档``previous-buffer''
@@ -4528,8 +4785,7 @@
     #+begin_src emacs-lisp :tangle ~/.emacs
     (eshell)
     #+end_src
-*** init with something (not using)
-    :tangle ~/.emacs
+*** init with something               :no:
     #+begin_src emacs-lisp
     ;; for this line in my ~/.xinitrc do not work
     (insert "xmodmap ~/.xmodmap")
@@ -4542,27 +4798,23 @@
     ;; 比如当fcitx启动时
     (eshell-send-input)
     #+end_src
-
+*** for my ~/.xinitrc do not work
     #+begin_src emacs-lisp
-    ;; for my ~/.xinitrc do not work
     (insert "xmodmap ~/.xmodmap && \
              xrdb -load ~/.Xresource && \
              ~/wallpaper/random-wallpaper.sh && \
              xcompmgr &")
     (eshell-send-input)
     #+end_src
-
-    每次tangle之后都要重设~/.eshell-open-with-script.sh的权限
+*** 每次tangle之后都要重设~/.eshell-open-with-script.sh的权限
     #+begin_src emacs-lisp
     (eshell-command "chmod 777 ~/.eshell-open-with-script.sh")
     #+end_src
-
-    :tangle "~/.eshell-open-with-script.sh"
+*** ~/.eshell-open-with-script.sh
     #+begin_src sh
     xcompmgr &
     ~/wallpaper/random-wallpaper.sh &
     #+end_src
-
 ** var-setting (after open eshell)
 *** to avoid completion cycling (using completion cycling)
     :tangle ~/.emacs
@@ -4597,241 +4849,4 @@
      (pcomplete-here* pcmpl-git-commands))
    #+end_src
 ** -------------------------------------
-* looks like
-** font
-*** <f7>
-    #+begin_src emacs-lisp :tangle ~/.emacs
-    (defvar *toggle-font-for-the-show* nil)
-    (defun toggle-font-for-the-show ()
-      (interactive)
-      (if (eq *toggle-font-for-the-show* t)
-          (progn
-            ;; (set-fontset-font t 'han (font-spec :name "MS Song" :size 20))
-            ;; (set-fontset-font t 'han (font-spec :name "H\-明蘭" :size 20))
-            ;; (set-fontset-font t 'han (font-spec :name "臺灣新細明體" :size 20))
-            (set-fontset-font t 'han (font-spec :name "H\-明蘭" :size 20))
-            ;; (set-face-attribute 'default nil :family "monofur" :height 140)
-            (set-face-attribute 'default nil :family "Envy Code R" :height 140)
-            (setq *toggle-font-for-the-show* nil))
-          (progn
-            ;; (set-fontset-font t 'han (font-spec :name "MS Song" :size 32))
-            ;; (set-fontset-font t 'han (font-spec :name "H\-明蘭" :size 32))
-            ;; (set-fontset-font t 'han (font-spec :name "臺灣新細明體" :size 34))
-            (set-fontset-font t 'han (font-spec :name "H\-明蘭" :size 34))
-            ;; (set-face-attribute 'default nil :family "monofur" :height 240)
-            (set-face-attribute 'default nil :family "Envy Code R" :height 240)
-            (setq *toggle-font-for-the-show* t))))
-    (global-set-key (kbd "<f7>") 'toggle-font-for-the-show)
-    #+end_src
-*** note
-    用下面所使用的连个函数配置emacs的字体的时候
-    其他一些程序(比如firefox)的字体配置也会跟着改变
-
-    "AR PL SungtiL GB" 文鼎PL简报宋
-    "AR PL KaitiM GB" 文鼎PL简中楷
-
-    "AR PL UKai" 文鼎PL中楷
-    "AR PL UMing" 文鼎PL细上海宋
-
-    "WenQuanYi Micro Hei" 文泉驿微米黑
-    "WenQuanYi Zen Hei" 文泉驿正黑
-    "WenQuanYi Bitmap Song" 文泉驿点阵宋体
-
-    (set-fontset-font NAME TARGET FONT-SPEC &optional FRAME ADD)
-    + NAME is a fontset name string
-      nil for the fontset of FRAME
-      or t for the default fontset
-    + TARGET
-      1. may be a cons: (FROM . TO)
-         where FROM and TO are characters
-         In that case
-         use FONT-SPEC for all characters
-         in the range FROM and TO (inclusive)
-      2. may be a script name symbol
-         In that case
-         use FONT-SPEC for all characters
-         that belong to the script
-      3. may be a charset
-         In that case
-         use FONT-SPEC for all characters in the charset
-      4. may be nil
-         In that case
-         use FONT-SPEC for any characters
-         for that no FONT-SPEC is specified
-    use the following function in *ielm* buffer
-    to print script name symbol in emacs
-    #+begin_src emacs-lisp
-    (char-table-extra-slot char-script-table 0)
-    #+end_src
-*** test
-    λλλλλλ|
-    中英等宽测试|
-    sdasddassaas|
-    iiiiiiiiiiii|
-    λλλλλλλλλλλλ|
-*** 楷
-    #+begin_src emacs-lisp :tangle ~/.emacs
-    ;; (set-fontset-font t 'han (font-spec :name "MS Song" :size 20))
-    ;; (set-fontset-font t 'han (font-spec :name "H\-宮書" :size 20))
-    #+end_src
-*** 宋
-    #+begin_src emacs-lisp :tangle ~/.emacs
-    ;; (set-fontset-font t 'han (font-spec :name "HanaMinA" :size 32))
-    ;; (set-fontset-font t 'han (font-spec :name "HAN NOM A" :size 32))
-    ;; (set-fontset-font t 'han (font-spec :name "H\-秀月" :size 32))
-    ;; (set-fontset-font t 'han (font-spec :name "simsun" :size 32))
-    ;; (set-fontset-font t 'han (font-spec :name "臺灣新細明體" :size 20))
-    #+end_src
-*** 黑
-    #+begin_src emacs-lisp :tangle ~/.emacs
-    ;; (set-fontset-font t 'han (font-spec :name "H\-雲林呉竹体" :size 20))
-    (set-fontset-font t 'han (font-spec :name "H\-明蘭" :size 20))
-    ;; (set-fontset-font t 'han (font-spec :name "SourceHanSans" :size 32))
-    ;; (set-fontset-font t 'han (font-spec :name "WenQuanYi Micro Hei Mono" :size 20))
-    ;; (set-fontset-font t 'han (font-spec :name "H\-儷黑" :size 20))
-    ;; (set-fontset-font t 'han (font-spec :name "H\-新雅蘭" :size 20))
-    #+end_src
-*** 英
-    #+begin_src emacs-lisp :tangle ~/.emacs
-    ;; (set-face-attribute 'default nil :family "monaco" :height 130)
-    ;; (set-face-attribute 'default nil :family "Envy Code R" :height 140)
-    ;; (set-face-attribute 'default nil :family "Source Code Pro" :height 130)
-    ;; (set-face-attribute 'default nil :family "Sauce Code Powerline" :height 130)
-
-    ;; (set-face-attribute 'default nil :family "Source Code Pro for Powerline" :height 130)
-
-    (set-face-attribute 'default nil :family "Input" :height 120)
-
-    ;; (set-face-attribute 'default nil :family "Droid Sans Mono" :height 130)
-    ;; (set-face-attribute 'default nil :family "FiraMono" :height 130)
-    ;; (set-face-attribute 'default nil :family "mono" :height 140)
-    ;; (set-face-attribute 'default nil :family "monofur" :height 140)
-    ;; (set-face-attribute 'default nil :family "lmmono10" :height 140)
-    ;; (set-face-attribute 'default nil :family "lmmonocaps10" :height 140)
-    ;; (set-face-attribute 'default nil :family "lmmonolt10" :height 140)
-    ;; (set-face-attribute 'default nil :family "Inconsolata" :height 140)
-    ;; (set-face-attribute 'default nil :family "Cousine" :height 140)
-    ;; (set-face-attribute 'default nil :family "PT Mono" :height 140)
-    ;; (set-face-attribute 'default nil :family "Anonymous Pro" :height 140)
-    ;; (set-face-attribute 'default nil :family "Nova Mono" :height 140)
-    ;; (set-face-attribute 'default nil :family "Fira Mono" :height 140)
-    ;; (set-face-attribute 'default nil :family "Cutive Mono" :height 140)
-    ;; (set-face-attribute 'default nil :family "Oxygen Mono" :height 140)
-    ;; (set-face-attribute 'default nil :family "Share Tech Mono" :height 140)
-    ;; (set-face-attribute 'default nil :family "Anonymous Pro" :height 140)
-    #+end_src
-*** 符
-    #+begin_src emacs-lisp :tangle ~/.emacs
-    (set-fontset-font t 'symbol (font-spec :name "mono"))
-    ;; (set-fontset-font t 'symbol (font-spec :name "STIXGeneral"))
-    #+end_src
-*** 希臘
-    #+begin_src emacs-lisp :tangle ~/.emacs
-    ;; (set-fontset-font t 'greek (font-spec :name "Porson"))
-    ;; (set-fontset-font t 'greek (font-spec :name "mono"))
-    ;; (set-fontset-font t 'greek (font-spec :name "STIXGeneral"))
-    ;; (set-fontset-font t 'greek (font-spec :name "Code2000"))
-    ;; (set-fontset-font t 'greek (font-spec :name "ALPHA\-Demo"))
-    (set-fontset-font t 'greek (font-spec :name "FreeMono"))
-
-    ;; α  Α     β  Β     γ  Γ     δ  Δ     ε  Ε
-    ;; ζ  Ζ     η  Η     θ  Θ     ι  Ι     κ  Κ
-    ;; λ  Λ     μ  Μ     ν  Ν     ξ  Ξ     ο  Ο
-    ;; π  Π     ρ  Ρ     ς  ΢     σ  Σ     τ  Τ
-    ;; υ  Υ     φ  Φ     χ  Χ     ψ  Ψ     ω  Ω
-    #+end_src
-** theme
-*** molokai
-    #+begin_src emacs-lisp :tangle ~/.emacs
-    (add-to-list 'custom-theme-load-path "~/.emacs.d/molokai-theme/")
-    (setq molokai-theme-kit t)
-    (load-theme 'molokai t)
-    #+end_src
-*** zenburn
-    #+begin_src emacs-lisp
-    (add-to-list 'custom-theme-load-path "~/.emacs.d/zenburn-emacs/")
-    (load-theme 'zenburn t)
-    #+end_src
-** translucent
-   #+begin_src emacs-lisp :tangle ~/.emacs
-   (global-set-key (kbd "<f12>") 'loop-alpha)
-   ;; 当前窗口和非当前窗口时透明度
-   (setq alpha-list '((85 60) (100 100)))
-   (defun loop-alpha ()
-     (interactive)
-     (let* ((h (car alpha-list))
-            (a (car h))
-            (ab (car (cdr h))))
-           (set-frame-parameter (selected-frame) 'alpha (list a ab))
-           (add-to-list 'default-frame-alist (cons 'alpha (list a ab)))
-           (setq alpha-list (cdr (append alpha-list (list h))))
-           ))
-
-   ;; 启动窗口时时自动开启窗口半透明效果
-   ;; (loop-alpha)
-   #+end_src
-** [not using] frame title
-   * display buffer name or absolute file path name in the frame title
-   #+begin_src emacs-lisp
-   (defun frame-title-string ()
-     "Return the file name of current buffer, using ~ if under home directory"
-     (let
-             ((fname (or
-                      (buffer-file-name (current-buffer))
-                      (buffer-name)))
-              (max-len 100))
-           (when (string-match (getenv "HOME") fname)
-             (setq fname (replace-match "~" t t fname)))
-           (if (> (length fname) max-len)
-           (setq fname
-                     (concat "..."
-                             (substring fname (- (length fname) max-len)))))
-           fname))
-   ;; (setq frame-title-format '(:eval (frame-title-string)))
-   (setq frame-title-format '("emacs-pirate@"(:eval (frame-title-string))))
-   #+end_src
-** no-bother
-   #+begin_src emacs-lisp :tangle ~/.emacs
-   (mouse-avoidance-mode 'animate)
-   (setq inhibit-startup-message t)
-   (setq initial-scratch-message "")
-
-   (tool-bar-mode -1)
-   (menu-bar-mode -1)
-   (scroll-bar-mode -1)
-
-   (fset 'yes-or-no-p 'y-or-n-p)
-   #+end_src
-** cursor-type
-   #+begin_src emacs-lisp :tangle ~/.emacs
-   ;; (set-frame-parameter nil 'cursor-type 'hollow)
-   (set-frame-parameter nil 'cursor-type 'box)
-   ;; (set-frame-parameter nil 'cursor-type 'bar)
-   ;; (set-frame-parameter nil 'cursor-type '(bar . 2))
-   ;; (set-frame-parameter nil 'cursor-type 'hbar)
-   ;; (set-frame-parameter nil 'cursor-type '(hbar . 8))
-   #+end_src
-** rainbow-delimiters
-   #+begin_src emacs-lisp :tangle ~/.emacs
-   (add-to-list 'load-path "~/.emacs.d/rainbow-delimiters/")
-   (require 'rainbow-delimiters)
-
-   (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
-   (add-hook 'lfe-mode-hook 'rainbow-delimiters-mode)
-
-   ;; (add-hook 'cicada-mode-hook 'rainbow-delimiters-mode)
-
-   ;; (global-rainbow-delimiters-mode)
-   #+end_src
-** [not using] display
-   #+begin_src emacs-lisp :tangle ~/.emacs
-   ;; (display-battery-mode t)
-   ;; (display-time-mode t)
-   #+end_src
-** symon                              :no:
-   #+begin_src emacs-lisp
-   (add-to-list 'load-path "~/.emacs.d/symon/")
-   (require 'symon)
-   (symon-mode)
-   #+end_src
 * ===================================
