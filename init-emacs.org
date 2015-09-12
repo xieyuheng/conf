@@ -2135,12 +2135,29 @@
    (add-hook 'js-mode-hook 'js2-minor-mode)
    (add-to-list 'interpreter-mode-alist '("node" . js2-mode))
    #+end_src
-** emacs-web-server
+** simple-httpd
    #+begin_src emacs-lisp :tangle ~/.emacs
    (add-to-list 'load-path "~/.emacs.d/emacs-web-server/")
    (require 'simple-httpd)
-   ;; (setq httpd-root "/var/www")
+
+   ;; (setq httpd-root "~/lang/js/coffeescript/coshMain.github.io")
+   ;; (setq httpd-port 8080)
    ;; (httpd-start)
+
+   ;; (defservlet hello-world text/plain (path)
+   ;;     (insert "hello, " (file-name-nondirectory path)))
+   #+end_src
+** httpd
+   #+begin_src emacs-lisp :tangle ~/.emacs
+   (add-to-list 'load-path "~/.emacs.d/httpd/")
+   (require 'httpd)
+
+   ;; (setq httpd-root "~/lang/js/coffeescript/coshMain.github.io")
+   ;; (setq httpd-port 8080)
+   ;; (httpd-start)
+
+   ;; (defservlet hello-world text/plain (path)
+   ;;     (insert "hello, " (file-name-nondirectory path)))
    #+end_src
 ** skewer-mode
    #+begin_src emacs-lisp :tangle ~/.emacs
@@ -3873,8 +3890,7 @@
                (flx-process-cache (uuid) cache))))
              ;;; ⇒ (0.62035 1 0.05461100000000041)
      #+end_src
-** [not using] auto-overlay
-   :tangle ~/.emacs
+** auto-overlay           :no:
    #+begin_src emacs-lisp
    (add-to-list 'load-path "~/.emacs.d/auto-overlays/")
    (require 'auto-overlays)
@@ -3894,8 +3910,10 @@
                       (face . (background-color . "blue")))))
     #+end_src
 ** ido
+*** note
+    * ido is part of emacs
 *** main
-    use C-f during file selection to switch to regular find-file
+    * use C-f during file selection to switch to regular find-file
     #+begin_src emacs-lisp :tangle ~/.emacs
     (ido-mode t)
     (ido-everywhere t)
@@ -3903,15 +3921,51 @@
     (setq ido-use-filename-at-point nil)
     (setq ido-auto-merge-work-directories-length 0)
     (setq ido-use-virtual-buffers t)
+    (setq ido-default-buffer-method 'switch-buffer)
+    #+end_src
+*** ido-switch-buffer
+    * default key-binding
+      | RET     |                         | Select the buffer at the front of the list of matches.            |
+      |         |                         | If the list is empty, possibly prompt to create new buffer.       |
+      | C-j     | ido-select-text         | Use the current input string verbatim.                            |
+      | C-s     | ido-next-match          | Put the first element at the end of the list.                     |
+      | C-r     | ido-prev-match          | Put the last element at the start of the list.                    |
+      | TAB     | ido-complete            | Complete a common suffix to the current string that matches       |
+      |         |                         | all buffers.  If there is only one match, select that buffer.     |
+      |         |                         | If there is no common suffix, show a list of all matching buffers |
+      |         |                         | in a separate window.                                             |
+      | C-e     | ido-edit-input          | Edit input string.                                                |
+      | C-x C-b | ido-fallback-command    | Fallback to non-ido version of current command.                   |
+      | C-t     | ido-toggle-regexp       | Toggle regexp searching.                                          |
+      | C-p     | ido-toggle-prefix       | Toggle between substring and prefix matching.                     |
+      | C-c     | ido-toggle-case         | Toggle case-sensitive searching of buffer names.                  |
+      | ?       | ido-completion-help     | Show list of matching buffers in separate window.                 |
+      | C-x C-f | ido-enter-find-file     | Drop into `ido-find-file'.                                        |
+      | C-k     | ido-kill-buffer-at-head | Kill buffer at head of buffer list.                               |
+      | C-a     | ido-toggle-ignore       | Toggle ignoring buffers listed in `ido-ignore-buffers'.           |
+    #+begin_src emacs-lisp :tangle ~/.emacs
+    (global-set-key (kbd "C-x b") 'list-buffers)
+    (global-set-key (kbd "C-x C-b") 'ido-switch-buffer)
+    (add-hook 'ido-minibuffer-setup-hook
+              (lambda ()
+                (local-set-key (kbd "C-s") 'ido-toggle-prefix)
+                (local-set-key (kbd "C-r") 'ido-toggle-regexp)
+                (local-set-key (kbd "C-n") 'ido-next-match)
+                (local-set-key (kbd "C-p") 'ido-prev-match)))
     #+end_src
 *** ido-ubiquitions
     #+begin_src emacs-lisp :tangle ~/.emacs
-    (add-to-list 'load-path "~/.emacs.d/package/ido-ubiquitous/")
+    (add-to-list 'load-path "~/.emacs.d/ido-ubiquitous/")
     (require 'ido-ubiquitous)
     (ido-ubiquitous-mode t)
     #+end_src
-*** flx-ido
-    :tangle ~/.emacs
+*** ido-at-point
+    #+begin_src emacs-lisp :tangle ~/.emacs
+    (add-to-list 'load-path "~/.emacs.d/ido-at-point/")
+    (require 'ido-at-point)
+    (ido-at-point-mode)
+    #+end_src
+*** flx-ido                           :no:
     #+begin_src emacs-lisp
     (add-to-list 'load-path "~/.emacs.d/flx/")
     (require 'flx-ido)
@@ -3920,11 +3974,9 @@
     (flx-ido-mode 1)
     ;; disable ido faces to see flx highlights.
     (setq ido-use-faces nil)
-    #+end_src
 
-    If don't want to use the flx's highlights you can turn them off like this:
-    #+begin_src emacs-lisp :tangle no
-    (setq flx-ido-use-faces nil)
+    ;; If don't want to use the flx's highlights you can turn them off like this:
+    ;; (setq flx-ido-use-faces nil)
     #+end_src
 *** ido-vertical-mode
     #+begin_src emacs-lisp :tangle ~/.emacs
@@ -3932,6 +3984,11 @@
     (require 'ido-vertical-mode)
     (ido-mode 1)
     (ido-vertical-mode 1)
+    #+end_src
+*** ido-hacks                         :no:
+    #+begin_src emacs-lisp
+    (add-to-list 'load-path "~/.emacs.d/ido-hacks/")
+    (require 'ido-hacks)
     #+end_src
 ** smex
    #+begin_src emacs-lisp :tangle ~/.emacs
@@ -4065,7 +4122,7 @@
                        "#forth"
                        "#cicada-language"
 
-                       "##Orz"
+                       ;; "##Orz"
 
                        ;; "#scheme"
                        ;; "#guile"
@@ -4594,21 +4651,6 @@
                     (lambda ()
                       (local-set-key (kbd "M-<tab>") 'window->)))
    #+end_src
-** [not using] eshell-autojump
-   1. Use ‘j’ to list your favorite directories
-      (as determined by your usage of ‘cd’).
-      Use ‘j regexp’ to jump to your most favorite directory
-      matching the regular expression.
-   2. Your favorite directories are saved in ‘~/.eshell/autojump’.
-   3. Instead of measuring
-      how much time you spend in a particular directory,
-      I just measure how often
-      you switch to a particular directory.
-      The code hooks into ‘eshell-directory-change-hook’.
-      #+begin_src emacs-lisp :tangle ~/.emacs
-      ;; (eval-after-load 'eshell
-      ;;   '(require 'eshell-autojump nil t))
-      #+end_src
 ** -------------------------------------
 * make multi eshell work much easier
 ** eshell/delete-char-or-kill-buffer
@@ -4639,14 +4681,18 @@
 ** eshell-prompt-function
    #+begin_src emacs-lisp :tangle ~/.emacs
    (set 'eshell-prompt-function
-     (function
-      (lambda ()
-        (concat (newline)
-                (number-to-string eshell-last-command-status)
-                "  " (eshell/pwd) " "
-                (newline)
-                ;; (if (= (user-uid) 0) " # " " $ ")
-                ))))
+        (lambda ()
+          (concat "\n"
+                  (if (eq eshell-last-command-status 0)
+                      ""
+                      (number-to-string eshell-last-command-status))
+                  "  "
+                  (if (= (user-uid) 0)
+                      "[root]  "
+                      "")
+                  (eshell/pwd)
+                  "\n"
+                  )))
    #+end_src
 ** self-defun [before eshell]
 *** my-cd-back
