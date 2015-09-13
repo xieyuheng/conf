@@ -450,8 +450,8 @@
    (defun <-window () (interactive) (other-window -1))
 
    ;; 没有使用<C-tab>
-   ;; 因为<C-tab>需要在org-mode中使用
-   ;; 因为按<tab>的时候可以不放开Ctrl是方便的
+   ;; 因为<C-tab>需要在 org-mode 中使用
+   ;; 因为按<tab>的时候可以不放开 Ctrl 是方便的
    (global-set-key (kbd "M-<tab>") 'window->)
    (global-set-key (kbd "M-=") 'window->)
    (global-set-key (kbd "M--") '<-window)
@@ -501,8 +501,8 @@
    (global-set-key (kbd "C-x <backspace>") 'delete-backward-char)
    #+end_src
 ** view
-   + 如果不左右scroll
-     emacs就会自动为把长的行折反到视野中来(org-mode除外)
+   + 如果不左右 scroll
+     emacs 就会自动为把长的行折反到视野中来(org-mode 除外)
    + M-< : beginning-of-buffer
      M-> : end-of-buffer
      + 不要与下面的绑定混淆
@@ -602,8 +602,8 @@
    (setq indent-tabs-mode nil)
    (setq-default indent-tabs-mode nil)
    ;; 全局设置上面的变量并没有用
-   ;;   设想如果我能用一个树状图来清晰地描述mode之间的继承与依赖关系
-   ;;   而不是只有简单的major和minor两个层次
+   ;;   设想如果我能用一个树状图来清晰地描述 mode 之间的继承与依赖关系
+   ;;   而不是只有简单的 major 和 minor 两个层次
    ;;   并且我能方便的浏览这个树
    ;;   能像操作一个列表一样方便的调整这个树
    ;; 写一个不光有更好配置语言的
@@ -684,8 +684,8 @@
    #+end_src
 * note little input method
   输入法和文本编辑器相辅相成同等重要
-  emcas因一个bug而不能使用input method framework
-  启动emcas前需要更改环境变量LC_CTYPE来弥补这个问题
+  emcas 因一个 bug 而不能使用 input method framework
+  启动 emcas 前需要更改环境变量 LC_CTYPE 来弥补这个问题
   #+begin_src sh
   LC_CTYPE=zh_CN.UTF-8 emacs
   #+end_src
@@ -796,7 +796,7 @@
    (defun init-<f1>-for-cicada-nymph ()
      (interactive)
      (progn
-       ;; 需要快捷输入lambda
+       ;; 需要快捷输入 lambda
        (local-set-key
         (kbd "<f1> <f1>")
         (lambda ()
@@ -844,7 +844,7 @@
    (defun init-<f1>-for-lisp ()
      (interactive)
      (progn
-           ;; 需要快捷输入lambda
+           ;; 需要快捷输入 lambda
            (local-set-key (kbd "<f1> <f1>") 'insert-lambda)
 
            ;; connectives
@@ -1042,7 +1042,7 @@
    (defun init-<f1>-for-caml ()
      (interactive)
      (progn
-           ;; 需要快捷输入lambda
+           ;; 需要快捷输入 lambda
            (local-set-key (kbd "<f1> <f1>")
                       (lambda ()
                             (interactive)
@@ -1501,9 +1501,9 @@
 
     ;; the following is about the *scratch* buffer
     ;; (add-hook 'lisp-interaction-mode-hook #'enable-paredit-mode)
-    ;; 不知道为什么这里就算使用maybe-map-paredit-newline也总是绑定不到 RET
-    ;; 只有在下面的mode中不使用enable-paredit-mode
-    ;; *scratch* buffer中的RET才能正常
+    ;; 不知道为什么这里就算使用 maybe-map-paredit-newline 也总是绑定不到 RET
+    ;; 只有在下面的 mode 中不使用 enable-paredit-mode
+    ;; *scratch* buffer 中的 RET 才能正常
     (add-hook 'emacs-lisp-mode-hook       #'enable-paredit-mode)
 
 
@@ -1563,8 +1563,8 @@
     is plural form of parenthesis /pəˈrɛnθəsɪs/
 
     下面这些函数并不是全局可见的
-    但是只要paredit被load一次之后就可以使用了
-    而路过org-mode中的lisp代码块的时候paredit就能被load到
+    但是只要 paredit 被 load 一次之后就可以使用了
+    而路过 org-mode 中的 lisp 代码块的时候 paredit 就能被 load 到
     而我几乎总是会路过这种代码块的
 
     下面的绑定有的时候会以不明显地方式改变 org-mode 中文本的内容
@@ -1600,12 +1600,12 @@
     (add-hook 'sml-mode-hook                'mini-paredit-mode)
     #+end_src
 *** >< experiment
-    1. 从simple.el中可以学到很多
+    1. 从 simple.el 中可以学到很多
        file:/usr/local/share/emacs/24.3/lisp/simple.el.gz
        尤其是当找到一个函数是在这里定义的时候
 
     下面是三组有用的函数
-    其中what-cursor-position是在simple.el中定义的
+    其中 what-cursor-position 是在 simple.el 中定义的
     #+begin_src emacs-lisp
     (looking-at "")
     (what-cursor-position)
@@ -1663,8 +1663,8 @@
               (switch-to-buffer buffer-name-string)
               (other-window -1)))
 
-       ;; 只允许出现一个scheme窗口
-       ;; 因此当发现有别的窗口的时候就在那个窗口中打开所需要的buffer
+       ;; 只允许出现一个 scheme 窗口
+       ;; 因此当发现有别的窗口的时候就在那个窗口中打开所需要的 buffer
        ((not (cl-find buffer-name-string
                   (mapcar (lambda (w) (buffer-name (window-buffer w)))
                           (window-list))
@@ -1748,7 +1748,7 @@
    并帮助检查代码的部分错误
    #+begin_src emacs-lisp :tangle ~/.emacs
    ;; 下面的实现方式并不完备
-   ;; scheme-mode中原本的实现不是如此
+   ;; scheme-mode 中原本的实现不是如此
    (defun scheme-add-keywords (face-name keyword-rules)
      (let* ((keyword-list (mapcar #'(lambda (x)
                                       (symbol-name (cdr x)))
@@ -1776,7 +1776,7 @@
       (1 . J-Bob/prove)
       (1 . J-Bob/define)
 
-      ;; 下面scheme中需要高亮的词
+      ;; 下面 scheme 中需要高亮的词
       (0 . set!)
       (0 . set-car!)
       (0 . set-cdr!)
@@ -1799,11 +1799,11 @@
       (0 . insert-a-val-to-a-field-of-a-wlist!)
       (0 . to-a-field-of-a-wlist--let-us-insert-a-val!)
 
-      ;; 来自ikarus
+      ;; 来自 ikarus
       (1 . make-parameter)
       (1 . parameterize)
 
-      ;; 下面scheme中我还没用到以后可能需要高亮的词
+      ;; 下面 scheme 中我还没用到以后可能需要高亮的词
       (1 . when)
       (1 . unless)
       (2 . let1)
@@ -1827,7 +1827,7 @@
       (1 . <~)
       (1 . take~)
 
-      ;; 下面是mk中需要高亮的词
+      ;; 下面是 mk 中需要高亮的词
       ;; core:
       ;; Logical operators:
       (2 . ==)
@@ -1837,7 +1837,7 @@
       (2 . run)
       (1 . run*)
 
-      ;; 下面是mk的元代码中需要高亮的词
+      ;; 下面是 mk 的元代码中需要高亮的词
       ;; [(lambdag@ (p) e) (lambda (p) e)]
       ;; (1 . lambdag@)
       ;; [(lambdaf@ () e) (lambda () e)]
@@ -1849,7 +1849,7 @@
       ;;
       (0 . set-pointer!)
       (1 . define-pointer)
-      ;; 下面是vvv-mimic-ccc.scm中需要高亮的词
+      ;; 下面是 vvv-mimic-ccc.scm 中需要高亮的词
       (0 . vons)
       (0 . vnr)
       (0 . v0r)
@@ -2087,7 +2087,7 @@
    (setq print-circle t)
    #+end_src
 ** ielm = run-elisp-repl
-   不知道哪个傻逼起的ielm这个名字
+   不知道哪个傻逼起的 ielm 这个名字
    #+begin_src emacs-lisp :tangle ~/.emacs
    (defun elisp-repl ()
      (interactive)
@@ -2306,8 +2306,8 @@
      (split-window-with-named-buffer "*forth*")
      (forth-send-paragraph))
 
-   ;; 利用forth-send-region来实现forth-send-line
-   ;; 因为不想使用forth-send-paragraph
+   ;; 利用 forth-send-region 来实现 forth-send-line
+   ;; 因为不想使用 forth-send-paragraph
    (defun forth-send-line ()
      (interactive)
      (move-beginning-of-line nil)
@@ -2412,12 +2412,12 @@
    ;;          ;; (run-sml "sml" "")
    ;;          (run-sml "hamlet" "")
    ;;          ))
-   ;;   ;; 然后总能通过向左一个buffer回到之前的buffer
+   ;;   ;; 然后总能通过向左一个 buffer 回到之前的 buffer
    ;;   ;; 这是笨的解决方法，某些情况下一定会出问题
    ;;   (local-set-key (kbd "C-s C-q") 'previous-buffer))
    ;; (global-set-key (kbd "C-s C-q") 'switch-to-buffer-about-sml)
    #+end_src
-*** 版本1
+*** 版本 1
     sml-mode-6.4.el
     #+begin_src emacs-lisp :tangle ~/.emacs
     (autoload 'sml-mode "sml-mode" "Major mode for editing SML." t)
@@ -2437,7 +2437,7 @@
        )
      'turn-off-indent)
     #+end_src
-*** 版本2
+*** 版本 2
     sml-mode-color.el
     :tangle ~/.emacs
     #+begin_src emacs-lisp
@@ -2461,7 +2461,7 @@
                        sml-mode-dir
                        "/inferior-setup.sml\";\n"))))
     #+end_src
-*** 版本3
+*** 版本 3
     sml-mode-kkk.el
     :tangle ~/.emacs
     #+begin_src emacs-lisp
@@ -2516,8 +2516,8 @@
      (caml-eval-phrase 1)
      (split-window-with-named-buffer "*inferior-caml*"))
 
-   ;; 因为<tab>在caml-mode中不支持区域缩进
-   ;; 所以给C-<tab>绑定一个方便多行缩进的函数
+   ;; 因为<tab>在 caml-mode 中不支持区域缩进
+   ;; 所以给 C-<tab>绑定一个方便多行缩进的函数
    (defun caml-indent-line-by-line ()
      (interactive)
      (caml-indent-command)
@@ -2577,7 +2577,7 @@
    (if window-system (require 'caml-font))
    #+end_src
 ** tuareg-mode for ocaml (not using)
-   这个mode运行很慢
+   这个 mode 运行很慢
    :tangle ~/.emacs
    #+begin_src emacs-lisp
    (add-to-list 'load-path "~/.emacs.d/tuareg/")
@@ -3078,12 +3078,12 @@
    (require 'mysql)
    #+end_src
 
-   如果你的mysql端口不是标准端口的话 需要:
+   如果你的 mysql 端口不是标准端口的话 需要:
    #+begin_src emacs-lisp
    (setq sql-mysql-options (list "-P 6871"))
    #+end_src
 
-   通过下面的命令设置两个连接mysql的常用帐号:
+   通过下面的命令设置两个连接 mysql 的常用帐号:
    #+begin_src emacs-lisp
    (setq sql-connection-alist
              '((pool-a
@@ -3432,9 +3432,9 @@
 *** note
     1. C-c C-v d
        org-babel-demarcate-block
-    2. begin_src <lang-name> 会去搜索<lang-name>的major-mode
+    2. begin_src <lang-name> 会去搜索<lang-name>的 major-mode
        只要能搜索到就都能用编辑功能
-    3. ob-<lang-name>.el是用来提供更多的关于语言的其他功能的
+    3. ob-<lang-name>.el 是用来提供更多的关于语言的其他功能的
 *** basic
     #+begin_src emacs-lisp :tangle ~/.emacs
     (setq org-structure-template-basic
@@ -3585,6 +3585,10 @@
             ;; javascript
             ("jsf" "#+end_src\n?\n#+begin_src javascript" "<src lang=\"?\">\n\n</src>")
             ("js" "#+begin_src javascript\n?\n#+end_src" "<src lang=\"?\">\n\n</src>")
+
+            ;; coffeescript
+            ("cof" "#+end_src\n?\n#+begin_src coffee" "<src lang=\"?\">\n\n</src>")
+            ("co" "#+begin_src coffee\n?\n#+end_src" "<src lang=\"?\">\n\n</src>")
 
             ;; lua
             ("luaf" "#+end_src\n?\n#+begin_src lua" "<src lang=\"?\">\n\n</src>")
@@ -3833,12 +3837,12 @@
    ;; (shell-command "xterm &")
    ;; (eshell-command "xterm &")
 
-   ;; ;; 下面这句会开一个out-put-buffer然后显示输出的东西
+   ;; ;; 下面这句会开一个 out-put-buffer 然后显示输出的东西
    ;; (eshell-command "parcellite -p")
    ;; ;; == (eshell-command "parcellite -p" nil)
 
 
-   ;; ;; 下面这个不开out-put-buffer会把光标停在粘贴的东西前面
+   ;; ;; 下面这个不开 out-put-buffer 会把光标停在粘贴的东西前面
    ;; (eshell-command "parcellite -p" nil)
 
 
@@ -3847,7 +3851,7 @@
    ;; (insert (eshell-command-result "parcellite -p"))
 
    ;; ;; 下面这个函数虽然跑的快
-   ;; ;; 但是从emacs的kill-ring中粘贴东西的时候却会死掉
+   ;; ;; 但是从 emacs 的 kill-ring 中粘贴东西的时候却会死掉
    ;; ;; (insert (shell-command-to-string "parcellite -p"))
 
 
@@ -4283,7 +4287,7 @@
     ;; news.newsgroup.com.hk
     ;; freenews
     ;; freenews.netfront.net
-    ;; sybase新闻组(英文)
+    ;; sybase 新闻组(英文)
     ;; forums.sybase.com
     ;; 以上三个服务器在大陆以外且参预全球转信
 
@@ -4340,14 +4344,14 @@
     (global-set-key (kbd "<f7>") 'toggle-font-for-the-show)
     #+end_src
 *** note
-    用下面所使用的连个函数配置emacs的字体的时候
-    其他一些程序(比如firefox)的字体配置也会跟着改变
+    用下面所使用的连个函数配置 emacs 的字体的时候
+    其他一些程序(比如 firefox)的字体配置也会跟着改变
 
-    "AR PL SungtiL GB" 文鼎PL简报宋
-    "AR PL KaitiM GB" 文鼎PL简中楷
+    "AR PL SungtiL GB" 文鼎 PL 简报宋
+    "AR PL KaitiM GB" 文鼎 PL 简中楷
 
-    "AR PL UKai" 文鼎PL中楷
-    "AR PL UMing" 文鼎PL细上海宋
+    "AR PL UKai" 文鼎 PL 中楷
+    "AR PL UMing" 文鼎 PL 细上海宋
 
     "WenQuanYi Micro Hei" 文泉驿微米黑
     "WenQuanYi Zen Hei" 文泉驿正黑
@@ -4568,6 +4572,10 @@
    (require 'symon)
    (symon-mode)
    #+end_src
+** fullscreen
+   #+begin_src emacs-lisp :tangle ~/.emacs
+   (setq frame-resize-pixelwise t)
+   #+end_src
 * emacs server & eshell
 ** -------------------------------------
 ** note
@@ -4580,8 +4588,8 @@
      因为它提示了当前 emacs-sever 的开启状态
      (server-force-delete)
    * 因此常使用的方式是
-     将(server-start)写在.emacs中
-     将alias e='emacsclient -c -a "" -e \(eshell\)'写在.bashrc中
+     将(server-start)写在.emacs 中
+     将 alias e='emacsclient -c -a "" -e \(eshell\)'写在.bashrc 中
      第一个 emacs 在终端中用 emacs 打开
      之后在终端中使用 e 就会以这个 emacs 为 sever
      退出这第一个 emacs 之后就会关闭被它打开的 emacs-sever
@@ -4655,7 +4663,7 @@
 * make multi eshell work much easier
 ** eshell/delete-char-or-kill-buffer
    1. (goto-char (point-max)) == (end-of-buffer)
-   2. 在emacs中efb的识别方式有很多 比如:
+   2. 在 emacs 中 efb 的识别方式有很多 比如:
       1. (eq (following-char) 0)
          (char-equal (following-char) 0)
       2. (eq (point-max) (point))
@@ -4747,5 +4755,13 @@
 ** init call to (open-eshell-for-frame)
    #+begin_src emacs-lisp :tangle ~/.emacs
    (open-eshell-for-frame :off)
+   #+end_src
+* chinese
+** pangu-spacing
+   #+begin_src emacs-lisp :tangle ~/.emacs
+   (add-to-list 'load-path "~/.emacs.d/pangu-spacing/")
+   (require 'pangu-spacing)
+   (global-pangu-spacing-mode 1)
+   (setq pangu-spacing-real-insert-separtor t)
    #+end_src
 * ===================================
