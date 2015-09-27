@@ -1621,22 +1621,13 @@
                     (local-set-key (kbd ")") 'my-insert-0)
                     ))
     #+end_src
-*** >< mini-parentheses-editor
+*** mini-parentheses-editor
     parentheses /pəˈrɛnθəsiːz/
     is plural form of parenthesis /pəˈrɛnθəsɪs/
-
-    下面这些函数并不是全局可见的
-    但是只要 paredit 被 load 一次之后就可以使用了
-    而路过 org-mode 中的 lisp 代码块的时候 paredit 就能被 load 到
-    而我几乎总是会路过这种代码块的
-
-    下面的绑定有的时候会以不明显地方式改变 org-mode 中文本的内容
-    所以 暂时不用了
-    :tangle ~/.emacs
-    #+begin_src emacs-lisp
+    #+begin_src emacs-lisp :tangle ~/.emacs
     (global-set-key (kbd "M-(")         'paredit-wrap-round)
-    ;; (global-set-key (kbd "M-s")         'paredit-splice-sexp)
-    ;; (global-set-key (kbd "M-r")         'paredit-raise-sexp)
+    (global-set-key (kbd "M-s")         'paredit-splice-sexp)
+    (global-set-key (kbd "M-r")         'paredit-raise-sexp)
     (global-set-key (kbd "<C-right>")   'paredit-forward-slurp-sexp)
     (global-set-key (kbd "<C-left>")    'paredit-forward-barf-sexp)
     (global-set-key (kbd "M-\"")        'paredit-meta-doublequote)
@@ -2182,6 +2173,14 @@
    (global-set-key (kbd "C-s C-w") 'switch-to-buffer-*inferior-shen*)
    #+end_src
 ** ----------------------------------
+** egison-mode
+   #+begin_src emacs-lisp :tangle ~/.emacs
+   (add-to-list 'load-path "~/.emacs.d/egison-mode/")
+   (require 'egison-mode)
+   (autoload 'egison-mode "egison-mode" "Major mode for editing Egison code." t)
+   (setq auto-mode-alist (cons `("\\.egi$" . egison-mode) auto-mode-alist))
+   #+end_src
+** ----------------------------------
 ** js2-mode
    #+begin_src emacs-lisp :tangle ~/.emacs
    (add-to-list 'load-path "~/.emacs.d/js2-mode/")
@@ -2194,25 +2193,6 @@
    #+begin_src emacs-lisp :tangle ~/.emacs
    (add-to-list 'load-path "~/.emacs.d/emacs-web-server/")
    (require 'simple-httpd)
-
-   ;; (setq httpd-root "~/lang/js/coffeescript/coshMain.github.io")
-   ;; (setq httpd-port 8080)
-   ;; (httpd-start)
-
-   ;; (defservlet hello-world text/plain (path)
-   ;;     (insert "hello, " (file-name-nondirectory path)))
-   #+end_src
-** httpd
-   #+begin_src emacs-lisp :tangle ~/.emacs
-   (add-to-list 'load-path "~/.emacs.d/httpd/")
-   (require 'httpd)
-
-   ;; (setq httpd-root "~/lang/js/coffeescript/coshMain.github.io")
-   ;; (setq httpd-port 8080)
-   ;; (httpd-start)
-
-   ;; (defservlet hello-world text/plain (path)
-   ;;     (insert "hello, " (file-name-nondirectory path)))
    #+end_src
 ** skewer-mode
    #+begin_src emacs-lisp :tangle ~/.emacs
@@ -2229,6 +2209,9 @@
    (require 'coffee-mode)
    (add-to-list 'auto-mode-alist '("\\.coffee\\'" . coffee-mode))
    (custom-set-variables '(coffee-tab-width 2))
+
+   (add-to-list 'load-path "~/.emacs.d/literate-coffee-mode/")
+   (require 'literate-coffee-mode)
    #+end_src
 ** sibilant-mode
    #+begin_src emacs-lisp :tangle ~/.emacs
@@ -2259,7 +2242,7 @@
     (lambda ()
       (local-set-key (kbd "M-p") 'backward-paragraph)
       (local-set-key (kbd "M-n") 'forward-paragraph)
-      (turn-off-indent)
+      ;; (turn-off-indent)
       ))
    #+end_src
 ** ----------------------------------
@@ -3492,6 +3475,7 @@
 ** [babel] edit
    #+begin_src emacs-lisp :tangle ~/.emacs
    (add-hook 'org-mode-hook (setq org-src-preserve-indentation nil))
+   (add-hook 'org-mode-hook (setq org-src-do-not-insert-comma t))
    (add-hook 'org-mode-hook (setq org-edit-src-content-indentation 0))
    (add-hook 'org-mode-hook (setq org-src-window-setup 'current-window))
    (add-hook 'org-mode-hook (setq org-src-fontify-natively t))
@@ -3559,6 +3543,10 @@
             ;; scheme
             ("ssf" "#+end_src\n?\n#+begin_src scheme" "<src lang=\"?\">\n\n</src>")
             ("ss" "#+begin_src scheme\n?\n#+end_src" "<src lang=\"?\">\n\n</src>")
+
+            ;; racket
+            ("srf" "#+end_src\n?\n#+begin_src racket" "<src lang=\"?\">\n\n</src>")
+            ("sr" "#+begin_src racket\n?\n#+end_src" "<src lang=\"?\">\n\n</src>")
 
             ;; lisp
             ("lispf" "#+end_src\n?\n#+begin_src lisp" "<src lang=\"?\">\n\n</src>")
@@ -3656,9 +3644,9 @@
             ("javaf" "#+end_src\n?\n#+begin_src java" "<src lang=\"?\">\n\n</src>")
             ("java" "#+begin_src java\n?\n#+end_src" "<src lang=\"?\">\n\n</src>")
 
-            ;; javascript
-            ("jsf" "#+end_src\n?\n#+begin_src javascript" "<src lang=\"?\">\n\n</src>")
-            ("js" "#+begin_src javascript\n?\n#+end_src" "<src lang=\"?\">\n\n</src>")
+            ;; js
+            ("jsf" "#+end_src\n?\n#+begin_src js" "<src lang=\"?\">\n\n</src>")
+            ("js" "#+begin_src js\n?\n#+end_src" "<src lang=\"?\">\n\n</src>")
 
             ;; coffeescript
             ("cof" "#+end_src\n?\n#+begin_src coffee" "<src lang=\"?\">\n\n</src>")
