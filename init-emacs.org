@@ -2142,7 +2142,7 @@
    #+end_src
 ** ielm = run-elisp                   :no:
    * 不知道哪个傻逼起的 ielm 这个名字
-   #+begin_src emacs-lisp
+   #+begin_src emacs-lisp :tangle ~/.emacs
    (defun run-elisp ()
      (interactive)
      (ielm))
@@ -2817,6 +2817,9 @@
    (modify-coding-system-alist 'file "\\.l?agda\\'" 'utf-8)
 
    (require 'agda2)
+
+   (add-hook 'agda2-mode-hook
+             (lambda () (add-to-list 'agda2-include-dirs "/home/xyh/friend/xieyuheng/agda-prelude/src/")))
    #+end_src
 ** idris-mode
    #+begin_src emacs-lisp :tangle ~/.emacs
@@ -4452,6 +4455,46 @@
    (require 'hlinum)
    (hlinum-activate)
    #+end_src
+* ranger
+  #+begin_src emacs-lisp :tangle ~/.emacs
+  (add-to-list 'load-path "~/.emacs.d/ranger.el/")
+  (require 'ranger)
+
+  (setq ranger-cleanup-on-disable nil)
+  (setq ranger-cleanup-eagerly nil)
+
+  (setq ranger-parent-depth 3)
+
+  (setq ranger-show-literal t)
+  (setq ranger-ignored-extensions '("mkv" "iso" "mp4" "pdf" "djvu"))
+  (setq ranger-max-preview-size 1) ;; 1 MB
+
+  (add-hook 'ranger-mode-hook
+            (lambda ()
+              (local-set-key (kbd "C-t") 'isearch-forward)
+              (local-set-key (kbd "C-r") 'isearch-backward)
+
+              (local-set-key (kbd "<down>") 'ranger-next-file)
+              (local-set-key (kbd "<up>") 'ranger-prev-file)
+              (local-set-key (kbd "<left>") 'ranger-up-directory)
+              (local-set-key (kbd "<right>") 'ranger-find-file)
+
+              ;; (local-set-key (kbd "<return>") 'ranger-open)
+
+              (local-set-key (kbd "C-n") 'ranger-next-file)
+              (local-set-key (kbd "C-p") 'ranger-prev-file)
+              ))
+
+  ;; (defun ranger-open ()
+  ;;   (interactive)
+  ;;   (let ((find-name (dired-get-file-for-visit)))
+  ;;     (cond ((file-directory-p find-name)
+  ;;            (message "can not open a directory, type <right> to enter the directory"))
+  ;;           (:else
+  ;;            (eshell-command (concatenate 'string
+  ;;                                         "rifle "
+  ;;                                         "'" find-name "'"))))))
+  #+end_src
 * looks like
 ** font
 *** <f7>

@@ -1,0 +1,1 @@
+cd ~/.emacs.d/dot-emacs/ && ./tangle.el && cd -
