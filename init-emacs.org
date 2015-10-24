@@ -730,6 +730,11 @@
             ))
     #+end_src
 
+*** kill-buffer-query-functions
+    #+begin_src emacs-lisp :tangle ~/.emacs
+    (setq kill-buffer-query-functions nil)
+    #+end_src
+
 * note little input method
   输入法和文本编辑器相辅相成同等重要
   emcas 因一个 bug 而不能使用 input method framework
@@ -1765,13 +1770,13 @@
       #+begin_src emacs-lisp :tangle ~/.emacs
       (require 'cmuscheme)
 
-      (setq scheme-program-name "ikarus")
+      (setq scheme-program-name "racket")
 
       (defun switch-to-buffer-*scheme* ()
         (interactive)
         (switch-to-scheme 1) ;; (switch-to-buffer "*scheme*")
-        (local-set-key (kbd "C-s C-v") 'previous-buffer))
-      (global-set-key (kbd "C-s C-v") 'switch-to-buffer-*scheme*)
+        (local-set-key (kbd "C-s C-d") 'previous-buffer))
+      (global-set-key (kbd "C-s C-d") 'switch-to-buffer-*scheme*)
 
       (defun split-window-with-named-buffer (buffer-name-string)
         (interactive)
@@ -1806,10 +1811,35 @@
         (split-window-with-named-buffer "*scheme*"))
 
       (add-hook
+       'inferior-scheme-mode-hook
+       (lambda ()
+         (local-set-key (kbd "C-c C-c")
+                        (lambda ()
+                          (interactive)
+                          (kill-buffer)
+                          (run-scheme scheme-program-name)))))
+
+      (add-hook
        'scheme-mode-hook
        (lambda ()
          (local-set-key (kbd "C-x C-e") 'scheme-send-last-sexp-split-window)
-         (local-set-key (kbd "C-c C-e") 'scheme-send-definition-split-window)))
+         (local-set-key (kbd "C-c C-e") 'scheme-send-definition-split-window)
+         (local-set-key (kbd "C-<tab>")
+                        (lambda ()
+                          (interactive)
+                          (forward-sexp)
+                          (scheme-send-last-sexp-split-window)))))
+
+      (add-hook
+       'scheme-mode-hook
+       (lambda ()
+         (local-set-key (kbd "C-x C-e") 'scheme-send-last-sexp-split-window)
+         (local-set-key (kbd "C-c C-e") 'scheme-send-definition-split-window)
+         (local-set-key (kbd "C-<tab>")
+                        (lambda ()
+                          (interactive)
+                          (forward-sexp)
+                          (scheme-send-last-sexp-split-window)))))
       #+end_src
 
 ***** scheme-here
@@ -2033,25 +2063,58 @@
        (0 . *λ)
        (0 . *l)
 
-       ;; 我练习写解释器所需要的高亮
        (1 . define-primitive)
-       ))
+
+       ;; racket
+       (1 . require)
+       (1 . provide)
+       (1 . module)
+       (1 . module+)
+       (1 . module*)
+
+       (1 . class)
+       (2 . class*)
+       (1 . interface)
+       (2 . mixin)
+       (1 . define/public)
+       (1 . define/override)
+       (1 . new)
+       (1 . send)
+       (2 . :)
+       (1 . ::)
+       (1 . super)
+
+       (1 . test-case)
+       (2 . check-expect)
+       (2 . check-error)
+
+       ;; cicada
+       (1 . create-primitive-function)
+       (1 . define-function)
+       (1 . define-variable)
+       (1 . declare-primitive-function)))
     #+end_src
 
 *** racket
     #+begin_src emacs-lisp :tangle ~/.emacs
     (add-to-list 'load-path "~/.emacs.d/racket-mode/")
+
+    ;; (add-to-list 'load-path "~/.emacs.d/s.el/")
+    ;; (require 's)
     ;; (add-to-list 'load-path "~/.emacs.d/racket-mode--greghendershott/")
+
     (require 'racket-mode)
 
-    (defun switch-to-buffer-*racket* ()
-      (interactive)
-      (let ()
-        (switch-to-buffer racket--repl-buffer-name t)
-        (with-current-buffer racket--repl-buffer-name
-          (goto-char (point-max))))
-      (local-set-key (kbd "C-s C-d") 'previous-buffer))
-    (global-set-key (kbd "C-s C-d") 'switch-to-buffer-*racket*)
+    (setq auto-mode-alist (cons `("\\.rkt$" . scheme-mode) auto-mode-alist))
+
+    ;; (defun switch-to-buffer-*racket* ()
+    ;;   (interactive)
+    ;;   (let ()
+    ;;     (switch-to-buffer racket--repl-buffer-name t)
+    ;;     (with-current-buffer racket--repl-buffer-name
+    ;;       (goto-char (point-max))))
+    ;;   (local-set-key (kbd "C-s C-d") 'previous-buffer))
+    ;; (global-set-key (kbd "C-s C-d") 'switch-to-buffer-*racket*)
     #+end_src
 
 *** dylan
@@ -2491,6 +2554,9 @@
 
 *** forth
     #+begin_src emacs-lisp :tangle ~/.emacs
+    ;; (add-to-list 'load-path "~/.emacs.d/forth-mode/")
+    ;; (require 'forth-mode)
+
     (defun switch-to-buffer-*forth* ()
       (interactive)
       (if (member-string? "*forth*" (mapcar 'buffer-name (buffer-list)))
@@ -2499,10 +2565,11 @@
             (run-forth forth-name)))
       (local-set-key (kbd "C-s C-f") 'previous-buffer))
     (global-set-key (kbd "C-s C-f") 'switch-to-buffer-*forth*)
+
+    (add-to-list 'auto-mode-alist '("\\.frt$" . forth-mode))
     #+end_src
 
 *** gforth
-    file:~/.emacs.d/gforth.el/forth-mode.el
     #+begin_src emacs-lisp :tangle ~/.emacs
     (add-to-list 'load-path "~/.emacs.d/gforth.el/")
 
@@ -2552,7 +2619,7 @@
                      (local-set-key (kbd "C-<tab>") 'forth-send-line-and-goto-next-line)
                      (local-set-key (kbd "<return>") 'newline)
 
-                     (turn-off-indent)
+                     ;; (turn-off-indent)
                      (local-set-key (kbd "M-q") 'query-replace)
 
                      ;; (setq comment-start "("!;\ )
@@ -3189,8 +3256,8 @@
 
 *** python
     #+begin_src emacs-lisp :tangle ~/.emacs
-    (setq py-install-directory "~/.emacs.d/python-el/")
-    (require 'python)
+    ;; (setq py-install-directory "~/.emacs.d/python-mode/")
+    ;; (require 'python)
     #+end_src
 
 *** java
@@ -4551,8 +4618,9 @@
              :port 6666
              :channels (
                         "#szdiy"
+                        "#hackvana"
                         "#archlinux-cn"
-                        ;; "#osdev"
+                        "#osdev"
 
                         "#constructive-math"
                         ;; "##categorytheory"
