@@ -2,9 +2,9 @@
 #+AUTHOR: 謝宇恆 / XIE Yuheng
 
 * note
-  * keep it simple
-  * try to do not change default key-binding
-  * add a thing only when you really need it
+  - keep it simple
+  - try to do not change default key-binding
+  - add a thing only when you really need it
 
 * lib
 
@@ -654,7 +654,7 @@
     ;; 而且有更好的设计的文本编辑器也许并没有那么难
     (add-hook 'prog-mode-hook (lambda () (setq indent-tabs-mode nil)))
 
-
+    (fringe-mode 1)
 
     (transient-mark-mode t)
 
@@ -1819,16 +1819,21 @@
                           (kill-buffer)
                           (run-scheme scheme-program-name)))))
 
+      (defun scheme-easy-to-eval ()
+        (interactive)
+        (if (>= (+ 1 (point))
+                (point-max))
+            (message "C-<tab> : last sexp is evaled")
+            (let ()
+              (forward-sexp)
+              (scheme-send-last-sexp-split-window))))
+
       (add-hook
        'scheme-mode-hook
        (lambda ()
          (local-set-key (kbd "C-x C-e") 'scheme-send-last-sexp-split-window)
          (local-set-key (kbd "C-c C-e") 'scheme-send-definition-split-window)
-         (local-set-key (kbd "C-<tab>")
-                        (lambda ()
-                          (interactive)
-                          (forward-sexp)
-                          (scheme-send-last-sexp-split-window)))))
+         (local-set-key (kbd "C-<tab>") 'scheme-easy-to-eval)))
 
       (add-hook
        'scheme-mode-hook
@@ -3090,7 +3095,7 @@
 *** idris-mode
     #+begin_src emacs-lisp :tangle ~/.emacs
     (add-to-list 'load-path "~/.emacs.d/prop-menu-el/")
-    (provide 'prop-menu)
+    (require 'prop-menu)
     (add-to-list 'load-path "~/.emacs.d/idris-mode/")
     (require 'idris-mode)
     #+end_src
@@ -3259,6 +3264,13 @@
     ;; (setq py-install-directory "~/.emacs.d/python-mode/")
     ;; (require 'python)
     #+end_src
+
+*** hy
+    #+begin_src emacs-lisp :tangle ~/.emacs
+    (add-to-list 'load-path "~/.emacs.d/hy-mode/")
+    (require 'hy-mode)
+    #+end_src
+
 
 *** java
     #+begin_src emacs-lisp :tangle ~/.emacs
@@ -4553,102 +4565,6 @@
     (guide-key-mode 1)
     #+end_src
 
-*** erc
-    #+begin_src emacs-lisp :tangle ~/.emacs
-    (setq erc-autojoin-channels-alist '(("freenode.net" "#constructive-math" "##categorytheory" "##typetheory" "#szdiy" "#archlinux-cn" "#forth")))
-    #+end_src
-
-*** rcirc
-    #+begin_src emacs-lisp :tangle ~/.emacs
-    (add-to-list 'load-path "~/.emacs.d/irc/")
-    (require 'rcirc)
-
-    ;; (require 'rcirc-ding)
-    ;; (setq alert "~/play/Tanna_japonensis_v01.wav")
-    ;; (defun my-rcirc-print-hook (process sender response target text)
-    ;;   (when (and (string-match (regexp-quote (rcirc-nick process)) text)
-    ;;              (not (string= (rcirc-nick process) sender))
-    ;;              (not (string= (rcirc-server-name process) sender)))
-    ;;     (start-process "beep" nil "aplay" (expand-file-name alert))))
-    ;; (add-hook 'rcirc-print-hooks 'my-rcirc-print-hook)
-    ;; ;; Starting from Emacs 24.3 rcirc-print-hooks is deprecated use rcirc-print-functions instead
-    ;; (add-hook 'rcirc-print-functions 'my-rcirc-print-hook)
-
-
-    (setq rcirc-default-nick "xyh")
-    ;; (setq rcirc-default-port "6666")
-    (setq rcirc-default-user-name "xieyuheng")
-    (setq rcirc-default-full-name "XIE Yuheng")
-
-    (setq rcirc-server-alist
-          '(("irc.freenode.net" :port 6697 :encryption tls
-             :channels ("#forth"
-                        "#cicada-language"
-                        "#szdiy"
-                        ;; "#scheme"
-                        ;; "#guile"
-                        ;; "#lisp"
-                        ;; "#ccl"
-                        ;; "#coq"
-                        ;; "#shen"
-                        ;; "#haskell"
-                        ;; "#minikanren"
-                        ;; "#erlang"
-                        ;; "#erlang-lisp"
-                        ;; "#osdev"
-                        ;; "#fcitx"
-                        ))))
-
-    ;; gnutls.c: [1] Note that
-    ;; the security level of the Diffie-Hellman key exchange
-    ;; has been lowered to 256 bits
-    ;; and this may allow decryption of the session data
-    ;; If you’re getting this warning, add the following to your init file:
-    (setq gnutls-min-prime-bits 1024)
-    #+end_src
-
-*** circe
-    #+begin_src emacs-lisp :tangle ~/.emacs
-    (add-to-list 'load-path "~/.emacs.d/circe/lisp")
-    (require 'circe)
-
-    (setq circe-network-options
-          `(("Freenode"
-             :nick "xyh"
-             :port 6666
-             :channels (
-                        "#szdiy"
-                        "#hackvana"
-                        "#archlinux-cn"
-                        "#osdev"
-
-                        "#constructive-math"
-                        ;; "##categorytheory"
-                        ;; "##typetheory"
-
-                        "#agda"
-                        "#idris"
-
-                        "#forth"
-                        "#cicada-language"
-
-                        ;; "##Orz"
-
-                        ;; "#scheme"
-                        ;; "#guile"
-                        ;; "#lisp"
-                        ;; "#ccl"
-                        ;; "#coq"
-                        ;; "#shen"
-                        ;; "#haskell"
-                        ;; "#minikanren"
-                        ;; "#erlang"
-                        ;; "#erlang-lisp"
-
-                        ;; "#fcitx"
-                        ))))
-    #+end_src
-
 *** muse
     #+begin_src emacs-lisp :tangle ~/.emacs
     (add-to-list 'load-path "~/.emacs.d/muse/lisp/")
@@ -4838,21 +4754,6 @@
     (hlinum-activate)
     #+end_src
 
-* ranger
-  #+begin_src emacs-lisp :tangle ~/.emacs
-  (add-to-list 'load-path "~/.emacs.d/ranger/")
-  (require 'ranger)
-
-  (setq ranger-cleanup-on-disable t)
-  (setq ranger-cleanup-eagerly t)
-
-  (setq ranger-parent-depth 1)
-
-  (setq ranger-show-literal t)
-  (setq ranger-ignored-extensions '("mkv" "iso" "mp4" "pdf" "djvu"))
-  (setq ranger-max-preview-size 1) ;; 1 MB
-  #+end_src
-
 * helm
   #+begin_src emacs-lisp :tangle ~/.emacs
   (add-to-list 'load-path "~/.emacs.d/emacs-async/")
@@ -4881,6 +4782,149 @@
   ;; (add-to-list 'load-path "~/.emacs.d/gh.el/")
   ;; (add-to-list 'load-path "~/.emacs.d/emacs-helm-open-github/")
   ;; (require 'helm-open-github)
+  #+end_src
+
+* irc
+
+*** rcirc
+    #+begin_src emacs-lisp :tangle ~/.emacs
+    (setq rcirc-default-nick "xyh")
+    (setq rcirc-default-port "6666")
+    (setq rcirc-default-user-name "xieyuheng")
+    (setq rcirc-default-full-name "XIE Yuheng")
+
+    (eval-after-load 'rcirc '(rcirc-track-minor-mode 1))
+
+    (setq rcirc-server-alist
+          '(("irc.freenode.net" :port 6666
+             :channels (
+                        ;; "#hackvana"
+                        ;; "#osdev"
+                        ;; "#constructive-math"
+                        ;; "##categorytheory"
+                        ;; "##typetheory"
+                        ;; "#kq"
+
+                        "#forth"
+                        "#agda"
+                        "#idris"
+                        "#szdiy"
+                        "#archlinux-cn"
+                        "#cicada-language"
+
+                        ;; "##Orz"
+
+                        ;; "#scheme"
+                        ;; "#guile"
+                        ;; "#lisp"
+                        ;; "#ccl"
+                        ;; "#coq"
+                        ;; "#shen"
+                        ;; "#haskell"
+                        ;; "#minikanren"
+                        ;; "#erlang"
+                        ;; "#erlang-lisp"
+
+                        ;; "#fcitx"
+                        ))))
+    #+end_src
+
+*** rcirc-groups
+    #+begin_src emacs-lisp :tangle ~/.emacs
+    (add-to-list 'load-path "~/.emacs.d/rcirc-groups/")
+    (require 'rcirc-groups)
+    (require 'rcirc-notify-mode)
+    #+end_src
+
+*** rcirc-notify+
+    #+begin_src emacs-lisp :tangle ~/.emacs
+    (add-to-list 'load-path "~/.emacs.d/rcirc-notify-plus/")
+    (require 'rcirc-notify+)
+    (setq rcirc-notify+-open t)
+    #+end_src
+
+*** rcirc-autoreconnect
+    #+begin_src emacs-lisp :tangle ~/.emacs
+    (add-to-list 'load-path "~/.emacs.d/rcirc-autoreconnect/")
+    (require 'rcirc-autoreconnect)
+    (setq rcirc-autoreconnect t)
+    #+end_src
+
+*** helm-rcirc
+    #+begin_src emacs-lisp :tangle ~/.emacs
+    (add-to-list 'load-path "~/.emacs.d/helm-rcirc/")
+    (require 'helm-rcirc)
+    #+end_src
+
+*** circe                             :no:
+    #+begin_src emacs-lisp :tangle no
+    (add-to-list 'load-path "~/.emacs.d/circe/")
+    (require 'circe)
+
+    (setq circe-network-options
+          `(("Freenode"
+             :nick "xyh"
+             :port 6667
+             :channels (
+                        "#szdiy"
+                        ;; "#hackvana"
+                        "#archlinux-cn"
+                        ;; "#osdev"
+
+                        ;; "#constructive-math"
+                        ;; "##categorytheory"
+                        ;; "##typetheory"
+
+                        "#agda"
+                        "#idris"
+
+                        ;; "#kq"
+
+                        "#forth"
+                        "#cicada-language"
+
+                        ;; "##Orz"
+
+                        ;; "#scheme"
+                        ;; "#guile"
+                        ;; "#lisp"
+                        ;; "#ccl"
+                        ;; "#coq"
+                        ;; "#shen"
+                        ;; "#haskell"
+                        ;; "#minikanren"
+                        ;; "#erlang"
+                        ;; "#erlang-lisp"
+
+                        ;; "#fcitx"
+                        ))))
+    #+end_src
+
+*** erc
+    #+begin_src emacs-lisp :tangle ~/.emacs
+    (setq erc-autojoin-channels-alist
+          '(("freenode.net"
+             "#constructive-math"
+             "##categorytheory"
+             "##typetheory"
+             "#szdiy"
+             "#archlinux-cn"
+             "#forth")))
+    #+end_src
+
+* ranger
+  #+begin_src emacs-lisp :tangle ~/.emacs
+  (add-to-list 'load-path "~/.emacs.d/ranger/")
+  (require 'ranger)
+
+  (setq ranger-cleanup-on-disable t)
+  (setq ranger-cleanup-eagerly t)
+
+  (setq ranger-parent-depth 1)
+
+  (setq ranger-show-literal t)
+  (setq ranger-ignored-extensions '("mkv" "iso" "mp4" "pdf" "djvu"))
+  (setq ranger-max-preview-size 1) ;; 1 MB
   #+end_src
 
 * looks like
@@ -5042,7 +5086,7 @@
 ***** molokai
       #+begin_src emacs-lisp :tangle ~/.emacs
       (add-to-list 'custom-theme-load-path "~/.emacs.d/molokai-theme/")
-      (setq molokai-theme-kit t)
+      ;; (setq molokai-theme-kit t)
       (load-theme 'molokai t)
       #+end_src
 
@@ -5388,4 +5432,93 @@
     (require 'pangu-spacing)
     (global-pangu-spacing-mode 1)
     (setq pangu-spacing-real-insert-separtor t)
+    #+end_src
+* exvm
+*** load
+    #+begin_src emacs-lisp :tangle no
+    (add-to-list 'load-path "~/.emacs.d/elpa/packages/cl-generic/")
+    (require 'cl-generic)
+    (add-to-list 'load-path "~/.emacs.d/xelb/")
+    (add-to-list 'load-path "~/.emacs.d/exwm/")
+    (require 'exwm)
+    (require 'exwm-config)
+    ;; (exwm-config-default)
+
+    ;; All buffers created in EXWM mode are named "*EXWM*". You may want to change
+    ;; it in `exwm-update-class-hook' and `exwm-update-title-hook', which are run
+    ;; when a new window class name or title is available. Here's some advice on
+    ;; this subject:
+    ;; + Always use `exwm-workspace-rename-buffer` to avoid naming conflict.
+    ;; + Only renaming buffer in one hook and avoid it in the other. There's no
+    ;;   guarantee on the order in which they are run.
+    ;; + For applications with multiple windows (e.g. GIMP), the class names of all
+    ;;   windows are probably the same. Using window titles for them makes more
+    ;;   sense.
+    ;; + Some application change its title frequently (e.g. browser, terminal).
+    ;;   Its class name may be more suitable for such case.
+    ;; In the following example, we use class names for all windows expect for
+    ;; Java applications and GIMP.
+    (add-hook 'exwm-update-class-hook
+              (lambda ()
+                (unless (or (string-prefix-p "sun-awt-X11-" exwm-instance-name)
+                            (string= "gimp" exwm-instance-name))
+                  (exwm-workspace-rename-buffer exwm-class-name))))
+    (add-hook 'exwm-update-title-hook
+              (lambda ()
+                (when (or (not exwm-instance-name)
+                          (string-prefix-p "sun-awt-X11-" exwm-instance-name)
+                          (string= "gimp" exwm-instance-name))
+                  (exwm-workspace-rename-buffer exwm-title))))
+
+    ;; `exwm-input-set-key' allows you to set a global key binding (available in
+    ;; any case). Following are a few examples.
+    ;; + We always need a way to go back to line-mode from char-mode
+    (exwm-input-set-key (kbd "s-r") 'exwm-reset)
+    ;; + Bind a key to switch workspace interactively
+    (exwm-input-set-key (kbd "s-n") 'exwm-workspace-switch)
+    ;; + Set shortcuts to switch to a certain workspace.
+    (exwm-input-set-key (kbd "s-0")
+                        (lambda () (interactive) (exwm-workspace-switch 0)))
+    (exwm-input-set-key (kbd "s-1")
+                        (lambda () (interactive) (exwm-workspace-switch 1)))
+    (exwm-input-set-key (kbd "s-2")
+                        (lambda () (interactive) (exwm-workspace-switch 2)))
+    (exwm-input-set-key (kbd "s-3")
+                        (lambda () (interactive) (exwm-workspace-switch 3)))
+    ;; + Application launcher ('M-&' also works if the output buffer does not
+    ;;   bother you). Note that there is no need for processes to be created by
+    ;;   Emacs.
+    (exwm-input-set-key (kbd "s-&")
+                        (lambda (command)
+                          (interactive (list (read-shell-command "$ ")))
+                          (start-process-shell-command command nil command)))
+    ;; + 'slock' is a simple X display locker provided by suckless tools. 'i3lock'
+    ;;   is a more feature-rich alternative.
+    (exwm-input-set-key (kbd "s-<f2>")
+                        (lambda () (interactive) (start-process "" nil "slock")))
+
+    ;; The following example demonstrates how to set a key binding only available
+    ;; in line mode. It's simply done by first push the prefix key to
+    ;; `exwm-input-prefix-keys' and then add the key sequence to `exwm-mode-map'.
+    ;; The example shorten 'C-c q' to 'C-q'.
+    (push ?\C-q exwm-input-prefix-keys)
+    (define-key exwm-mode-map [?\C-q] 'exwm-input-send-next-key)
+
+    ;; The following example demonstrates how to use simulation keys to mimic the
+    ;; behavior of Emacs. The argument to `exwm-input-set-simulation-keys' is a
+    ;; list of cons cells (SRC . DEST), where SRC is the key sequence you press and
+    ;; DEST is what EXWM actually sends to application. Note that SRC must be a key
+    ;; sequence (of type vector or string), while DEST can also be a single key.
+    (exwm-input-set-simulation-keys
+     '(([?\C-b] . left)
+       ([?\C-f] . right)
+       ([?\C-p] . up)
+       ([?\C-n] . down)
+       ([?\C-a] . home)
+       ([?\C-e] . end)
+       ([?\M-v] . prior)
+       ([?\C-v] . next)))
+
+    ;; Do not forget to enable EXWM. It will start by itself when things are ready.
+    (exwm-enable)
     #+end_src
