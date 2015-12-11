@@ -1833,18 +1833,24 @@
        (lambda ()
          (local-set-key (kbd "C-x C-e") 'scheme-send-last-sexp-split-window)
          (local-set-key (kbd "C-c C-e") 'scheme-send-definition-split-window)
-         (local-set-key (kbd "C-<tab>") 'scheme-easy-to-eval)))
-
-      (add-hook
-       'scheme-mode-hook
-       (lambda ()
-         (local-set-key (kbd "C-x C-e") 'scheme-send-last-sexp-split-window)
-         (local-set-key (kbd "C-c C-e") 'scheme-send-definition-split-window)
-         (local-set-key (kbd "C-<tab>")
+         (local-set-key (kbd "C-<tab>") 'scheme-easy-to-eval)
+         (local-set-key (kbd "|")
                         (lambda ()
                           (interactive)
-                          (forward-sexp)
-                          (scheme-send-last-sexp-split-window)))))
+                          (insert "||")))
+         (local-set-key (kbd "{")
+                        (lambda ()
+                          (interactive)
+                          (insert "{}")))
+         (local-set-key (kbd "M-|")
+                        (lambda ()
+                          (interactive)
+                          (insert "|")
+                          (forward-sexp 1)
+                          (insert "|")
+                          (left-char)
+                          (backward-sexp 1)
+                          (left-char)))))
       #+end_src
 
 ***** scheme-here
@@ -1903,9 +1909,6 @@
       #+end_src
 
 *** scheme-add-keywords
-    设计良好的高亮与缩进很重要
-    它可以增加代码的可读性
-    并帮助检查代码的部分错误
     #+begin_src emacs-lisp :tangle ~/.emacs
     ;; 下面的实现方式并不完备
     ;; scheme-mode 中原本的实现不是如此
@@ -1923,6 +1926,7 @@
                      'scheme-indent-function
                      (car x)))
             keyword-rules))
+
     ;; 前面的数字被认为是参数项的个数
     ;; 参数项完全换行时强缩进 其他项弱缩进
     ;; 非语法关键词 所有项在完全换行时都不缩进
@@ -2093,11 +2097,49 @@
        (2 . check-expect)
        (2 . check-error)
 
+       (1 . match)
+       (1 . match*)
+       (0 . match-lambda**)
+       (0 . fun)
+       (1 . just-fun)
+       (1 . define/match)
+
+       (2 . syntax-case)
+       (1 . syntax-parse)
+
+       (0 . orz)
+       (0 . note)
+
+       (2 . oer)
+
+       (1 . create)
+       (1 . apply-creator-list)
+       (1 . process)
+       (1 . apply-processor-list)
+       (1 . settle)
+       (1 . apply-settler-list)
+
+       (1 . with-handlers)
+       (1 . raise)
+
+       (0 . try)
+       (1 . back-to-last-try)
+
        ;; cicada
        (1 . create-primitive-function)
+
        (1 . define-function)
        (1 . define-variable)
-       (1 . declare-primitive-function)))
+       (1 . define-primitive-function)
+
+       (0 . here)
+       (0 . !)
+       (0 . @)
+       (0 . !td)
+       (0 . @t)
+       (0 . @d)
+
+       ))
     #+end_src
 
 *** racket
@@ -2446,7 +2488,12 @@
        ))
     #+end_src
 
+*** haml
 
+    #+begin_src emacs-lisp :tangle ~/.emacs
+    (add-to-list 'load-path "~/.emacs.d/haml-mode/")
+    (require 'haml-mode)
+    #+end_src
 
 *** [not using] DOS
     #+begin_src emacs-lisp
@@ -2546,6 +2593,11 @@
     (add-to-list 'auto-mode-alist '("\\.rs\\'" . rust-mode))
     #+end_src
 
+*** go
+    #+begin_src emacs-lisp :tangle ~/.emacs
+    (add-to-list 'load-path "~/.emacs.d/go-mode/")
+    (require 'go-mode)
+    #+end_src
 
 *** retro
     #+begin_src emacs-lisp :tangle ~/.emacs
@@ -4247,7 +4299,7 @@
     (global-set-key (kbd "C-s C-a") 'org-switch-to-code-block-file)
     #+end_src
 
-* feature
+* app
 
 *** command-log-mode
     #+begin_src emacs-lisp :tangle ~/.emacs
@@ -4754,6 +4806,16 @@
     (hlinum-activate)
     #+end_src
 
+*** region-state
+    #+begin_src emacs-lisp :tangle ~/.emacs
+    (add-to-list 'load-path "~/.emacs.d/region-state/")
+    (require 'region-state)
+    (region-state-mode)
+    (setq region-state-display-place 'echo-area)
+    ;; (setq region-state-display-place 'header-line)
+    ;; (setq region-state-display-place 'mode-line)
+    #+end_src
+
 * helm
   #+begin_src emacs-lisp :tangle ~/.emacs
   (add-to-list 'load-path "~/.emacs.d/emacs-async/")
@@ -4808,8 +4870,10 @@
                         "#forth"
                         "#agda"
                         "#idris"
+                        "#racket"
                         "#szdiy"
                         "#archlinux-cn"
+                        "#linux-cn"
                         "#cicada-language"
 
                         ;; "##Orz"
@@ -5012,21 +5076,29 @@
 
 ***** 宋
       #+begin_src emacs-lisp :tangle ~/.emacs
-      ;; (set-fontset-font t 'han (font-spec :name "HanaMinA" :size 32))
-      ;; (set-fontset-font t 'han (font-spec :name "HAN NOM A" :size 32))
-      ;; (set-fontset-font t 'han (font-spec :name "H\-秀月" :size 32))
-      ;; (set-fontset-font t 'han (font-spec :name "simsun" :size 32))
+      ;; (set-fontset-font t 'han (font-spec :name "HanaMinA" :size 20))
+      ;; (set-fontset-font t 'han (font-spec :name "HAN NOM A" :size 20))
+      ;; (set-fontset-font t 'han (font-spec :name "H-秀月" :size 20))
+      ;; (set-fontset-font t 'han (font-spec :name "H-SiuNiu" :size 20))
+      ;; (set-fontset-font t 'han (font-spec :name "simsun" :size 20))
       ;; (set-fontset-font t 'han (font-spec :name "臺灣新細明體" :size 20))
       #+end_src
 
 ***** 黑
       #+begin_src emacs-lisp :tangle ~/.emacs
-      ;; (set-fontset-font t 'han (font-spec :name "H\-雲林呉竹体" :size 20))
-      (set-fontset-font t 'han (font-spec :name "H\-明蘭" :size 20))
+      ;; (set-fontset-font t 'han (font-spec :name "H-雲林呉竹体" :size 20))
+      (set-fontset-font t 'han (font-spec :name "H-明蘭" :size 20))
+      ;; (set-fontset-font t 'han (font-spec :name "H-minglan" :size 20))
+
+      ;; (set-fontset-font t 'han (font-spec :name "Noto Sans Mono CJK TC" :size 20))
+      ;; (set-fontset-font t 'han (font-spec :name "Noto Sans CJK TC" :size 20))
+      ;; (set-fontset-font t 'han (font-spec :name "Noto Sans CJK TC Light" :size 20))
+      ;; (set-fontset-font t 'han (font-spec :name "Noto Sans CJK TC DemiLight" :size 20))
+      ;; (set-fontset-font t 'han (font-spec :name "Noto Sans CJK TC Medium" :size 20))
       ;; (set-fontset-font t 'han (font-spec :name "SourceHanSans" :size 32))
       ;; (set-fontset-font t 'han (font-spec :name "WenQuanYi Micro Hei Mono" :size 20))
-      ;; (set-fontset-font t 'han (font-spec :name "H\-儷黑" :size 20))
-      ;; (set-fontset-font t 'han (font-spec :name "H\-新雅蘭" :size 20))
+      ;; (set-fontset-font t 'han (font-spec :name "H-儷黑" :size 20))
+      ;; (set-fontset-font t 'han (font-spec :name "H-新雅蘭" :size 20))
       #+end_src
 
 ***** 英
