@@ -2,6 +2,7 @@
 #+AUTHOR: 謝宇恆 / XIE Yuheng
 
 * note
+
   - keep it simple
   - try to do not change default key-binding
   - add a thing only when you really need it
@@ -3150,6 +3151,14 @@
     (require 'prop-menu)
     (add-to-list 'load-path "~/.emacs.d/idris-mode/")
     (require 'idris-mode)
+
+    (add-hook
+     'idris-mode-hook
+     (lambda ()
+       (local-set-key (kbd "C-M-n") 'idris-next-error)
+       (local-set-key (kbd "C-M-p") 'idris-previous-error)
+       (local-set-key (kbd "M-n") 'forward-paragraph)
+       (local-set-key (kbd "M-p") 'backward-paragraph)))
     #+end_src
 
 *** jonprl
@@ -3166,6 +3175,20 @@
     #+begin_src emacs-lisp :tangle ~/.emacs
     (add-to-list 'load-path "~/.emacs.d/clojure-mode/")
     (require 'clojure-mode)
+
+    (defun clojure-easy-to-eval ()
+      (interactive)
+      (if (>= (+ 1 (point))
+              (point-max))
+          (message "C-<tab> : last sexp is evaled")
+          (let ()
+            (forward-sexp)
+            (cider-eval-last-sexp))))
+
+    (add-hook
+     'clojure-mode-hook
+     (lambda ()
+       (local-set-key (kbd "C-<tab>") 'clojure-easy-to-eval)))
     #+end_src
 
 *** queue
@@ -3174,11 +3197,15 @@
     (require 'queue)
     #+end_src
 
-*** [not using] cider
-    * CIDER (formerly nrepl.el) is the Clojure IDE and REPL for Emacs
-      built on top of nREPL(the Clojure networked REPL server)
-      CIDER depends on clojure-mode, dash.el and pkg-info
+*** cider
+
     #+begin_src emacs-lisp :tangle ~/.emacs
+    (add-to-list 'load-path "~/.emacs.d/spinner.el/")
+    (require 'spinner)
+
+    (add-to-list 'load-path "~/.emacs.d/seq.el/")
+    (require 'seq)
+
     (add-to-list 'load-path "~/.emacs.d/cider/")
     (require 'cider)
 
@@ -3313,8 +3340,55 @@
 
 *** python
     #+begin_src emacs-lisp :tangle ~/.emacs
-    ;; (setq py-install-directory "~/.emacs.d/python-mode/")
-    ;; (require 'python)
+    (setq py-install-directory "~/.emacs.d/python-mode/")
+    (add-to-list 'load-path py-install-directory)
+    (require 'python-mode)
+
+
+    (defun python-easy-to-eval ()
+      (interactive)
+      (if (>= (+ 1 (point))
+              (point-max))
+          (message "C-<tab> : last sexp is evaled")
+          (let ()
+            (py-forward-statement)
+            (py-execute-statement))))
+
+    (add-hook
+     'python-mode-hook
+     (lambda ()
+       (local-set-key (kbd "C-<tab>") 'python-easy-to-eval)))
+
+    (add-hook
+     'py-python-shell-mode-hook
+     (lambda ()
+       (local-set-key (kbd "M-<tab>") 'window->)))
+    #+end_src
+
+*** python-el                         :no:
+    #+begin_src emacs-lisp :tangle no
+    (add-to-list 'load-path "~/.emacs.d/python-el/")
+    (require 'python)
+
+    (defadvice run-python (around python-emacspy-directory activate)
+      (let ((process-environment
+             (cons (concat "PYTHONPATH=" "~/.emacs.d/python-el/")
+                   process-environment)))
+        ad-do-it))
+
+    (defun python-easy-to-eval ()
+      (interactive)
+      (if (>= (+ 1 (point))
+              (point-max))
+          (message "C-<tab> : last sexp is evaled")
+          (let ()
+            (python-next-statement)
+            (python-send-defun))))
+
+    (add-hook
+     'python-mode-hook
+     (lambda ()
+       (local-set-key (kbd "C-<tab>") 'python-easy-to-eval)))
     #+end_src
 
 *** hy
@@ -3959,10 +4033,6 @@
       #+begin_src emacs-lisp :tangle ~/.emacs
       (setq org-structure-template-forth-family
             '(
-              ;; cicada
-              ("cf" "#+end_src\n?\n#+begin_src cicada" "<src lang=\"?\">\n\n</src>")
-              ("c" "#+begin_src cicada\n?\n#+end_src" "<src lang=\"?\">\n\n</src>")
-
               ;; cicada-nymph
               ("cnf" "#+end_src\n?\n#+begin_src cicada-nymph" "<src lang=\"?\">\n\n</src>")
               ("cn" "#+begin_src cicada-nymph\n?\n#+end_src" "<src lang=\"?\">\n\n</src>")
@@ -4031,9 +4101,9 @@
       #+begin_src emacs-lisp :tangle ~/.emacs
       (setq org-structure-template-c-family
             '(
-              ;; C
-              ("Cf" "#+end_src\n?\n#+begin_src C" "<src lang=\"?\">\n\n</src>")
-              ("C" "#+begin_src C\n?\n#+end_src" "<src lang=\"?\">\n\n</src>")
+              ;; c
+              ("cf" "#+end_src\n?\n#+begin_src c" "<src lang=\"?\">\n\n</src>")
+              ("c" "#+begin_src c\n?\n#+end_src" "<src lang=\"?\">\n\n</src>")
 
               ;; java
               ("javaf" "#+end_src\n?\n#+begin_src java" "<src lang=\"?\">\n\n</src>")
@@ -4046,6 +4116,10 @@
               ;; coffeescript
               ("cof" "#+end_src\n?\n#+begin_src coffee" "<src lang=\"?\">\n\n</src>")
               ("co" "#+begin_src coffee\n?\n#+end_src" "<src lang=\"?\">\n\n</src>")
+
+              ;; py
+              ("pyf" "#+end_src\n?\n#+begin_src python" "<src lang=\"?\">\n\n</src>")
+              ("py" "#+begin_src python\n?\n#+end_src" "<src lang=\"?\">\n\n</src>")
 
               ;; lua
               ("luaf" "#+end_src\n?\n#+begin_src lua" "<src lang=\"?\">\n\n</src>")
@@ -4976,20 +5050,45 @@
              "#forth")))
     #+end_src
 
-* ranger
-  #+begin_src emacs-lisp :tangle ~/.emacs
-  (add-to-list 'load-path "~/.emacs.d/ranger/")
-  (require 'ranger)
+* file viewer
 
-  (setq ranger-cleanup-on-disable t)
-  (setq ranger-cleanup-eagerly t)
+*** ranger                            :no:
 
-  (setq ranger-parent-depth 1)
+    #+begin_src emacs-lisp :tangle no
+    (add-to-list 'load-path "~/.emacs.d/ranger-git/")
+    (require 'ranger)
 
-  (setq ranger-show-literal t)
-  (setq ranger-ignored-extensions '("mkv" "iso" "mp4" "pdf" "djvu"))
-  (setq ranger-max-preview-size 1) ;; 1 MB
-  #+end_src
+    ;; zp for minimal ranger mode (deer)
+
+    (setq ranger-cleanup-on-disable t)
+    (setq ranger-cleanup-eagerly t)
+
+    ;; toggled by zh
+    (setq ranger-show-dotfiles nil)
+
+    ;; function used to output header of primary ranger window
+    ;;   must return a string that is placed in the header-line
+    (setq ranger-header-func 'ranger-header-line)
+
+    (setq ranger-parent-depth 1) ;; adjusted by z- and z+
+
+    ;; toggled by zi
+    ;;   literal v.s. find-file
+    (setq ranger-show-literal nil)
+
+    (setq ranger-ignored-extensions
+          '("mkv" "iso" "mp4" "pdf" "djvu"))
+
+    ;; 1 MB
+    (setq ranger-max-preview-size 1)
+    #+end_src
+
+*** warden
+
+    #+begin_src emacs-lisp :tangle ~/.emacs
+    (add-to-list 'load-path "~/.emacs.d/warden/")
+    (require 'warden)
+    #+end_src
 
 * looks like
 
