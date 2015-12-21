@@ -1746,7 +1746,7 @@
       (message "kkk")
       #+end_src
 
-*** scheme and other LISP
+*** scheme
 
 ***** load-path
       some scheme related files are under this dir
@@ -1909,239 +1909,238 @@
                 'pretty-lambdas-for-lisp)
       #+end_src
 
-*** scheme-add-keywords
-    #+begin_src emacs-lisp :tangle ~/.emacs
-    ;; 下面的实现方式并不完备
-    ;; scheme-mode 中原本的实现不是如此
-    (defun scheme-add-keywords (face-name keyword-rules)
-      (let* ((keyword-list (mapcar #'(lambda (x)
-                                       (symbol-name (cdr x)))
-                                       keyword-rules))
-             (keyword-regexp (concat "(\\("
-                                     (regexp-opt keyword-list)
-                                     "\\)[ \n]")))
-            (font-lock-add-keywords 'scheme-mode
-                                    `((,keyword-regexp 1 ',face-name))))
-      (mapc #'(lambda (x)
-                    (put (cdr x)
-                     'scheme-indent-function
-                     (car x)))
-            keyword-rules))
+***** scheme-add-keywords
+      #+begin_src emacs-lisp :tangle ~/.emacs
+      ;; scheme-mode 中原本的实现不是如此
+      (defun scheme-add-keywords (face-name keyword-rules)
+        (let* ((keyword-list (mapcar #'(lambda (x)
+                                         (symbol-name (cdr x)))
+                                     keyword-rules))
+               (keyword-regexp (concat "(\\("
+                                       (regexp-opt keyword-list)
+                                       "\\)[ \n]")))
+          (font-lock-add-keywords 'scheme-mode
+                                  `((,keyword-regexp 1 ',face-name))))
+        (mapc #'(lambda (x)
+                  (put (cdr x)
+                       'scheme-indent-function
+                       (car x)))
+              keyword-rules))
 
-    ;; 前面的数字被认为是参数项的个数
-    ;; 参数项完全换行时强缩进 其他项弱缩进
-    ;; 非语法关键词 所有项在完全换行时都不缩进
-    (scheme-add-keywords
-     'font-lock-keyword-face
-     '(
-       ;; the little prover
-       (2 . defun)
-       (2 . dethm)
-       (1 . J-Bob/step)
-       (1 . J-Bob/prove)
-       (1 . J-Bob/define)
+      ;; 前面的数字被认为是参数项的个数
+      ;; 参数项完全换行时强缩进 其他项弱缩进
+      ;; 非语法关键词 所有项在完全换行时都不缩进
+      (scheme-add-keywords
+       'font-lock-keyword-face
+       '(
+         ;; the little prover
+         (2 . defun)
+         (2 . dethm)
+         (1 . J-Bob/step)
+         (1 . J-Bob/prove)
+         (1 . J-Bob/define)
 
-       ;; 下面 scheme 中需要高亮的词
-       (0 . set!)
-       (0 . set-car!)
-       (0 . set-cdr!)
-       (0 . vector-set!)
-       (1 . quote)
-       (1 . quasiquote)
-       (1 . unquote)
-       (1 . if)
-       (1 . apply)
-       (1 . letrec*)
-       (1 . while)
-       ;; 来自扩展的
-       (1 . letcc)
-       (1 . pmatch)
-       (2 . pmatch-who)
-       (0 . guard)
-       (0 . add-to-list!)
-       (0 . add-to-list-end!)
-       (0 . append!)
-       (0 . insert-a-val-to-a-field-of-a-wlist!)
-       (0 . to-a-field-of-a-wlist--let-us-insert-a-val!)
+         ;; 下面 scheme 中需要高亮的词
+         (0 . set!)
+         (0 . set-car!)
+         (0 . set-cdr!)
+         (0 . vector-set!)
+         (1 . quote)
+         (1 . quasiquote)
+         (1 . unquote)
+         (1 . if)
+         (1 . apply)
+         (1 . letrec*)
+         (1 . while)
+         ;; 来自扩展的
+         (1 . letcc)
+         (1 . pmatch)
+         (2 . pmatch-who)
+         (0 . guard)
+         (0 . add-to-list!)
+         (0 . add-to-list-end!)
+         (0 . append!)
+         (0 . insert-a-val-to-a-field-of-a-wlist!)
+         (0 . to-a-field-of-a-wlist--let-us-insert-a-val!)
 
-       ;; 来自 ikarus
-       (1 . make-parameter)
-       (1 . parameterize)
+         ;; 来自 ikarus
+         (1 . make-parameter)
+         (1 . parameterize)
 
-       ;; 下面 scheme 中我还没用到以后可能需要高亮的词
-       (1 . when)
-       (1 . unless)
-       (2 . let1)
-       (1 . error)
+         ;; 下面 scheme 中我还没用到以后可能需要高亮的词
+         (1 . when)
+         (1 . unless)
+         (2 . let1)
+         (1 . error)
 
-       ;; 下面是我的解释器中需要高亮的词
-       (1 . λ)
-       (0 . begin*)
-       (1 . def)
-       (1 . doc)
-       (2 . rewrite-doc)
+         ;; 下面是我的解释器中需要高亮的词
+         (1 . λ)
+         (0 . begin*)
+         (1 . def)
+         (1 . doc)
+         (2 . rewrite-doc)
 
-       ;; 下面是 /home/xyh/scheme-toys/~.scm 中需要高亮的词
-       (1 . ~?)
-       (1 . ~)
-       (0 . ~+~)
-       (2 . ~map)
-       (1 . ~fun+)
-       (1 . copy~)
-       (1 . <~!)
-       (1 . <~)
-       (1 . take~)
+         ;; 下面是 /home/xyh/scheme-toys/~.scm 中需要高亮的词
+         (1 . ~?)
+         (1 . ~)
+         (0 . ~+~)
+         (2 . ~map)
+         (1 . ~fun+)
+         (1 . copy~)
+         (1 . <~!)
+         (1 . <~)
+         (1 . take~)
 
-       ;; 下面是 mk 中需要高亮的词
-       ;; core:
-       ;; Logical operators:
-       (2 . ==)
-       (1 . fresh)
-       (0 . conde)
-       ;; Interface operators:
-       (2 . run)
-       (1 . run*)
+         ;; 下面是 mk 中需要高亮的词
+         ;; core:
+         ;; Logical operators:
+         (2 . ==)
+         (1 . fresh)
+         (0 . conde)
+         ;; Interface operators:
+         (2 . run)
+         (1 . run*)
 
-       ;; 下面是 mk 的元代码中需要高亮的词
-       ;; [(lambdag@ (p) e) (lambda (p) e)]
-       ;; (1 . lambdag@)
-       ;; [(lambdaf@ () e) (lambda () e)]
-       ;; (1 . lambdaf@)
+         ;; 下面是 mk 的元代码中需要高亮的词
+         ;; [(lambdag@ (p) e) (lambda (p) e)]
+         ;; (1 . lambdag@)
+         ;; [(lambdaf@ () e) (lambda () e)]
+         ;; (1 . lambdaf@)
 
-       (1 . λᴳ)
-       (1 . λ~)
+         (1 . λᴳ)
+         (1 . λ~)
 
-       ;;
-       (0 . set-pointer!)
-       (1 . define-pointer)
-       ;; 下面是 vvv-mimic-ccc.scm 中需要高亮的词
-       (0 . vons)
-       (0 . vnr)
-       (0 . v0r)
-       (0 . v1r)
-       (0 . v2r)
-       (0 . v3r)
-       (0 . v4r)
-       (0 . v5r)
-       (0 . v6r)
-       (0 . v7r)
-       (0 . v8r)
-       (0 . v9r)
-       (0 . set-vnr!)
-       (0 . set-v0r!)
-       (0 . set-v1r!)
-       (0 . set-v2r!)
-       (0 . set-v3r!)
-       (0 . set-v4r!)
-       (0 . set-v5r!)
-       (0 . set-v6r!)
-       (0 . set-v7r!)
-       (0 . set-v8r!)
-       (0 . set-v9r!)
+         ;;
+         (0 . set-pointer!)
+         (1 . define-pointer)
+         ;; 下面是 vvv-mimic-ccc.scm 中需要高亮的词
+         (0 . vons)
+         (0 . vnr)
+         (0 . v0r)
+         (0 . v1r)
+         (0 . v2r)
+         (0 . v3r)
+         (0 . v4r)
+         (0 . v5r)
+         (0 . v6r)
+         (0 . v7r)
+         (0 . v8r)
+         (0 . v9r)
+         (0 . set-vnr!)
+         (0 . set-v0r!)
+         (0 . set-v1r!)
+         (0 . set-v2r!)
+         (0 . set-v3r!)
+         (0 . set-v4r!)
+         (0 . set-v5r!)
+         (0 . set-v6r!)
+         (0 . set-v7r!)
+         (0 . set-v8r!)
+         (0 . set-v9r!)
 
-       (0 . vonz)
-       (0 . vnz)
-       (0 . v0z)
-       (0 . v1z)
-       (0 . v2z)
-       (0 . v3z)
-       (0 . v4z)
-       (0 . v5z)
-       (0 . v6z)
-       (0 . v7z)
-       (0 . v8z)
-       (0 . v9z)
-       (0 . set-vnz!)
-       (0 . set-v0z!)
-       (0 . set-v1z!)
-       (0 . set-v2z!)
-       (0 . set-v3z!)
-       (0 . set-v4z!)
-       (0 . set-v5z!)
-       (0 . set-v6z!)
-       (0 . set-v7z!)
-       (0 . set-v8z!)
-       (0 . set-v9z!)
+         (0 . vonz)
+         (0 . vnz)
+         (0 . v0z)
+         (0 . v1z)
+         (0 . v2z)
+         (0 . v3z)
+         (0 . v4z)
+         (0 . v5z)
+         (0 . v6z)
+         (0 . v7z)
+         (0 . v8z)
+         (0 . v9z)
+         (0 . set-vnz!)
+         (0 . set-v0z!)
+         (0 . set-v1z!)
+         (0 . set-v2z!)
+         (0 . set-v3z!)
+         (0 . set-v4z!)
+         (0 . set-v5z!)
+         (0 . set-v6z!)
+         (0 . set-v7z!)
+         (0 . set-v8z!)
+         (0 . set-v9z!)
 
-       (0 . conz)
-       (0 . caz)
-       (0 . cdz)
-       (0 . set-caz!)
-       (0 . set-cdz!)
+         (0 . conz)
+         (0 . caz)
+         (0 . cdz)
+         (0 . set-caz!)
+         (0 . set-cdz!)
 
-       ;; 其它可能临时用到的高亮
-       (0 . *λ)
-       (0 . *l)
+         ;; 其它可能临时用到的高亮
+         (0 . *λ)
+         (0 . *l)
 
-       (1 . define-primitive)
+         (1 . define-primitive)
 
-       ;; racket
-       (1 . require)
-       (1 . provide)
-       (1 . module)
-       (1 . module+)
-       (1 . module*)
+         ;; racket
+         (1 . require)
+         (1 . provide)
+         (1 . module)
+         (1 . module+)
+         (1 . module*)
 
-       (1 . class)
-       (2 . class*)
-       (1 . interface)
-       (2 . mixin)
-       (1 . define/public)
-       (1 . define/override)
-       (1 . new)
-       (1 . send)
-       (2 . :)
-       (1 . ::)
-       (1 . super)
+         (1 . class)
+         (2 . class*)
+         (1 . interface)
+         (2 . mixin)
+         (1 . define/public)
+         (1 . define/override)
+         (1 . new)
+         (1 . send)
+         (2 . :)
+         (1 . ::)
+         (1 . super)
 
-       (1 . test-case)
-       (2 . check-expect)
-       (2 . check-error)
+         (1 . test-case)
+         (2 . check-expect)
+         (2 . check-error)
 
-       (1 . match)
-       (1 . match*)
-       (0 . match-lambda**)
-       (0 . fun)
-       (1 . just-fun)
-       (1 . define/match)
+         (1 . match)
+         (1 . match*)
+         (0 . match-lambda**)
+         (0 . fun)
+         (1 . just-fun)
+         (1 . define/match)
 
-       (2 . syntax-case)
-       (1 . syntax-parse)
+         (2 . syntax-case)
+         (1 . syntax-parse)
 
-       (0 . orz)
-       (0 . note)
+         (0 . orz)
+         (0 . note)
 
-       (2 . oer)
+         (2 . oer)
 
-       (1 . create)
-       (1 . apply-creator-list)
-       (1 . process)
-       (1 . apply-processor-list)
-       (1 . settle)
-       (1 . apply-settler-list)
+         (1 . create)
+         (1 . apply-creator-list)
+         (1 . process)
+         (1 . apply-processor-list)
+         (1 . settle)
+         (1 . apply-settler-list)
 
-       (1 . with-handlers)
-       (1 . raise)
+         (1 . with-handlers)
+         (1 . raise)
 
-       (0 . try)
-       (1 . back-to-last-try)
+         (0 . try)
+         (1 . back-to-last-try)
 
-       ;; cicada
-       (1 . create-primitive-function)
+         ;; cicada
+         (1 . create-primitive-function)
 
-       (1 . define-function)
-       (1 . define-variable)
-       (1 . define-primitive-function)
+         (1 . define-function)
+         (1 . define-variable)
+         (1 . define-primitive-function)
 
-       (0 . here)
-       (0 . !)
-       (0 . @)
-       (0 . !td)
-       (0 . @t)
-       (0 . @d)
+         (0 . here)
+         (0 . !)
+         (0 . @)
+         (0 . !td)
+         (0 . @t)
+         (0 . @d)
 
-       ))
-    #+end_src
+         ))
+      #+end_src
 
 *** racket
     #+begin_src emacs-lisp :tangle ~/.emacs
@@ -3158,7 +3157,14 @@
        (local-set-key (kbd "C-M-n") 'idris-next-error)
        (local-set-key (kbd "C-M-p") 'idris-previous-error)
        (local-set-key (kbd "M-n") 'forward-paragraph)
-       (local-set-key (kbd "M-p") 'backward-paragraph)))
+       (local-set-key (kbd "M-p") 'backward-paragraph)
+       (local-set-key (kbd "<return>") 'newline)
+
+       (turn-off-indent)))
+
+    (eval-after-load 'idris-mode
+      '(progn
+        (local-set-key (kbd "<tab>") 'turn-off-indent)))
     #+end_src
 
 *** jonprl
@@ -3307,12 +3313,15 @@
     (autoload 'run-prolog "prolog" "Start a Prolog sub-process." t)
     (autoload 'prolog-mode "prolog" "Major mode for editing Prolog programs." t)
     (autoload 'mercury-mode "prolog" "Major mode for editing Mercury programs." t)
-    (setq prolog-system 'swi)
-    ;; (setq auto-mode-alist (append '(("\\.pl$" . prolog-mode)
-    ;;                                 ("\\.m$" . mercury-mode))
-    ;;                                auto-mode-alist))
-    #+end_src
 
+    (setq prolog-system 'swi)
+    (setq prolog-indent-width 2)
+
+    (setq auto-mode-alist (append '(("\\.pl$" . prolog-mode)
+                                    ;; ("\\.m$" . mercury-mode)
+                                    )
+                                   auto-mode-alist))
+    #+end_src
 
 *** free-pascal
     :tangle ~/.emacs
@@ -3829,7 +3838,7 @@
         (define-key org-mode-map (kbd "M-.") 'org-babel-next-src-block)
         (define-key org-mode-map (kbd "M-,") 'org-babel-previous-src-block)
         (define-key org-mode-map (kbd "C-s C-s") 'org-edit-src-code)
-
+        ;; (turn-off-indent)
         ))
 
     ;; (add-hook
@@ -3985,6 +3994,10 @@
       #+begin_src emacs-lisp :tangle ~/.emacs
       (setq org-structure-template-erlang-family
             '(
+              ;; perl
+              ("plf" "#+end_src\n?\n#+begin_src prolog" "<src lang=\"?\">\n\n</src>")
+              ("pl" "#+begin_src prolog\n?\n#+end_src" "<src lang=\"?\">\n\n</src>")
+
               ;; erlang
               ("erlangf" "#+end_src\n?\n#+begin_src erlang" "<src lang=\"?\">\n\n</src>")
               ("erlang" "#+begin_src erlang\n?\n#+end_src" "<src lang=\"?\">\n\n</src>")
@@ -4255,7 +4268,7 @@
 
 *** [agenda] setting
     #+begin_src emacs-lisp :tangle ~/.emacs
-    (setq org-agenda-files "~/.agenda-files")
+    (setq org-agenda-files "~/.agenda/file-name-list")
 
     (global-set-key (kbd "C-M-o") 'org-cycle-agenda-files)
     (global-set-key (kbd "C-o C-b") 'org-iswitchb)
@@ -4942,10 +4955,19 @@
                         ;; "#kq"
 
                         "#forth"
+
                         "#agda"
                         "#idris"
+
+                        "##prolog"
+                        "#erlang"
+                        "#erlang-lisp"
+
+                        "#clojure"
                         "#racket"
+
                         "#szdiy"
+
                         "#archlinux-cn"
                         "#linux-cn"
                         "#cicada-language"
@@ -4960,8 +4982,6 @@
                         ;; "#shen"
                         ;; "#haskell"
                         ;; "#minikanren"
-                        ;; "#erlang"
-                        ;; "#erlang-lisp"
 
                         ;; "#fcitx"
                         ))))
@@ -5338,8 +5358,10 @@
     (fset 'yes-or-no-p 'y-or-n-p)
     #+end_src
 
-*** cursor-type
+*** cursor
     #+begin_src emacs-lisp :tangle ~/.emacs
+    (blink-cursor-mode -1)
+
     ;; (set-frame-parameter nil 'cursor-type 'hollow)
     (set-frame-parameter nil 'cursor-type 'box)
     ;; (set-frame-parameter nil 'cursor-type 'bar)
