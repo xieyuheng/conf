@@ -2139,6 +2139,11 @@
          (0 . @t)
          (0 . @d)
 
+         (0 . succedent:)
+         (0 . antecedent:)
+
+         (0 . note:)
+
          ))
       #+end_src
 
@@ -2365,13 +2370,13 @@
     (require 'shen-mode)
     (require 'inf-shen) ; <- for interaction with an external shen process
 
-    (defun switch-to-buffer-*inferior-shen* ()
-      (interactive)
-      (if (member-string? "*inferior-shen*" (mapcar 'buffer-name (buffer-list)))
-              (switch-to-buffer "*inferior-shen*")
-            (switch-to-shen t))
-      (local-set-key (kbd "C-s C-w") 'previous-buffer))
-    (global-set-key (kbd "C-s C-w") 'switch-to-buffer-*inferior-shen*)
+    ;; (defun switch-to-buffer-*inferior-shen* ()
+    ;;   (interactive)
+    ;;   (if (member-string? "*inferior-shen*" (mapcar 'buffer-name (buffer-list)))
+    ;;           (switch-to-buffer "*inferior-shen*")
+    ;;         (switch-to-shen t))
+    ;;   (local-set-key (kbd "C-s C-w") 'previous-buffer))
+    ;; (global-set-key (kbd "C-s C-w") 'switch-to-buffer-*inferior-shen*)
     #+end_src
 
 
@@ -3293,7 +3298,6 @@
     ;; (which includes invoking cider-quit) or you quit Emacs
     #+end_src
 
-
 *** erlang
     #+begin_src emacs-lisp :tangle ~/.emacs
     (add-to-list 'load-path "~/.emacs.d/erlmode/")
@@ -3307,7 +3311,6 @@
     (require 'inferior-elixir-mode)
     #+end_src
 
-
 *** prolog
     #+begin_src emacs-lisp :tangle ~/.emacs
     (autoload 'run-prolog "prolog" "Start a Prolog sub-process." t)
@@ -3317,10 +3320,14 @@
     (setq prolog-system 'swi)
     (setq prolog-indent-width 2)
 
-    (setq auto-mode-alist (append '(("\\.pl$" . prolog-mode)
-                                    ;; ("\\.m$" . mercury-mode)
-                                    )
-                                   auto-mode-alist))
+    (setq auto-mode-alist
+          (append '(("\\.pl$" . prolog-mode))
+                  auto-mode-alist))
+
+    (add-hook
+     'prolog-mode-hook
+     (lambda ()
+       (local-set-key (kbd "M-q") 'query-replace)))
     #+end_src
 
 *** free-pascal
@@ -5108,6 +5115,8 @@
     #+begin_src emacs-lisp :tangle ~/.emacs
     (add-to-list 'load-path "~/.emacs.d/warden/")
     (require 'warden)
+
+    (global-set-key (kbd "C-s C-w") 'warden)
     #+end_src
 
 * looks like
