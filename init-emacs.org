@@ -2094,7 +2094,7 @@
          (1 . super)
 
          (1 . test-case)
-         (2 . check-expect)
+         (0 . check-expect)
          (2 . check-error)
 
          (1 . match)
@@ -2143,6 +2143,12 @@
          (0 . antecedent:)
 
          (0 . note:)
+
+         (1 . vector-map)
+         (1 . map)
+
+         (1 . match-let)
+         (1 . match-let*)
 
          ))
       #+end_src
@@ -2866,19 +2872,20 @@
 
     ;; 因为<tab>在 caml-mode 中不支持区域缩进
     ;; 所以给 C-<tab>绑定一个方便多行缩进的函数
-    (defun caml-indent-line-by-line ()
-      (interactive)
-      (caml-indent-command)
-      (next-line))
+    ;; (defun caml-indent-line-by-line ()
+    ;;   (interactive)
+    ;;   (caml-indent-command)
+    ;;   (next-line))
 
     (add-hook
      'caml-mode-hook
      (lambda ()
        (local-set-key (kbd "C-x C-e") 'caml-eval-phrase-split-window)
-       (local-set-key (kbd "C-<tab>") 'caml-indent-line-by-line)
+       ;; (local-set-key (kbd "C-<tab>") 'caml-indent-line-by-line)
        (local-set-key (kbd "M-p") 'caml-backward-to-less-indent)
        (local-set-key (kbd "M-n") 'caml-forward-to-less-indent)
-
+       (local-set-key (kbd "<return>") 'electric-newline-and-maybe-indent)
+       (turn-off-indent)
        (setq comment-style 'multi-line)
        ))
 
@@ -2905,25 +2912,6 @@
     ;;            nil)))))
 
     ;; ;; (add-hook 'caml-mode-hook 'pretty-lambdas-for-caml)
-    #+end_src
-
-*** ocaml
-    no such things as ocaml-mode
-    there are:
-    caml-mode
-    inferior-caml-mode
-    :tangle ~/.emacs
-    #+begin_src emacs-lisp
-    (add-to-list 'load-path "~/.emacs.d/ocaml/")
-
-
-    (setq auto-mode-alist
-              (cons '("\\.ml[iyl]?$" .  caml-mode) auto-mode-alist))
-    (autoload 'caml-mode "ocaml" (interactive)
-      "Major mode for editing Caml code." t)
-    (autoload 'camldebug "camldebug" (interactive) "Debug caml mode")
-    (require 'ocaml)
-    (if window-system (require 'caml-font))
     #+end_src
 
 *** tuareg-mode for ocaml (not using)
@@ -4975,9 +4963,12 @@
 
                         "#szdiy"
 
+                        "#ocaml"
+
                         "#archlinux-cn"
                         "#linux-cn"
                         "#cicada-language"
+
 
                         ;; "##Orz"
 
@@ -5117,6 +5108,33 @@
     (require 'warden)
 
     (global-set-key (kbd "C-s C-w") 'warden)
+    #+end_src
+
+* window
+
+*** eyebrowse
+
+    #+begin_src emacs-lisp :tangle ~/.emacs
+    (add-to-list 'load-path "~/.emacs.d/eyebrowse/")
+    (require 'eyebrowse)
+    (eyebrowse-mode 1)
+
+    ;; ((kbd "<") 'eyebrowse-prev-window-config)
+    ;; ((kbd ">") 'eyebrowse-next-window-config)
+    ;; ((kbd "'") 'eyebrowse-last-window-config)
+    ;; ((kbd "\"") 'eyebrowse-close-window-config)
+    ;; ((kbd ",") 'eyebrowse-rename-window-config)
+    ;; ((kbd ".") 'eyebrowse-switch-to-window-config)
+    ;; ((kbd "0") 'eyebrowse-switch-to-window-config-0)
+    ;; ((kbd "1") 'eyebrowse-switch-to-window-config-1)
+    ;; ((kbd "2") 'eyebrowse-switch-to-window-config-2)
+    ;; ((kbd "3") 'eyebrowse-switch-to-window-config-3)
+    ;; ((kbd "4") 'eyebrowse-switch-to-window-config-4)
+    ;; ((kbd "5") 'eyebrowse-switch-to-window-config-5)
+    ;; ((kbd "6") 'eyebrowse-switch-to-window-config-6)
+    ;; ((kbd "7") 'eyebrowse-switch-to-window-config-7)
+    ;; ((kbd "8") 'eyebrowse-switch-to-window-config-8)
+    ;; ((kbd "9") 'eyebrowse-switch-to-window-config-9)
     #+end_src
 
 * looks like
