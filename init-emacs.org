@@ -2399,6 +2399,9 @@
     #+begin_src emacs-lisp :tangle ~/.emacs
     (add-to-list 'load-path "~/.emacs.d/js2-mode/")
     (require 'js2-mode)
+
+    (setq js-indent-level 2)
+
     (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
     (add-hook 'js-mode-hook 'js2-minor-mode)
     (add-to-list 'interpreter-mode-alist '("node" . js2-mode))
@@ -2870,48 +2873,14 @@
       (caml-eval-phrase 1)
       (split-window-with-named-buffer "*inferior-caml*"))
 
-    ;; 因为<tab>在 caml-mode 中不支持区域缩进
-    ;; 所以给 C-<tab>绑定一个方便多行缩进的函数
-    ;; (defun caml-indent-line-by-line ()
-    ;;   (interactive)
-    ;;   (caml-indent-command)
-    ;;   (next-line))
-
     (add-hook
      'caml-mode-hook
      (lambda ()
        (local-set-key (kbd "C-x C-e") 'caml-eval-phrase-split-window)
-       ;; (local-set-key (kbd "C-<tab>") 'caml-indent-line-by-line)
-       (local-set-key (kbd "M-p") 'caml-backward-to-less-indent)
-       (local-set-key (kbd "M-n") 'caml-forward-to-less-indent)
+       (local-set-key (kbd "C-<tab>") 'caml-eval-phrase-split-window)
        (local-set-key (kbd "<return>") 'electric-newline-and-maybe-indent)
        (turn-off-indent)
-       (setq comment-style 'multi-line)
-       ))
-
-
-    ;; (defun pretty-lambdas-for-caml ()
-    ;;   (interactive)
-    ;;   (font-lock-add-keywords
-    ;;    nil
-    ;;    `(("\\(function[\n ]\\)" (0
-    ;;                    (progn
-    ;;                          (compose-region (match-beginning 0)
-    ;;                                          (+ (match-beginning 0) 8)
-    ;;                                          "λ")
-    ;;                          nil)))
-    ;;          )))
-    ;; (font-lock-add-keywords
-    ;;  'caml-mode
-    ;;  `(("\\(function[\n ]\\)"
-    ;;         (0
-    ;;          (progn
-    ;;            (compose-region (match-beginning 0)
-    ;;                            (+ (match-beginning 0) 8)
-    ;;                            "λ")
-    ;;            nil)))))
-
-    ;; ;; (add-hook 'caml-mode-hook 'pretty-lambdas-for-caml)
+       (setq comment-style 'multi-line)))
     #+end_src
 
 *** tuareg-mode for ocaml (not using)
@@ -3300,7 +3269,11 @@
     #+end_src
 
 *** prolog
+
     #+begin_src emacs-lisp :tangle ~/.emacs
+    (add-to-list 'load-path "~/.emacs.d/prolog/prolog-mode/")
+    (require 'prolog)
+
     (autoload 'run-prolog "prolog" "Start a Prolog sub-process." t)
     (autoload 'prolog-mode "prolog" "Major mode for editing Prolog programs." t)
     (autoload 'mercury-mode "prolog" "Major mode for editing Mercury programs." t)
@@ -3309,13 +3282,26 @@
     (setq prolog-indent-width 2)
 
     (setq auto-mode-alist
-          (append '(("\\.pl$" . prolog-mode))
+          (append '(("\\.pl$" . prolog-mode)
+                    ("\\.m$" . mercury-mode))
                   auto-mode-alist))
-
     (add-hook
      'prolog-mode-hook
      (lambda ()
-       (local-set-key (kbd "M-q") 'query-replace)))
+       (local-set-key (kbd "M-q") 'query-replace)
+       (local-set-key (kbd "C-c C-k")
+                      (lambda ()
+                        (interactive)
+                        (run-prolog t)
+                        (other-window -1)))))
+
+    (add-hook
+     'prolog-inferior-mode-hook
+     (lambda ()
+       (local-set-key (kbd "C-c C-k")
+                      (lambda ()
+                        (interactive)
+                        (run-prolog t)))))
     #+end_src
 
 *** free-pascal
@@ -4951,15 +4937,15 @@
 
                         "#forth"
 
-                        "#agda"
-                        "#idris"
+                        ;; "#agda"
+                        ;; "#idris"
 
                         "##prolog"
-                        "#erlang"
-                        "#erlang-lisp"
+                        ;; "#erlang"
+                        ;; "#erlang-lisp"
 
-                        "#clojure"
-                        "#racket"
+                        ;; "#clojure"
+                        ;; "#racket"
 
                         "#szdiy"
 
