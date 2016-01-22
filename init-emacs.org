@@ -3160,6 +3160,10 @@
        'clojure-mode-hook
        (lambda ()
          (local-set-key (kbd "C-<tab>") 'scheme-easy-to-eval)))
+
+      (defun run-clojure ()
+        (interactive)
+        (run-scheme "java -cp /home/xyh/lang/clojure/clojure-1.8.0/clojure-1.8.0.jar clojure.main"))
       #+end_src
 
 ***** queue                           :no:
