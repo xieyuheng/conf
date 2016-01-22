@@ -3140,120 +3140,124 @@
 
 
 *** clojure
-    #+begin_src emacs-lisp :tangle ~/.emacs
-    (add-to-list 'load-path "~/.emacs.d/clojure-mode/")
-    (require 'clojure-mode)
 
-    (defun clojure-easy-to-eval ()
-      (interactive)
-      (if (>= (+ 1 (point))
-              (point-max))
-          (message "C-<tab> : last sexp is evaled")
-          (let ()
-            (forward-sexp)
-            (cider-eval-last-sexp))))
+***** clojure
 
-    (add-hook
-     'clojure-mode-hook
-     (lambda ()
-       (local-set-key (kbd "C-<tab>") 'clojure-easy-to-eval)))
-    #+end_src
+      #+begin_src emacs-lisp :tangle ~/.emacs
+      (add-to-list 'load-path "~/.emacs.d/clojure-mode/")
+      (require 'clojure-mode)
 
-*** queue
-    #+begin_src emacs-lisp :tangle ~/.emacs
-    (add-to-list 'load-path "~/.emacs.d/queue/")
-    (require 'queue)
-    #+end_src
+      ;; (defun clojure-easy-to-eval ()
+      ;;   (interactive)
+      ;;   (if (>= (+ 1 (point))
+      ;;           (point-max))
+      ;;       (message "C-<tab> : last sexp is evaled")
+      ;;       (let ()
+      ;;         (forward-sexp)
+      ;;         (cider-eval-last-sexp))))
 
-*** cider
+      (add-hook
+       'clojure-mode-hook
+       (lambda ()
+         (local-set-key (kbd "C-<tab>") 'scheme-easy-to-eval)))
+      #+end_src
 
-    #+begin_src emacs-lisp :tangle ~/.emacs
-    (add-to-list 'load-path "~/.emacs.d/spinner.el/")
-    (require 'spinner)
+***** queue                           :no:
 
-    (add-to-list 'load-path "~/.emacs.d/seq.el/")
-    (require 'seq)
+      #+begin_src emacs-lisp :tangle no
+      (add-to-list 'load-path "~/.emacs.d/queue/")
+      (require 'queue)
+      #+end_src
 
-    (add-to-list 'load-path "~/.emacs.d/cider/")
-    (require 'cider)
+***** cider                           :no:
 
-    ;; cider-mode (complementing clojure-mode)
-    ;; that allows you to evaluate code in your Clojure source files
-    ;; and load it directly in the REPL
-    ;; (eval-after-load "clojure-mode" '(cider-mode t))
-    (add-hook 'clojure-mode-hook (lambda () (cider-mode t)))
+      #+begin_src emacs-lisp :tangle no
+      (add-to-list 'load-path "~/.emacs.d/spinner.el/")
+      (require 'spinner)
 
-    ;; Enable eldoc in Clojure buffers:
-    (add-hook 'cider-mode-hook 'cider-turn-on-eldoc-mode)
+      (add-to-list 'load-path "~/.emacs.d/seq.el/")
+      (require 'seq)
 
+      (add-to-list 'load-path "~/.emacs.d/cider/")
+      (require 'cider)
 
-    ;; You can control the TAB key behavior in the REPL via
-    ;; cider-repl-tab-command
-    ;; default is command cider-repl-indent-and-complete-symbol
-    ;; to only indent:
-    ;; (setq cider-repl-tab-command 'indent-for-tab-command)
+      ;; cider-mode (complementing clojure-mode)
+      ;; that allows you to evaluate code in your Clojure source files
+      ;; and load it directly in the REPL
+      ;; (eval-after-load "clojure-mode" '(cider-mode t))
+      (add-hook 'clojure-mode-hook (lambda () (cider-mode t)))
 
-    ;; Prevent the auto-display of the REPL buffer in a separate window
-    ;; after connection is established:
-    ;; (setq cider-repl-pop-to-buffer-on-connect nil)
-
-    ;; Stop the error buffer from popping up
-    ;; while working in buffers other than the REPL
-    (setq cider-popup-stacktraces nil)
-
-    ;; Enable error buffer popping also in the REPL:
-    ;; (setq cider-repl-popup-stacktraces t)
-
-    ;; To auto-select the error buffer when it's displayed:
-    ;; (setq cider-auto-select-error-buffer t)
-
-    ;; in The REPL buffer name
-    ;; display the port on which the nREPL server is running
-    ;; Buffer name will look like cider-repl project-name:port
-    (setq nrepl-buffer-name-show-port t)
-
-    ;; Make C-c C-z switch to the CIDER REPL buffer in the current window:
-    ;; (setq cider-repl-display-in-current-window t)
-
-    ;; Limit the number of items of each collection the printer will print to 100:
-    ;; (setq cider-repl-print-length 100) ; the default is nil, no limit
-
-    ;; Change the result prefix for REPL evaluation (by default there's no prefix):
-    ;; (set cider-repl-result-prefix ";; => ")
-    ;; And here's the result of that change:
-    ;; user> (+ 1 2)
-    ;; ;; => 3
-
-    ;; Change the result prefix for interactive evaluation (by default it's =>):
-    ;; (set cider-interactive-eval-result-prefix ";; => ")
-    ;; To remove the prefix altogether just set it to an empty string("").
-
-    ;; Normally code you input in the REPL is
-    ;; font-locked with cider-repl-input-face (after you press RET)
-    ;; and results are font-locked with cider-repl-output-face
-    ;; If you want them to be font-locked as in clojure-mode use the following:
-    ;; (setq cider-repl-use-clojure-font-lock t)
-
-    ;; You can control the C-c C-z key behavior of switching to the REPL buffer
-    ;; with the cider-switch-to-repl-command variable.
-    ;; default command cider-switch-to-relevant-repl-buffer
-    ;; cider-switch-to-current-repl-buffer offers a simpler alternative
-    ;; where CIDER will not attempt to match the correct REPL buffer
-    ;; based on underlying project directories:
-    ;; (setq cider-switch-to-repl-command 'cider-switch-to-current-repl-buffer)
+      ;; Enable eldoc in Clojure buffers:
+      (add-hook 'cider-mode-hook 'cider-turn-on-eldoc-mode)
 
 
-    ;; to make the REPL history wrap around when its end is reached:
-    (setq cider-repl-wrap-history t)
+      ;; You can control the TAB key behavior in the REPL via
+      ;; cider-repl-tab-command
+      ;; default is command cider-repl-indent-and-complete-symbol
+      ;; to only indent:
+      ;; (setq cider-repl-tab-command 'indent-for-tab-command)
 
-    ;; To adjust the maximum number of items kept in the REPL history:
-    (setq cider-repl-history-size 1000) ; the default is 500
+      ;; Prevent the auto-display of the REPL buffer in a separate window
+      ;; after connection is established:
+      ;; (setq cider-repl-pop-to-buffer-on-connect nil)
 
-    ;; To store the REPL history in a file:
-    ;; (setq cider-repl-history-file "path/to/file")
-    ;; Note that the history is written to the file when you kill the REPL buffer
-    ;; (which includes invoking cider-quit) or you quit Emacs
-    #+end_src
+      ;; Stop the error buffer from popping up
+      ;; while working in buffers other than the REPL
+      (setq cider-popup-stacktraces nil)
+
+      ;; Enable error buffer popping also in the REPL:
+      ;; (setq cider-repl-popup-stacktraces t)
+
+      ;; To auto-select the error buffer when it's displayed:
+      ;; (setq cider-auto-select-error-buffer t)
+
+      ;; in The REPL buffer name
+      ;; display the port on which the nREPL server is running
+      ;; Buffer name will look like cider-repl project-name:port
+      (setq nrepl-buffer-name-show-port t)
+
+      ;; Make C-c C-z switch to the CIDER REPL buffer in the current window:
+      ;; (setq cider-repl-display-in-current-window t)
+
+      ;; Limit the number of items of each collection the printer will print to 100:
+      ;; (setq cider-repl-print-length 100) ; the default is nil, no limit
+
+      ;; Change the result prefix for REPL evaluation (by default there's no prefix):
+      ;; (set cider-repl-result-prefix ";; => ")
+      ;; And here's the result of that change:
+      ;; user> (+ 1 2)
+      ;; ;; => 3
+
+      ;; Change the result prefix for interactive evaluation (by default it's =>):
+      ;; (set cider-interactive-eval-result-prefix ";; => ")
+      ;; To remove the prefix altogether just set it to an empty string("").
+
+      ;; Normally code you input in the REPL is
+      ;; font-locked with cider-repl-input-face (after you press RET)
+      ;; and results are font-locked with cider-repl-output-face
+      ;; If you want them to be font-locked as in clojure-mode use the following:
+      ;; (setq cider-repl-use-clojure-font-lock t)
+
+      ;; You can control the C-c C-z key behavior of switching to the REPL buffer
+      ;; with the cider-switch-to-repl-command variable.
+      ;; default command cider-switch-to-relevant-repl-buffer
+      ;; cider-switch-to-current-repl-buffer offers a simpler alternative
+      ;; where CIDER will not attempt to match the correct REPL buffer
+      ;; based on underlying project directories:
+      ;; (setq cider-switch-to-repl-command 'cider-switch-to-current-repl-buffer)
+
+
+      ;; to make the REPL history wrap around when its end is reached:
+      (setq cider-repl-wrap-history t)
+
+      ;; To adjust the maximum number of items kept in the REPL history:
+      (setq cider-repl-history-size 1000) ; the default is 500
+
+      ;; To store the REPL history in a file:
+      ;; (setq cider-repl-history-file "path/to/file")
+      ;; Note that the history is written to the file when you kill the REPL buffer
+      ;; (which includes invoking cider-quit) or you quit Emacs
+      #+end_src
 
 *** erlang
     #+begin_src emacs-lisp :tangle ~/.emacs
