@@ -2394,76 +2394,103 @@
     (setq auto-mode-alist (cons `("\\.egi$" . egison-mode) auto-mode-alist))
     #+end_src
 
+*** js
 
-*** js2-mode
-    #+begin_src emacs-lisp :tangle ~/.emacs
-    (add-to-list 'load-path "~/.emacs.d/js2-mode/")
-    (require 'js2-mode)
+***** js-mode
 
-    (setq js-indent-level 2)
+      #+begin_src emacs-lisp :tangle ~/.emacs
+      (add-hook
+       'js-mode-hook
+       (lambda ()
+         (setq comment-style 'extra)
+         (setq js-indent-level 2)
+         (setq js2-basic-offset 2)))
+      #+end_src
 
-    (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
-    (add-hook 'js-mode-hook 'js2-minor-mode)
-    (add-to-list 'interpreter-mode-alist '("node" . js2-mode))
+***** js2-mode
 
-    (add-hook 'js-mode-hook
-              (lambda ()
-                (setq comment-style 'extra)))
-    #+end_src
+      #+begin_src emacs-lisp :tangle ~/.emacs
+      (add-to-list 'load-path "~/.emacs.d/js2-mode/")
+      (require 'js2-mode)
 
-*** simple-httpd
-    #+begin_src emacs-lisp :tangle ~/.emacs
-    (add-to-list 'load-path "~/.emacs.d/emacs-web-server/")
-    (require 'simple-httpd)
-    #+end_src
+      (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
+      (add-hook 'js-mode-hook 'js2-minor-mode)
+      (add-to-list 'interpreter-mode-alist '("node" . js2-mode))
 
-*** skewer-mode
-    #+begin_src emacs-lisp :tangle ~/.emacs
-    (add-to-list 'load-path "~/.emacs.d/skewer-mode/")
-    (require 'skewer-mode)
-    (add-hook 'js-mode-hook 'skewer-mode)
-    (add-hook 'js2-mode-hook 'skewer-mode)
-    (add-hook 'css-mode-hook 'skewer-css-mode)
-    (add-hook 'html-mode-hook 'skewer-html-mode)
-    #+end_src
+      (add-hook 'js-mode-hook
+                (lambda ()
+                  (setq comment-style 'extra)
+                  (setq js-indent-level 2)
+                  (setq js2-basic-offset 2)))
 
-*** ac-js2
-    #+begin_src emacs-lisp :tangle ~/.emacs
-    (add-to-list 'load-path "~/.emacs.d/popup-el/")
-    (require 'popup)
+      (add-hook 'js2-mode-hook
+                (lambda ()
+                  (setq comment-style 'extra)
+                  (setq js-indent-level 2)
+                  (setq js2-basic-offset 2)))
+      #+end_src
 
-    (add-to-list 'load-path "~/.emacs.d/auto-complete/")
-    (require 'auto-complete)
-    (require 'auto-complete-config)
-    (ac-config-default)
+***** js3-mode                        :no:
 
-    (add-to-list 'load-path "~/.emacs.d/ac-js2/")
-    (add-hook 'js2-mode-hook 'ac-js2-mode)
-    (require 'ac-js2)
+      #+begin_src emacs-lisp :tangle no
+      (add-to-list 'load-path "~/.emacs.d/js3-mode/")
+      (autoload 'js3-mode "js3" nil t)
+      (add-to-list 'auto-mode-alist '("\\.js$" . js3-mode))
+      #+end_src
 
-    ;; Copy the snippet below
-    ;; if you want to evaluate your Javascript code for candidates.
-    ;; Not setting this value will still provide you with basic completion.
+***** simple-httpd                    :no:
+      #+begin_src emacs-lisp :tangle no
+      ;; (add-to-list 'load-path "~/.emacs.d/emacs-web-server/")
+      ;; (require 'simple-httpd)
+      #+end_src
 
-    (setq ac-js2-evaluate-calls t)
+***** skewer-mode                     :no:
+      #+begin_src emacs-lisp :tangle no
+      (add-to-list 'load-path "~/.emacs.d/skewer-mode/")
+      (require 'skewer-mode)
+      (add-hook 'js-mode-hook 'skewer-mode)
+      (add-hook 'js2-mode-hook 'skewer-mode)
+      (add-hook 'css-mode-hook 'skewer-css-mode)
+      (add-hook 'html-mode-hook 'skewer-html-mode)
+      #+end_src
 
-    ;; Add any external Javascript files to the variable below.
-    ;; Make sure you have initialised ac-js2-evaluate-calls to t
-    ;; if you add any libraries.
+***** ac-js2                          :no:
+      #+begin_src emacs-lisp :tangle no
+      (add-to-list 'load-path "~/.emacs.d/popup-el/")
+      (require 'popup)
 
-    ;; (setq ac-js2-external-libraries '("full/path/to/a-library.js"))
-    #+end_src
+      (add-to-list 'load-path "~/.emacs.d/auto-complete/")
+      (require 'auto-complete)
+      (require 'auto-complete-config)
+      (ac-config-default)
 
-*** coffee-mode
-    #+begin_src emacs-lisp :tangle ~/.emacs
-    (add-to-list 'load-path "~/.emacs.d/coffee-mode/")
-    (require 'coffee-mode)
-    (add-to-list 'auto-mode-alist '("\\.coffee\\'" . coffee-mode))
-    (custom-set-variables '(coffee-tab-width 2))
+      (add-to-list 'load-path "~/.emacs.d/ac-js2/")
+      (add-hook 'js2-mode-hook 'ac-js2-mode)
+      (require 'ac-js2)
 
-    (add-to-list 'load-path "~/.emacs.d/literate-coffee-mode/")
-    (require 'literate-coffee-mode)
-    #+end_src
+      ;; Copy the snippet below
+      ;; if you want to evaluate your Javascript code for candidates.
+      ;; Not setting this value will still provide you with basic completion.
+
+      (setq ac-js2-evaluate-calls t)
+
+      ;; Add any external Javascript files to the variable below.
+      ;; Make sure you have initialised ac-js2-evaluate-calls to t
+      ;; if you add any libraries.
+
+      ;; (setq ac-js2-external-libraries '("full/path/to/a-library.js"))
+      #+end_src
+
+***** coffee-mode
+      #+begin_src emacs-lisp :tangle ~/.emacs
+      (add-to-list 'load-path "~/.emacs.d/coffee-mode/")
+      (require 'coffee-mode)
+      (add-to-list 'auto-mode-alist '("\\.coffee\\'" . coffee-mode))
+      (custom-set-variables '(coffee-tab-width 2))
+
+      (add-to-list 'load-path "~/.emacs.d/literate-coffee-mode/")
+      (require 'literate-coffee-mode)
+      #+end_src
 
 *** sibilant-mode
     #+begin_src emacs-lisp :tangle ~/.emacs
@@ -3159,11 +3186,14 @@
       (add-hook
        'clojure-mode-hook
        (lambda ()
+         (local-set-key (kbd "C-x C-e") 'scheme-send-last-sexp-split-window)
+         (local-set-key (kbd "C-c C-e") 'scheme-send-definition-split-window)
          (local-set-key (kbd "C-<tab>") 'scheme-easy-to-eval)))
 
       (defun run-clojure ()
         (interactive)
-        (run-scheme "java -cp /home/xyh/lang/clojure/clojure-1.8.0/clojure-1.8.0.jar clojure.main"))
+        ;; (run-scheme "java -cp /home/xyh/lang/clojure/clojure-1.8.0/clojure-1.8.0.jar clojure.main")
+        (run-scheme "lein repl"))
       #+end_src
 
 ***** queue                           :no:
@@ -3544,6 +3574,7 @@
 
 
 *** ruby
+
     #+begin_src emacs-lisp :tangle ~/.emacs
     (add-to-list 'load-path "~/.emacs.d/inf-ruby/")
     (require 'inf-ruby)
@@ -3555,6 +3586,30 @@
     (autoload 'enh-ruby-mode "enh-ruby-mode" "Major mode for ruby files" t)
     (add-to-list 'auto-mode-alist '("\\.rb$" . enh-ruby-mode))
     (add-to-list 'interpreter-mode-alist '("ruby" . enh-ruby-mode))
+
+    ;; (defun ruby-send-line ()
+    ;;   (interactive)
+    ;;   (move-beginning-of-line nil)
+    ;;   (cua-set-mark)
+    ;;   (move-end-of-line nil)
+    ;;   (ruby-send-region (region-beginning) (region-end))
+    ;;   (cua-set-mark)
+    ;;   (move-end-of-line nil))
+
+    ;; (defun ruby-easy-to-eval ()
+    ;;   (interactive)
+    ;;   (if (>= (+ 1 (point))
+    ;;           (point-max))
+    ;;       (message "C-<tab> : last sexp is evaled")
+    ;;       (let ()
+    ;;         (ruby-send-line)
+    ;;         (next-line)
+    ;;         (move-end-of-line nil))))
+
+    ;; (add-hook
+    ;;  'ruby-mode-hook
+    ;;  (lambda ()
+    ;;    (local-set-key (kbd "C-<tab>") 'ruby-easy-to-eval)))
     #+end_src
 
 
