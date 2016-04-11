@@ -240,8 +240,8 @@
 
 *** move-line-[backword|foreword]
     #+begin_src emacs-lisp :tangle ~/.emacs
-    (global-set-key (kbd "M-u") 'move-line-backword)
-    (global-set-key (kbd "M-i") 'move-line-foreword)
+    ;; (global-set-key (kbd "M-u") 'move-line-backword)
+    ;; (global-set-key (kbd "M-i") 'move-line-foreword)
     (global-set-key (kbd "M-[") 'change-parentheses)
     #+end_src
 
@@ -489,8 +489,9 @@
     ;; 没有使用<C-tab>
     ;; 因为<C-tab>需要在 org-mode 中使用
     ;; 因为按<tab>的时候可以不放开 Ctrl 是方便的
-    (global-set-key (kbd "M-<tab>") 'window->)
+    ;; (global-set-key (kbd "M-<tab>") 'window->)
     ;; (global-set-key (kbd "M-<tab>") (lambda () (interactive) (other-window +1)))
+    (global-set-key (kbd "C-o") 'window->)
 
     (global-set-key (kbd "M-=") 'window->)
     (global-set-key (kbd "M--") '<-window)
@@ -581,7 +582,7 @@
 
 *** query-replace
     #+begin_src emacs-lisp :tangle ~/.emacs
-    (global-set-key (kbd "M-q") 'query-replace)
+    (global-set-key (kbd "M-i") 'query-replace)
     #+end_src
 
 *** help
@@ -647,6 +648,19 @@
 *** mania
     #+begin_src emacs-lisp :tangle ~/.emacs
     (global-set-key (kbd "C-s C-x") 'save-buffer)
+    #+end_src
+
+*** mouse
+
+    #+begin_src emacs-lisp :tangle ~/.emacs
+    (global-set-key (kbd "<mouse-5>") 'next-line)
+    (global-set-key (kbd "<mouse-4>") 'previous-line)
+
+    (global-set-key (kbd "<mouse-7>") 'next-line)
+    (global-set-key (kbd "<mouse-6>") 'previous-line)
+
+    ;; (global-set-key (kbd "<mouse-7>") 'forward-char)
+    ;; (global-set-key (kbd "<mouse-6>") 'backward-char)
     #+end_src
 
 * general setting
@@ -1578,7 +1592,9 @@
       #+end_src
 
 ***** mark and cruise
-      the follow functions are belong to lisp.el
+
+      - the follow functions are belong to lisp.el
+
       #+begin_src emacs-lisp :tangle ~/.emacs
       ;; (global-set-key (kbd "s-z") 'mark-defun)
       ;; (global-set-key (kbd "s-a") 'mark-sexp)
@@ -1606,7 +1622,7 @@
       ;; (global-set-key (kbd "M-e") 'in->)
 
       (defun <-out () (interactive) (backward-up-list))
-      ;; (global-set-key (kbd "M-e") '<-out)
+      (global-set-key (kbd "M-q") '<-out)
 
       (defun out-> () (interactive) (up-list))
       ;; (global-set-key (kbd "s-d") 'out->)
@@ -1725,6 +1741,8 @@
       is plural form of parenthesis /pəˈrɛnθəsɪs/
       #+begin_src emacs-lisp :tangle ~/.emacs
       (global-set-key (kbd "M-(")         'paredit-wrap-round)
+      ;; (global-set-key (kbd "M-{")         'paredit-wrap-round)
+      (global-set-key (kbd "C-M-9")       'paredit-wrap-round)
       (global-set-key (kbd "M-c")         'paredit-splice-sexp)
       (global-set-key (kbd "M-r")         'paredit-raise-sexp)
       (global-set-key (kbd "<C-right>")   'paredit-forward-slurp-sexp)
@@ -1804,8 +1822,8 @@
       #+begin_src emacs-lisp :tangle ~/.emacs
       (require 'cmuscheme)
 
-      ;; (setq scheme-program-name "racket")
-      (setq scheme-program-name "guile")
+      (setq scheme-program-name "racket")
+      ;; (setq scheme-program-name "guile")
 
       (defun switch-to-buffer-*scheme* ()
         (interactive)
@@ -2215,7 +2233,7 @@
     #+end_src
 
 
-*** common lisp
+*** lisp
     #+begin_src emacs-lisp :tangle ~/.emacs
     ;; (setq inferior-lisp-program "/usr/local/bin/clisp")
     ;; (setq inferior-lisp-program "/usr/local/bin/sbcl")
@@ -2226,10 +2244,20 @@
     ;; (setq inferior-lisp-program "ecl")
     (setq inferior-lisp-program "ccl")
 
-    (add-hook 'lisp-mode-hook
-              (lambda ()
-                (local-set-key (kbd "M-q") 'query-replace)
-                ))
+    (defun lisp-easy-to-eval ()
+      (interactive)
+      (if (>= (+ 1 (point))
+              (point-max))
+          (message "C-<tab> : last sexp is evaled")
+          (let ()
+            (forward-sexp)
+            (slime-eval-last-expression))))
+
+    (add-hook
+     'lisp-mode-hook
+     (lambda ()
+       (local-set-key (kbd "M-i") 'query-replace)
+       (local-set-key (kbd "C-<tab>") 'lisp-easy-to-eval)))
     #+end_src
 
 *** lisp-add-keywords
@@ -2286,21 +2314,26 @@
        (1 . multiple-value-let)
        ;; (1 . let-fun)
        (1 . help)
+
+       (0 . put)
+       (1 . match)
        ))
     #+end_src
 
 *** slime
+
     #+begin_src emacs-lisp :tangle ~/.emacs
     ;; setup load-path and autoloads
-    (add-to-list 'load-path "~/.emacs.d/slime/")
+    (add-to-list 'load-path "~/.emacs.d/slime-2.17/")
     (setq slime-contribs '(slime-fancy))
-    (require 'slime-autoloads)
-
+    (require 'slime)
 
     (setf common-lisp-hyperspec-root "/home/xyh/lang/lisp/hyperspec/"
           slime-complete-symbol-function 'slime-fuzzy-complete-symbol
           lisp-indent-function 'common-lisp-indent-function)
 
+    ;; hooks are not working
+    ;; so I just edit the slime.el
 
     (add-hook 'slime-mode-hook
               (lambda ()
@@ -2308,31 +2341,22 @@
                 (local-set-key (kbd "C-M-h")  'slime-fuzzy-complete-symbol)
                 (local-set-key (kbd "C-M-.") 'next-buffer)
                 (local-set-key (kbd "C-M-,") 'previous-buffer)
+                (local-set-key (kbd "M-n") 'forward-paragraph)
+                (local-set-key (kbd "M-p") 'backward-paragraph)
                 ))
-
-    ;; (require 'slime)
-
-
-    ;; the following are not working
-    ;; so I just edit the slime.el
 
     (add-hook 'slime-repl-mode-hook
               (lambda ()
                 (local-set-key (kbd "C-M-.") 'next-buffer)
                 (local-set-key (kbd "C-M-,") 'previous-buffer)
+                (local-set-key (kbd "C-c C-k") 'slime-restart-inferior-lisp)
                 ))
-
-
-
 
     ;; (defun switch-to-buffer-*slime* ()
     ;;   (interactive)
     ;;   (slime-switch-to-output-buffer)
     ;;   (local-set-key (kbd "C-s C-x") 'previous-buffer))
     ;; (global-set-key (kbd "C-s C-x") 'switch-to-buffer-*slime*)
-
-
-
 
     ;; (add-hook
     ;;  'slime-mode-hook
@@ -2564,7 +2588,7 @@
     (add-hook 'cicada-nymph-mode-hook
      (lambda ()
        (local-set-key (kbd "C-h") 'hippie-expand)
-       (local-set-key (kbd "M-q") 'query-replace)
+       (local-set-key (kbd "M-i") 'query-replace)
        (local-set-key (kbd "C-c C-e")
                       'cicada-nymph-send-region-and-split-window)
        (local-set-key (kbd "C-<tab>")
@@ -2594,7 +2618,7 @@
     (add-hook 'cicada-language-mode-hook
      (lambda ()
        (local-set-key (kbd "C-h") 'hippie-expand)
-       (local-set-key (kbd "M-q") 'query-replace)
+       (local-set-key (kbd "M-i") 'query-replace)
        (local-set-key (kbd "C-c C-e")
                       'cicada-language-send-region-and-split-window)
        (local-set-key (kbd "C-<tab>")
@@ -2700,7 +2724,7 @@
                      (local-set-key (kbd "<return>") 'newline)
 
                      ;; (turn-off-indent)
-                     (local-set-key (kbd "M-q") 'query-replace)
+                     (local-set-key (kbd "M-i") 'query-replace)
 
                      ;; (setq comment-start "("!;\ )
                      ;; (setq comment-end " !;\"!;\ )
@@ -2902,6 +2926,30 @@
                     ))
     #+end_src
 
+
+*** clean
+
+    #+begin_src emacs-lisp :tangle ~/.emacs
+    (add-to-list 'load-path "~/.emacs.d/clean-mode/")
+    (setq auto-mode-alist
+          (append auto-mode-alist
+                  '(("\\.icl$"  . clean-mode)
+                    ("\\.dcl$"  . clean-mode)
+                    ("\\.prj$"  . clean-project-mode))))
+
+    (autoload 'clean-mode "clean-mode"
+       "Major mode for editing Clean scripts." t)
+    (autoload 'clean-project-mode "clean-project-mode"
+       "Major mode for editing Clean Project Scripts." t)
+
+    (add-hook 'clean-mode-hook
+              (lambda ()
+                ;; (local-set-key (kbd "M-n") 'forward-paragraph)
+                ;; (local-set-key (kbd "M-p") 'backward-paragraph)
+                ;; (local-set-key (kbd "<return>") 'newline)
+                (turn-off-indent)
+                ))
+    #+end_src
 
 *** haskell
 
@@ -3137,8 +3185,8 @@
       ;; (which includes invoking cider-quit) or you quit Emacs
       #+end_src
 
-*** erlang
-    #+begin_src emacs-lisp :tangle ~/.emacs
+*** erlang :no:
+    #+begin_src emacs-lisp :tangle no
     (add-to-list 'load-path "~/.emacs.d/erlmode/")
     (require 'erlmode-start)
     #+end_src
@@ -3170,7 +3218,7 @@
     (add-hook
      'prolog-mode-hook
      (lambda ()
-       (local-set-key (kbd "M-q") 'query-replace)
+       (local-set-key (kbd "M-i") 'query-replace)
        (local-set-key (kbd "C-c C-k")
                       (lambda ()
                         (interactive)
@@ -3567,14 +3615,6 @@
              :html-head "<link rel=\"stylesheet\"
                         href=\"../other/mystyle.css\"
                         type=\"text/css\"/>")))
-    #+end_src
-
-*** [prefix-command] C-o
-    #+begin_src emacs-lisp :tangle ~/.emacs
-    (define-prefix-command 'C-o-map)
-    (global-set-key (kbd "C-o") 'C-o-map)
-    ;; used by:
-    ;; "C-o C-b" : org-iswitchb
     #+end_src
 
 *** **-in-org
@@ -4018,20 +4058,16 @@
     #+end_src
 
 *** [agenda] setting
+
     #+begin_src emacs-lisp :tangle ~/.emacs
     (setq org-agenda-files "~/.emacs.d/agenda/file-name-list")
     (global-set-key (kbd "C-M-o") 'org-cycle-agenda-files)
-    (global-set-key (kbd "C-o C-b") 'org-iswitchb)
-    (global-set-key (kbd "C-o C-l") 'org-toggle-link-display)
     (global-set-key (kbd "C-c a") 'org-agenda)
 
-     (add-hook
-      'org-mode-hook
-      (lambda ()
-        ;; 原来的 org-cycle-agenda-files 是 C-,
-        ;; 我需要重新绑定它
-        (local-set-key (kbd "C-,") 'ska-jump-to-register)
-        ))
+    ;; (define-prefix-command 'C-o-map)
+    ;; (global-set-key (kbd "C-o") 'C-o-map)
+    ;; (global-set-key (kbd "C-o C-b") 'org-iswitchb)
+    ;; (global-set-key (kbd "C-o C-l") 'org-toggle-link-display)
     #+end_src
 
 *** [agenda] org-agenda-files
@@ -4938,8 +4974,9 @@
 
 *** font
 
-***** <f7>
-      #+begin_src emacs-lisp :tangle ~/.emacs
+***** <f7>                            :no:
+
+      #+begin_src emacs-lisp :tangle no
       (defvar *toggle-font-for-the-show* nil)
       (defun toggle-font-for-the-show ()
         (interactive)
@@ -5004,13 +5041,6 @@
       (char-table-extra-slot char-script-table 0)
       #+end_src
 
-***** test
-      λλλλλλ|
-      中英等宽测试|
-      sdasddassaas|
-      iiiiiiiiiiii|
-      λλλλλλλλλλλλ|
-
 ***** 楷
       #+begin_src emacs-lisp :tangle ~/.emacs
       ;; (set-fontset-font t 'han (font-spec :name "MS Song" :size 20))
@@ -5019,18 +5049,18 @@
 
 ***** 宋
       #+begin_src emacs-lisp :tangle ~/.emacs
-      ;; (set-fontset-font t 'han (font-spec :name "HanaMinA" :size 20))
-      ;; (set-fontset-font t 'han (font-spec :name "HAN NOM A" :size 20))
-      ;; (set-fontset-font t 'han (font-spec :name "H-秀月" :size 20))
-      ;; (set-fontset-font t 'han (font-spec :name "H-SiuNiu" :size 20))
-      ;; (set-fontset-font t 'han (font-spec :name "simsun" :size 20))
-      ;; (set-fontset-font t 'han (font-spec :name "臺灣新細明體" :size 20))
+      ;; (set-fontset-font t 'han (font-spec :name "HanaMinA" :size 24))
+      ;; (set-fontset-font t 'han (font-spec :name "HAN NOM A" :size 24))
+      ;; (set-fontset-font t 'han (font-spec :name "H-秀月" :size 24))
+      ;; (set-fontset-font t 'han (font-spec :name "H-SiuNiu" :size 24))
+      ;; (set-fontset-font t 'han (font-spec :name "simsun" :size 24))
+      ;; (set-fontset-font t 'han (font-spec :name "臺灣新細明體" :size 24))
       #+end_src
 
 ***** 黑
       #+begin_src emacs-lisp :tangle ~/.emacs
       ;; (set-fontset-font t 'han (font-spec :name "H-雲林呉竹体" :size 20))
-      (set-fontset-font t 'han (font-spec :name "H-明蘭" :size 20))
+      (set-fontset-font t 'han (font-spec :name "H-明蘭" :size 24))
       ;; (set-fontset-font t 'han (font-spec :name "H-minglan" :size 20))
 
       ;; (set-fontset-font t 'han (font-spec :name "Noto Sans Mono CJK TC" :size 20))
@@ -5045,6 +5075,10 @@
       #+end_src
 
 ***** 英
+      中英等宽测试|
+      sdasddassaas|
+      iiiiiiiiiiii|
+      λλλλλλλλλλλλ|
       #+begin_src emacs-lisp :tangle ~/.emacs
       ;; (set-face-attribute 'default nil :family "monaco" :height 130)
       ;; (set-face-attribute 'default nil :family "Envy Code R" :height 140)
@@ -5053,7 +5087,7 @@
 
       ;; (set-face-attribute 'default nil :family "Source Code Pro for Powerline" :height 130)
 
-      (set-face-attribute 'default nil :family "Input" :height 120)
+      (set-face-attribute 'default nil :family "Input" :height 140)
 
       ;; (set-face-attribute 'default nil :family "Droid Sans Mono" :height 130)
       ;; (set-face-attribute 'default nil :family "FiraMono" :height 130)
@@ -5088,12 +5122,15 @@
       ;; (set-fontset-font t 'greek (font-spec :name "Code2000"))
       ;; (set-fontset-font t 'greek (font-spec :name "ALPHA\-Demo"))
       (set-fontset-font t 'greek (font-spec :name "FreeMono"))
-      ;; α  Α     β  Β     γ  Γ     δ  Δ     ε  Ε
-      ;; ζ  Ζ     η  Η     θ  Θ     ι  Ι     κ  Κ
-      ;; λ  Λ     μ  Μ     ν  Ν     ξ  Ξ     ο  Ο
-      ;; π  Π     ρ  Ρ     ς  ΢     σ  Σ     τ  Τ
-      ;; υ  Υ     φ  Φ     χ  Χ     ψ  Ψ     ω  Ω
       #+end_src
+
+***** test 希臘
+
+      α  Α     β  Β     γ  Γ     δ  Δ     ε  Ε
+      ζ  Ζ     η  Η     θ  Θ     ι  Ι     κ  Κ
+      λ  Λ     μ  Μ     ν  Ν     ξ  Ξ     ο  Ο
+      π  Π     ρ  Ρ     ς  ΢     σ  Σ     τ  Τ
+      υ  Υ     φ  Φ     χ  Χ     ψ  Ψ     ω  Ω
 
 *** theme
 
