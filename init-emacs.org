@@ -570,7 +570,7 @@
     (global-set-key (kbd "<prior>") 'scroll-right-as-my-wish)
     (global-set-key (kbd "<next>") 'scroll-left-as-my-wish)
     (setq hscroll-step 1
-              hscroll-margin 6)
+          hscroll-margin 6)
     #+end_src
 
 *** search
@@ -697,7 +697,7 @@
     ;; 而且有更好的设计的文本编辑器也许并没有那么难
     (add-hook 'prog-mode-hook (lambda () (setq indent-tabs-mode nil)))
 
-    (fringe-mode 1)
+    (fringe-mode '(6 . 6))
 
     (transient-mark-mode t)
 
@@ -707,12 +707,12 @@
 
     (setq kill-ring-max 200)
 
-    ;(setq enable-recursive-minibuffers t)
+    ;; (setq enable-recursive-minibuffers t)
 
     (setq scroll-margin 4
-              scroll-conservatively 10000)
+          scroll-conservatively 10000)
 
-    ;(setq default-major-mode 'org-mode)
+    ;; (setq default-major-mode 'org-mode)
 
     (show-paren-mode t)
     (setq show-paren-style 'parentheses)
@@ -727,24 +727,20 @@
     #+end_src
 
 *** simple version control
-    #+begin_src emacs-lisp
-    ;; to keep the *~ style backup
-    ;; is to:
-    (setq make-backup-files t)
-    #+end_src
 
     #+begin_src emacs-lisp :tangle ~/.emacs
-    (setq
-     backup-by-copying t
-     version-control t
-     delete-old-versions t
-     kept-new-versions 10
-     kept-old-versions 0
-     dired-kept-versions 1
-     )
+    (setq make-backup-files nil
+          delete-old-versions t)
+
+    ;; (setq  backup-by-copying t
+    ;;        version-control t
+    ;;        kept-new-versions 10
+    ;;        kept-old-versions 0
+    ;;        dired-kept-versions 1)
     #+end_src
 
 *** variable about mode
+
     #+begin_src emacs-lisp :tangle ~/.emacs
     (setq modes-about-lisp
           '(scheme-mode
@@ -2159,7 +2155,7 @@
 
          (1 . orz)
          (0 . note)
-         ;; (1 . type)
+         (1 . type)
          (0 . example)
          (0 . effect)
          (2 . oer)
@@ -2218,6 +2214,12 @@
          (0 . -)
          (0 . %)
          (0 . =)
+
+         (1 . define-type)
+         (1 . define-jojo)
+         (1 . define-function)
+
+         (1 . map!)
 
          (0 . var)
          (0 . set)
@@ -3680,11 +3682,11 @@
 
     (setq org-html-preamble t)
     (setq org-html-preamble-format
-    '(("en" "長悲嘆而掩面兮 憐其獨於夢睹")))
+    '(("en" "近死之心 莫使復陽也")))
 
     (setq org-html-postamble t)
     (setq org-html-postamble-format
-    '(("en" "涕执我乎垂丧兮 懼余生之茫苦")))
+    '(("en" "近死之心 莫使復陽也")))
     #+end_src
 
 *** publishing
@@ -4583,10 +4585,13 @@
 *** ido
 
 ***** note
-      * ido is part of emacs
+
+      - ido is part of emacs
 
 ***** main
-      * use C-f during file selection to switch to regular find-file
+
+      - use C-f during file selection to switch to regular find-file
+
       #+begin_src emacs-lisp :tangle ~/.emacs
       (ido-mode t)
       (ido-everywhere t)
@@ -4598,7 +4603,8 @@
       #+end_src
 
 ***** ido-switch-buffer
-      * default key-binding
+
+      - default key-binding
         | RET     |                         | Select the buffer at the front of the list of matches.            |
         |         |                         | If the list is empty, possibly prompt to create new buffer.       |
         | C-j     | ido-select-text         | Use the current input string verbatim.                            |
@@ -4617,6 +4623,7 @@
         | C-x C-f | ido-enter-find-file     | Drop into `ido-find-file'.                                        |
         | C-k     | ido-kill-buffer-at-head | Kill buffer at head of buffer list.                               |
         | C-a     | ido-toggle-ignore       | Toggle ignoring buffers listed in `ido-ignore-buffers'.           |
+
       #+begin_src emacs-lisp :tangle ~/.emacs
       (global-set-key (kbd "C-x b") 'list-buffers)
       (global-set-key (kbd "C-x C-b") 'ido-switch-buffer)
@@ -4628,8 +4635,9 @@
                   (local-set-key (kbd "C-p") 'ido-prev-match)))
       #+end_src
 
-***** ido-ubiquitions
-      #+begin_src emacs-lisp :tangle ~/.emacs
+***** ido-ubiquitions                 :no:
+
+      #+begin_src emacs-lisp :tangle no
       (add-to-list 'load-path "~/.emacs.d/ido-ubiquitous/")
       (require 'ido-ubiquitous)
       (ido-ubiquitous-mode t)
@@ -4642,32 +4650,13 @@
       (ido-at-point-mode)
       #+end_src
 
-***** flx-ido                         :no:
-      #+begin_src emacs-lisp
-      (add-to-list 'load-path "~/.emacs.d/flx/")
-      (require 'flx-ido)
-      (ido-mode 1)
-      (ido-everywhere 1)
-      (flx-ido-mode 1)
-      ;; disable ido faces to see flx highlights.
-      (setq ido-use-faces nil)
-
-      ;; If don't want to use the flx's highlights you can turn them off like this:
-      ;; (setq flx-ido-use-faces nil)
-      #+end_src
-
 ***** ido-vertical-mode
+
       #+begin_src emacs-lisp :tangle ~/.emacs
       (add-to-list 'load-path "~/.emacs.d/ido-vertical-mode/")
       (require 'ido-vertical-mode)
       (ido-mode 1)
       (ido-vertical-mode 1)
-      #+end_src
-
-***** ido-hacks                       :no:
-      #+begin_src emacs-lisp
-      (add-to-list 'load-path "~/.emacs.d/ido-hacks/")
-      (require 'ido-hacks)
       #+end_src
 
 *** smex
@@ -4905,7 +4894,8 @@
     (setq erc-autojoin-channels-alist
           '(("freenode.net"
              "#szdiy"
-             "#schemecn"
+             "#archlinux-cn"
+             "#linux-cn"
              "#cicada-language")))
     #+end_src
 
