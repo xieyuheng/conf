@@ -1,6 +1,0 @@
-#+AUTHOR:    XIE Yuheng
-#+EMAIL:     xyheme@gmail.com
-
-
-* what is this ?
-  

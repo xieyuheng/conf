@@ -1,7 +1,6 @@
-#+TITLE:  init emacs ^-^
-#+AUTHOR: 謝宇恆 / XIE Yuheng
+#+title:  init emacs ^-^
 
-* note
+* [note]
 
   - keep it simple
   - try to do not change default key-binding
@@ -301,78 +300,6 @@
     (define-key global-map (kbd "C-c c") 'go-to-char)
     #+end_src
 
-*** my-quote
-    #+begin_src emacs-lisp :tangle ~/.emacs
-    ;; so here is a encoding for registers:
-    ;; n-w
-    ;; ==>
-    ;; (+ (* 52 (- ?n ?A))
-    ;;    (* (- ?w ?A)))
-
-    (setq next-whitespace-register
-              (+ (* 52 (- ?n ?A))
-             (* (- ?w ?A))))
-    (setq end-of-line-register
-              (+ (* 52 52 (- ?e ?A))
-             (* 52 (- ?o ?A))
-             (* (- ?l ?A))))
-    (setq my-word-quote-register
-              (+ (* 52 52 (- ?m ?A))
-             (* 52 (- ?w ?A))
-             (* (- ?q ?A))))
-    (defun next-whitespace ()
-      (interactive)
-      (let ((searching-for-next-whitespace
-             (search-forward (string 32) nil t 1)))
-            (left-char 1)
-            (if (null searching-for-next-whitespace)
-            'non-nil
-              nil)))
-
-    (defun my-word-quote ()
-      "abc ==> ``abc''"
-      (interactive)
-      (progn
-            (insert "`")
-            (point-to-register my-word-quote-register)
-
-            (if (null (next-whitespace))
-            (point-to-register next-whitespace-register)
-              ;; else there is no next-whitespace
-              (set-register next-whitespace-register
-                            ':no-next-whitespace:))
-
-            (jump-to-register my-word-quote-register)
-
-            (end-of-line)
-            (point-to-register end-of-line-register)
-
-            (cond ((eq (get-register next-whitespace-register)
-                       ':no-next-whitespace:)
-               (jump-to-register end-of-line-register)
-               (insert "'"))
-              (t;else
-               (if (< (get-register next-whitespace-register)
-                      (get-register end-of-line-register))
-                       (jump-to-register next-whitespace-register)
-                     (jump-to-register end-of-line-register))
-               (insert "'")))
-
-            (jump-to-register my-word-quote-register)
-            ))
-    (global-set-key (kbd "M-'") 'my-word-quote)
-
-
-    (defun my-line-quote ()
-      "abc 123 ==> ``abc 123''"
-      (interactive)
-      (progn
-            (insert "``")
-            (org-end-of-line)
-            (insert "''")))
-    (global-set-key (kbd "C-x M-'") 'my-line-quote)
-    #+end_src
-
 *** key board macros
     #+begin_src emacs-lisp :tangle ~/.emacs
     (defun my-<C-f1> ()
@@ -446,6 +373,7 @@
     (global-set-key (kbd "M-t") 'nil)
     (global-set-key (kbd "M-j") 'nil)
     (global-set-key (kbd "M-k") 'nil)
+    (global-set-key (kbd "M-`") 'nil)
     #+end_src
 
 *** prefix-command
@@ -775,7 +703,7 @@
     (setq kill-buffer-query-functions nil)
     #+end_src
 
-* note little input method
+* [note] little input method
   输入法和文本编辑器相辅相成同等重要
   emcas 因一个 bug 而不能使用 input method framework
   启动 emcas 前需要更改环境变量 LC_CTYPE 来弥补这个问题
@@ -793,7 +721,7 @@
 
 * <f1>
 
-*** note
+*** [note]
     point-to-register: C-x r SPC
     jump-to-register: C-x r j
     get-register
@@ -1674,9 +1602,6 @@
 
       (add-hook 'lisp-mode-hook             #'enable-paredit-mode)
       (add-hook 'slime-repl-mode-hook       #'enable-paredit-mode)
-      (add-hook 'slime-mode-hook            #'enable-paredit-mode)
-
-
 
       (add-hook 'lfe-mode-hook              #'enable-paredit-mode)
       (add-hook 'inferior-lfe-mode-hook     #'enable-paredit-mode)
@@ -2155,7 +2080,9 @@
 
          (1 . orz)
          (0 . note)
+
          (1 . type)
+         (1 . data)
          (0 . example)
          (0 . effect)
          (2 . oer)
@@ -2176,9 +2103,9 @@
          ;; cicada
          (1 . create-primitive-function)
 
-         (1 . define-function)
-         (1 . define-variable)
-         (1 . define-primitive-function)
+         (2 . define-function)
+         (2 . define-variable)
+         (2 . define-primitive-function)
 
          (0 . here)
          (0 . !td)
@@ -2186,7 +2113,6 @@
          (0 . @d)
 
          (1 . vector-map)
-         (1 . map)
 
          (1 . match-let)
          (1 . match-let*)
@@ -2201,7 +2127,7 @@
          (1 . define-monad)
 
          (0 . ~)
-         (0 . +)
+         ;; (0 . +)
          (0 . /)
          (0 . \?)
          (0 . *)
@@ -2215,7 +2141,16 @@
          (0 . %)
          (0 . =)
 
+         (0 . <)
+         (0 . >)
+
+         (0 . =>)
+         (0 . =<)
+         (0 . <=)
+         (0 . >=)
+
          (1 . define-type)
+         (1 . define-data)
          (1 . define-jojo)
          (1 . define-function)
 
@@ -2223,7 +2158,7 @@
 
          (0 . var)
          (0 . set)
-         (0 . get)
+         (1 . get)
 
          (0 . tail-call)
          (0 . string)
@@ -2234,6 +2169,27 @@
          (0 . run)
          (0 . clib)
 
+         (0 . ifte)
+         (0 . if3)
+
+         (1 . debug0)
+
+         (1 . with)
+
+         (0 . part)
+
+         (0 . extend-from)
+
+         (0 . lhs)
+         (0 . rhs)
+
+         (1 . in)
+         (0 . map)
+
+         (0 . use-modules)
+
+         (1 . connect-db)
+
          ))
       #+end_src
 
@@ -2243,7 +2199,8 @@
 
     (require 'racket-mode)
 
-    (setq auto-mode-alist (cons `("\\.rkt$" . scheme-mode) auto-mode-alist))
+    ;; (setq auto-mode-alist (cons `("\\.rkt$" . scheme-mode) auto-mode-alist))
+    (setq auto-mode-alist (cons `("\\.rkt$" . racket-mode) auto-mode-alist))
 
     ;; (defun switch-to-buffer-*racket* ()
     ;;   (interactive)
@@ -2264,6 +2221,7 @@
 
 *** lisp
     #+begin_src emacs-lisp :tangle ~/.emacs
+    ;; (setq inferior-lisp-program "lisp")
     (setq inferior-lisp-program "sbcl")
     ;; (setq inferior-lisp-program "ecl")
     ;; (setq inferior-lisp-program "ccl")
@@ -2273,9 +2231,9 @@
       (if (>= (+ 1 (point))
               (point-max))
           (message "C-<tab> : last sexp is evaled")
-          (let ()
-            (forward-sexp)
-            (slime-eval-last-expression))))
+        (let ()
+          (forward-sexp)
+          (slime-eval-last-expression))))
 
     (add-hook
      'lisp-mode-hook
@@ -2348,47 +2306,22 @@
 
     #+begin_src emacs-lisp :tangle ~/.emacs
     ;; setup load-path and autoloads
-    (add-to-list 'load-path "~/.emacs.d/slime-2.17/")
+    ;; (add-to-list 'load-path "~/.emacs.d/slime-2.17/")
+    (add-to-list 'load-path "~/.emacs.d/slime/")
 
     (setq slime-contribs '(slime-fancy))
 
     (require 'slime)
 
-    (setf common-lisp-hyperspec-root "/home/xyh/lang/lisp/hyperspec/"
+    (setf common-lisp-hyperspec-root "/home/xyh/sd0/lang/lisp/docs/hyperspec/"
           slime-complete-symbol-function 'slime-fuzzy-complete-symbol
           lisp-indent-function 'common-lisp-indent-function)
-
-    ;; hooks are not working
-    ;; so I just edit the slime.el
-
-    (add-hook 'slime-mode-hook
-              (lambda ()
-                (local-set-key (kbd "M-l")  'slime-documentation-lookup)
-                (local-set-key (kbd "C-M-h")  'slime-fuzzy-complete-symbol)
-                (local-set-key (kbd "C-M-.") 'next-buffer)
-                (local-set-key (kbd "C-M-,") 'previous-buffer)
-                (local-set-key (kbd "M-n") 'forward-paragraph)
-                (local-set-key (kbd "M-p") 'backward-paragraph)
-                ))
 
     (add-hook 'slime-repl-mode-hook
               (lambda ()
                 (local-set-key (kbd "C-M-.") 'next-buffer)
                 (local-set-key (kbd "C-M-,") 'previous-buffer)
-                (local-set-key (kbd "C-c C-k") 'slime-restart-inferior-lisp)
-                ))
-
-    ;; (defun switch-to-buffer-*slime* ()
-    ;;   (interactive)
-    ;;   (slime-switch-to-output-buffer)
-    ;;   (local-set-key (kbd "C-s C-x") 'previous-buffer))
-    ;; (global-set-key (kbd "C-s C-x") 'switch-to-buffer-*slime*)
-
-    ;; (add-hook
-    ;;  'slime-mode-hook
-    ;;  (lambda ()
-    ;;    (local-set-key (kbd "C-x C-e") 'slime-send-last-sexp-split-window)
-    ;;    ))
+                (local-set-key (kbd "C-c C-k") 'slime-restart-inferior-lisp)))
     #+end_src
 
 *** chicken-slime                     :no:
@@ -2527,7 +2460,7 @@
       #+begin_src emacs-lisp :tangle ~/.emacs
       (add-to-list 'load-path "~/.emacs.d/nodejs-repl/")
       (require 'nodejs-repl)
-      (global-set-key (kbd "C-s C-n") 'nodejs-repl)
+      ;; (global-set-key (kbd "C-s C-n") 'nodejs-repl)
       (setq nodejs-repl-command "node")
       #+end_src
 
@@ -2864,9 +2797,7 @@
      'sml-mode-hook
      (lambda ()
        (define-key sml-mode-map (kbd "C-x C-e") 'sml-send-function)
-       ;; (local-set-key (kbd "C-x C-e") 'sml-send-function)
-       )
-     'turn-off-indent)
+       (turn-off-indent)))
     #+end_src
 
 *** ocaml-mode
@@ -3671,7 +3602,7 @@
 *** path
 
     #+begin_src emacs-lisp :tangle ~/.emacs
-    (add-to-list 'load-path "~/.emacs.d/org-mode/lisp/")
+    (add-to-list 'load-path "~/.emacs.d/org/lisp/")
     (require 'org)
     #+end_src
 
@@ -3682,11 +3613,11 @@
 
     (setq org-html-preamble t)
     (setq org-html-preamble-format
-    '(("en" "近死之心 莫使復陽也")))
+          '(("en" ".")))
 
     (setq org-html-postamble t)
     (setq org-html-postamble-format
-    '(("en" "近死之心 莫使復陽也")))
+          '(("en" ".")))
     #+end_src
 
 *** publishing
@@ -3799,14 +3730,8 @@
     #+begin_src emacs-lisp :tangle ~/.emacs
     (setq org-todo-keywords
           '((sequence "><" "|" "><><" "|" "><><><")
-
-            (sequence "todo")
-            (sequence "待")
-
-            (sequence "note" "|" "test")
-            (sequence "記" "|" "測")
-            ;; (sequence "记" "|" "测")
-            ))
+            (sequence "[todo-list]" "|" "[todo-stack]" "|" "[maybe]")
+            (sequence "[note]" "|" "[test]")))
     #+end_src
 
 *** tag
@@ -3837,7 +3762,7 @@
 
 *** [babel] structure-template-alist
 
-***** note
+***** [note]
       1. C-c C-v d
          org-babel-demarcate-block
       2. begin_src <lang-name> 会去搜索<lang-name>的 major-mode
@@ -4176,61 +4101,6 @@
     tangle take too long so just edit
     file:~/.org-agenda-files
 
-*** org to html & pdf
-
-***** s5                              :no:
-      #+begin_src emacs-lisp
-      (add-to-list 'load-path "~/.emacs.d/org-mode/contrib/lisp/")
-      (require 'ox-s5)
-      ;; (setq org-s5-theme "railscast")   ; based off `color-theme-railscasts'
-      ;; (setq org-s5-theme "default")     ; the default S5 theme
-      (setq org-s5-theme "i18n")        ; the i18n theme by the author of S5
-      #+end_src
-
-***** org-pres-mode                   :no:
-      #+begin_src emacs-lisp :tangle no
-      (add-to-list 'load-path "~/.emacs.d/eimp/")
-      (require 'eimp)
-
-      (add-to-list 'load-path "~/.emacs.d/org-presie/")
-      (require 'org-presie)
-      #+end_src
-
-***** org-tree-slide                  :no:
-
-      #+begin_src emacs-lisp :tangle no
-      (add-to-list 'load-path "~/.emacs.d/org-tree-slide/")
-      (require 'org-tree-slide)
-
-      (add-hook
-       'org-tree-slide-mode-play-hook
-       (lambda ()
-         (local-set-key (kbd "<f9>") 'org-tree-slide-move-previous-tree)
-         (local-set-key (kbd "<f10>") 'org-tree-slide-move-next-tree)
-         (local-set-key (kbd "<f11>") 'org-tree-slide-content)
-         ))
-
-      (global-set-key (kbd "<f8>") 'org-tree-slide-mode)
-
-      ;; (define-key org-tree-slide-mode-map )
-
-      ;; Reset the default setting
-
-      ;; (define-key org-tree-slide-mode-map (kbd "<left>")  'backward-char)
-      ;; (define-key org-tree-slide-mode-map (kbd "<right>") 'forward-char)
-      ;; (setq org-tree-slide-skip-outline-level 4)
-      ;; (org-tree-slide-narrowing-control-profile)
-      ;; (setq org-tree-slide-skip-done nil)
-      #+end_src
-
-***** org-reveal                      :no:
-
-      #+begin_src emacs-lisp :tangle no
-      (add-to-list 'load-path "~/.emacs.d/org-reveal/")
-      (require 'ox-reveal)
-      (setq org-reveal-root "/home/xyh/software/reveal.js/")
-      (setq org-reveal-hlevel 2)
-      #+end_src
 * my org-mode
 
 *** org-get-code-block-path
@@ -4292,135 +4162,10 @@
     (add-hook 'cicada-nymph-mode-hook 'command-log-mode)
     #+end_src
 
-*** note w3m
+*** w3m
 
-    #+begin_src cicada-language
-    RET     Display the page pointed to by the link under point.
-            You may use the prefix arg `2' or `C-u C-u' to make a new session.
-
-    C-c C-c Submit the form at point.
-
-    M-x w3m-reload-all-pages        Reload all the pages.
-
-    R       Reload the current page.
-    r       Redisplay the current page.
-
-    C t     Redisplay the page, specifying a content type.
-    C c     Redisplay the current page, specifying a charset.
-    C C     Redisplay the current page and reset the user-specified charset and
-            content type.
-
-    TAB     Move the point to the next anchor.
-    i       Move the point to the previous anchor.
-    ]       Move the point to the next form.
-    [       Move the point to the previous form.
-    }       Move the point to the next image.
-    {       Move the point to the previous image.
-
-    B       Move back to the previous page in the history.
-    N       Move forward to the next page in the history.
-    ^       Attempt to move to the parent directory of the page.
-
-    U       Visit the web page.
-    G       Visit the web page in a new session.
-    C-c C-e Open page of which url is specified by `w3m-new-session-url' in
-            a new session.
-    H       Go to the Home page.
-    M       Open a link using `browse-url'.
-    C-c M-l Delete tabs on the left side of the current tab.
-    C-c M-r Delete tabs on the right side of the current tab.
-    C-c C-< Move this tab N (default 1) times to the left.
-    C-c C-> Move this tab N (default 1) times to the right.
-
-    M-d     Download the URL.
-    d       Download the URL under point.
-
-    I       Display the image under point in the external viewer.
-    M-i     Save the image under point to a file.
-    t       Toggle the visibility of an image under point.
-    T       Toggle the visibility of all images.
-    M-T     Turn off to display all images.
-    M-[     Zoom in an image on the point.
-    M-]     Zoom out an image on the point.
-
-    u       Display the url under point and put it into `kill-ring'.
-    c       Display the url of the current page and put it into `kill-ring'.
-
-    \       Display the html source of the current page.
-    =       Display the header of the current page.
-    M-x w3m-edit-current-url        Edit the local file displayed as the current page.
-    M-x w3m-edit-this-url   Edit the local file which is pointed to by URL under point.
-    M-k     Display cookies and enable you to manage them.
-
-    SPC     Scroll up the current window, or go to the next page.
-    b       Scroll down the current window, or go to the previous page.
-    J       Scroll the current window up one line (or lines of which the number
-            you specify by the prefix argument).
-    >       Scroll to the left.
-    <       Scroll to the right.
-    .       Shift to the left.
-    ,       Shift to the right.
-    M-l     Recenter horizontally.
-    C-a     Go to the entire beginning of line, may be accompanied by scrolling.
-    C-e     Go to the entire end of line, may be accompanied by scrolling.
-
-    C-n     Next line.
-    C-p     Previous line.
-    C-f     Forward char.
-    h       Backward char.
-
-    M-g g   Go to the line, specifying the line number (beginning with 1).
-    C-c C-@ Mark the current position.
-    C-c C-v Go to the last marked position.
-
-    s       Display the history of pages you have visited in the session.
-            If it is called with the prefix arg, it displays the arrived URLs.
-    A       Display the report of changes in web pages.
-            If it is called with the prefix arg, it updates the report.
-    +       Add the current url to the antenna database.
-    S       Query to the search engine a word.
-            To change the server, give any prefix argument to the command.
-    M-x w3m-search-new-session Query to the search engine a word in a new session.
-            To change the server, give any prefix argument to the command.
-    W       Display a weather report.
-            To change the local area, give any prefix argument to the command.
-    D       Display a directory tree.
-            If the prefix arg is given, display files in addition to directories.
-    M-x w3m-namazu  Search files with Namazu.
-            To change the index, give any prefix argument to the command.
-    |       Pipe a page source to a shell command.
-
-    v       Display the bookmark.
-    V       Display the bookmark on a new session.
-    a       Add a url of the current page to the bookmark.
-            If the prefix arg is given, the user will be prompted for the url.
-    M-x w3m-bookmark-add-all-urls   Add urls of all pages being visited to the bookmark.
-    M-a     Add the url under point to the bookmark.
-
-    M-x w3m-create-empty-session    Create an empty page as a new session and visit it.
-    C-c C-t Create a copy of the current page as a new session.
-    C-c C-n Turn the page of emacs-w3m buffers ahead.
-    C-c C-p Turn the page of emacs-w3m buffers behind.
-    C-c RET Move to the next unseen buffer.
-    C-c C-s Pop to the emacs-w3m buffers selection window up.
-    C-c C-a Select one of emacs-w3m buffers at the current window.
-    C-c C-w Delete the current emacs-w3m buffer.
-    C-c M-w Delete emacs-w3m buffers except for the current buffer.
-
-    M-x w3m Start browsing web with emacs-w3m.
-    M-x w3m-close-window    Close all emacs-w3m windows, without deleteing buffers.
-    Q       Exit browsing web.  All emacs-w3m buffers will be deleted.
-    C-c C-k Try to stop internal processes of a page.
-
-    ?       describe-mode.
-    <down-mouse-3>  Pop up a w3m-mode specific menu of mouse commands.
-
-    C-c C-b Send a bug report to the emacs-w3m team.
-    #+end_src
-
-*** w3m [installed by pacman] :no:
-
-    #+begin_src emacs-lisp :tangle no
+    #+begin_src emacs-lisp :tangle ~/.emacs
+    (add-to-list 'load-path "~/.emacs.d/emacs-w3m/")
     (require 'w3m-load)
 
     (setq w3m-home-page "file:///home/xyh/.w3m/bookmark.html")
@@ -4433,44 +4178,34 @@
     (add-hook
      'w3m-mode-hook
      (lambda ()
-
-       ;; 模擬的上下左右 做頁面選擇
+       ;; link
        (local-set-key (kbd "j") 'w3m-view-previous-page)
        (local-set-key (kbd "l") 'w3m-view-next-page)
        (local-set-key (kbd "i") 'w3m-previous-anchor)
        (local-set-key (kbd "k") 'w3m-next-anchor)
+       (local-set-key (kbd "RET") 'w3m-view-this-url)
        (local-set-key (kbd "M-RET") 'w3m-view-this-url-new-session)
-
-       ;; bookmark
-       ;; (local-set-key (kbd "v") 'w3m-bookmark-view)
-       (local-set-key (kbd "b") 'w3m-bookmark-view)
-       (local-set-key (kbd "B") 'w3m-bookmark-view-new-session)
-       (local-set-key (kbd "C-M-b") 'w3m-bookmark-edit)
-
-       ;; 頁面內瀏覽
+       ;; in page
        (local-set-key (kbd "M-n") 'forward-paragraph)
        (local-set-key (kbd "M-p") 'backward-paragraph)
-       (local-set-key (kbd "<down>") 'forward-paragraph)
-       (local-set-key (kbd "<up>") 'backward-paragraph)
-
-       ;; tab 之間巡航
+       ;; bookmark
+       (local-set-key (kbd "b") 'w3m-bookmark-view-new-session)
+       (local-set-key (kbd "C-M-b") 'w3m-bookmark-edit)
+       ;; tab
        (local-set-key (kbd "<C-tab>") 'w3m-next-buffer)
        (local-set-key (kbd "<C-iso-lefttab>") 'w3m-previous-buffer)
-       (local-set-key (kbd "C-M-n") 'w3m-next-buffer)
-       (local-set-key (kbd "C-M-p") 'w3m-previous-buffer)
-
        ;; 獲取當前光標下的 url
        ;; 光標下沒有就獲取當前的 url
        ;; 點擊回車編輯 html
        (local-set-key (kbd "e") 'w3m-edit-url)
-       ;; (local-set-key (kbd "E") 'w3m-edit-url)
 
-       ;; (local-set-key (kbd "q") 'quit-window)
-
-       ;; in default setting
-       ;; C-t is a prefix
+       ;; give back keys
        (local-set-key (kbd "C-t") 'isearch-forward)
-       ))
+       (local-set-key (kbd "<left>") 'backward-char)
+       (local-set-key (kbd "<right>") 'forward-char)
+       (local-set-key (kbd "<down>") 'forward-paragraph)
+       (local-set-key (kbd "<up>") 'backward-paragraph)
+       (local-set-key (kbd "M-s") 'forward-sexp)))
     #+end_src
 
 *** hippie-expand
@@ -4584,7 +4319,7 @@
 
 *** ido
 
-***** note
+***** [note]
 
       - ido is part of emacs
 
@@ -4665,7 +4400,7 @@
     (require 'smex)
 
     (global-set-key (kbd "M-x") 'smex)
-    (global-set-key (kbd "M-X") 'smex-major-mode-commands)
+    (global-set-key (kbd "M-z") 'smex-major-mode-commands)
     #+end_src
 
 *** cua-selection-mode
@@ -4770,13 +4505,6 @@
     (setq user-full-name "XIE Yuheng"
           user-mail-address "xyheme@gmail.com"
           message-auto-save-directory "~/mail/draft")
-    #+end_src
-
-*** hlinum
-    #+begin_src emacs-lisp :tangle ~/.emacs
-    (add-to-list 'load-path "~/.emacs.d/hlinum-mode/")
-    (require 'hlinum)
-    (hlinum-activate)
     #+end_src
 
 *** region-state
@@ -4895,6 +4623,7 @@
           '(("freenode.net"
              "#szdiy"
              "#archlinux-cn"
+             "#archlinux-cn-offtopic"
              "#linux-cn"
              "#cicada-language")))
     #+end_src
@@ -4968,7 +4697,27 @@
     ;; ((kbd "9") 'eyebrowse-switch-to-window-config-9)
     #+end_src
 
+* sdcv
+
+  #+begin_src emacs-lisp :tangle ~/.emacs
+  (add-to-list 'load-path "~/.emacs.d/popup-el/")
+  (require 'popup)
+
+  (add-to-list 'load-path "~/.emacs.d/sdcv.el/")
+  (require 'sdcv)
+
+  (global-set-key (kbd "M-t") 'sdcv-search-pointer)
+  #+end_src
+
 * looks like
+
+*** hl
+
+    #+begin_src emacs-lisp :tangle ~/.emacs
+    (add-to-list 'load-path "~/.emacs.d/hl-line/")
+    (require 'hl-line)
+    (global-hl-line-mode 1)
+    #+end_src
 
 *** font
 
@@ -4998,7 +4747,7 @@
       (global-set-key (kbd "<f7>") 'toggle-font-for-the-show)
       #+end_src
 
-***** note
+***** [note]
       用下面所使用的连个函数配置 emacs 的字体的时候
       其他一些程序(比如 firefox)的字体配置也会跟着改变
 
@@ -5057,8 +4806,11 @@
 
 ***** 黑
       #+begin_src emacs-lisp :tangle ~/.emacs
-      ;; (set-fontset-font t 'han (font-spec :name "H-雲林呉竹体" :size 20))
-      (set-fontset-font t 'han (font-spec :name "H-明蘭" :size 24))
+      ;; (set-fontset-font t 'han (font-spec :name "H-雲林呉竹体" :size 24))
+
+      ;; (set-fontset-font t 'han (font-spec :name "H-明蘭" :size 24))
+      (set-fontset-font t 'han (font-spec :name "Noto Sans CJK TC Regular" :size 24))
+
       ;; (set-fontset-font t 'han (font-spec :name "H-minglan" :size 20))
 
       ;; (set-fontset-font t 'han (font-spec :name "Noto Sans Mono CJK TC" :size 20))
@@ -5082,19 +4834,20 @@
 ***** 英
 
       #+begin_src emacs-lisp :tangle ~/.emacs
-      ;; (set-face-attribute 'default nil :family "monaco" :height 130)
+      ;; (set-face-attribute 'default nil :family "monaco" :height 140)
       ;; (set-face-attribute 'default nil :family "Envy Code R" :height 140)
       ;; (set-face-attribute 'default nil :family "Source Code Pro" :height 130)
       ;; (set-face-attribute 'default nil :family "Sauce Code Powerline" :height 130)
 
-      ;; (set-face-attribute 'default nil :family "Source Code Pro for Powerline" :height 130)
+      ;; (set-face-attribute 'default nil :family "Source Code Pro for Powerline" :height 140)
 
       (set-face-attribute 'default nil :family "Input" :height 140)
+      ;; (set-face-attribute 'default nil :family "monofur" :height 170)
 
       ;; (set-face-attribute 'default nil :family "Droid Sans Mono" :height 130)
       ;; (set-face-attribute 'default nil :family "FiraMono" :height 130)
       ;; (set-face-attribute 'default nil :family "mono" :height 140)
-      ;; (set-face-attribute 'default nil :family "monofur" :height 140)
+
       ;; (set-face-attribute 'default nil :family "lmmono10" :height 140)
       ;; (set-face-attribute 'default nil :family "lmmonocaps10" :height 140)
       ;; (set-face-attribute 'default nil :family "lmmonolt10" :height 140)
@@ -5241,7 +4994,7 @@
 
 * emacs server & eshell
 
-*** note
+*** [note]
     * 需要與 bash 或 zsh 配合使用
       給 emacsclient 以 "e" 爲其別名
       並注意設置 emacsclient 的命令行參數
@@ -5284,7 +5037,7 @@
        (local-set-key (kbd "C-c C-h") 'eshell-list-history)))
     #+end_src
 
-*** note how to use
+*** [note] how to use
 
 ***** startup scripts
       *for i use org-mode, this is not very useful*
