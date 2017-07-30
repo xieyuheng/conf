@@ -1,14 +1,9 @@
 #+title:  init emacs ^-^
 
-* [note]
-
-  - keep it simple
-  - try to do not change default key-binding
-  - add a thing only when you really need it
-
 * lib
 
-*** my functions
+*** rgx
+
     #+begin_src emacs-lisp :tangle ~/.emacs
     (defmacro rgx-opt (&rest lis)
       `(regexp-opt (quote ,lis)))
@@ -38,11 +33,11 @@
     ;; test:
     ;; (rgx-groups "1" "2" "3")
     ;; (rx (group "1") (group "2") (group "3"))
+    #+end_src
 
+*** make-syntaxes
 
-
-
-
+    #+begin_src emacs-lisp :tangle ~/.emacs
     ;; a syntax-table is a char-table
     (defmacro make-syntaxes (name &rest lis)
       (list 'progn ;; need to control eva order
@@ -55,75 +50,75 @@
                                     (list name)))
                           lis))))
 
+    (make-syntaxes
+     word-syntax-table
+     ;; default is word constituent
+     ;; whitespace characters:
+     (   '(0 . 32)    "-"  )
+     (      127       "-"  ))
 
+    (make-syntaxes
+     word-syntax-table-with-symbol&with-open/close-delimiter
+     ;; note that, if modify one syntax entry twice
+     ;; the second will shadow the first
+     ;; whitespace characters:
+     (   '(0 . 32)    "-"  )
+     (      127       "-"  )
+     ;; symbol constituent:
+     ;; the following functions need this:
+     ;; ``forward-word'' and so on ...
+     (  '(33 . 47)    "_"  )
+     (  '(58 . 64)    "_"  )
+     (  '(91 . 96)    "_"  )
+     ( '(123 . 126)   "_"  )
+     ;; open/close delimiter:
+     ;; the following functions need this:
+     ;; ``forward-sexp'' ``backward-sexp''
+     ;; ``mark-sexp'' and so on ...
+     (  ?\(    "("  )
+     (  ?\)    ")"  )
+     (  ?\[    "("  )
+     (  ?\]    ")"  )
+     (  ?\{    "("  )
+     (  ?\}    ")"  ))
 
+    (make-syntaxes
+     word-syntax-table-with-symbol
+     ;; note that, if modify one syntax entry twice
+     ;; the second will shadow the first
+     ;; whitespace characters:
+     (   '(0 . 32)    "-"  )
+     (      127       "-"  )
+     ;; symbol constituent:
+     ;; the following functions need this:
+     ;; ``forward-word'' and so on ...
+     (  '(33 . 47)    "_"  )
+     (  '(58 . 64)    "_"  )
+     (  '(91 . 96)    "_"  )
+     ( '(123 . 126)   "_"  ))
 
+    (make-syntaxes
+     word-syntax-table-with-open/close-delimiter
+     ;; note that, if modify one syntax entry twice
+     ;; the second will shadow the first
+     ;; whitespace characters:
+     (   '(0 . 32)    "-"  )
+     (      127       "-"  )
+     ;; open/close delimiter:
+     ;; the following functions need this:
+     ;; ``forward-sexp'' ``backward-sexp''
+     ;; ``mark-sexp'' and so on ...
+     (  ?\(    "("  )
+     (  ?\)    ")"  )
+     (  ?\[    "("  )
+     (  ?\]    ")"  )
+     (  ?\{    "("  )
+     (  ?\}    ")"  ))
+    #+end_src
 
-    (make-syntaxes word-syntax-table
-                   ;; default is word constituent
-                   ;; whitespace characters:
-                   (   '(0 . 32)    "-"  )
-                   (      127       "-"  ))
+*** make-faces
 
-    (make-syntaxes word-syntax-table-with-symbol&with-open/close-delimiter
-                   ;; note that, if modify one syntax entry twice
-                   ;; the second will shadow the first
-                   ;; whitespace characters:
-                   (   '(0 . 32)    "-"  )
-                   (      127       "-"  )
-                   ;; symbol constituent:
-                   ;; the following functions need this:
-                   ;; ``forward-word'' and so on ...
-                   (  '(33 . 47)    "_"  )
-                   (  '(58 . 64)    "_"  )
-                   (  '(91 . 96)    "_"  )
-                   ( '(123 . 126)   "_"  )
-                   ;; open/close delimiter:
-                   ;; the following functions need this:
-                   ;; ``forward-sexp'' ``backward-sexp''
-                   ;; ``mark-sexp'' and so on ...
-                   (  ?\(    "("  )
-                   (  ?\)    ")"  )
-                   (  ?\[    "("  )
-                   (  ?\]    ")"  )
-                   (  ?\{    "("  )
-                   (  ?\}    ")"  ))
-
-    (make-syntaxes word-syntax-table-with-symbol
-                   ;; note that, if modify one syntax entry twice
-                   ;; the second will shadow the first
-                   ;; whitespace characters:
-                   (   '(0 . 32)    "-"  )
-                   (      127       "-"  )
-                   ;; symbol constituent:
-                   ;; the following functions need this:
-                   ;; ``forward-word'' and so on ...
-                   (  '(33 . 47)    "_"  )
-                   (  '(58 . 64)    "_"  )
-                   (  '(91 . 96)    "_"  )
-                   ( '(123 . 126)   "_"  ))
-
-    (make-syntaxes word-syntax-table-with-open/close-delimiter
-                   ;; note that, if modify one syntax entry twice
-                   ;; the second will shadow the first
-                   ;; whitespace characters:
-                   (   '(0 . 32)    "-"  )
-                   (      127       "-"  )
-                   ;; open/close delimiter:
-                   ;; the following functions need this:
-                   ;; ``forward-sexp'' ``backward-sexp''
-                   ;; ``mark-sexp'' and so on ...
-                   (  ?\(    "("  )
-                   (  ?\)    ")"  )
-                   (  ?\[    "("  )
-                   (  ?\]    ")"  )
-                   (  ?\{    "("  )
-                   (  ?\}    ")"  ))
-
-
-
-
-
+    #+begin_src emacs-lisp :tangle ~/.emacs
     (defun make-faces-help (alist)
       (mapcar (lambda (face-definiton)
                 (eval (append '(defface)
@@ -158,30 +153,6 @@
       (interactive)
       (local-set-key (kbd "<tab>") function-before-turn-on-indent)
       (message "turning on <tab> indentation."))
-
-
-    (defun move-line-foreword ()
-      (interactive)
-      (if (char-equal 10 (char-before))
-          (insert " ")
-        (progn
-          (point-to-register 666)
-          (move-beginning-of-line 1)
-          (insert " ")
-          (jump-to-register 666))))
-
-    (defun move-line-backword ()
-      (interactive)
-      (point-to-register 666)
-      (move-beginning-of-line 1)
-      (if (char-equal 32 (char-after))
-          (delete-char 1))
-      (jump-to-register 666))
-
-
-
-
-
 
     (defun change-parentheses ()
       (interactive)
@@ -237,14 +208,14 @@
              (message "change-parentheses have nothing to do here !"))))
     #+end_src
 
-*** move-line-[backword|foreword]
+*** change-parentheses
+
     #+begin_src emacs-lisp :tangle ~/.emacs
-    ;; (global-set-key (kbd "M-u") 'move-line-backword)
-    ;; (global-set-key (kbd "M-i") 'move-line-foreword)
     (global-set-key (kbd "M-[") 'change-parentheses)
     #+end_src
 
 *** member-string?
+
     #+begin_src emacs-lisp :tangle ~/.emacs
     (defun member-string? (x l)
       (cond ((null l) nil)
@@ -254,53 +225,8 @@
              (member-string? x (cdr l)))))
     #+end_src
 
-*** jump-to-register                  :no:
-    #+begin_src emacs-lisp :tangle no
-    ;; (global-set-key (kbd "C-.") 'ska-point-to-register)
-    ;; (global-set-key (kbd "C-,") 'ska-jump-to-register)
+*** <C-f1> & <C-f2>
 
-    (defun ska-point-to-register()
-      "Store cursorposition _fast_ in a register.
-    Use ska-jump-to-register to jump back to the stored
-    position."
-      (interactive)
-      (setq zmacs-region-stays t)
-      (point-to-register 8))
-
-    (defun ska-jump-to-register()
-      "Switches between current cursorposition and position
-    that was stored with ska-point-to-register."
-      (interactive)
-      (setq zmacs-region-stays t)
-      (let ((tmp (point-marker)))
-            (jump-to-register 8)
-            (set-register 8 tmp)))
-    #+end_src
-
-*** go-to-char
-    #+begin_src emacs-lisp :tangle ~/.emacs
-    ;; (string c1 ...)
-    ;; concatenate all the argument characters
-    ;; and make the result a string
-
-    ;; (search-forward STRING &optional BOUND NOERROR COUNT)
-
-    ;; (read-char &optional PROMPT INHERIT-INPUT-METHOD SECONDS)
-
-    (defun go-to-char (n char)
-          "Move forward to Nth occurence of CHAR.
-    Typing `go-to-char-key' again will move forwad to the next Nth
-    occurence of CHAR."
-          (interactive "p\ncGo to char: ")
-          (search-forward (string char) nil nil n)
-          (while (char-equal (read-char) char)
-            (search-forward (string char) nil nil n))
-          (setq unread-command-events (list last-input-event)))
-
-    (define-key global-map (kbd "C-c c") 'go-to-char)
-    #+end_src
-
-*** key board macros
     #+begin_src emacs-lisp :tangle ~/.emacs
     (defun my-<C-f1> ()
       (interactive)
@@ -318,6 +244,7 @@
     #+end_src
 
 *** generator
+
     #+begin_src emacs-lisp :tangle ~/.emacs
     (defvar number-generator:*counter* 0)
     (defun number-generator ()
@@ -325,40 +252,27 @@
       number-generator:*counter*)
     #+end_src
 
-*** dash (needed by something)
+*** needed
+
     #+begin_src emacs-lisp :tangle ~/.emacs
     (add-to-list 'load-path "~/.emacs.d/dash/")
     (require 'dash)
-    #+end_src
 
-*** epl (needed by something)
-    Emacs Package Library
-    #+begin_src emacs-lisp  :tangle ~/.emacs
     (add-to-list 'load-path "~/.emacs.d/epl/")
     (require 'epl)
-    #+end_src
 
-*** pkg-info (needed by something)
-    #+begin_src emacs-lisp  :tangle ~/.emacs
     (add-to-list 'load-path "~/.emacs.d/pkg-info/")
     (require 'pkg-info)
-    #+end_src
 
-*** spinner
-
-    #+begin_src emacs-lisp :tangle ~/.emacs
     (add-to-list 'load-path "~/.emacs.d/spinner.el/")
     (require 'spinner)
-    #+end_src
 
-*** seq
-
-    #+begin_src emacs-lisp :tangle ~/.emacs
     (add-to-list 'load-path "~/.emacs.d/seq.el/")
     (require 'seq)
     #+end_src
 
 *** load xrdb
+
     #+begin_src emacs-lisp :tangle ~/.emacs
     (defun xrdb ()
       (interactive)
@@ -368,6 +282,7 @@
 * key binding
 
 *** unbinding
+
     #+begin_src emacs-lisp :tangle ~/.emacs
     ;; orientally: transpose-words
     (global-set-key (kbd "M-t") 'nil)
@@ -377,6 +292,7 @@
     #+end_src
 
 *** prefix-command
+
     #+begin_src emacs-lisp :tangle ~/.emacs
     (define-prefix-command 'C-s-map)
     (global-set-key (kbd "C-s") 'C-s-map)
@@ -388,30 +304,8 @@
     ;; "C-s C-e" : my-switch-to-eshell
     #+end_src
 
-*** example of prefix-command
-    #+begin_src emacs-lisp
-    (define-prefix-command '存-map)
-    (global-set-key (kbd "存") '存-map)
-    (define-key 存-map (kbd "盘") 'save-buffer)
-
-    (define-prefix-command 'ctl-z-map)
-    (define-prefix-command '存-map)
-    (define-prefix-command '盘-map)
-
-    (global-set-key (kbd "C-z") 'ctl-z-map)
-    (define-key ctl-z-map (kbd "存") '存-map)
-    (define-key 存-map (kbd "盘") '盘-map)
-
-    (define-key 盘-map (kbd "！") 'save-buffer)
-    (define-key 盘-map (kbd "到") 'write-file)
-    (define-key 盘-map (kbd "退出")
-      (lambda ()
-            (interactive)
-            (save-buffer)
-            (kill-emacs)))
-    #+end_src
-
 *** cruise
+
     #+begin_src emacs-lisp :tangle ~/.emacs
     (defun window-> () (interactive) (other-window +1))
     (defun <-window () (interactive) (other-window -1))
@@ -439,6 +333,7 @@
     #+end_src
 
 *** window resizing
+
     #+begin_src emacs-lisp :tangle ~/.emacs
     (global-set-key (kbd "C-M-h") 'shrink-window-horizontally)
     (global-set-key (kbd "C-M-l") 'enlarge-window-horizontally)
@@ -447,16 +342,19 @@
     #+end_src
 
 *** path
+
     #+begin_src emacs-lisp :tangle ~/.emacs
     (global-set-key (kbd "<C-M-return>") 'pwd)
     #+end_src
 
 *** line wrap
+
     #+begin_src emacs-lisp :tangle ~/.emacs
     (global-set-key (kbd "C-M-g") 'global-visual-line-mode)
     #+end_src
 
 *** comment
+
     #+begin_src emacs-lisp :tangle ~/.emacs
     (define-prefix-command '<menu>-map)
     (global-set-key (kbd "<menu>") '<menu>-map)
@@ -468,6 +366,7 @@
     #+end_src
 
 *** edit
+
     #+begin_src emacs-lisp :tangle ~/.emacs
     ;; backward-kill-sentence
 
@@ -479,15 +378,17 @@
     #+end_src
 
 *** view
-    + 如果不左右 scroll
+
+    - 如果不左右 scroll
       emacs 就会自动为把长的行折反到视野中来(org-mode 除外)
-    + M-< : beginning-of-buffer
+    - M-< : beginning-of-buffer
       M-> : end-of-buffer
       + 不要与下面的绑定混淆
         M-, : org-babel-previous-src-block
         M-. : org-babel-next-src-block
-    + C-v : scroll-up-command
+    - C-v : scroll-up-command
       M-v : scroll-down-command
+
     #+begin_src emacs-lisp :tangle ~/.emacs
     (defun scroll-right-as-my-wish ()
       (interactive)
@@ -501,21 +402,14 @@
           hscroll-margin 6)
     #+end_src
 
-*** search
-    #+begin_src emacs-lisp :tangle ~/.emacs
-    (global-set-key (kbd "C-t") 'isearch-forward)
-    (add-hook 'isearch-mode-hook
-              (lambda ()
-                    (define-key isearch-mode-map (kbd "C-t") 'isearch-repeat-forward)
-                    ))
-    #+end_src
-
 *** query-replace
+
     #+begin_src emacs-lisp :tangle ~/.emacs
     (global-set-key (kbd "M-i") 'query-replace)
     #+end_src
 
 *** help
+
     #+begin_src emacs-lisp :tangle ~/.emacs
     (global-set-key (kbd "C-/") 'help)
     #+end_src
@@ -527,11 +421,13 @@
     #+end_src
 
 *** rename-buffer
+
     #+begin_src emacs-lisp :tangle ~/.emacs
     (global-set-key (kbd "C-s C-r") 'rename-buffer)
     #+end_src
 
 *** insert (some trick here)
+
     can't bind C-M-i to new function in normal way
 
     and TAB == C-i
@@ -540,6 +436,7 @@
     (kbd "C-i") == (kbd "TAB") == "	"
     (kbd "C-M-i") == [134217737]
     in elisp-repl
+
     #+begin_src emacs-lisp :tangle ~/.emacs
     ;; (define-key input-decode-map [?\C-i] [control-i])
     ;; (global-set-key [control-i] 'insert-newline-below)
@@ -554,6 +451,7 @@
     #+end_src
 
 *** whitespace
+
     #+begin_src emacs-lisp :tangle ~/.emacs
     (global-set-key
      (kbd "C-M-w")
@@ -582,6 +480,7 @@
     #+end_src
 
 *** mania
+
     #+begin_src emacs-lisp :tangle ~/.emacs
     (global-set-key (kbd "C-s C-x") 'save-buffer)
     #+end_src
@@ -611,6 +510,7 @@
 * general setting
 
 *** variable
+
     #+begin_src emacs-lisp :tangle ~/.emacs
     (setq case-fold-search nil)
     (setq case-replace nil)
@@ -647,6 +547,7 @@
     #+end_src
 
 *** enable disable
+
     #+begin_src emacs-lisp :tangle ~/.emacs
     (put 'set-goal-column 'disabled nil)
     (put 'narrow-to-region 'disabled nil)
@@ -699,818 +600,15 @@
     #+end_src
 
 *** kill-buffer-query-functions
+
     #+begin_src emacs-lisp :tangle ~/.emacs
     (setq kill-buffer-query-functions nil)
     #+end_src
 
-* [note] little input method
-  输入法和文本编辑器相辅相成同等重要
-  emcas 因一个 bug 而不能使用 input method framework
-  启动 emcas 前需要更改环境变量 LC_CTYPE 来弥补这个问题
-  #+begin_src sh
-  LC_CTYPE=zh_CN.UTF-8 emacs
-  #+end_src
+*** tab-width
 
-  #+begin_src sh
-  export LC_CTYPE=zh_CN.UTF-8
-  emacs &
-  #+end_src
-
-  有的时候能直接用
-  有的时候必须要用上面的方法
-
-* <f1>
-
-*** [note]
-    point-to-register: C-x r SPC
-    jump-to-register: C-x r j
-    get-register
-
-*** init-<f1>
     #+begin_src emacs-lisp :tangle ~/.emacs
-    ;; (define-prefix-command '<f1>-map)
-    ;; (global-set-key (kbd "<f1>") '<f1>-map)
-
-
-    (defun init-<f1> ()
-      (interactive)
-      (progn
-        (cond ((memq major-mode modes-about-lisp)
-               (init-<f1>-for-lisp))
-
-              ((eq major-mode 'cicada-nymph-mode)
-               (init-<f1>-for-cicada-nymph))
-
-              ((eq major-mode 'org-mode)
-               ;; for i am a LISPer
-               (init-<f1>-for-lisp))
-
-              ((eq major-mode 'coq-mode)
-               (init-<f1>-for-coq))
-
-              ((memq major-mode modes-about-haskell)
-               (init-<f1>-for-haskell))
-
-              ((memq major-mode modes-about-C)
-               (init-<f1>-for-C))
-
-              ((eq major-mode 'caml-mode)
-               (init-<f1>-for-caml))
-
-              (t
-               (message "<f1> have do nothing in this major mode"))
-
-              )))
-
-    (global-set-key (kbd "<f1>") 'init-<f1>)
-    #+end_src
-
-*** insert things
-    #+begin_src emacs-lisp :tangle ~/.emacs
-    (defun insert-lambda () (interactive) (insert "lambda"))
-
-    ;; first-order-logic
-    (defun insert-∧ () (interactive) (insert "∧"))
-    (defun insert-∨ () (interactive) (insert "∨"))
-    (defun insert-¬ () (interactive) (insert "¬"))
-    (defun insert-→ () (interactive) (insert "→"))
-    (defun insert-← () (interactive) (insert "←"))
-    (defun insert-↔ () (interactive) (insert "↔"))
-    (defun insert-∃ () (interactive) (insert "∃"))
-    (defun insert-∀ () (interactive) (insert "∀"))
-
-    ;; set theory
-    (defun insert-∈ () (interactive) (insert "∈"))
-    (defun insert-⋶ () (interactive) (insert "⋶"))
-    (defun insert-є () (interactive) (insert "є"))
-    (defun insert-э () (interactive) (insert "э"))
-    (defun insert-⊂ () (interactive) (insert "⊂"))
-    (defun insert-⊃ () (interactive) (insert "⊃"))
-    (defun insert-⊄ () (interactive) (insert "⊄"))
-    (defun insert-⊅ () (interactive) (insert "⊅"))
-    (defun insert-⊆ () (interactive) (insert "⊆"))
-    (defun insert-⊇ () (interactive) (insert "⊇"))
-    (defun insert-∩ () (interactive) (insert "∩"))
-    (defun insert-∪ () (interactive) (insert "∪"))
-    (defun insert-∅ () (interactive) (insert "∅"))
-
-    ;; about function
-    (defun insert-↤ () (interactive) (insert "↤"))
-    (defun insert-↦ () (interactive) (insert "↦"))
-    (defun insert-<- () (interactive) (insert "<-"))
-    (defun insert--> () (interactive) (insert "->"))
-
-    ;; proof theory
-    (defun insert-≡ () (interactive) (insert "≡"))
-    (defun insert-ͱ () (interactive) (insert "ͱ"))
-    (defun insert-⊢ () (interactive) (insert "⊢"))
-    (defun insert-⊦ () (interactive) (insert "⊦"))
-
-    ;; _ and ^
-    (defun insert-∞ () (interactive) (insert "∞"))
-    (defun insert-√ () (interactive) (insert "√"))
-    (defun insert-¿ () (interactive) (insert "¿"))
-    (defun insert-° () (interactive) (insert "°"))
-
-    ;; mics
-    (defun insert-ߊ () (interactive) (insert "ߊ"))
-    (defun insert-▓ () (interactive) (insert "▓"))
-    #+end_src
-
-*** init-<f1>-for-cicada-nymph
-    #+begin_src emacs-lisp :tangle ~/.emacs
-    (defun init-<f1>-for-cicada-nymph ()
-      (interactive)
-      (progn
-        ;; 需要快捷输入 lambda
-        (local-set-key
-         (kbd "<f1> <f1>")
-         (lambda ()
-           (interactive)
-           (insert ": ")
-           (point-to-register ?c)
-           (insert "\n")
-           (insert "  << -- >>\n")
-           (insert "  \n")
-           (insert "  end\n")
-           (insert "; define-function")
-           (jump-to-register ?c)
-           ))
-
-        ;; connectives
-        (local-set-key (kbd "<f1> c") 'insert-∧);; conjunction
-        (local-set-key (kbd "<f1> d") 'insert-∨);; disjunction
-        (local-set-key (kbd "<f1> -") 'insert-¬);; negation
-        (local-set-key (kbd "<f1> <right>") 'insert-→);; implication
-        (local-set-key (kbd "<f1> <S-right>") 'insert-↔);; equivalence
-        ;; quantifiers
-        (local-set-key (kbd "<f1> a") 'insert-∀);; all
-        (local-set-key (kbd "<f1> e") 'insert-∃);; exist
-
-        ;; set thoery
-        (local-set-key (kbd "<f1> b") 'insert-∈);; belong to
-        (local-set-key (kbd "<f1> 0") 'insert-∅)
-        (local-set-key (kbd "<f1> [") 'insert-⊂)
-        (local-set-key (kbd "<f1> ]") 'insert-⊃)
-        (local-set-key (kbd "<f1> u") 'insert-∪)
-        (local-set-key (kbd "<f1> n") 'insert-∩)
-
-
-        (local-set-key (kbd "<f1> k") 'insert-√);; check
-        (local-set-key (kbd "<f1> =") 'insert-≡)
-        (local-set-key (kbd "<f1> i") 'insert-ͱ);; inference
-
-        ;; _ and ^
-        (local-set-key (kbd "<f1> o") 'insert-°)
-        (local-set-key (kbd "<f1> 9") 'insert-∞)
-        ))
-    #+end_src
-
-*** init-<f1>-for-lisp
-    #+begin_src emacs-lisp :tangle ~/.emacs
-    (defun init-<f1>-for-lisp ()
-      (interactive)
-      (progn
-            ;; 需要快捷输入 lambda
-            (local-set-key (kbd "<f1> <f1>") 'insert-lambda)
-
-            ;; connectives
-            (local-set-key (kbd "<f1> c") 'insert-∧);; conjunction
-            (local-set-key (kbd "<f1> d") 'insert-∨);; disjunction
-            (local-set-key (kbd "<f1> -") 'insert-¬);; negation
-            (local-set-key (kbd "<f1> <right>") 'insert-→);; implication
-            (local-set-key (kbd "<f1> <S-right>") 'insert-↔);; equivalence
-            ;; quantifiers
-            (local-set-key (kbd "<f1> a") 'insert-∀);; all
-            (local-set-key (kbd "<f1> e") 'insert-∃);; exist
-
-            ;; set thoery
-            (local-set-key (kbd "<f1> b") 'insert-∈);; belong to
-            (local-set-key (kbd "<f1> 0") 'insert-∅)
-            (local-set-key (kbd "<f1> [") 'insert-⊂)
-            (local-set-key (kbd "<f1> ]") 'insert-⊃)
-            (local-set-key (kbd "<f1> u") 'insert-∪)
-            (local-set-key (kbd "<f1> n") 'insert-∩)
-
-
-            (local-set-key (kbd "<f1> k") 'insert-√);; check
-            (local-set-key (kbd "<f1> =") 'insert-≡)
-            (local-set-key (kbd "<f1> i") 'insert-ͱ);; inference
-
-            ;; _ and ^
-            (local-set-key (kbd "<f1> o") 'insert-°)
-            (local-set-key (kbd "<f1> 9") 'insert-∞)
-            ))
-    #+end_src
-
-*** init-<f1>-for-haskell
-    #+begin_src emacs-lisp :tangle ~/.emacs
-    (defun init-<f1>-for-haskell ()
-      (interactive)
-      (progn
-            ;; 需要快捷输入->
-            (local-set-key (kbd "<f1> <f1>") 'insert-->)
-
-            ;; connectives
-            (local-set-key (kbd "<f1> c") 'insert-∧);; conjunction
-            (local-set-key (kbd "<f1> d") 'insert-∨);; disjunction
-            (local-set-key (kbd "<f1> n") 'insert-¬);; negation
-            (local-set-key (kbd "<f1> <right>") 'insert-→);; implication
-            (local-set-key (kbd "<f1> <S-right>") 'insert-↔);; equivalence
-            ;; quantifiers
-            (local-set-key (kbd "<f1> a") 'insert-∀);; all
-            (local-set-key (kbd "<f1> e") 'insert-∃);; exist
-
-            ;; set thoery
-            (local-set-key (kbd "<f1> b") 'insert-∈);; belong to
-            (local-set-key (kbd "<f1> 0") 'insert-∅)
-            (local-set-key (kbd "<f1> [") 'insert-⊂)
-            (local-set-key (kbd "<f1> ]") 'insert-⊃)
-
-            (local-set-key (kbd "<f1> k") 'insert-√);; check
-            (local-set-key (kbd "<f1> =") 'insert-≡)
-            (local-set-key (kbd "<f1> i") 'insert-ͱ);; inference
-
-            ;; _ and ^
-            (local-set-key (kbd "<f1> o") 'insert-°)
-            ))
-    #+end_src
-
-*** init-<f1>-for-C
-    #+begin_src emacs-lisp :tangle ~/.emacs
-    (defun init-<f1>-for-C ()
-       (interactive)
-       (progn
-             (local-set-key (kbd "<f1> <f1> <f1>")
-                            (lambda ()
-                              (interactive)
-                              (insert "main ()\n{\n  \n}")
-                              (left-char 2)))
-             (local-set-key (kbd "<f1> <f1> f")
-                            (lambda ()
-                              (interactive)
-                              ;; ?C == 67
-                              (progn
-                            (insert "for (")
-                            (c-indent-line-or-region)
-                            (point-to-register ?C)
-                            (insert "; ; )\n;")
-                            (c-indent-line-or-region)
-                            (right-char 2)
-                            (c-indent-line-or-region)
-                            (jump-to-register ?C))))
-             ;; (local-set-key (kbd "<f1> <f1> c")
-             ;;                (lambda ()
-             ;;                  (interactive)
-             ;;                  ;; ?C == 67
-             ;;                  (progn
-             ;;                    (insert "for (")
-             ;;                    (c-indent-line-or-region)
-             ;;                    (point-to-register ?C)
-             ;;                    (insert "; ; )\n;")
-             ;;                    (c-indent-line-or-region)
-             ;;                    (right-char 2)
-             ;;                    (c-indent-line-or-region)
-             ;;                    (jump-to-register ?C))))
-
-             (local-set-key (kbd "<f1> <f1> i")
-                            (lambda ()
-                              (interactive)
-                              (insert "# include <.h>")
-                              (left-char 3)))
-             (local-set-key (kbd "<f1> <f1> d")
-                            (lambda ()
-                              (interactive)
-                              (insert "# define ")))
-             (local-set-key (kbd "<f1> t")
-                            ;; t denote type
-                            (lambda ()
-                              (interactive)
-                              (insert "/* ")
-                              (point-to-register ?t)
-                              (insert " ::  <-  */\n")
-                              (insert "/*\n")
-                              (insert "  CREATE:\n\n")
-                              (insert "  READ:\n\n")
-                              (insert "  WRITE:\n\n")
-                              (insert "*/\n")
-                              (jump-to-register ?t)
-                              ))
-
-             ;; connectives
-             (local-set-key (kbd "<f1> c") 'insert-∧);; conjunction
-             (local-set-key (kbd "<f1> d") 'insert-∨);; disjunction
-             (local-set-key (kbd "<f1> n") 'insert-¬);; negation
-             (local-set-key (kbd "<f1> <right>") 'insert-→);; implication
-             (local-set-key (kbd "<f1> <S-right>") 'insert-↔);; equivalence
-             ;; quantifiers
-             (local-set-key (kbd "<f1> a") 'insert-∀);; all
-             (local-set-key (kbd "<f1> e") 'insert-∃);; exist
-
-             ;; set thoery
-             (local-set-key (kbd "<f1> b") 'insert-∈);; belong to
-             (local-set-key (kbd "<f1> 0") 'insert-∅)
-             (local-set-key (kbd "<f1> [") 'insert-⊂)
-             (local-set-key (kbd "<f1> ]") 'insert-⊃)
-
-             (local-set-key (kbd "<f1> k") 'insert-√);; check
-             (local-set-key (kbd "<f1> =") 'insert-≡)
-             (local-set-key (kbd "<f1> i") 'insert-ͱ);; inference
-
-             ;; _ and ^
-             (local-set-key (kbd "<f1> o") 'insert-°)
-             ))
-    #+end_src
-
-*** init-<f1>-for-coq
-    #+begin_src emacs-lisp :tangle ~/.emacs
-    (defun init-<f1>-for-coq ()
-      (interactive)
-      (progn
-            (local-set-key (kbd "<f1> <f1>")
-                            (lambda ()
-                              (interactive)
-                              (progn
-                            (insert "Eval compute in\n")
-                            (indent-for-tab-command))))
-            (local-set-key (kbd "<f1> p")
-                           (lambda ()
-                             (interactive)
-                             (progn
-                               (insert "Proof.\n")
-                               (indent-for-tab-command)
-                               (point-to-register ?c)
-                               (insert "\nQed.")
-                               (jump-to-register ?c))))
-
-            ;; connectives
-            (local-set-key (kbd "<f1> c") 'insert-∧);; conjunction
-            (local-set-key (kbd "<f1> d") 'insert-∨);; disjunction
-            (local-set-key (kbd "<f1> n") 'insert-¬);; negation
-            (local-set-key (kbd "<f1> <right>") 'insert-→);; implication
-            (local-set-key (kbd "<f1> <S-right>") 'insert-↔);; equivalence
-            ;; quantifiers
-            (local-set-key (kbd "<f1> a") 'insert-∀);; all
-            ;; (local-set-key (kbd "<f1> e") 'insert-∃);; exist
-
-            ;; set thoery
-            (local-set-key (kbd "<f1> b") 'insert-∈);; belong to
-            (local-set-key (kbd "<f1> 0") 'insert-∅)
-            (local-set-key (kbd "<f1> [") 'insert-⊂)
-            (local-set-key (kbd "<f1> ]") 'insert-⊃)
-
-            (local-set-key (kbd "<f1> k") 'insert-√);; check
-            (local-set-key (kbd "<f1> =") 'insert-≡)
-            (local-set-key (kbd "<f1> i") 'insert-ͱ);; inference
-
-            ;; _ and ^
-            (local-set-key (kbd "<f1> o") 'insert-°)
-            ))
-    #+end_src
-
-*** init-<f1>-for-caml
-    #+begin_src emacs-lisp :tangle ~/.emacs
-    (defun init-<f1>-for-caml ()
-      (interactive)
-      (progn
-            ;; 需要快捷输入 lambda
-            (local-set-key (kbd "<f1> <f1>")
-                       (lambda ()
-                             (interactive)
-                             (progn
-                               (insert "function ")
-                               (insert "(")
-                               (point-to-register ?m)
-                               (insert ")")
-                               (caml-indent-command)
-                               (insert "\n")
-                               (insert "-> ")
-                               (caml-indent-command)
-                               (jump-to-register ?m))))
-
-            ;; connectives
-            (local-set-key (kbd "<f1> c") 'insert-∧)        ;; conjunction
-            (local-set-key (kbd "<f1> d") 'insert-∨)        ;; disjunction
-            (local-set-key (kbd "<f1> -") 'insert-¬)         ;; negation
-            (local-set-key (kbd "<f1> <right>") 'insert-→)  ;; implication
-            (local-set-key (kbd "<f1> <S-right>") 'insert-↔) ;; equivalence
-            ;; quantifiers
-            (local-set-key (kbd "<f1> a") 'insert-∀) ;; all
-            (local-set-key (kbd "<f1> e") 'insert-∃) ;; exist
-
-            ;; set thoery
-            (local-set-key (kbd "<f1> b") 'insert-∈) ;; belong to
-            (local-set-key (kbd "<f1> 0") 'insert-∅)
-            (local-set-key (kbd "<f1> [") 'insert-⊂)
-            (local-set-key (kbd "<f1> ]") 'insert-⊃)
-            (local-set-key (kbd "<f1> u") 'insert-∪)
-            (local-set-key (kbd "<f1> n") 'insert-∩)
-
-
-            (local-set-key (kbd "<f1> k") 'insert-√) ;; check
-            (local-set-key (kbd "<f1> =") 'insert-≡)
-            (local-set-key (kbd "<f1> i") 'insert-ͱ) ;; inference
-
-            ;; _ and ^
-            (local-set-key (kbd "<f1> o") 'insert-°)
-            (local-set-key (kbd "<f1> 9") 'insert-∞)
-            ))
-    #+end_src
-
-* <f2>
-
-*** init-<f2>
-    #+begin_src emacs-lisp :tangle ~/.emacs
-    ;; (define-prefix-command '<f2>-map)
-    ;; (global-set-key (kbd "<f2>") '<f2>-map)
-
-    (defun init-<f2> ()
-      (interactive)
-      (cond ((memq major-mode modes-about-lisp)
-             (init-<f2>-for-lisp))
-
-            ((eq major-mode 'cicada-nymph-mode)
-             (init-<f2>-for-cicada-nymph))
-
-            ((eq major-mode 'org-mode)
-             ;; for i am a LISPer
-             (init-<f2>-for-lisp))
-
-            ((eq major-mode 'coq-mode)
-             (init-<f2>-for-coq))
-
-            ((eq major-mode 'agda2-mode)
-             (init-<f2>-for-agda))
-
-            ((eq major-mode 'caml-mode)
-             (init-<f2>-for-caml))
-
-            ((memq major-mode modes-about-haskell)
-             (init-<f2>-for-haskell))
-
-            (t
-             (message "<f2> have do nothing in this major mode"))
-
-            ))
-    (global-set-key (kbd "<f2>") 'init-<f2>)
-    #+end_src
-
-*** insert things
-    #+begin_src emacs-lisp :tangle ~/.emacs
-    (defun insert-α () (interactive) (insert "α"))
-    (defun insert-β () (interactive) (insert "β"))
-    (defun insert-γ () (interactive) (insert "γ"))
-    (defun insert-δ () (interactive) (insert "δ"))
-    (defun insert-ε () (interactive) (insert "ε"))
-    (defun insert-θ () (interactive) (insert "θ"))
-    (defun insert-Θ () (interactive) (insert "Θ"))
-    (defun insert-ι () (interactive) (insert "ι"))
-    (defun insert-κ () (interactive) (insert "κ"))
-    (defun insert-λ () (interactive) (insert "λ"))
-    (defun insert-Λ () (interactive) (insert "Λ"))
-    (defun insert-σ () (interactive) (insert "σ"))
-    (defun insert-ς () (interactive) (insert "ς"))
-    (defun insert-Σ () (interactive) (insert "Σ"))
-    (defun insert-τ () (interactive) (insert "τ"))
-    (defun insert-ζ () (interactive) (insert "ζ"))
-    (defun insert-ω () (interactive) (insert "ω"))
-    (defun insert-Ω () (interactive) (insert "Ω"))
-    (defun insert-π () (interactive) (insert "π"))
-    (defun insert-Π () (interactive) (insert "Π"))
-    (defun insert-ρ () (interactive) (insert "ρ"))
-    (defun insert-φ () (interactive) (insert "φ"))
-    (defun insert-Φ () (interactive) (insert "Φ"))
-    (defun insert-υ () (interactive) (insert "υ"))
-    (defun insert-ν () (interactive) (insert "ν"))
-    (defun insert-χ () (interactive) (insert "χ"))
-    (defun insert-Ψ () (interactive) (insert "Ψ"))
-    (defun insert-ψ () (interactive) (insert "ψ"))
-    (defun insert-μ () (interactive) (insert "μ"))
-    (defun insert-η () (interactive) (insert "η"))
-    (defun insert-Γ () (interactive) (insert "Γ"))
-    (defun insert-Δ () (interactive) (insert "Δ"))
-    (defun insert-ξ () (interactive) (insert "ξ"))
-    (defun insert-Ξ () (interactive) (insert "Ξ"))
-    #+end_src
-
-*** init-<f2>-for-cicada-nymph
-    #+begin_src emacs-lisp :tangle ~/.emacs
-    (defun init-<f2>-for-cicada-nymph ()
-      (interactive)
-      (progn
-        ;; 需要快捷输入λ
-        (local-set-key (kbd "<f2> <f2>") 'insert-λ)
-
-        (local-set-key (kbd "<f2> a") 'insert-α)
-        (local-set-key (kbd "<f2> b") 'insert-β)
-        (local-set-key (kbd "<f2> c") 'insert-γ)
-        (local-set-key (kbd "<f2> C") 'insert-Γ)
-        (local-set-key (kbd "<f2> g") 'insert-γ)
-        (local-set-key (kbd "<f2> G") 'insert-Γ)
-        (local-set-key (kbd "<f2> d") 'insert-δ)
-        (local-set-key (kbd "<f2> D") 'insert-Δ)
-        (local-set-key (kbd "<f2> e") 'insert-ε)
-        (local-set-key (kbd "<f2> f") 'insert-φ)
-        (local-set-key (kbd "<f2> F") 'insert-Φ)
-        ;; th = Θ, θ
-        (local-set-key (kbd "<f2> h") 'insert-θ)
-        (local-set-key (kbd "<f2> H") 'insert-Θ)
-        (local-set-key (kbd "<f2> i") 'insert-η)
-        ;;(local-set-key (kbd "<f2> i") 'insert-ι)
-        (local-set-key (kbd "<f2> k") 'insert-κ)
-        (local-set-key (kbd "<f2> l") 'insert-λ)
-        (local-set-key (kbd "<f2> L") 'insert-Λ)
-        (local-set-key (kbd "<f2> m") 'insert-μ)
-        (local-set-key (kbd "<f2> n") 'insert-ν)
-        (local-set-key (kbd "<f2> o") 'insert-ω)
-        (local-set-key (kbd "<f2> O") 'insert-Ω)
-        (local-set-key (kbd "<f2> p") 'insert-π)
-        (local-set-key (kbd "<f2> P") 'insert-Π)
-        (local-set-key (kbd "<f2> r") 'insert-ρ)
-        (local-set-key (kbd "<f2> s") 'insert-σ)
-        ;; final sigma
-        ;;(local-set-key (kbd "<f2> s") 'insert-ς)
-        (local-set-key (kbd "<f2> S") 'insert-Σ)
-        (local-set-key (kbd "<f2> t") 'insert-τ)
-        (local-set-key (kbd "<f2> u") 'insert-υ)
-        (local-set-key (kbd "<f2> v") nil)
-        (local-set-key (kbd "<f2> x") 'insert-ξ)
-        (local-set-key (kbd "<f2> X") 'insert-Ξ)
-        ;; ps = ψ, Ψ
-        (local-set-key (kbd "<f2> y") 'insert-Ψ)
-        (local-set-key (kbd "<f2> Y") 'insert-ψ)
-        (local-set-key (kbd "<f2> z") 'insert-ζ)
-        ))
-    #+end_src
-
-*** init-<f2>-for-lisp
-    #+begin_src emacs-lisp :tangle ~/.emacs
-    (defun init-<f2>-for-lisp ()
-      (interactive)
-      (progn
-        ;; 需要快捷输入λ
-        (local-set-key (kbd "<f2> <f2>") 'insert-λ)
-
-        (local-set-key (kbd "<f2> a") 'insert-α)
-        (local-set-key (kbd "<f2> b") 'insert-β)
-        (local-set-key (kbd "<f2> c") 'insert-γ)
-        (local-set-key (kbd "<f2> C") 'insert-Γ)
-        (local-set-key (kbd "<f2> g") 'insert-γ)
-        (local-set-key (kbd "<f2> G") 'insert-Γ)
-        (local-set-key (kbd "<f2> d") 'insert-δ)
-        (local-set-key (kbd "<f2> D") 'insert-Δ)
-        (local-set-key (kbd "<f2> e") 'insert-ε)
-        (local-set-key (kbd "<f2> f") 'insert-φ)
-        (local-set-key (kbd "<f2> F") 'insert-Φ)
-        ;; th = Θ, θ
-        (local-set-key (kbd "<f2> h") 'insert-θ)
-        (local-set-key (kbd "<f2> H") 'insert-Θ)
-        (local-set-key (kbd "<f2> i") 'insert-η)
-        ;;(local-set-key (kbd "<f2> i") 'insert-ι)
-        (local-set-key (kbd "<f2> k") 'insert-κ)
-        (local-set-key (kbd "<f2> l") 'insert-λ)
-        (local-set-key (kbd "<f2> L") 'insert-Λ)
-        (local-set-key (kbd "<f2> m") 'insert-μ)
-        (local-set-key (kbd "<f2> n") 'insert-ν)
-        (local-set-key (kbd "<f2> o") 'insert-ω)
-        (local-set-key (kbd "<f2> O") 'insert-Ω)
-        (local-set-key (kbd "<f2> p") 'insert-π)
-        (local-set-key (kbd "<f2> P") 'insert-Π)
-        (local-set-key (kbd "<f2> r") 'insert-ρ)
-        (local-set-key (kbd "<f2> s") 'insert-σ)
-        ;; final sigma
-        ;;(local-set-key (kbd "<f2> s") 'insert-ς)
-        (local-set-key (kbd "<f2> S") 'insert-Σ)
-        (local-set-key (kbd "<f2> t") 'insert-τ)
-        (local-set-key (kbd "<f2> u") 'insert-υ)
-        (local-set-key (kbd "<f2> v") nil)
-        (local-set-key (kbd "<f2> x") 'insert-ξ)
-        (local-set-key (kbd "<f2> X") 'insert-Ξ)
-        ;; ps = ψ, Ψ
-        (local-set-key (kbd "<f2> y") 'insert-Ψ)
-        (local-set-key (kbd "<f2> Y") 'insert-ψ)
-        (local-set-key (kbd "<f2> z") 'insert-ζ)
-        ))
-    #+end_src
-
-*** init-<f2>-for-haskell
-    #+begin_src emacs-lisp :tangle ~/.emacs
-    (defun init-<f2>-for-haskell ()
-      (interactive)
-      (progn
-        ;; 需要快捷输入λ
-        (local-set-key (kbd "<f2> <f2>") (lambda ()
-                                           (interactive)
-                                           (insert "(\\ -> )")
-                                           (left-char 5)))
-        (local-set-key (kbd "<f2> <right>") (lambda ()
-                                              (interactive)
-                                              (insert "->")))
-        (local-set-key (kbd "<f2> <left>") (lambda ()
-                                             (interactive)
-                                             (insert "<-")))
-
-        (local-set-key (kbd "<f2> a") 'insert-α)
-        (local-set-key (kbd "<f2> b") 'insert-β)
-        (local-set-key (kbd "<f2> c") 'insert-γ)
-        (local-set-key (kbd "<f2> C") 'insert-Γ)
-        (local-set-key (kbd "<f2> g") 'insert-γ)
-        (local-set-key (kbd "<f2> G") 'insert-Γ)
-        (local-set-key (kbd "<f2> d") 'insert-δ)
-        (local-set-key (kbd "<f2> D") 'insert-Δ)
-        (local-set-key (kbd "<f2> e") 'insert-ε)
-        (local-set-key (kbd "<f2> f") 'insert-φ)
-        (local-set-key (kbd "<f2> F") 'insert-Φ)
-        ;; th = Θ, θ
-        (local-set-key (kbd "<f2> h") 'insert-θ)
-        (local-set-key (kbd "<f2> H") 'insert-Θ)
-        (local-set-key (kbd "<f2> i") 'insert-η)
-        ;;(local-set-key (kbd "<f2> i") 'insert-ι)
-        (local-set-key (kbd "<f2> k") 'insert-κ)
-        (local-set-key (kbd "<f2> l") 'insert-λ)
-        (local-set-key (kbd "<f2> L") 'insert-Λ)
-        (local-set-key (kbd "<f2> m") 'insert-μ)
-        (local-set-key (kbd "<f2> n") 'insert-ν)
-        (local-set-key (kbd "<f2> o") 'insert-ω)
-        (local-set-key (kbd "<f2> O") 'insert-Ω)
-        (local-set-key (kbd "<f2> p") 'insert-π)
-        (local-set-key (kbd "<f2> P") 'insert-Π)
-        (local-set-key (kbd "<f2> r") 'insert-ρ)
-        (local-set-key (kbd "<f2> s") 'insert-σ)
-        ;; final sigma
-        ;;(local-set-key (kbd "<f2> s") 'insert-ς)
-        (local-set-key (kbd "<f2> S") 'insert-Σ)
-        (local-set-key (kbd "<f2> t") 'insert-τ)
-        (local-set-key (kbd "<f2> u") 'insert-υ)
-        (local-set-key (kbd "<f2> v") nil)
-        (local-set-key (kbd "<f2> x") 'insert-ξ)
-        (local-set-key (kbd "<f2> X") 'insert-Ξ)
-        ;; ps = ψ, Ψ
-        (local-set-key (kbd "<f2> y") 'insert-Ψ)
-        (local-set-key (kbd "<f2> Y") 'insert-ψ)
-        (local-set-key (kbd "<f2> z") 'insert-ζ)
-        ))
-    #+end_src
-
-*** init-<f2>-for-coq
-    #+begin_src emacs-lisp :tangle ~/.emacs
-    (defun init-<f2>-for-coq ()
-      (interactive)
-      (progn
-        ;; 需要快捷输入λ
-        (local-set-key (kbd "<f2> <f2>") 'insert-λ)
-
-        (local-set-key (kbd "<f2> a") 'insert-α)
-        (local-set-key (kbd "<f2> b") 'insert-β)
-        (local-set-key (kbd "<f2> c") 'insert-γ)
-        (local-set-key (kbd "<f2> C") 'insert-Γ)
-        (local-set-key (kbd "<f2> g") 'insert-γ)
-        (local-set-key (kbd "<f2> G") 'insert-Γ)
-        (local-set-key (kbd "<f2> d") 'insert-δ)
-        (local-set-key (kbd "<f2> D") 'insert-Δ)
-        (local-set-key (kbd "<f2> e") 'insert-ε)
-        (local-set-key (kbd "<f2> f") 'insert-φ)
-        (local-set-key (kbd "<f2> F") 'insert-Φ)
-        ;; th = Θ, θ
-        (local-set-key (kbd "<f2> h") 'insert-θ)
-        (local-set-key (kbd "<f2> H") 'insert-Θ)
-        (local-set-key (kbd "<f2> i") 'insert-η)
-        ;;(local-set-key (kbd "<f2> i") 'insert-ι)
-        (local-set-key (kbd "<f2> k") 'insert-κ)
-        (local-set-key (kbd "<f2> l") 'insert-λ)
-        (local-set-key (kbd "<f2> L") 'insert-Λ)
-        (local-set-key (kbd "<f2> m") 'insert-μ)
-        (local-set-key (kbd "<f2> n") 'insert-ν)
-        (local-set-key (kbd "<f2> o") 'insert-ω)
-        (local-set-key (kbd "<f2> O") 'insert-Ω)
-        (local-set-key (kbd "<f2> p") 'insert-π)
-        (local-set-key (kbd "<f2> P") 'insert-Π)
-        (local-set-key (kbd "<f2> r") 'insert-ρ)
-        (local-set-key (kbd "<f2> s") 'insert-σ)
-        ;; final sigma
-        ;;(local-set-key (kbd "<f2> s") 'insert-ς)
-        (local-set-key (kbd "<f2> S") 'insert-Σ)
-        (local-set-key (kbd "<f2> t") 'insert-τ)
-        (local-set-key (kbd "<f2> u") 'insert-υ)
-        (local-set-key (kbd "<f2> v") nil)
-        (local-set-key (kbd "<f2> x") 'insert-ξ)
-        (local-set-key (kbd "<f2> X") 'insert-Ξ)
-        ;; ps = ψ, Ψ
-        (local-set-key (kbd "<f2> y") 'insert-Ψ)
-        (local-set-key (kbd "<f2> Y") 'insert-ψ)
-        (local-set-key (kbd "<f2> z") 'insert-ζ)
-        ))
-    #+end_src
-
-*** init-<f2>-for-agda
-    #+begin_src emacs-lisp :tangle ~/.emacs
-    (defun init-<f2>-for-agda ()
-      (interactive)
-      (progn
-        ;; 需要快捷输入λ
-        (local-set-key (kbd "<f2> <f2>") 'insert-λ)
-
-        (local-set-key (kbd "<f2> a") 'insert-α)
-        (local-set-key (kbd "<f2> b") 'insert-β)
-        (local-set-key (kbd "<f2> c") 'insert-γ)
-        (local-set-key (kbd "<f2> C") 'insert-Γ)
-        (local-set-key (kbd "<f2> g") 'insert-γ)
-        (local-set-key (kbd "<f2> G") 'insert-Γ)
-        (local-set-key (kbd "<f2> d") 'insert-δ)
-        (local-set-key (kbd "<f2> D") 'insert-Δ)
-        (local-set-key (kbd "<f2> e") 'insert-ε)
-        (local-set-key (kbd "<f2> f") 'insert-φ)
-        (local-set-key (kbd "<f2> F") 'insert-Φ)
-        ;; th = Θ, θ
-        (local-set-key (kbd "<f2> h") 'insert-θ)
-        (local-set-key (kbd "<f2> H") 'insert-Θ)
-        (local-set-key (kbd "<f2> i") 'insert-η)
-        ;;(local-set-key (kbd "<f2> i") 'insert-ι)
-        (local-set-key (kbd "<f2> k") 'insert-κ)
-        (local-set-key (kbd "<f2> l") 'insert-λ)
-        (local-set-key (kbd "<f2> L") 'insert-Λ)
-        (local-set-key (kbd "<f2> m") 'insert-μ)
-        (local-set-key (kbd "<f2> n") 'insert-ν)
-        (local-set-key (kbd "<f2> o") 'insert-ω)
-        (local-set-key (kbd "<f2> O") 'insert-Ω)
-        (local-set-key (kbd "<f2> p") 'insert-π)
-        (local-set-key (kbd "<f2> P") 'insert-Π)
-        (local-set-key (kbd "<f2> r") 'insert-ρ)
-        (local-set-key (kbd "<f2> s") 'insert-σ)
-        ;; final sigma
-        ;;(local-set-key (kbd "<f2> s") 'insert-ς)
-        (local-set-key (kbd "<f2> S") 'insert-Σ)
-        (local-set-key (kbd "<f2> t") 'insert-τ)
-        (local-set-key (kbd "<f2> u") 'insert-υ)
-        (local-set-key (kbd "<f2> v") nil)
-        (local-set-key (kbd "<f2> x") 'insert-ξ)
-        (local-set-key (kbd "<f2> X") 'insert-Ξ)
-        ;; ps = ψ, Ψ
-        (local-set-key (kbd "<f2> y") 'insert-Ψ)
-        (local-set-key (kbd "<f2> Y") 'insert-ψ)
-        (local-set-key (kbd "<f2> z") 'insert-ζ)
-        ))
-    #+end_src
-
-*** init-<f2>-for-caml
-    #+begin_src emacs-lisp :tangle ~/.emacs
-    (defun init-<f2>-for-caml ()
-      (interactive)
-      (progn
-        (local-set-key (kbd "<f2> <f2>")
-                       (lambda ()
-                         (interactive)
-                         (progn
-                           (insert "| ")
-                           (insert "(")
-                           (point-to-register ?m)
-                           (insert ")")
-                           (caml-indent-command)
-                           (insert "\n")
-                           (insert "-> ")
-                           (caml-indent-command)
-                           (jump-to-register ?m))))
-
-        (local-set-key (kbd "<f2> a") 'insert-α)
-        (local-set-key (kbd "<f2> b") 'insert-β)
-        (local-set-key (kbd "<f2> c") 'insert-γ)
-        (local-set-key (kbd "<f2> C") 'insert-Γ)
-        (local-set-key (kbd "<f2> g") 'insert-γ)
-        (local-set-key (kbd "<f2> G") 'insert-Γ)
-        (local-set-key (kbd "<f2> d") 'insert-δ)
-        (local-set-key (kbd "<f2> D") 'insert-Δ)
-        (local-set-key (kbd "<f2> e") 'insert-ε)
-        (local-set-key (kbd "<f2> f") 'insert-φ)
-        (local-set-key (kbd "<f2> F") 'insert-Φ)
-        ;; th = Θ, θ
-        (local-set-key (kbd "<f2> h") 'insert-θ)
-        (local-set-key (kbd "<f2> H") 'insert-Θ)
-        (local-set-key (kbd "<f2> i") 'insert-η)
-        ;;(local-set-key (kbd "<f2> i") 'insert-ι)
-        (local-set-key (kbd "<f2> k") 'insert-κ)
-        (local-set-key (kbd "<f2> l") 'insert-λ)
-        (local-set-key (kbd "<f2> L") 'insert-Λ)
-        (local-set-key (kbd "<f2> m") 'insert-μ)
-        (local-set-key (kbd "<f2> n") 'insert-ν)
-        (local-set-key (kbd "<f2> o") 'insert-ω)
-        (local-set-key (kbd "<f2> O") 'insert-Ω)
-        (local-set-key (kbd "<f2> p") 'insert-π)
-        (local-set-key (kbd "<f2> P") 'insert-Π)
-        (local-set-key (kbd "<f2> r") 'insert-ρ)
-        (local-set-key (kbd "<f2> s") 'insert-σ)
-        ;; final sigma
-        ;;(local-set-key (kbd "<f2> s") 'insert-ς)
-        (local-set-key (kbd "<f2> S") 'insert-Σ)
-        (local-set-key (kbd "<f2> t") 'insert-τ)
-        (local-set-key (kbd "<f2> u") 'insert-υ)
-        (local-set-key (kbd "<f2> v") nil)
-        (local-set-key (kbd "<f2> x") 'insert-ξ)
-        (local-set-key (kbd "<f2> X") 'insert-Ξ)
-        ;; ps = ψ, Ψ
-        (local-set-key (kbd "<f2> y") 'insert-Ψ)
-        (local-set-key (kbd "<f2> Y") 'insert-ψ)
-        (local-set-key (kbd "<f2> z") 'insert-ζ)
-        ))
+    (setq tab-width 2)
     #+end_src
 
 * language
@@ -2190,6 +1288,8 @@
 
          (1 . connect-db)
 
+         (2 . define-class)
+
          ))
       #+end_src
 
@@ -2627,6 +1727,12 @@
     #+begin_src emacs-lisp :tangle ~/.emacs
     (add-to-list 'load-path "~/.emacs.d/go-mode/")
     (require 'go-mode)
+
+    (add-hook
+     'go-mode-hook
+     (lambda ()
+       (setq tab-width 2)
+       (setq indent-tabs-mode nil)))
     #+end_src
 
 *** retro
@@ -4394,15 +3500,6 @@
       (ido-vertical-mode 1)
       #+end_src
 
-*** smex
-    #+begin_src emacs-lisp :tangle ~/.emacs
-    (add-to-list 'load-path "~/.emacs.d/smex/")
-    (require 'smex)
-
-    (global-set-key (kbd "M-x") 'smex)
-    (global-set-key (kbd "M-z") 'smex-major-mode-commands)
-    #+end_src
-
 *** cua-selection-mode
     #+begin_src emacs-lisp :tangle ~/.emacs
     (cua-selection-mode 1)
@@ -4439,8 +3536,6 @@
     (add-hook 'muse-mode-hook
      (lambda ()
        (local-set-key (kbd "M-<tab>") 'window->)
-       (local-set-key (kbd "M-9") 'move-line-backword)
-       (local-set-key (kbd "M-0") 'move-line-foreword)
        (local-set-key (kbd "C-c C-c") 'muse-project-publish)
        ))
     #+end_src
@@ -4517,36 +3612,62 @@
     ;; (setq region-state-display-place 'mode-line)
     #+end_src
 
-* helm                                :no:
+* M-x
 
-  #+begin_src emacs-lisp :tangle no
-  (add-to-list 'load-path "~/.emacs.d/emacs-async/")
-  (require 'async)
+*** default
 
-  (add-to-list 'load-path "~/.emacs.d/helm/")
-  (require 'helm-config)
-  ;; (helm-mode 1)
+    #+begin_src emacs-lisp :tangle ~/.emacs
+    ;; (global-set-key (kbd "M-x") 'execute-extended-command)
+    #+end_src
 
-  (global-set-key (kbd "M-x") 'helm-M-x)
-  (global-set-key (kbd "C-x C-y") 'helm-show-kill-ring)
-  (global-set-key (kbd "C-M-t") 'helm-occur)
+*** smex
+    #+begin_src emacs-lisp :tangle ~/.emacs
+    ;; (add-to-list 'load-path "~/.emacs.d/smex/")
+    ;; (require 'smex)
 
-  (global-set-key (kbd "C-x C-f") 'helm-find-files)
+    ;; (global-set-key (kbd "M-x") 'smex)
+    ;; (global-set-key (kbd "M-z") 'smex-major-mode-commands)
+    #+end_src
 
-  (global-set-key (kbd "C-x C-b") 'helm-mini)
-  (setq helm-buffers-fuzzy-matching t
-        helm-recentf-fuzzy-match    t)
+*** helm
 
-  (add-hook 'helm-after-initialize-hook
-            (lambda ()
-              (define-key helm-map (kbd "C-h") 'helm-execute-persistent-action)))
+    #+begin_src emacs-lisp :tangle ~/.emacs
+    (add-to-list 'load-path "~/.emacs.d/emacs-async/")
+    (require 'async)
 
-  ;; (add-to-list 'load-path "~/.emacs.d/pcache/")
-  ;; (add-to-list 'load-path "~/.emacs.d/logito/")
-  ;; (add-to-list 'load-path "~/.emacs.d/gh.el/")
-  ;; (add-to-list 'load-path "~/.emacs.d/emacs-helm-open-github/")
-  ;; (require 'helm-open-github)
-  #+end_src
+    (add-to-list 'load-path "~/.emacs.d/helm/")
+    (require 'helm-config)
+    (helm-mode 1)
+
+    (global-set-key (kbd "M-x") 'helm-M-x)
+    (global-set-key (kbd "C-x C-y") 'helm-show-kill-ring)
+    (global-set-key (kbd "C-x C-f") 'helm-find-files)
+    (global-set-key (kbd "C-x C-b") 'helm-mini)
+
+    (setq helm-buffers-fuzzy-matching t
+          helm-recentf-fuzzy-match    t)
+
+    (add-hook
+     'helm-after-initialize-hook
+     (lambda ()
+       (define-key helm-map (kbd "C-h") 'helm-execute-persistent-action)))
+    #+end_src
+
+* search
+
+*** default
+
+    #+begin_src emacs-lisp :tangle ~/.emacs
+    (global-set-key (kbd "C-t") 'isearch-forward)
+
+    (add-hook
+     'isearch-mode-hook
+     (lambda ()
+       (define-key isearch-mode-map (kbd "C-t") 'isearch-repeat-forward)
+       ;; (define-key isearch-mode-map (kbd "C-o") 'occur)
+       (define-key isearch-mode-map (kbd "C-o") 'helm-occur)
+       ))
+    #+end_src
 
 * irc
 
@@ -4587,12 +3708,6 @@
     (add-to-list 'load-path "~/.emacs.d/rcirc-autoreconnect/")
     (require 'rcirc-autoreconnect)
     (setq rcirc-autoreconnect t)
-    #+end_src
-
-*** helm-rcirc
-    #+begin_src emacs-lisp :tangle ~/.emacs
-    (add-to-list 'load-path "~/.emacs.d/helm-rcirc/")
-    (require 'helm-rcirc)
     #+end_src
 
 *** circe                             :no:
@@ -4669,6 +3784,17 @@
 
     (global-set-key (kbd "C-s C-w") 'warden)
     #+end_src
+
+* tabbar
+
+  #+begin_src emacs-lisp :tangle ~/.emacs
+  ;; (add-to-list 'load-path "~/.emacs.d/tabbar/")
+  ;; (require 'tabbar)
+  ;; (tabbar-mode)
+
+  ;; (global-set-key (kbd "C-`") 'tabbar-forward)
+  ;; (global-set-key (kbd "C-~") 'tabbar-backward)
+  #+end_src
 
 * window manager
 
@@ -5020,6 +4146,7 @@
 *** load-path
     #+begin_src emacs-lisp :tangle ~/.emacs
     (add-to-list 'load-path "~/.emacs.d/eshell/")
+    (require 'eshell)
     #+end_src
 
 *** hook
@@ -5149,6 +4276,7 @@
       #+end_src
 
 *** [open|new]-eshell-for-frame
+
     #+begin_src emacs-lisp :tangle ~/.emacs
     ;; in ~/.xbindkeysrc.scm
     ;; I have the following
@@ -5201,6 +4329,19 @@
     #+end_src
 
 *** init call to (open-eshell-for-frame)
+
     #+begin_src emacs-lisp :tangle ~/.emacs
     (open-eshell-for-frame :off)
     #+end_src
+
+* magit
+
+  #+begin_src emacs-lisp :tangle ~/.emacs
+  (add-to-list 'load-path "~/.emacs.d/with-editor/")
+  (require 'with-editor)
+
+  (add-to-list 'load-path "~/.emacs.d/magit/lisp/")
+  (require 'magit)
+
+  (global-set-key (kbd "C-x C-g") 'magit-status)
+  #+end_src
