@@ -3837,6 +3837,15 @@
 
 * looks like
 
+*** window
+
+    #+begin_src emacs-lisp :tangle ~/.emacs
+    (setq default-frame-alist '((fullscreen . maximized)))
+    (setq initial-frame-alist '((fullscreen . maximized)))
+    ;; (custom-set-variables '(default-frame-alist (quote ((fullscreen . maximized)))))
+    ;; (custom-set-variables '(initial-frame-alist (quote ((fullscreen . maximized)))))
+    #+end_src
+
 *** hl
 
     #+begin_src emacs-lisp :tangle ~/.emacs
@@ -4343,5 +4352,5 @@
   (add-to-list 'load-path "~/.emacs.d/magit/lisp/")
   (require 'magit)
 
-  (global-set-key (kbd "C-x C-g") 'magit-status)
+  (global-set-key (kbd "C-x g") 'magit-status)
   #+end_src
