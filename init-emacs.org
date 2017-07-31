@@ -261,12 +261,6 @@
     (add-to-list 'load-path "~/.emacs.d/epl/")
     (require 'epl)
 
-    (add-to-list 'load-path "~/.emacs.d/pkg-info/")
-    (require 'pkg-info)
-
-    (add-to-list 'load-path "~/.emacs.d/spinner.el/")
-    (require 'spinner)
-
     (add-to-list 'load-path "~/.emacs.d/seq.el/")
     (require 'seq)
     #+end_src
@@ -613,17 +607,6 @@
 
 * language
 
-*** load progmodes
-    #+begin_src emacs-lisp :tangle ~/.emacs
-    (add-to-list 'load-path "~/.emacs.d/progmodes/")
-    #+end_src
-
-*** repl-space
-    #+begin_src emacs-lisp :tangle ~/.emacs
-    (add-to-list 'load-path "~/.emacs.d/repl-space/")
-    (require 'repl-space)
-    #+end_src
-
 *** edit sexp
 
 ***** load-path
@@ -701,14 +684,10 @@
       (add-hook 'lisp-mode-hook             #'enable-paredit-mode)
       (add-hook 'slime-repl-mode-hook       #'enable-paredit-mode)
 
-      (add-hook 'lfe-mode-hook              #'enable-paredit-mode)
-      (add-hook 'inferior-lfe-mode-hook     #'enable-paredit-mode)
-
       (add-hook 'shen-mode-hook             #'enable-paredit-mode)
       (add-hook 'inferior-shen-mode-hook    #'enable-paredit-mode)
 
       (add-hook 'clojure-mode-hook          #'enable-paredit-mode)
-      (add-hook 'cider-repl-mode-hook       #'enable-paredit-mode)
 
 
       ;; (add-hook 'ielm-mode-hook             #'enable-paredit-mode)
@@ -720,8 +699,6 @@
       ;; *scratch* buffer 中的 RET 才能正常
       (add-hook 'emacs-lisp-mode-hook       #'enable-paredit-mode)
 
-
-      (add-hook 'coq-mode-hook              #'enable-paredit-mode)
 
       ;; (add-hook 'haskell-mode-hook          #'enable-paredit-mode)
 
@@ -803,8 +780,6 @@
       (add-hook 'inferior-haskell-mode-hook   'mini-paredit-mode)
 
       (add-hook 'c-mode-hook                  'mini-paredit-mode)
-
-      (add-hook 'coq-mode-hook                'mini-paredit-mode)
 
       (add-hook 'lua-mode-hook                'mini-paredit-mode)
 
@@ -1312,13 +1287,6 @@
     ;; (global-set-key (kbd "C-s C-d") 'switch-to-buffer-*racket*)
     #+end_src
 
-*** dylan
-    #+begin_src emacs-lisp :tangle ~/.emacs
-    (add-to-list 'load-path "~/.emacs.d/dylan-mode/")
-    (require 'dime)
-    #+end_src
-
-
 *** lisp
     #+begin_src emacs-lisp :tangle ~/.emacs
     ;; (setq inferior-lisp-program "lisp")
@@ -1405,8 +1373,6 @@
 *** slime
 
     #+begin_src emacs-lisp :tangle ~/.emacs
-    ;; setup load-path and autoloads
-    ;; (add-to-list 'load-path "~/.emacs.d/slime-2.17/")
     (add-to-list 'load-path "~/.emacs.d/slime/")
 
     (setq slime-contribs '(slime-fancy))
@@ -1422,19 +1388,6 @@
                 (local-set-key (kbd "C-M-.") 'next-buffer)
                 (local-set-key (kbd "C-M-,") 'previous-buffer)
                 (local-set-key (kbd "C-c C-k") 'slime-restart-inferior-lisp)))
-    #+end_src
-
-*** chicken-slime                     :no:
-
-    #+begin_src emacs-lisp :tangle no
-    ;; (add-to-list 'load-path "/home/xyh/chicken/lib/chicken/8/")
-    ;; (autoload 'chicken-slime "chicken-slime" "SWANK backend for Chicken" t)
-    ;; (setq slime-csi-path "/home/xyh/chicken/bin/csi")
-
-    ;; (add-hook 'scheme-mode-hook
-    ;;           (lambda ()
-    ;;             (slime-mode t)))
-
     #+end_src
 
 *** elisp
@@ -1534,14 +1487,6 @@
        (local-set-key (kbd "}") 'out->)))
     #+end_src
 
-*** egison-mode
-    #+begin_src emacs-lisp :tangle ~/.emacs
-    (add-to-list 'load-path "~/.emacs.d/egison-mode/")
-    (require 'egison-mode)
-    (autoload 'egison-mode "egison-mode" "Major mode for editing Egison code." t)
-    (setq auto-mode-alist (cons `("\\.egi$" . egison-mode) auto-mode-alist))
-    #+end_src
-
 *** js
 
 ***** js-mode
@@ -1576,21 +1521,12 @@
       ;; (global-flycheck-mode)
       #+end_src
 
-***** simple-httpd                    :no:
-      #+begin_src emacs-lisp :tangle no
-      ;; (add-to-list 'load-path "~/.emacs.d/emacs-web-server/")
-      ;; (require 'simple-httpd)
-      #+end_src
-
 ***** coffee-mode
       #+begin_src emacs-lisp :tangle ~/.emacs
       (add-to-list 'load-path "~/.emacs.d/coffee-mode/")
       (require 'coffee-mode)
       (add-to-list 'auto-mode-alist '("\\.coffee\\'" . coffee-mode))
       (custom-set-variables '(coffee-tab-width 2))
-
-      (add-to-list 'load-path "~/.emacs.d/literate-coffee-mode/")
-      (require 'literate-coffee-mode)
 
       (add-hook
        'coffee-mode-hook
@@ -1599,13 +1535,6 @@
          (local-set-key (kbd "<return>") 'newline)
          ))
       #+end_src
-
-*** sibilant-mode
-    #+begin_src emacs-lisp :tangle ~/.emacs
-    (add-to-list 'load-path "~/.emacs.d/sibilant-mode/")
-    (require 'sibilant-mode)
-    #+end_src
-
 
 *** markdown
     #+begin_src emacs-lisp :tangle ~/.emacs
@@ -1623,29 +1552,6 @@
        ;; (turn-off-indent)
        ))
     #+end_src
-
-*** [not using] DOS
-    #+begin_src emacs-lisp
-    (add-to-list 'load-path "~/.emacs.d/DOS/")
-    (require 'ntcmd)
-    (add-to-list 'auto-mode-alist '("\\.cmd$" . ntcmd-mode))
-    (add-to-list 'auto-mode-alist '("\\.bas$" . ntcmd-mode))
-    (add-to-list 'auto-mode-alist '("\\.bat$" . ntcmd-mode))
-
-    ;; (require 'dos)
-    ;; (require 'batch-mode)
-    ;; (require 'cmd-mode)
-    #+end_src
-
-
-*** lfe
-    #+begin_src emacs-lisp :tangle ~/.emacs
-    (add-to-list 'load-path "~/.emacs.d/lfe/")
-    (require 'lfe-mode)
-    (require 'inferior-lfe)
-    (require 'lfe-start)
-    #+end_src
-
 
 
 *** cicada-nymph
@@ -1735,16 +1641,6 @@
        (setq indent-tabs-mode nil)))
     #+end_src
 
-*** retro
-    #+begin_src emacs-lisp :tangle ~/.emacs
-    (add-to-list 'load-path "~/.emacs.d/retro/")
-
-    (autoload 'retro-mode "retro-mode.el" "retro mode" t)
-    (add-to-list 'auto-mode-alist '("\\.rx\\'" . retro-mode))
-    #+end_src
-
-
-
 *** forth
     #+begin_src emacs-lisp :tangle ~/.emacs
     ;; (add-to-list 'load-path "~/.emacs.d/forth-mode/")
@@ -1761,66 +1657,6 @@
 
     (add-to-list 'auto-mode-alist '("\\.frt$" . forth-mode))
     (add-to-list 'auto-mode-alist '("\\.fth$" . forth-mode))
-    #+end_src
-
-*** gforth
-    #+begin_src emacs-lisp :tangle ~/.emacs
-    (add-to-list 'load-path "~/.emacs.d/gforth.el/")
-
-    (require 'forth-mode)
-
-    (autoload 'forth-mode "gforth.el")
-    (setq auto-mode-alist (cons '("\\.f\\'" . forth-mode)
-                                    auto-mode-alist))
-
-    (defun forth-send-paragraph-split-window ()
-      (interactive)
-      (split-window-with-named-buffer "*forth*")
-      (forth-send-paragraph))
-
-    ;; 利用 forth-send-region 来实现 forth-send-line
-    ;; 因为不想使用 forth-send-paragraph
-    (defun forth-send-line ()
-      (interactive)
-      (move-beginning-of-line nil)
-      (cua-set-mark)
-      (move-end-of-line nil)
-      (forth-send-region (region-beginning) (region-end))
-      (cua-set-mark))
-
-    (defun forth-send-line-split-window ()
-      (interactive)
-      (split-window-with-named-buffer "*forth*")
-      (forth-send-line))
-
-    (defun forth-send-line-and-goto-next-line ()
-      (interactive)
-      (forth-send-line)
-      (next-line))
-
-
-    (add-hook
-     'forth-mode-hook
-     (function (lambda ()
-
-                     (setq forth-indent-level 4)
-                     (setq forth-minor-indent-level 2)
-                     (setq forth-hilight-level 3)
-
-                     (local-set-key (kbd "C-h") 'hippie-expand)
-
-                     (local-set-key (kbd "C-x C-e") 'forth-send-line-split-window)
-                     (local-set-key (kbd "C-<tab>") 'forth-send-line-and-goto-next-line)
-                     (local-set-key (kbd "<return>") 'newline)
-
-                     ;; (turn-off-indent)
-                     (local-set-key (kbd "M-i") 'query-replace)
-
-                     ;; (setq comment-start "("!;\ )
-                     ;; (setq comment-end " !;\"!;\ )
-                     ;; (setq comment-padding" "!;\ )
-
-                     )))
     #+end_src
 
 *** tcl
@@ -1866,7 +1702,6 @@
        (local-set-key (kbd "C-c C-e") 'tcl-eval-defun-split-window)
        )))
     #+end_src
-
 
 *** sml
     #+begin_src emacs-lisp :tangle ~/.emacs
@@ -1946,6 +1781,8 @@
 
 *** asm
     #+begin_src emacs-lisp :tangle ~/.emacs
+    (add-to-list 'load-path "~/.emacs.d/asm-mode/")
+
     ;; may set this variable in `asm-mode-set-comment-hook',
     ;; which is called near the beginning of mode initialization.
     (add-hook 'asm-mode-set-comment-hook
@@ -1962,15 +1799,6 @@
               (lambda ()
                     (local-set-key (kbd "C-<tab>") 'asm-indent-line-by-line)
                     ))
-    #+end_src
-
-*** gas                               :no:
-
-    #+begin_src emacs-lisp :tangle no
-    (add-to-list 'load-path "~/.emacs.d/gas-mode/")
-
-    (require 'gas-mode)
-    (add-to-list 'auto-mode-alist '("\\.S\\'" . gas-mode))
     #+end_src
 
 *** fasm
@@ -2111,47 +1939,6 @@
                 ))
     #+end_src
 
-*** idris-mode
-    #+begin_src emacs-lisp :tangle ~/.emacs
-    (add-to-list 'load-path "~/.emacs.d/prop-menu-el/")
-    (require 'prop-menu)
-    (add-to-list 'load-path "~/.emacs.d/idris-mode/")
-    (require 'idris-mode)
-
-    (add-hook
-     'idris-mode-hook
-     (lambda ()
-       (local-set-key (kbd "C-M-n") 'idris-next-error)
-       (local-set-key (kbd "C-M-p") 'idris-previous-error)
-       (local-set-key (kbd "M-n") 'forward-paragraph)
-       (local-set-key (kbd "M-p") 'backward-paragraph)
-       (local-set-key (kbd "<return>") 'newline)
-
-       (turn-off-indent)))
-
-    (eval-after-load 'idris-mode
-      '(progn
-        (local-set-key (kbd "<tab>") 'turn-off-indent)))
-    #+end_src
-
-*** jonprl
-    #+begin_src emacs-lisp :tangle ~/.emacs
-    (add-to-list 'load-path "~/.emacs.d/yasnippet/")
-    (require 'yasnippet)
-
-    (add-to-list 'load-path "~/.emacs.d/jonprl-mode/")
-    (require 'jonprl-mode)
-    #+end_src
-
-*** twelf
-
-    #+begin_src emacs-lisp :tangle no
-    (add-to-list 'load-path "~/.emacs.d/twelf/")
-    (require 'twelf)
-    (setq twelf-root "/home/xyh/lang/twelf/twelf/")
-    (load (concat twelf-root "emacs/twelf-init.el"))
-    #+end_src
-
 *** clojure
 
 ***** clojure
@@ -2159,15 +1946,6 @@
       #+begin_src emacs-lisp :tangle ~/.emacs
       (add-to-list 'load-path "~/.emacs.d/clojure-mode/")
       (require 'clojure-mode)
-
-      ;; (defun clojure-easy-to-eval ()
-      ;;   (interactive)
-      ;;   (if (>= (+ 1 (point))
-      ;;           (point-max))
-      ;;       (message "C-<tab> : last sexp is evaled")
-      ;;       (let ()
-      ;;         (forward-sexp)
-      ;;         (cider-eval-last-sexp))))
 
       (add-hook
        'clojure-mode-hook
@@ -2182,109 +1960,11 @@
         (run-scheme "lein repl"))
       #+end_src
 
-***** queue                           :no:
-
-      #+begin_src emacs-lisp :tangle no
-      (add-to-list 'load-path "~/.emacs.d/queue/")
-      (require 'queue)
-      #+end_src
-
-***** cider                           :no:
-
-      #+begin_src emacs-lisp :tangle no
-      (add-to-list 'load-path "~/.emacs.d/cider/")
-      (require 'cider)
-
-      ;; cider-mode (complementing clojure-mode)
-      ;; that allows you to evaluate code in your Clojure source files
-      ;; and load it directly in the REPL
-      ;; (eval-after-load "clojure-mode" '(cider-mode t))
-      (add-hook 'clojure-mode-hook (lambda () (cider-mode t)))
-
-      ;; Enable eldoc in Clojure buffers:
-      (add-hook 'cider-mode-hook 'cider-turn-on-eldoc-mode)
-
-
-      ;; You can control the TAB key behavior in the REPL via
-      ;; cider-repl-tab-command
-      ;; default is command cider-repl-indent-and-complete-symbol
-      ;; to only indent:
-      ;; (setq cider-repl-tab-command 'indent-for-tab-command)
-
-      ;; Prevent the auto-display of the REPL buffer in a separate window
-      ;; after connection is established:
-      ;; (setq cider-repl-pop-to-buffer-on-connect nil)
-
-      ;; Stop the error buffer from popping up
-      ;; while working in buffers other than the REPL
-      (setq cider-popup-stacktraces nil)
-
-      ;; Enable error buffer popping also in the REPL:
-      ;; (setq cider-repl-popup-stacktraces t)
-
-      ;; To auto-select the error buffer when it's displayed:
-      ;; (setq cider-auto-select-error-buffer t)
-
-      ;; in The REPL buffer name
-      ;; display the port on which the nREPL server is running
-      ;; Buffer name will look like cider-repl project-name:port
-      (setq nrepl-buffer-name-show-port t)
-
-      ;; Make C-c C-z switch to the CIDER REPL buffer in the current window:
-      ;; (setq cider-repl-display-in-current-window t)
-
-      ;; Limit the number of items of each collection the printer will print to 100:
-      ;; (setq cider-repl-print-length 100) ; the default is nil, no limit
-
-      ;; Change the result prefix for REPL evaluation (by default there's no prefix):
-      ;; (set cider-repl-result-prefix ";; => ")
-      ;; And here's the result of that change:
-      ;; user> (+ 1 2)
-      ;; ;; => 3
-
-      ;; Change the result prefix for interactive evaluation (by default it's =>):
-      ;; (set cider-interactive-eval-result-prefix ";; => ")
-      ;; To remove the prefix altogether just set it to an empty string("").
-
-      ;; Normally code you input in the REPL is
-      ;; font-locked with cider-repl-input-face (after you press RET)
-      ;; and results are font-locked with cider-repl-output-face
-      ;; If you want them to be font-locked as in clojure-mode use the following:
-      ;; (setq cider-repl-use-clojure-font-lock t)
-
-      ;; You can control the C-c C-z key behavior of switching to the REPL buffer
-      ;; with the cider-switch-to-repl-command variable.
-      ;; default command cider-switch-to-relevant-repl-buffer
-      ;; cider-switch-to-current-repl-buffer offers a simpler alternative
-      ;; where CIDER will not attempt to match the correct REPL buffer
-      ;; based on underlying project directories:
-      ;; (setq cider-switch-to-repl-command 'cider-switch-to-current-repl-buffer)
-
-
-      ;; to make the REPL history wrap around when its end is reached:
-      (setq cider-repl-wrap-history t)
-
-      ;; To adjust the maximum number of items kept in the REPL history:
-      (setq cider-repl-history-size 1000) ; the default is 500
-
-      ;; To store the REPL history in a file:
-      ;; (setq cider-repl-history-file "path/to/file")
-      ;; Note that the history is written to the file when you kill the REPL buffer
-      ;; (which includes invoking cider-quit) or you quit Emacs
-      #+end_src
-
 *** erlang
 
     #+begin_src emacs-lisp
     (add-to-list 'load-path "~/.emacs.d/erlmode/")
     (require 'erlmode-start)
-    #+end_src
-
-*** elixir
-    #+begin_src emacs-lisp :tangle ~/.emacs
-    (add-to-list 'load-path "~/.emacs.d/elixir-mode/")
-    (require 'elixir-mode)
-    (require 'inferior-elixir-mode)
     #+end_src
 
 *** prolog
@@ -2295,14 +1975,12 @@
 
     (autoload 'run-prolog "prolog" "Start a Prolog sub-process." t)
     (autoload 'prolog-mode "prolog" "Major mode for editing Prolog programs." t)
-    (autoload 'mercury-mode "prolog" "Major mode for editing Mercury programs." t)
 
     (setq prolog-system 'swi)
     (setq prolog-indent-width 2)
 
     (setq auto-mode-alist
-          (append '(("\\.pl$" . prolog-mode)
-                    ("\\.m$" . mercury-mode))
+          (append '(("\\.pl$" . prolog-mode))
                   auto-mode-alist))
     (add-hook
      'prolog-mode-hook
@@ -2321,25 +1999,6 @@
                       (lambda ()
                         (interactive)
                         (run-prolog t)))))
-    #+end_src
-
-*** free-pascal
-    :tangle ~/.emacs
-    #+begin_src emacs-lisp
-    (add-to-list 'load-path "~/.emacs.d/freepascal-mode/")
-    (require 'pascal)
-    (setq pascal-indent-level       3
-              pascal-case-indent        2
-              pascal-auto-newline       nil
-              pascal-tab-always-indent  t
-              pascal-auto-endcomments   t
-              pascal-auto-lineup        '(all)
-              pascal-type-keywords      '("array" "file" "packed" "char"
-                                      "integer" "real" "string" "record")
-              pascal-start-keywords     '("begin" "end" "function" "procedure"
-                                      "repeat" "until" "while" "read" "readln"
-                                      "reset" "rewrite" "write" "writeln")
-              pascal-separator-keywords '("downto" "else" "mod" "div" "then"))
     #+end_src
 
 *** c
@@ -2381,12 +2040,6 @@
        (local-set-key (kbd "M-<tab>") 'window->)))
     #+end_src
 
-*** hy
-    #+begin_src emacs-lisp :tangle ~/.emacs
-    (add-to-list 'load-path "~/.emacs.d/hy-mode/")
-    (require 'hy-mode)
-    #+end_src
-
 
 *** java
     #+begin_src emacs-lisp :tangle ~/.emacs
@@ -2394,141 +2047,6 @@
       (c-set-offset 'arglist-intro '+))
 
     (add-hook 'java-mode-hook 'my-indent-setup)
-    #+end_src
-
-*** vala
-    #+begin_src emacs-lisp :tangle ~/.emacs
-    (add-to-list 'load-path "~/.emacs.d/vala-mode/")
-    (autoload 'vala-mode "vala-mode" "Major mode for editing Vala code." t)
-    (add-to-list 'auto-mode-alist '("\\.vala$" . vala-mode))
-    (add-to-list 'auto-mode-alist '("\\.vapi$" . vala-mode))
-    (add-to-list 'file-coding-system-alist '("\\.vala$" . utf-8))
-    (add-to-list 'file-coding-system-alist '("\\.vapi$" . utf-8))
-    #+end_src
-
-
-*** nimrod
-    #+begin_src emacs-lisp :tangle ~/.emacs
-    (add-to-list 'load-path "~/.emacs.d/nimrod-mode/")
-    (require 'nimrod-mode)
-    #+end_src
-
-
-*** ProofGeneral                      :no:
-    #+begin_src emacs-lisp :tangle no
-    ;; (add-to-list 'load-path "~/.emacs.d/ProofGeneral-4.2/ProofGeneral/generic/")
-    ;; (add-to-list 'load-path "~/.emacs.d/ProofGeneral/generic/")
-    (load-file "~/.emacs.d/ProofGeneral/generic/proof-site.elc")
-
-    ;; (require 'proof-site) must be away after org-mode is turned on
-    ;; i don't know way
-
-    ;; (defun org/prepare-for-coq-code-block ()
-    ;;   (interactive)
-    ;;   (require 'proof-site))
-
-    ;; (eval-after-load "coq-mode"
-    ;;   '(define-key coq-mode-map (kbd ";") 'c-electric-semi&comma))
-    #+end_src
-
-*** coq                               :no:
-    #+begin_src emacs-lisp :tangle no
-    ;; (add-to-list 'load-path "~/.emacs.d/coq/")
-
-    ;; rebinding keys for interactively proof
-    (add-hook 'coq-mode-hook
-              (lambda ()
-                (set (make-local-variable
-                      'comment-style)  'extra-line)
-
-                (local-set-key (kbd "M-p") 'backward-paragraph)
-                (local-set-key (kbd "M-n") 'forward-paragraph)
-                ;; M-p used to runs the command pg-previous-matching-input-from-input
-                (local-set-key (kbd "C-M-n") 'proof-assert-next-command-interactive)
-                (local-set-key (kbd "C-M-p") 'proof-undo-last-successful-command)
-                ))
-
-    ;; pretty-lambdas-for-coq
-
-    ;; i do not fully understand
-    ;; how the arg:KEYWORDS of font-lock-add-keywords works
-    ;; which is very complicated
-    ;; but the following returns what i want
-    ;; which is so very cool !!!
-
-    ;; (defun pretty-display-for-coq ()
-    ;;   (interactive)
-    ;;   ;; (font-lock-add-keywords
-    ;;   ;;  nil
-    ;;   ;;  `(("fun " (0
-    ;;   ;;             (progn
-    ;;   ;;               (compose-region (match-beginning 0)
-    ;;   ;;                               (+ (match-beginning 0) 3)
-    ;;   ;;                               "λ")
-    ;;   ;;               nil)))))
-    ;;   ;; (font-lock-add-keywords
-    ;;   ;;  nil
-    ;;   ;;  `(("=> " (0
-    ;;   ;;            (progn
-    ;;   ;;              (compose-region (match-beginning 0)
-    ;;   ;;                              (+ (match-beginning 0) 2)
-    ;;   ;;                              ".")
-    ;;   ;;              nil)))))
-    ;;   (font-lock-add-keywords
-    ;;    nil
-    ;;    `(("fun .*? =>" (0
-    ;;                    (progn
-    ;;                          ;; \x->f(g x) change to λx.f(g x)
-    ;;                          (compose-region (match-beginning 0)
-    ;;                                          (+ (match-beginning 0) 3)
-    ;;                                          "λ")
-    ;;                          (compose-region (- (match-end 0) 2)
-    ;;                                          (match-end 0)
-    ;;                                          ".")
-    ;;                          nil)))))
-    ;;   (font-lock-add-keywords
-    ;;    nil
-    ;;    `(("\\\\/" (0
-    ;;                  (progn
-    ;;                    (compose-region (match-beginning 0)
-    ;;                                    (+ (match-beginning 0) 2)
-    ;;                                    "∨")
-    ;;                    nil)))))
-    ;;   (font-lock-add-keywords
-    ;;    nil
-    ;;    `(("/\\\\" (0
-    ;;                  (progn
-    ;;                    (compose-region (match-beginning 0)
-    ;;                                    (+ (match-beginning 0) 2)
-    ;;                                    "∧")
-    ;;                    nil)))))
-    ;;   ;; use "forall " to match the word
-    ;;   ;; and use "∀" to compose-region [0-6]
-    ;;   ;; but not "∀ " to compose-region [0-7]
-    ;;   ;; this is very important !!!
-    ;;   (font-lock-add-keywords
-    ;;    nil
-    ;;    `(("forall " (0
-    ;;                 (progn
-    ;;                   (compose-region (match-beginning 0)
-    ;;                                   (+ (match-beginning 0) 6)
-    ;;                                   "∀")
-    ;;                   nil)))))
-    ;;   (font-lock-add-keywords
-    ;;    nil
-    ;;    `(("exists " (0
-    ;;                 (progn
-    ;;                   (compose-region (match-beginning 0)
-    ;;                                   (+ (match-beginning 0) 6)
-    ;;                                   "∃")
-    ;;                   nil))))))
-
-    ;; (add-hook 'coq-mode-hook
-    ;;           'pretty-display-for-coq)
-    ;; (add-hook 'coq-goals-mode-hook
-    ;;           'pretty-display-for-coq)
-    ;; (add-hook 'coq-response-mode-hook
-    ;;           'pretty-display-for-coq)
     #+end_src
 
 *** ruby
@@ -2639,55 +2157,6 @@
      '("\\.bnf\\'") ;; filename suffixes
      nil ;; extra function hooks
      "Major mode for BNF highlighting.")
-    #+end_src
-
-
-*** liquid-mode
-    #+begin_src emacs-lisp :tangle ~/.emacs
-    ;;; NOTES:
-    ;;;   - two syntax matching types:
-    ;;;     1) "regex" . font-lock-name
-    ;;;     2) "regex" (capture-group-id font-lock-name)
-    ;;;   - variable name regex: \\(?:\\w\\|\\.\\|_\\)+
-    ;;;
-    ;;; TODO:
-    ;;;   - strings can be in single quotes
-    ;;;   - detect string vs. object value types
-    ;;;   - detect boolean operators (and|or)
-    ;;;   - add groups for cycle tags
-    ;;;   - for:
-    ;;;     - add limit:n, offset:n
-    ;;;     - add reversed
-    ;;;     - add support for ranges
-
-    (setq liquidKeywords
-                  '(
-                    ;;; core stuff
-                    ("{%\\|%}\\|{{\\|}}" . font-lock-comment-face) ;;; liquid tag delimiters
-                    ("{%\s*\\(assign\\|capture\\|endcapture\\|for\\|endfor\\|if\\|endif\\|comment\\|endcomment\\|else\\|elsif\\|unless\\|endunless\\|case\\|when\\|endcase\\|cycle\\)" (1 font-lock-keyword-face)) ;;; liquid construct tags
-                    ("forloop" . font-lock-keyword-face)
-                    ("forloop.\\(length\\|index0\\|index\\|rindex0\\|rindex\\|first\\|last\\)" (1 font-lock-variable-name-face))
-                    ("{%\s*\\(?:assign\\|capture\\|for\\|if\\|unless\\|case\\|when\\)\s+\\(\\(?:\\w\\|\\.\\|_\\)+\\)" (1 font-lock-variable-name-face)) ;;; variable after assign|capture|for|if
-
-                    ("{{\s*\\(\\(?:\\w\\|\\.\\)+\\)" (1 font-lock-variable-name-face)) ;;; variable/object being outputted
-
-                    ;;; filter stuff (hack, only supports 2 chained filters)
-                    ("\s+|\s+" . font-lock-comment-face) ;;; liquid tag delimiters
-                    ("{{\s*\\(?:\\w\\|\\.\\)+\s+|\s+\\(\\w+\\)" (1 font-lock-type-face)) ;;; variable after assign|capture|for|if
-                    ("{{\s*\\(?:\\w\\|\\.\\)+\s+|\s+\\w+\s+|\s+\\(\\w+\\)" (1 font-lock-type-face)) ;;; variable after assign|capture|for|if
-
-                    ;;; if/else stuff
-                    ("{%\s*\\(?:if\\|unless\\)\s+\\(?:\\w\\|\\.\\)+\s+\\(contains\\|>\\|<\\|==\\|!=\\)" (1 font-lock-keyword-face)) ;;; liquid operators
-
-                    ;;; for loop stuff
-                    ("{%\s*for\s+\\w+\s+\\(in\\)" (1 font-lock-keyword-face)) ;;; the 'in' in "for temp in collection"
-                    ("{%\s*for\s+\\w+\s+in\s+\\(\\(?:\\w\\|\\.\\|_\\)+\\)" (1 font-lock-variable-name-face)) ;;; the 'collection' in "for temp in collection"
-                    )
-                  )
-    (define-derived-mode liquid-mode html-mode
-          (setq font-lock-defaults '(liquidKeywords))
-          (setq mode-name "liquid mode")
-          )
     #+end_src
 
 
@@ -2917,10 +2386,6 @@
               ("erlangf" "#+end_src\n?\n#+begin_src erlang" "<src lang=\"?\">\n\n</src>")
               ("erlang" "#+begin_src erlang\n?\n#+end_src" "<src lang=\"?\">\n\n</src>")
 
-              ;; lfe
-              ("lfef" "#+end_src\n?\n#+begin_src lfe" "<src lang=\"?\">\n\n</src>")
-              ("lfe" "#+begin_src lfe\n?\n#+end_src" "<src lang=\"?\">\n\n</src>")
-
               ))
       #+end_src
 
@@ -3079,17 +2544,6 @@
               ))
       #+end_src
 
-***** proof-language
-      #+begin_src emacs-lisp :tangle ~/.emacs
-      (setq org-structure-template-proof-language
-            '(
-              ;; coq
-              ("coqf" "#+end_src\n?\n#+begin_src coq" "<src lang=\"?\">\n\n</src>")
-              ("coq" "#+begin_src coq\n?\n#+end_src" "<src lang=\"?\">\n\n</src>")
-
-              ))
-      #+end_src
-
 ***** haskell
       #+begin_src emacs-lisp :tangle ~/.emacs
       (setq org-structure-template-haskell-family
@@ -3146,7 +2600,6 @@
              org-structure-template-basic
 
              org-structure-template-mark-language
-             org-structure-template-proof-language
              org-structure-template-human-language
 
              org-structure-template-lisp-family
@@ -3252,21 +2705,6 @@
     #+end_src
 
 * app
-
-*** command-log-mode
-    #+begin_src emacs-lisp :tangle ~/.emacs
-    (add-to-list 'load-path "~/.emacs.d/command-log-mode/")
-    (require 'command-log-mode)
-
-    (add-hook 'org-mode-hook 'command-log-mode)
-
-    (add-hook 'elisp-mode-hook 'command-log-mode)
-    (add-hook 'lisp-mode-hook 'command-log-mode)
-    (add-hook 'scheme-mode-hook 'command-log-mode)
-
-    (add-hook 'agda2-mode-hook 'command-log-mode)
-    (add-hook 'cicada-nymph-mode-hook 'command-log-mode)
-    #+end_src
 
 *** w3m
 
@@ -3505,61 +2943,6 @@
     (cua-selection-mode 1)
     #+end_src
 
-*** muse
-    #+begin_src emacs-lisp :tangle ~/.emacs
-    (add-to-list 'load-path "~/.emacs.d/muse/lisp/")
-
-    (require 'muse-mode); load authoring mode
-    (require 'muse-html); load publishing styles I use
-    (require 'muse-latex)
-    (require 'muse-texinfo)
-    (require 'muse-docbook)
-    (require 'muse-project); publish files in projects
-
-
-    (setq muse-html-content-coding "utf-8")
-    (setq muse-html-charset-default "utf-8")
-    (setq muse-html-coding-default "utf-8")
-
-    ;; (custom-set-variables
-    ;;  '(muse-file-extension nil)
-    ;;  '(muse-mode-auto-p t)
-    ;;  '(muse-file-extension "muse")
-    ;;  '(muse-html-meta-content-encoding (quote utf-8))
-    ;;  '(muse-html-charset-default "utf-8")
-    ;;  '(muse-html-encoding-default (quote utf-8))
-    ;;  '(muse-html-encoding-map "utf8")
-    ;;  '(muse-colors-autogen-headings (quote outline))
-    ;;  '(muse-html-meta-content-encoding (quote utf-8))
-    ;;  '(muse-html-meta-content-type "text/xhtml; charset=utf-8"))
-
-    (add-hook 'muse-mode-hook
-     (lambda ()
-       (local-set-key (kbd "M-<tab>") 'window->)
-       (local-set-key (kbd "C-c C-c") 'muse-project-publish)
-       ))
-    #+end_src
-
-*** muse-project-alist
-    #+begin_src emacs-lisp :tangle ~/.emacs
-    (setq muse-project-alist
-              '(
-
-            ("cicada"
-             ("~/cicada/readings"
-              :default "cicada")
-             (:base "xelatex"
-              :path "~/cicada/readings/xelatex"))
-
-            ("cicada--cn"
-             ("~/cicada/readings-chinese"
-              :default "cicada-chinese")
-             (:base "xelatex"
-              :path "~/cicada/readings-chinese/xelatex"))
-
-            ))
-    #+end_src
-
 *** htmlize                           :no:
     #+begin_src emacs-lisp :tangle no
     (add-to-list 'load-path "~/.emacs.d/htmlize/")
@@ -3669,170 +3052,32 @@
        ))
     #+end_src
 
-* irc
-
-*** rcirc
-    #+begin_src emacs-lisp :tangle ~/.emacs
-    (setq rcirc-default-nick "xyh")
-    (setq rcirc-default-port "6666")
-    (setq rcirc-default-user-name "xieyuheng")
-    (setq rcirc-default-full-name "XIE Yuheng")
-
-    (eval-after-load 'rcirc '(rcirc-track-minor-mode 1))
-
-    (setq rcirc-notify+-open nil)
-
-    (setq rcirc-server-alist
-          '(("irc.freenode.net" :port 6666
-             :channels ("#schemecn"
-                        "#cicada-language"
-                        "#szdiy"))))
-    #+end_src
-
-*** rcirc-groups
-    #+begin_src emacs-lisp :tangle ~/.emacs
-    (add-to-list 'load-path "~/.emacs.d/rcirc-groups/")
-    (require 'rcirc-groups)
-    (require 'rcirc-notify-mode)
-    #+end_src
-
-*** rcirc-notify+
-    #+begin_src emacs-lisp :tangle ~/.emacs
-    (add-to-list 'load-path "~/.emacs.d/rcirc-notify-plus/")
-    (require 'rcirc-notify+)
-    (setq rcirc-notify+-open t)
-    #+end_src
-
-*** rcirc-autoreconnect
-    #+begin_src emacs-lisp :tangle ~/.emacs
-    (add-to-list 'load-path "~/.emacs.d/rcirc-autoreconnect/")
-    (require 'rcirc-autoreconnect)
-    (setq rcirc-autoreconnect t)
-    #+end_src
-
-*** circe                             :no:
-    #+begin_src emacs-lisp :tangle no
-    (add-to-list 'load-path "~/.emacs.d/circe/")
-    (require 'circe)
-
-    (setq circe-network-options
-          `(("Freenode"
-             :nick "xyh"
-             :port 6667
-             :channels ("#schemecn"
-                        "#cicada-language"
-                        "#szdiy"))))
-    #+end_src
-
-*** erc
-
-    #+begin_src emacs-lisp :tangle ~/.emacs
-    (defun irc ()
-      (interactive)
-      (erc :server "irc.freenode.net"
-           :port 6666
-           :full-name "XIE Yuheng"
-           :nick "xieyuheng"))
-
-    (setq erc-autojoin-channels-alist
-          '(("freenode.net"
-             "#szdiy"
-             "#archlinux-cn"
-             "#archlinux-cn-offtopic"
-             "#linux-cn"
-             "#cicada-language")))
-    #+end_src
-
-* file viewer
-
-*** ranger                            :no:
-
-    #+begin_src emacs-lisp :tangle no
-    (add-to-list 'load-path "~/.emacs.d/ranger-git/")
-    (require 'ranger)
-
-    ;; zp for minimal ranger mode (deer)
-
-    (setq ranger-cleanup-on-disable t)
-    (setq ranger-cleanup-eagerly t)
-
-    ;; toggled by zh
-    (setq ranger-show-dotfiles nil)
-
-    ;; function used to output header of primary ranger window
-    ;;   must return a string that is placed in the header-line
-    (setq ranger-header-func 'ranger-header-line)
-
-    (setq ranger-parent-depth 1) ;; adjusted by z- and z+
-
-    ;; toggled by zi
-    ;;   literal v.s. find-file
-    (setq ranger-show-literal nil)
-
-    (setq ranger-ignored-extensions
-          '("mkv" "iso" "mp4" "pdf" "djvu"))
-
-    ;; 1 MB
-    (setq ranger-max-preview-size 1)
-    #+end_src
-
-*** warden
-
-    #+begin_src emacs-lisp :tangle ~/.emacs
-    (add-to-list 'load-path "~/.emacs.d/warden/")
-    (require 'warden)
-
-    (global-set-key (kbd "C-s C-w") 'warden)
-    #+end_src
-
-* tabbar
+* erc
 
   #+begin_src emacs-lisp :tangle ~/.emacs
-  ;; (add-to-list 'load-path "~/.emacs.d/tabbar/")
-  ;; (require 'tabbar)
-  ;; (tabbar-mode)
+  (defun irc ()
+    (interactive)
+    (erc :server "irc.freenode.net"
+         :port 6666
+         :full-name "XIE Yuheng"
+         :nick "xieyuheng"))
 
-  ;; (global-set-key (kbd "C-`") 'tabbar-forward)
-  ;; (global-set-key (kbd "C-~") 'tabbar-backward)
+  (setq erc-autojoin-channels-alist
+        '(("freenode.net"
+           "#szdiy"
+           "#archlinux-cn"
+           "#archlinux-cn-offtopic"
+           "#linux-cn"
+           "#cicada-language")))
   #+end_src
 
-* window manager
-
-*** eyebrowse
-
-    #+begin_src emacs-lisp :tangle ~/.emacs
-    (add-to-list 'load-path "~/.emacs.d/eyebrowse/")
-    (require 'eyebrowse)
-    (eyebrowse-mode 1)
-
-    ;; ((kbd "<") 'eyebrowse-prev-window-config)
-    ;; ((kbd ">") 'eyebrowse-next-window-config)
-    ;; ((kbd "'") 'eyebrowse-last-window-config)
-    ;; ((kbd "\"") 'eyebrowse-close-window-config)
-    ;; ((kbd ",") 'eyebrowse-rename-window-config)
-    ;; ((kbd ".") 'eyebrowse-switch-to-window-config)
-    ;; ((kbd "0") 'eyebrowse-switch-to-window-config-0)
-    ;; ((kbd "1") 'eyebrowse-switch-to-window-config-1)
-    ;; ((kbd "2") 'eyebrowse-switch-to-window-config-2)
-    ;; ((kbd "3") 'eyebrowse-switch-to-window-config-3)
-    ;; ((kbd "4") 'eyebrowse-switch-to-window-config-4)
-    ;; ((kbd "5") 'eyebrowse-switch-to-window-config-5)
-    ;; ((kbd "6") 'eyebrowse-switch-to-window-config-6)
-    ;; ((kbd "7") 'eyebrowse-switch-to-window-config-7)
-    ;; ((kbd "8") 'eyebrowse-switch-to-window-config-8)
-    ;; ((kbd "9") 'eyebrowse-switch-to-window-config-9)
-    #+end_src
-
-* sdcv
+* warden
 
   #+begin_src emacs-lisp :tangle ~/.emacs
-  (add-to-list 'load-path "~/.emacs.d/popup-el/")
-  (require 'popup)
+  (add-to-list 'load-path "~/.emacs.d/warden/")
+  (require 'warden)
 
-  (add-to-list 'load-path "~/.emacs.d/sdcv.el/")
-  (require 'sdcv)
-
-  (global-set-key (kbd "M-t") 'sdcv-search-pointer)
+  (global-set-key (kbd "C-s C-w") 'warden)
   #+end_src
 
 * looks like
@@ -3846,7 +3091,7 @@
     ;; (custom-set-variables '(initial-frame-alist (quote ((fullscreen . maximized)))))
     #+end_src
 
-*** hl
+*** hl -- highlighting current line
 
     #+begin_src emacs-lisp :tangle ~/.emacs
     (add-to-list 'load-path "~/.emacs.d/hl-line/")
@@ -4024,19 +3269,16 @@
 
 *** theme
 
-***** molokai
-      #+begin_src emacs-lisp :tangle ~/.emacs
-      (add-to-list 'custom-theme-load-path "~/.emacs.d/molokai-theme/")
-      (load-theme 'molokai t)
-      (add-to-list 'load-path "~/.emacs.d/molokai-theme/")
-      (require 'molokai-theme-kit)
-      #+end_src
+    #+begin_src emacs-lisp :tangle ~/.emacs
+    (add-to-list 'custom-theme-load-path "~/.emacs.d/molokai-theme/")
+    (load-theme 'molokai t)
+    (add-to-list 'load-path "~/.emacs.d/molokai-theme/")
+    (require 'molokai-theme-kit)
 
-***** zenburn
-      #+begin_src emacs-lisp
-      (add-to-list 'custom-theme-load-path "~/.emacs.d/zenburn-emacs/")
-      (load-theme 'zenburn t)
-      #+end_src
+    ;; zenburn // low contrast theme
+    ;; (add-to-list 'custom-theme-load-path "~/.emacs.d/zenburn-emacs/")
+    ;; (load-theme 'zenburn t)
+    #+end_src
 
 *** translucent                       :no:
     #+begin_src emacs-lisp :tangle no
@@ -4113,13 +3355,6 @@
     #+begin_src emacs-lisp :tangle ~/.emacs
     ;; (display-battery-mode t)
     ;; (display-time-mode t)
-    #+end_src
-
-*** symon                             :no:
-    #+begin_src emacs-lisp
-    (add-to-list 'load-path "~/.emacs.d/symon/")
-    (require 'symon)
-    (symon-mode)
     #+end_src
 
 *** fullscreen
@@ -4299,11 +3534,11 @@
       (set-frame-parameter nil 'name (number-to-string (number-generator)))
       (let ((.buffer-name (frame-eshell-name)))
         (eshell t)
-        (delete-region 1 (buffer-size))
-        (insert "* (eshell)\n"
-                "  eshell number " (frame-parameter nil 'name) "\n"
-                "  the main eshell for this frame\n")
-        (eshell-interrupt-process)
+        ;; (delete-region 1 (buffer-size))
+        ;; (insert "* (eshell)\n"
+        ;;         "  eshell number " (frame-parameter nil 'name) "\n"
+        ;;         "  the main eshell for this frame\n")
+        ;; (eshell-interrupt-process)
         (rename-buffer .buffer-name)))
 
     ;; can be used in 'emacs -nw'
