@@ -402,6 +402,46 @@
     (setq tab-width 2)
     #+end_src
 
+* input-method
+
+*** for lambda
+
+    #+begin_src emacs-lisp :tangle ~/.emacs
+    (quail-define-package
+     "greek-simple" "greek" "greek-simple-title" t
+     "simple greek"
+     nil t nil nil nil nil nil nil nil nil t)
+
+    (quail-define-rules
+     ("\\l" ?λ))
+
+    (set-input-method "greek-simple")
+
+    (global-set-key (kbd "C-\\") 'toggle-input-method-with-message)
+    (defun toggle-input-method-with-message ()
+      (interactive)
+      (toggle-input-method)
+      (if (eq current-input-method nil)
+          (message "input method turned off")
+          (message current-input-method)))
+
+    (add-hook 'text-mode-hook (lambda () (interactive) (toggle-input-method)))
+    #+end_src
+
+* indent-guide
+
+*** indent-guide
+
+    #+begin_src emacs-lisp :tangle ~/.emacs
+    (add-to-list 'load-path "~/.emacs.d/indent-guide/")
+    (require 'indent-guide)
+    (indent-guide-global-mode)
+    ;; (setq indent-guide-char ":")
+    ;; (setq indent-guide-delay 0)
+    (set-face-foreground 'indent-guide-face "#333333")
+    (setq indent-guide-recursive t)
+    #+end_src
+
 * paren-face
 
   #+begin_src emacs-lisp :tangle ~/.emacs
@@ -720,45 +760,6 @@
       (add-hook 'inferior-scheme-mode-hook
                 (lambda ()
                       (define-key scheme-mode-map (kbd "C-s C-a") 'scheme-here-send-sexp)))
-      #+end_src
-
-***** pretty-lambdas-for-lisp (not using)
-      * not using
-        for no good font
-      #+begin_src emacs-lisp
-      (defun pretty-lambdas-for-lisp ()
-        (interactive)
-        (font-lock-add-keywords
-         nil `(("(\\(lambda\\>\\)"
-                (0 (progn (compose-region (match-beginning 1) (match-end 1)
-                                              993
-                                              ;; 923 : Λ
-                                              ;; 955 : λ
-                                              ;; 411 : ƛ
-                                              ;; 654 : ʎ
-                                              ;; 992 : Ϡ
-                                              ;; 993 : ϡ
-                                              )
-                              nil))))))
-
-
-      (add-hook 'scheme-mode-hook
-                'pretty-lambdas-for-lisp)
-      (add-hook 'inferior-scheme-mode-hook
-                'pretty-lambdas-for-lisp)
-
-      (add-hook 'emacs-lisp-mode-hook
-                'pretty-lambdas-for-lisp)
-      (add-hook 'ielm-mode-hook
-                'pretty-lambdas-for-lisp)
-
-      (add-hook 'lisp-mode-hook
-                'pretty-lambdas-for-lisp)
-      (add-hook 'lisp-interaction-mode-hook
-                'pretty-lambdas-for-lisp)
-
-      (add-hook 'org-mode-hook
-                'pretty-lambdas-for-lisp)
       #+end_src
 
 ***** scheme-add-keywords
@@ -1299,6 +1300,7 @@
     (add-hook
      'jojo-mode-hook
      (lambda ()
+       ;; (turn-off-indent)
        (paren-face-mode)
        (local-set-key (kbd "C-x C-e") 'scheme-send-last-sexp-split-window)
        (local-set-key (kbd "C-c C-e") 'scheme-send-definition-split-window)
@@ -2866,18 +2868,20 @@
       sdasddassaas|
       iiiiiiiiiiii|
 
-***** 英
+***** english
 
       #+begin_src emacs-lisp :tangle ~/.emacs
-      ;; (set-face-attribute 'default nil :family "monaco" :height 140)
-      (set-face-attribute 'default nil :family "Input" :height 140)
+      ;; (set-face-attribute 'default nil :family "monaco" :height 150)
+      ;; (set-face-attribute 'default nil :family "Input" :height 140)
       ;; (set-face-attribute 'default nil :family "monofur" :height 170)
+      (set-face-attribute 'default nil :family "Noto Mono" :height 150)
       #+end_src
 
-***** 符
+***** symbol
 
       #+begin_src emacs-lisp :tangle ~/.emacs
-      (set-fontset-font t 'symbol (font-spec :name "mono"))
+      (set-fontset-font t 'symbol (font-spec :name "Noto Mono"))
+      (set-fontset-font t 'symbol (font-spec :name "Noto Emoji"))
       #+end_src
 
 *** theme
