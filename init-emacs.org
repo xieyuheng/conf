@@ -279,23 +279,14 @@
 *** mouse
 
     #+begin_src emacs-lisp :tangle ~/.emacs
-    (dolist (k '([mouse-1] [down-mouse-1] [drag-mouse-1] [double-mouse-1] [triple-mouse-1]
-                 [mouse-2] [down-mouse-2] [drag-mouse-2] [double-mouse-2] [triple-mouse-2]
-                 [mouse-3] [down-mouse-3] [drag-mouse-3] [double-mouse-3] [triple-mouse-3]
-                 [mouse-4] [down-mouse-4] [drag-mouse-4] [double-mouse-4] [triple-mouse-4]
-                 [mouse-5] [down-mouse-5] [drag-mouse-5] [double-mouse-5] [triple-mouse-5]
-                 [mouse-6] [down-mouse-6] [drag-mouse-6] [double-mouse-6] [triple-mouse-6]
-                 [mouse-7] [down-mouse-7] [drag-mouse-7] [double-mouse-7] [triple-mouse-7]))
+    (dolist (k '([mouse-1] [down-mouse-1] [C-down-mouse-1] [drag-mouse-1] [double-mouse-1] [triple-mouse-1]
+                 [mouse-2] [down-mouse-2] [C-down-mouse-2] [drag-mouse-2] [double-mouse-2] [triple-mouse-2]
+                 [mouse-3] [down-mouse-3] [C-down-mouse-3] [drag-mouse-3] [double-mouse-3] [triple-mouse-3]
+                 [mouse-4] [down-mouse-4] [C-down-mouse-4] [drag-mouse-4] [double-mouse-4] [triple-mouse-4]
+                 [mouse-5] [down-mouse-5] [C-down-mouse-5] [drag-mouse-5] [double-mouse-5] [triple-mouse-5]
+                 [mouse-6] [down-mouse-6] [C-down-mouse-6] [drag-mouse-6] [double-mouse-6] [triple-mouse-6]
+                 [mouse-7] [down-mouse-7] [C-down-mouse-7] [drag-mouse-7] [double-mouse-7] [triple-mouse-7]))
       (global-set-key k (lambda () (interactive))))
-
-    ;; (global-set-key (kbd "<mouse-5>") 'next-line)
-    ;; (global-set-key (kbd "<mouse-4>") 'previous-line)
-
-    ;; (global-set-key (kbd "<mouse-7>") 'next-line)
-    ;; (global-set-key (kbd "<mouse-6>") 'previous-line)
-
-    ;; (global-set-key (kbd "<mouse-7>") 'forward-char)
-    ;; (global-set-key (kbd "<mouse-6>") 'backward-char)
     #+end_src
 
 * general setting
@@ -1788,7 +1779,7 @@
 
 *** erlang
 
-    #+begin_src emacs-lisp
+    #+begin_src emacs-lisp :tangle ~/.emacs
     (add-to-list 'load-path "~/.emacs.d/erlmode/")
     (require 'erlmode-start)
     #+end_src
@@ -1840,6 +1831,7 @@
     #+end_src
 
 *** python
+
     #+begin_src emacs-lisp :tangle ~/.emacs
     (setq py-install-directory "~/.emacs.d/python-mode/")
     (add-to-list 'load-path py-install-directory)
@@ -1858,6 +1850,7 @@
     (add-hook
      'python-mode-hook
      (lambda ()
+       (turn-off-indent)
        (local-set-key (kbd "C-<tab>") 'python-easy-to-eval)))
 
     (add-hook
@@ -1866,8 +1859,8 @@
        (local-set-key (kbd "M-<tab>") 'window->)))
     #+end_src
 
-
 *** java
+
     #+begin_src emacs-lisp :tangle ~/.emacs
     (defun my-indent-setup ()
       (c-set-offset 'arglist-intro '+))
@@ -2019,13 +2012,13 @@
     #+begin_src emacs-lisp :tangle ~/.emacs
     (setq org-html-head-include-default-style nil)
 
-    (setq org-html-preamble t)
-    (setq org-html-preamble-format
-          '(("en" ".")))
+    ;; (setq org-html-preamble t)
+    ;; (setq org-html-preamble-format
+    ;;       '(("en" ".")))
 
-    (setq org-html-postamble t)
-    (setq org-html-postamble-format
-          '(("en" ".")))
+    ;; (setq org-html-postamble t)
+    ;; (setq org-html-postamble-format
+    ;;       '(("en" ".")))
     #+end_src
 
 *** publishing
@@ -2135,11 +2128,12 @@
     #+end_src
 
 *** todo-keyword
+
     #+begin_src emacs-lisp :tangle ~/.emacs
     (setq org-todo-keywords
           '((sequence "><" "|" "><><" "|" "><><><")
             (sequence "[todo-list]" "|" "[todo-stack]" "|" "[maybe]")
-            (sequence "[note]" "|" "[test]")))
+            (sequence "[note]" "|" "[test]" "|" "[bug]")))
     #+end_src
 
 *** tag
@@ -2710,7 +2704,7 @@
 
 *** message
     #+begin_src emacs-lisp :tangle ~/.emacs
-    (setq user-full-name "XIE Yuheng"
+    (setq user-full-name "xieyuheng"
           user-mail-address "xyheme@gmail.com"
           message-auto-save-directory "~/mail/draft")
     #+end_src
@@ -2772,34 +2766,48 @@
 
     #+begin_src emacs-lisp :tangle ~/.emacs
     (global-set-key (kbd "C-t") 'isearch-forward)
+    (global-set-key (kbd "C-s C-o") 'helm-occur)
 
     (add-hook
      'isearch-mode-hook
      (lambda ()
-       (define-key isearch-mode-map (kbd "C-t") 'isearch-repeat-forward)
-       ;; (define-key isearch-mode-map (kbd "C-o") 'occur)
-       (define-key isearch-mode-map (kbd "C-o") 'helm-occur)
-       ))
+       (define-key isearch-mode-map (kbd "C-t") 'isearch-repeat-forward)))
     #+end_src
 
-* erc
+* irc
 
-  #+begin_src emacs-lisp :tangle ~/.emacs
-  (defun irc ()
-    (interactive)
-    (erc :server "irc.freenode.net"
-         :port 6666
-         :full-name "XIE Yuheng"
-         :nick "xieyuheng"))
+*** irc-freenode-channel-list
 
-  (setq erc-autojoin-channels-alist
-        '(("freenode.net"
-           "#szdiy"
-           "#archlinux-cn"
-           "#archlinux-cn-offtopic"
-           "#linux-cn"
-           "#cicada-language")))
-  #+end_src
+    #+begin_src emacs-lisp :tangle ~/.emacs
+    (defvar irc-freenode-channel-list
+      (list "#cicada-language"
+            "#archlinux-cn"
+            "#archlinux-cn-offtopic"
+            "#netbsd"))
+    #+end_src
+
+*** erc
+
+    #+begin_src emacs-lisp :tangle ~/.emacs
+    (defun irc ()
+      (interactive)
+      (erc :server "irc.freenode.net"
+           :port 6666
+           :full-name "xieyuheng"
+           :nick "xieyuheng"))
+
+    (setq erc-autojoin-channels-alist
+          (list (cons "freenode.net" irc-freenode-channel-list)))
+    #+end_src
+
+*** rcirc
+
+    #+begin_src emacs-lisp :tangle ~/.emacs
+    (setq rcirc-server-alist
+          `(("irc.freenode.net"
+             :port 6697 :encryption tls
+             :channels ,irc-freenode-channel-list)))
+    #+end_src
 
 * warden
 
@@ -2861,7 +2869,7 @@
       ;; (set-fontset-font t 'han (font-spec :name "Noto Sans CJK TC Thin" :size 24))
       ;; (set-fontset-font t 'han (font-spec :name "Noto Sans CJK TC Light" :size 24))
 
-      (set-fontset-font t 'han (font-spec :name "Noto Sans CJK TC DemiLight" :size 24))
+      (set-fontset-font t 'han (font-spec :name "Noto Sans CJK TC DemiLight" :size 28))
 
       ;; (set-fontset-font t 'han (font-spec :name "Noto Sans CJK TC Medium" :size 24))
       ;; (set-fontset-font t 'han (font-spec :name "Noto Sans CJK TC Bold" :size 24))
@@ -2885,11 +2893,11 @@
       ;; (set-face-attribute 'default nil :family "monaco" :height 150)
       ;; (set-face-attribute 'default nil :family "Noto Mono" :height 150)
       ;; (set-face-attribute 'default nil :family "Meslo LG M" :height 150)
-      ;; (set-face-attribute 'default nil :family "Hack" :height 150)
+      (set-face-attribute 'default nil :family "Hack" :height 180)
       ;; (set-face-attribute 'default nil :family "monofur" :height 170)
       ;; (set-face-attribute 'default nil :family "PT Mono" :height 150)
       ;; (set-face-attribute 'default nil :family "mononoki" :height 160)
-      (set-face-attribute 'default nil :family "Monoid" :height 135)
+      ;; (set-face-attribute 'default nil :family "Monoid" :height 135)
       #+end_src
 
 ***** symbol
