@@ -299,12 +299,6 @@
     (setq indent-tabs-mode nil)
     (setq-default indent-tabs-mode nil)
     ;; 全局设置上面的变量并没有用
-    ;;   设想如果我能用一个树状图来清晰地描述 mode 之间的继承与依赖关系
-    ;;   而不是只有简单的 major 和 minor 两个层次
-    ;;   并且我能方便的浏览这个树
-    ;;   能像操作一个列表一样方便的调整这个树
-    ;; 写一个不光有更好配置语言的
-    ;; 而且有更好的设计的文本编辑器也许并没有那么难
     (add-hook 'prog-mode-hook (lambda () (setq indent-tabs-mode nil)))
 
     (fringe-mode '(6 . 6))
@@ -488,12 +482,9 @@
       ;; (global-set-key (kbd "s-d") 'out->)
 
 
-
       ;; the following is for emacs-nox which can not see s-
       (define-key input-decode-map [134217825] [M-a])
       (global-set-key [M-a] 'mark-sexp)
-
-
 
       ;; (global-set-key (kbd "C-M-p") 'backward-sexp)
       ;; (global-set-key (kbd "C-M-n") 'forward-sexp)
@@ -1284,6 +1275,8 @@
     (add-to-list 'load-path "~/.emacs.d/jojo-mode/")
     (require 'jojo-mode)
 
+    (add-to-list 'interpreter-mode-alist '("jojo" . jojo-mode))
+
     (add-hook 'jojo-mode-hook #'enable-paredit-mode)
 
     (setq auto-mode-alist (cons `("\\.jo" . jojo-mode) auto-mode-alist))
@@ -1386,6 +1379,11 @@
        ))
     #+end_src
 
+*** rst
+
+    #+begin_src emacs-lisp :tangle ~/.emacs
+    (add-to-list 'auto-mode-alist '("\\.txt\\'" . rst-mode))
+    #+end_src
 
 *** cicada-nymph
 
@@ -1436,8 +1434,23 @@
     (require 'return-stack-mode)
     #+end_src
 
+*** python
+
+    #+begin_src emacs-lisp :tangle ~/.emacs
+    (add-hook
+     'python-mode-hook
+     (lambda ()
+       (setq forward-sexp-function nil)))
+
+    (setq python-shell-interpreter "ipython"
+          python-shell-interpreter-args "--simple-prompt -i")
+
+    (setq python-indent-guess-indent-offset nil)
+    (setq python-indent-offset 4)
+    #+end_src
 
 *** rust
+
     #+begin_src emacs-lisp :tangle ~/.emacs
     (add-to-list 'load-path "~/.emacs.d/rust-mode/")
     (autoload 'rust-mode "rust-mode" nil t)
@@ -1446,6 +1459,7 @@
     #+end_src
 
 *** go
+
     #+begin_src emacs-lisp :tangle ~/.emacs
     (add-to-list 'load-path "~/.emacs.d/go-mode/")
     (require 'go-mode)
@@ -1453,7 +1467,7 @@
     (add-hook
      'go-mode-hook
      (lambda ()
-       (setq tab-width 2)
+       (setq tab-width 4)
        (setq indent-tabs-mode nil)))
     #+end_src
 
@@ -1662,7 +1676,6 @@
                     ))
     #+end_src
 
-
 *** clean
 
     #+begin_src emacs-lisp :tangle ~/.emacs
@@ -1830,35 +1843,6 @@
        (setq comment-end "")))
     #+end_src
 
-*** python
-
-    #+begin_src emacs-lisp :tangle ~/.emacs
-    (setq py-install-directory "~/.emacs.d/python-mode/")
-    (add-to-list 'load-path py-install-directory)
-    (require 'python-mode)
-
-
-    (defun python-easy-to-eval ()
-      (interactive)
-      (if (>= (+ 1 (point))
-              (point-max))
-          (message "C-<tab> : last sexp is evaled")
-          (let ()
-            (py-forward-statement)
-            (py-execute-statement))))
-
-    (add-hook
-     'python-mode-hook
-     (lambda ()
-       (turn-off-indent)
-       (local-set-key (kbd "C-<tab>") 'python-easy-to-eval)))
-
-    (add-hook
-     'py-python-shell-mode-hook
-     (lambda ()
-       (local-set-key (kbd "M-<tab>") 'window->)))
-    #+end_src
-
 *** java
 
     #+begin_src emacs-lisp :tangle ~/.emacs
@@ -1996,7 +1980,8 @@
 *** path
 
     #+begin_src emacs-lisp :tangle ~/.emacs
-    (add-to-list 'load-path "~/.emacs.d/org/lisp/")
+    ;; (add-to-list 'load-path "~/.emacs.d/org/lisp/")
+    ;; a compiled version of org mode is installed
     (require 'org)
 
     (add-to-list 'load-path "~/.emacs.d/htmlize/")
@@ -2489,6 +2474,32 @@
     tangle take too long so just edit
     file:~/.org-agenda-files
 
+* folding
+
+*** origami.el
+
+    #+begin_src emacs-lisp :tangle ~/.emacs
+    ;; (add-to-list 'load-path "~/.emacs.d/origami.el/")
+    ;; (require 'origami)
+    #+end_src
+
+*** hideshow
+
+    #+begin_src emacs-lisp :tangle ~/.emacs
+    ;; (add-hook
+    ;;  'prog-mode-hook
+    ;;  (lambda ()
+    ;;    (hs-minor-mode)))
+
+    ;; ;; hs-show-all
+    ;; ;; hs-hide-all
+
+    ;; ;; hs-show-block
+    ;; ;; hs-hide-block
+
+    ;; (global-set-key (kbd "C-<tab>") 'hs-toggle-hiding)
+    #+end_src
+
 * app
 
 *** w3m
@@ -2783,9 +2794,13 @@
     #+begin_src emacs-lisp :tangle ~/.emacs
     (defvar irc-freenode-channel-list
       (list "#cicada-language"
-            "#archlinux-cn"
+            "#jojo"
+
+            ;; "#archlinux-cn"
             "#archlinux-cn-offtopic"
-            "#netbsd"))
+
+            ;; "#netbsd"
+            ))
     #+end_src
 
 *** erc
@@ -2887,19 +2902,26 @@
 ***** english
 
       #+begin_src emacs-lisp :tangle ~/.emacs
-      ;; -- ~~ __ >< <> -> => () [] {} ;: 1lJL qp QP o0O ,. "@" '@' `' 8B
       ;; ~!@#$%^&*+=
       ;; 01234567890
+      ;; -- ~~ __
+      ;; >< <> -> =>
+      ;; () [] {}
+      ;; ;: "@" '@'
+      ;; 1lJL qp QP o0O 8B
+      ;; ,.  `'
 
-      ;; (set-face-attribute 'default nil :family "Input" :height 140)
-      ;; (set-face-attribute 'default nil :family "monaco" :height 150)
-      ;; (set-face-attribute 'default nil :family "Noto Mono" :height 150)
-      ;; (set-face-attribute 'default nil :family "Meslo LG M" :height 150)
+      ;; (set-face-attribute 'default nil :family "Input" :height 170)
+      ;; (set-face-attribute 'default nil :family "monaco" :height 180)
+      ;; (set-face-attribute 'default nil :family "Noto Mono" :height 180)
+
+      ;; (set-face-attribute 'default nil :family "Meslo LG M" :height 180)
       (set-face-attribute 'default nil :family "Hack" :height 180)
-      ;; (set-face-attribute 'default nil :family "monofur" :height 170)
-      ;; (set-face-attribute 'default nil :family "PT Mono" :height 150)
-      ;; (set-face-attribute 'default nil :family "mononoki" :height 160)
-      ;; (set-face-attribute 'default nil :family "Monoid" :height 135)
+      ;; (set-face-attribute 'default nil :family "monofur" :height 200)
+
+      ;; (set-face-attribute 'default nil :family "PT Mono" :height 180)
+      ;; (set-face-attribute 'default nil :family "mononoki" :height 190)
+      ;; (set-face-attribute 'default nil :family "Monoid" :height 160)
       #+end_src
 
 ***** symbol
@@ -3265,4 +3287,33 @@
   (require 'magit)
 
   (global-set-key (kbd "C-x g") 'magit-status)
+  #+end_src
+
+* evil
+
+  #+begin_src emacs-lisp :tangle ~/.emacs
+  (add-to-list 'load-path "~/.emacs.d/evil")
+  (require 'evil)
+  ;; (evil-mode 1)
+  #+end_src
+
+* PG
+
+  #+begin_src emacs-lisp :tangle ~/.emacs
+  ;; Open .v files with Proof General's Coq mode
+  (load "~/.emacs.d/PG/generic/proof-site")
+  #+end_src
+
+* MELPA
+
+  #+begin_src emacs-lisp :tangle ~/.emacs
+  (require 'package)
+  (let* ((no-ssl (and (memq system-type '(windows-nt ms-dos))
+                      (not (gnutls-available-p))))
+         (url (concat (if no-ssl "http" "https") "://melpa.org/packages/")))
+    (add-to-list 'package-archives (cons "melpa" url) t))
+  (when (< emacs-major-version 24)
+    ;; For important compatibility libraries like cl-lib
+    (add-to-list 'package-archives '("gnu" . "https://elpa.gnu.org/packages/")))
+  (package-initialize)
   #+end_src
