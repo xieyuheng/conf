@@ -141,7 +141,8 @@
 *** line wrap
 
     #+begin_src emacs-lisp :tangle ~/.emacs
-    (global-set-key (kbd "C-M-g") 'global-visual-line-mode)
+    ;; (global-set-key (kbd "C-M-g") 'global-visual-line-mode)
+    (global-set-key (kbd "C-M-g") 'toggle-truncate-lines)
     #+end_src
 
 *** comment
@@ -589,11 +590,19 @@
       (global-set-key (kbd "C-M-9")       'paredit-wrap-round)
       (global-set-key (kbd "M-c")         'paredit-splice-sexp)
       (global-set-key (kbd "M-r")         'paredit-raise-sexp)
+
       (global-set-key (kbd "<C-right>")   'paredit-forward-slurp-sexp)
       (global-set-key (kbd "<C-left>")    'paredit-forward-barf-sexp)
+      (global-set-key (kbd "M-l")   'paredit-forward-slurp-sexp)
+      (global-set-key (kbd "M-h")    'paredit-forward-barf-sexp)
+
       (global-set-key (kbd "M-\"")        'paredit-meta-doublequote)
+
       (global-set-key (kbd "<C-M-right>") 'paredit-backward-barf-sexp)
       (global-set-key (kbd "<C-M-left>")  'paredit-backward-slurp-sexp)
+      (global-set-key (kbd "C-M-l") 'paredit-backward-barf-sexp)
+      (global-set-key (kbd "C-M-h")  'paredit-backward-slurp-sexp)
+
       ;; (global-set-key (kbd "C-d")         'paredit-forward-delete)
       ;; (global-set-key (kbd "<backspace>") 'paredit-backward-delete)
       ;; (global-set-key (kbd "C-k")         'paredit-kill)
@@ -1834,7 +1843,7 @@
 *** c
 
     #+begin_src emacs-lisp :tangle ~/.emacs
-    (setq-default c-basic-offset 2)
+    (setq-default c-basic-offset 4)
     (add-hook
      'c-mode-hook
      (lambda ()
@@ -2059,38 +2068,18 @@
         (define-key org-mode-map (kbd "C-M-p") 'org-metaup)
         (define-key org-mode-map (kbd "C-M-n") 'org-metadown)
 
+        (define-key org-mode-map (kbd "M-l") 'org-metaright)
+        (define-key org-mode-map (kbd "M-h") 'org-metaleft)
+
+        (define-key org-mode-map (kbd "M-S-l") 'org-metashiftright)
+        (define-key org-mode-map (kbd "M-S-h") 'org-metashiftleft)
+
         ;; in babel
         (define-key org-mode-map (kbd "M-.") 'org-babel-next-src-block)
         (define-key org-mode-map (kbd "M-,") 'org-babel-previous-src-block)
         (define-key org-mode-map (kbd "C-s C-s") 'org-edit-src-code)
         ;; (turn-off-indent)
         ))
-
-    ;; (add-hook
-    ;;  'org-mode-hook
-    ;;  (lambda ()
-
-    ;;    ;; **-in-org
-    ;;    (local-set-key (kbd "M-*") '**-in-org)
-
-    ;;    ;; cruise
-    ;;    (local-set-key (kbd "M-n") 'outline-next-visible-heading)
-    ;;    (local-set-key (kbd "M-p") 'outline-previous-visible-heading)
-    ;;    (local-set-key (kbd "<M-up>") nil)
-    ;;    (local-set-key (kbd "<M-down>") nil)
-
-    ;;    ;; text migration
-    ;;    ;; ``org-metaup'' and ``org-metadown''
-    ;;    ;; are really dangerous functions
-    ;;    ;; so it should be as hard as possible to mis-type it
-    ;;    (local-set-key (kbd "C-M-p") 'org-metaup)
-    ;;    (local-set-key (kbd "C-M-n") 'org-metadown)
-
-    ;;    ;; in babel
-    ;;    (local-set-key (kbd "M-.") 'org-babel-next-src-block)
-    ;;    (local-set-key (kbd "M-,") 'org-babel-previous-src-block)
-    ;;    (local-set-key (kbd "C-s C-s") 'org-edit-src-code)
-    ;;    ))
 
     (add-hook
      'org-src-mode-hook
@@ -2214,6 +2203,10 @@
               ;; jojo
               ("jof" "#+end_src\n?\n#+begin_src jojo" "<src lang=\"?\">\n\n</src>")
               ("jo" "#+begin_src jojo\n?\n#+end_src" "<src lang=\"?\">\n\n</src>")
+
+              ;; rust
+              ("rustf" "#+end_src\n?\n#+begin_src rust" "<src lang=\"?\">\n\n</src>")
+              ("rust" "#+begin_src rust\n?\n#+end_src" "<src lang=\"?\">\n\n</src>")
 
               ;; racket
               ("srf" "#+end_src\n?\n#+begin_src racket" "<src lang=\"?\">\n\n</src>")
@@ -2794,11 +2787,10 @@
     #+begin_src emacs-lisp :tangle ~/.emacs
     (defvar irc-freenode-channel-list
       (list "#cicada-language"
-            "#jojo"
-
+            ;; "#jojo"
+            "#zeromq"
             ;; "#archlinux-cn"
             "#archlinux-cn-offtopic"
-
             ;; "#netbsd"
             ))
     #+end_src
@@ -2916,11 +2908,11 @@
       ;; (set-face-attribute 'default nil :family "Noto Mono" :height 180)
 
       ;; (set-face-attribute 'default nil :family "Meslo LG M" :height 180)
-      (set-face-attribute 'default nil :family "Hack" :height 180)
+      ;; (set-face-attribute 'default nil :family "Hack" :height 180)
       ;; (set-face-attribute 'default nil :family "monofur" :height 200)
 
       ;; (set-face-attribute 'default nil :family "PT Mono" :height 180)
-      ;; (set-face-attribute 'default nil :family "mononoki" :height 190)
+      (set-face-attribute 'default nil :family "mononoki" :height 190)
       ;; (set-face-attribute 'default nil :family "Monoid" :height 160)
       #+end_src
 
