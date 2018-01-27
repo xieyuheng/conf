@@ -2205,8 +2205,8 @@
               ("jo" "#+begin_src jojo\n?\n#+end_src" "<src lang=\"?\">\n\n</src>")
 
               ;; rust
-              ("rustf" "#+end_src\n?\n#+begin_src rust" "<src lang=\"?\">\n\n</src>")
-              ("rust" "#+begin_src rust\n?\n#+end_src" "<src lang=\"?\">\n\n</src>")
+              ("rsf" "#+end_src\n?\n#+begin_src rust" "<src lang=\"?\">\n\n</src>")
+              ("rs" "#+begin_src rust\n?\n#+end_src" "<src lang=\"?\">\n\n</src>")
 
               ;; racket
               ("srf" "#+end_src\n?\n#+begin_src racket" "<src lang=\"?\">\n\n</src>")
