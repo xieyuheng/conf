@@ -2800,6 +2800,8 @@
     #+begin_src emacs-lisp :tangle ~/.emacs
     (defun irc ()
       (interactive)
+      (erc :server "irc.mozilla.org"
+           :full-name "xieyuheng")
       (erc :server "irc.freenode.net"
            :port 6666
            :full-name "xieyuheng"
