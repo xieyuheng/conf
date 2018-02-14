@@ -198,6 +198,7 @@
 
     #+begin_src emacs-lisp :tangle ~/.emacs
     (global-set-key (kbd "M-i") 'query-replace)
+    (global-set-key (kbd "<C-M-i>") 'replace-string)
     #+end_src
 
 *** help
@@ -351,6 +352,7 @@
     (setq modes-about-lisp
           '(scheme-mode
             jojo-mode
+            cicada-mode
             esse-mode
             inferior-scheme-mode
 
@@ -504,6 +506,7 @@
 
       (add-hook 'scheme-mode-hook           #'enable-paredit-mode)
       (add-hook 'jojo-mode-hook             #'enable-paredit-mode)
+      (add-hook 'cicada-mode-hook           #'enable-paredit-mode)
       (add-hook 'esse-mode-hook             #'enable-paredit-mode)
       (add-hook 'inferior-scheme-mode-hook  #'enable-paredit-mode)
 
@@ -543,6 +546,7 @@
            (local-set-key (kbd "RET") 'comint-send-input))
           ((memq major-mode '(scheme-mode
                               jojo-mode
+                              cicada-mode
                               esse-mode
                               emacs-lisp-mode
                               lisp-mode
@@ -1278,6 +1282,32 @@
       (run-scheme "lein repl"))
     #+end_src
 
+*** cicada
+
+    #+begin_src emacs-lisp :tangle ~/.emacs
+    (add-to-list 'load-path "~/.emacs.d/cicada-mode/")
+    (require 'cicada-mode)
+
+    (add-to-list 'interpreter-mode-alist '("cicada" . cicada-mode))
+
+    (add-hook 'cicada-mode-hook #'enable-paredit-mode)
+
+    (setq auto-mode-alist (cons `("\\.cn" . cicada-mode) auto-mode-alist))
+
+    (add-hook
+     'cicada-mode-hook
+     (lambda ()
+       ;; (turn-off-indent)
+       (paren-face-mode)
+       (local-set-key (kbd "C-x C-e") 'scheme-send-last-sexp-split-window)
+       (local-set-key (kbd "C-c C-e") 'scheme-send-definition-split-window)
+       (local-set-key (kbd "C-<tab>") 'scheme-easy-to-eval)
+       (local-set-key (kbd "{") (lambda ()
+                                  (interactive)
+                                  (insert "{}") (backward-char 1)))
+       (local-set-key (kbd "}") 'out->)))
+    #+end_src
+
 *** jojo
 
     #+begin_src emacs-lisp :tangle ~/.emacs
@@ -1331,8 +1361,8 @@
        'js-mode-hook
        (lambda ()
          (setq comment-style 'extra)
-         (setq js-indent-level 2)
-         (setq js2-basic-offset 2)))
+         (setq js-indent-level 4)
+         (setq js2-basic-offset 4)))
       #+end_src
 
 ***** nodejs-repl
@@ -1408,33 +1438,6 @@
                       'cicada-nymph-send-region-and-split-window)
        (local-set-key (kbd "C-<tab>")
                       'cicada-nymph-send-line-and-split-window-and-goto-next-line)))
-    #+end_src
-
-*** cicada-language
-
-    #+begin_src emacs-lisp :tangle ~/.emacs
-    (add-to-list 'load-path "~/.emacs.d/cicada-language-mode/")
-    (require 'cicada-language-mode)
-
-    (defun switch-to-buffer-*cicada-language* ()
-      (interactive)
-      (if (member-string? "*cicada-language*" (mapcar 'buffer-name (buffer-list)))
-          (let ()
-            (switch-to-buffer "*cicada-language*")
-            (local-set-key (kbd "C-s C-c") 'previous-buffer))
-          (run-cicada-language
-           (read-string "* run cicada-language : "
-                        cicada-language-program-name))))
-    (global-set-key (kbd "C-s C-c") 'switch-to-buffer-*cicada-language*)
-
-    (add-hook 'cicada-language-mode-hook
-     (lambda ()
-       (local-set-key (kbd "C-h") 'hippie-expand)
-       (local-set-key (kbd "M-i") 'query-replace)
-       (local-set-key (kbd "C-c C-e")
-                      'cicada-language-send-region-and-split-window)
-       (local-set-key (kbd "C-<tab>")
-                      'cicada-language-send-line-and-split-window-and-goto-next-line)))
     #+end_src
 
 *** return-stack
@@ -2245,6 +2248,10 @@
               ("clf" "#+end_src\n?\n#+begin_src cicada-language" "<src lang=\"?\">\n\n</src>")
               ("cl" "#+begin_src cicada-language\n?\n#+end_src" "<src lang=\"?\">\n\n</src>")
 
+              ;; cicada
+              ("cnf" "#+end_src\n?\n#+begin_src cicada" "<src lang=\"?\">\n\n</src>")
+              ("cn" "#+begin_src cicada\n?\n#+end_src" "<src lang=\"?\">\n\n</src>")
+
               ;; forth
               ("forthf" "#+end_src\n?\n#+begin_src forth" "<src lang=\"?\">\n\n</src>")
               ("forth" "#+begin_src forth\n?\n#+end_src" "<src lang=\"?\">\n\n</src>")
@@ -2859,8 +2866,9 @@
 ***** 楷
 
       #+begin_src emacs-lisp :tangle ~/.emacs
-      ;; (set-fontset-font t 'han (font-spec :name "MS Song" :size 24))
-      ;; (set-fontset-font t 'han (font-spec :name "H-宮書" :size 24))
+      ;; (set-fontset-font t 'han (font-spec :name "MS Song" :size 28))
+      (set-fontset-font t 'han (font-spec :name "H-宮書" :size 28))
+      (set-fontset-font t 'han (font-spec :name "H-宮書" :size 28))
       #+end_src
 
 ***** 宋
@@ -2880,7 +2888,7 @@
       ;; (set-fontset-font t 'han (font-spec :name "Noto Sans CJK TC Thin" :size 24))
       ;; (set-fontset-font t 'han (font-spec :name "Noto Sans CJK TC Light" :size 24))
 
-      (set-fontset-font t 'han (font-spec :name "Noto Sans CJK TC DemiLight" :size 28))
+      ;; (set-fontset-font t 'han (font-spec :name "Noto Sans CJK TC DemiLight" :size 28))
 
       ;; (set-fontset-font t 'han (font-spec :name "Noto Sans CJK TC Medium" :size 24))
       ;; (set-fontset-font t 'han (font-spec :name "Noto Sans CJK TC Bold" :size 24))
@@ -2905,14 +2913,15 @@
       ;; ;: "@" '@'
       ;; 1lJL qp QP o0O 8B
       ;; ,.  `'
+      ;; <: :>
 
       ;; (set-face-attribute 'default nil :family "Input" :height 170)
       ;; (set-face-attribute 'default nil :family "monaco" :height 180)
-      (set-face-attribute 'default nil :family "Noto Mono" :height 180)
+      ;; (set-face-attribute 'default nil :family "Noto Mono" :height 180)
 
       ;; (set-face-attribute 'default nil :family "Meslo LG M" :height 180)
       ;; (set-face-attribute 'default nil :family "Hack" :height 180)
-      ;; (set-face-attribute 'default nil :family "monofur" :height 200)
+      (set-face-attribute 'default nil :family "monofur" :height 200)
 
       ;; (set-face-attribute 'default nil :family "PT Mono" :height 180)
       ;; (set-face-attribute 'default nil :family "mononoki" :height 190)
