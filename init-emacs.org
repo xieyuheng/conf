@@ -1424,22 +1424,6 @@
     (add-to-list 'auto-mode-alist '("\\.txt\\'" . rst-mode))
     #+end_src
 
-*** cicada-nymph
-
-    #+begin_src emacs-lisp :tangle ~/.emacs
-    (add-to-list 'load-path "~/.emacs.d/cicada-nymph-mode/")
-    (require 'cicada-nymph-mode)
-
-    (add-hook 'cicada-nymph-mode-hook
-     (lambda ()
-       (local-set-key (kbd "C-h") 'hippie-expand)
-       (local-set-key (kbd "M-i") 'query-replace)
-       (local-set-key (kbd "C-c C-e")
-                      'cicada-nymph-send-region-and-split-window)
-       (local-set-key (kbd "C-<tab>")
-                      'cicada-nymph-send-line-and-split-window-and-goto-next-line)))
-    #+end_src
-
 *** return-stack
     #+begin_src emacs-lisp :tangle ~/.emacs
     (add-to-list 'load-path "~/.emacs.d/return-stack-mode/")
@@ -2240,14 +2224,6 @@
       #+begin_src emacs-lisp :tangle ~/.emacs
       (setq org-structure-template-forth-family
             '(
-              ;; cicada-nymph
-              ("cnf" "#+end_src\n?\n#+begin_src cicada-nymph" "<src lang=\"?\">\n\n</src>")
-              ("cn" "#+begin_src cicada-nymph\n?\n#+end_src" "<src lang=\"?\">\n\n</src>")
-
-              ;; cicada-language
-              ("clf" "#+end_src\n?\n#+begin_src cicada-language" "<src lang=\"?\">\n\n</src>")
-              ("cl" "#+begin_src cicada-language\n?\n#+end_src" "<src lang=\"?\">\n\n</src>")
-
               ;; cicada
               ("cnf" "#+end_src\n?\n#+begin_src cicada" "<src lang=\"?\">\n\n</src>")
               ("cn" "#+begin_src cicada\n?\n#+end_src" "<src lang=\"?\">\n\n</src>")
