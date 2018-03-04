@@ -1292,7 +1292,9 @@
 
     (add-hook 'cicada-mode-hook #'enable-paredit-mode)
 
-    (setq auto-mode-alist (cons `("\\.cn" . cicada-mode) auto-mode-alist))
+    (setq auto-mode-alist (cons `("\\.cl" . cicada-mode) auto-mode-alist))
+    (setq auto-mode-alist (cons `("\\.cp" . cicada-mode) auto-mode-alist))
+    (setq auto-mode-alist (cons `("\\.cs" . cicada-mode) auto-mode-alist))
 
     (add-hook
      'cicada-mode-hook
@@ -1778,12 +1780,13 @@
     (add-to-list 'auto-mode-alist '("\\.idr$" . idris-mode))
     (require 'idris-mode)
 
-    (add-hook 'idris-mode-hook
-              (lambda ()
-                (local-set-key (kbd "M-n") 'forward-paragraph)
-                (local-set-key (kbd "M-p") 'backward-paragraph)
-                ;; (local-set-key (kbd "<return>") 'newline)
-                (turn-off-indent)))
+    (add-hook
+     'idris-mode-hook
+     (lambda ()
+       (local-set-key (kbd "M-n") 'forward-paragraph)
+       (local-set-key (kbd "M-p") 'backward-paragraph)
+       (local-set-key (kbd "<return>") (lambda (interactive) (insert "\n")))
+       (turn-off-indent)))
     #+end_src
 
 *** erlang
@@ -2494,16 +2497,25 @@
     (add-hook
      'w3m-mode-hook
      (lambda ()
-       ;; link
-       (local-set-key (kbd "j") 'w3m-view-previous-page)
-       (local-set-key (kbd "l") 'w3m-view-next-page)
-       (local-set-key (kbd "i") 'w3m-previous-anchor)
-       (local-set-key (kbd "k") 'w3m-next-anchor)
-       (local-set-key (kbd "RET") 'w3m-view-this-url)
-       (local-set-key (kbd "M-RET") 'w3m-view-this-url-new-session)
-       ;; in page
+
+
+       (local-set-key (kbd "h") 'backward-char)
+       (local-set-key (kbd "l") 'forward-char)
+       (local-set-key (kbd "j") 'next-line)
+       (local-set-key (kbd "k") 'previous-line)
+
+       (local-set-key (kbd "<left>") 'w3m-view-previous-page)
+       (local-set-key (kbd "<right>") 'w3m-view-next-page)
+
+       (local-set-key (kbd "<down>") 'forward-paragraph)
+       (local-set-key (kbd "<up>") 'backward-paragraph)
+
        (local-set-key (kbd "M-n") 'forward-paragraph)
        (local-set-key (kbd "M-p") 'backward-paragraph)
+
+       (local-set-key (kbd "RET") 'w3m-view-this-url)
+       (local-set-key (kbd "M-RET") 'w3m-view-this-url-new-session)
+
        ;; bookmark
        (local-set-key (kbd "b") 'w3m-bookmark-view-new-session)
        (local-set-key (kbd "C-M-b") 'w3m-bookmark-edit)
@@ -2517,10 +2529,6 @@
 
        ;; give back keys
        (local-set-key (kbd "C-t") 'isearch-forward)
-       (local-set-key (kbd "<left>") 'backward-char)
-       (local-set-key (kbd "<right>") 'forward-char)
-       (local-set-key (kbd "<down>") 'forward-paragraph)
-       (local-set-key (kbd "<up>") 'backward-paragraph)
        (local-set-key (kbd "M-s") 'forward-sexp)))
     #+end_src
 
@@ -2893,11 +2901,11 @@
 
       ;; (set-face-attribute 'default nil :family "Input" :height 170)
       ;; (set-face-attribute 'default nil :family "monaco" :height 180)
-      ;; (set-face-attribute 'default nil :family "Noto Mono" :height 180)
+      (set-face-attribute 'default nil :family "Noto Mono" :height 180)
 
       ;; (set-face-attribute 'default nil :family "Meslo LG M" :height 180)
       ;; (set-face-attribute 'default nil :family "Hack" :height 180)
-      (set-face-attribute 'default nil :family "monofur" :height 200)
+      ;; (set-face-attribute 'default nil :family "monofur" :height 200)
 
       ;; (set-face-attribute 'default nil :family "PT Mono" :height 180)
       ;; (set-face-attribute 'default nil :family "mononoki" :height 190)
