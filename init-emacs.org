@@ -655,8 +655,9 @@
 *** scheme
 
 ***** load-path
-      some scheme related files are under this dir
-      for hack
+
+      - some scheme related files are under this dir
+
       #+begin_src emacs-lisp :tangle ~/.emacs
       (add-to-list 'load-path "~/.emacs.d/scheme/")
       (add-to-list 'load-path "~/.emacs.d/scheme/cmuscheme-init-repl/")
@@ -1292,9 +1293,10 @@
 
     (add-hook 'cicada-mode-hook #'enable-paredit-mode)
 
-    (setq auto-mode-alist (cons `("\\.cl" . cicada-mode) auto-mode-alist))
-    (setq auto-mode-alist (cons `("\\.cp" . cicada-mode) auto-mode-alist))
-    (setq auto-mode-alist (cons `("\\.cs" . cicada-mode) auto-mode-alist))
+    (setq auto-mode-alist (cons `("\\.cs\\'" . cicada-mode) auto-mode-alist))
+    (setq auto-mode-alist (cons `("\\.cl\\'" . cicada-mode) auto-mode-alist))
+    (setq auto-mode-alist (cons `("\\.cp\\'" . cicada-mode) auto-mode-alist))
+    (setq auto-mode-alist (cons `("\\.cc\\'" . cicada-mode) auto-mode-alist))
 
     (add-hook
      'cicada-mode-hook
@@ -2099,7 +2101,8 @@
     (setq org-todo-keywords
           '((sequence "><" "|" "><><" "|" "><><><")
             (sequence "[todo-list]" "|" "[todo-stack]" "|" "[maybe]")
-            (sequence "[note]" "|" "[test]" "|" "[bug]")))
+            (sequence "[note]" "|" "[test]" "|" "[bug]")
+            (sequence "[dialog]")))
     #+end_src
 
 *** tag
@@ -2726,35 +2729,35 @@
 
 *** smex
     #+begin_src emacs-lisp :tangle ~/.emacs
-    ;; (add-to-list 'load-path "~/.emacs.d/smex/")
-    ;; (require 'smex)
+    (add-to-list 'load-path "~/.emacs.d/smex/")
+    (require 'smex)
 
-    ;; (global-set-key (kbd "M-x") 'smex)
-    ;; (global-set-key (kbd "M-z") 'smex-major-mode-commands)
+    (global-set-key (kbd "M-x") 'smex)
+    (global-set-key (kbd "M-z") 'smex-major-mode-commands)
     #+end_src
 
 *** helm
 
     #+begin_src emacs-lisp :tangle ~/.emacs
-    (add-to-list 'load-path "~/.emacs.d/emacs-async/")
-    (require 'async)
+    ;; (add-to-list 'load-path "~/.emacs.d/emacs-async/")
+    ;; (require 'async)
 
-    (add-to-list 'load-path "~/.emacs.d/helm/")
-    (require 'helm-config)
-    (helm-mode 1)
+    ;; (add-to-list 'load-path "~/.emacs.d/helm/")
+    ;; (require 'helm-config)
+    ;; (helm-mode 1)
 
-    (global-set-key (kbd "M-x") 'helm-M-x)
-    (global-set-key (kbd "C-x C-y") 'helm-show-kill-ring)
-    (global-set-key (kbd "C-x C-f") 'helm-find-files)
-    (global-set-key (kbd "C-x C-b") 'helm-mini)
+    ;; (global-set-key (kbd "M-x") 'helm-M-x)
+    ;; (global-set-key (kbd "C-x C-y") 'helm-show-kill-ring)
+    ;; (global-set-key (kbd "C-x C-f") 'helm-find-files)
+    ;; (global-set-key (kbd "C-x C-b") 'helm-mini)
 
-    (setq helm-buffers-fuzzy-matching t
-          helm-recentf-fuzzy-match    t)
+    ;; (setq helm-buffers-fuzzy-matching t
+    ;;       helm-recentf-fuzzy-match    t)
 
-    (add-hook
-     'helm-after-initialize-hook
-     (lambda ()
-       (define-key helm-map (kbd "C-h") 'helm-execute-persistent-action)))
+    ;; (add-hook
+    ;;  'helm-after-initialize-hook
+    ;;  (lambda ()
+    ;;    (define-key helm-map (kbd "C-h") 'helm-execute-persistent-action)))
     #+end_src
 
 * search
@@ -2852,31 +2855,30 @@
       #+begin_src emacs-lisp :tangle ~/.emacs
       ;; (set-fontset-font t 'han (font-spec :name "MS Song" :size 28))
       (set-fontset-font t 'han (font-spec :name "H-宮書" :size 28))
-      (set-fontset-font t 'han (font-spec :name "H-宮書" :size 28))
       #+end_src
 
 ***** 宋
 
       #+begin_src emacs-lisp :tangle ~/.emacs
-      ;; (set-fontset-font t 'han (font-spec :name "H-秀月" :size 24))
-      ;; (set-fontset-font t 'han (font-spec :name "臺灣新細明體" :size 24))
+      ;; (set-fontset-font t 'han (font-spec :name "H-秀月" :size 28))
+      ;; (set-fontset-font t 'han (font-spec :name "臺灣新細明體" :size 28))
       #+end_src
 
 ***** 黑
 
       #+begin_src emacs-lisp :tangle ~/.emacs
-      ;; (set-fontset-font t 'han (font-spec :name "H-雲林呉竹体" :size 24))
-      ;; (set-fontset-font t 'han (font-spec :name "H-明蘭" :size 24))
-      ;; (set-fontset-font t 'han (font-spec :name "H-新雅蘭" :size 24))
+      ;; (set-fontset-font t 'han (font-spec :name "H-雲林呉竹体" :size 28))
+      ;; (set-fontset-font t 'han (font-spec :name "H-明蘭" :size 28))
+      ;; (set-fontset-font t 'han (font-spec :name "H-新雅蘭" :size 28))
 
-      ;; (set-fontset-font t 'han (font-spec :name "Noto Sans CJK TC Thin" :size 24))
-      ;; (set-fontset-font t 'han (font-spec :name "Noto Sans CJK TC Light" :size 24))
+      ;; (set-fontset-font t 'han (font-spec :name "Noto Sans CJK TC Thin" :size 28))
+      ;; (set-fontset-font t 'han (font-spec :name "Noto Sans CJK TC Light" :size 28))
 
       ;; (set-fontset-font t 'han (font-spec :name "Noto Sans CJK TC DemiLight" :size 28))
 
-      ;; (set-fontset-font t 'han (font-spec :name "Noto Sans CJK TC Medium" :size 24))
-      ;; (set-fontset-font t 'han (font-spec :name "Noto Sans CJK TC Bold" :size 24))
-      ;; (set-fontset-font t 'han (font-spec :name "Noto Sans CJK TC Black" :size 24))
+      ;; (set-fontset-font t 'han (font-spec :name "Noto Sans CJK TC Medium" :size 28))
+      ;; (set-fontset-font t 'han (font-spec :name "Noto Sans CJK TC Bold" :size 28))
+      ;; (set-fontset-font t 'han (font-spec :name "Noto Sans CJK TC Black" :size 28))
       #+end_src
 
 ***** test 等宽测试
@@ -2899,12 +2901,12 @@
       ;; ,.  `'
       ;; <: :>
 
-      ;; (set-face-attribute 'default nil :family "Input" :height 170)
+      ;; (set-face-attribute 'default nil :family "Input" :height 165)
       ;; (set-face-attribute 'default nil :family "monaco" :height 180)
-      (set-face-attribute 'default nil :family "Noto Mono" :height 180)
+      ;; (set-face-attribute 'default nil :family "Noto Mono" :height 180)
 
       ;; (set-face-attribute 'default nil :family "Meslo LG M" :height 180)
-      ;; (set-face-attribute 'default nil :family "Hack" :height 180)
+      (set-face-attribute 'default nil :family "Hack" :height 180)
       ;; (set-face-attribute 'default nil :family "monofur" :height 200)
 
       ;; (set-face-attribute 'default nil :family "PT Mono" :height 180)
