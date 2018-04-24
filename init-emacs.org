@@ -1798,6 +1798,66 @@
     (require 'erlmode-start)
     #+end_src
 
+*** elixir
+
+***** smartparens
+
+      #+begin_src emacs-lisp :tangle ~/.emacs
+      (add-to-list 'load-path "~/.emacs.d/smartparens/")
+      (require 'smartparens-config)
+      #+end_src
+
+***** company-mode
+
+      #+begin_src emacs-lisp :tangle ~/.emacs
+      (add-to-list 'load-path "~/.emacs.d/company-mode/")
+      (require 'company)
+
+      (defun init-company ()
+        (setq company-idle-delay 0.3)
+        (require 'color)
+        (let ((bg (face-attribute 'default :background)))
+          (custom-set-faces
+           `(company-tooltip ((t (:inherit default :background ,(color-lighten-name bg 2)))))
+           `(company-scrollbar-bg ((t (:background ,(color-lighten-name bg 10)))))
+           `(company-scrollbar-fg ((t (:background ,(color-lighten-name bg 5)))))
+           `(company-tooltip-selection ((t (:inherit font-lock-function-name-face))))
+           `(company-tooltip-common ((t (:inherit font-lock-constant-face)))))))
+      #+end_src
+
+***** elixir-mode & alchemist
+
+      #+begin_src emacs-lisp :tangle ~/.emacs
+      (add-to-list 'load-path "~/.emacs.d/pkg-info.el/")
+      (add-to-list 'load-path "~/.emacs.d/emacs-elixir/")
+      (add-to-list 'load-path "~/.emacs.d/alchemist.el/")
+
+      (require 'elixir-mode)
+
+      (add-to-list
+       'elixir-mode-hook
+       (lambda ()
+         (alchemist-mode)
+         (company-mode)
+         (init-company)
+         (smartparens-mode)
+         (local-set-key (kbd "<return>") 'newline)))
+
+      (require 'alchemist)
+
+      (setq alchemist-goto-erlang-source-dir
+            "~/sd0/lang/erlang/imp/otp")
+      (setq alchemist-goto-elixir-source-dir
+            "~/sd0/lang/elixir/imp/elixir")
+      #+end_src
+
+*** graphql
+
+    #+begin_src emacs-lisp :tangle ~/.emacs
+    (add-to-list 'load-path "~/.emacs.d/graphql-mode/")
+    (require 'graphql-mode)
+    #+end_src
+
 *** prolog
 
     #+begin_src emacs-lisp :tangle ~/.emacs
@@ -2102,7 +2162,7 @@
           '((sequence "><" "|" "><><" "|" "><><><")
             (sequence "[todo-list]" "|" "[todo-stack]" "|" "[maybe]")
             (sequence "[note]" "|" "[test]" "|" "[bug]")
-            (sequence "[dialog]")))
+            (sequence "[semantics]" "|" "[dialog]")))
     #+end_src
 
 *** tag
@@ -2181,6 +2241,10 @@
               ;; erlang
               ("erlangf" "#+end_src\n?\n#+begin_src erlang" "<src lang=\"?\">\n\n</src>")
               ("erlang" "#+begin_src erlang\n?\n#+end_src" "<src lang=\"?\">\n\n</src>")
+
+              ;; elixir
+              ("exf" "#+end_src\n?\n#+begin_src elixir" "<src lang=\"?\">\n\n</src>")
+              ("ex" "#+begin_src elixir\n?\n#+end_src" "<src lang=\"?\">\n\n</src>")
 
               ))
       #+end_src
@@ -2461,8 +2525,8 @@
 *** origami.el
 
     #+begin_src emacs-lisp :tangle ~/.emacs
-    ;; (add-to-list 'load-path "~/.emacs.d/origami.el/")
-    ;; (require 'origami)
+    (add-to-list 'load-path "~/.emacs.d/origami.el/")
+    (require 'origami)
     #+end_src
 
 *** hideshow
@@ -2782,7 +2846,7 @@
     (defvar irc-freenode-channel-list
       (list "#cicada-language"
             ;; "#jojo"
-            "#zeromq"
+            ;; "#zeromq"
             ;; "#archlinux-cn"
             "#archlinux-cn-offtopic"
             ;; "#netbsd"
@@ -2794,8 +2858,8 @@
     #+begin_src emacs-lisp :tangle ~/.emacs
     (defun irc ()
       (interactive)
-      (erc :server "irc.mozilla.org"
-           :full-name "xieyuheng")
+      ;; (erc :server "irc.mozilla.org"
+      ;;      :full-name "xieyuheng")
       (erc :server "irc.freenode.net"
            :port 6666
            :full-name "xieyuheng"
