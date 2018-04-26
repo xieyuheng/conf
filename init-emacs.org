@@ -1060,6 +1060,9 @@
 
          (2 . define-class)
 
+         (1 . +fun)
+         (1 . +theorem)
+
          ))
       #+end_src
 
@@ -2847,8 +2850,7 @@
       (list "#cicada-language"
             ;; "#jojo"
             ;; "#zeromq"
-            ;; "#archlinux-cn"
-            "#archlinux-cn-offtopic"
+            "#archlinux-cn"
             ;; "#netbsd"
             ))
     #+end_src
