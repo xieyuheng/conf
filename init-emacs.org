@@ -1976,16 +1976,17 @@
 
 
 *** yaml
+
     #+begin_src emacs-lisp :tangle ~/.emacs
     (add-to-list 'load-path "~/.emacs.d/yaml-mode/")
     (require 'yaml-mode)
     (add-to-list 'auto-mode-alist '("\\.yml$" . yaml-mode))
 
-    (add-hook 'yaml-mode-hook
-                          '(lambda ()
-                                 (define-key yaml-mode-map "\C-m" 'newline-and-indent)))
+    (add-hook
+     'yaml-mode-hook
+     (lambda ()
+       (origami-mode)))
     #+end_src
-
 
 *** makefile
     #+begin_src emacs-lisp :tangle ~/.emacs
@@ -2530,6 +2531,12 @@
     #+begin_src emacs-lisp :tangle ~/.emacs
     (add-to-list 'load-path "~/.emacs.d/origami.el/")
     (require 'origami)
+
+    (add-hook
+     'origami-mode-hook
+     (lambda ()
+       (local-set-key (kbd "C-<tab>") 'origami-toggle-node)
+       (local-set-key (kbd "<backtab>") 'origami-toggle-all-nodes)))
     #+end_src
 
 *** hideshow
