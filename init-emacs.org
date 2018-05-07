@@ -313,10 +313,12 @@
 
     (setq kill-ring-max 200)
 
-    ;; (setq enable-recursive-minibuffers t)
+    (setq enable-recursive-minibuffers t)
 
-    (setq scroll-margin 4
-          scroll-conservatively 10000)
+    ;; (setq scroll-margin 4)
+    (setq scroll-margin 7)
+
+    (setq scroll-conservatively 10000)
 
     ;; (setq default-major-mode 'org-mode)
 
@@ -1708,7 +1710,6 @@
     #+begin_src emacs-lisp :tangle ~/.emacs
     (add-to-list 'load-path "~/.emacs.d/haskell-mode/")
     (require 'haskell-mode)
-    (add-to-list 'Info-default-directory-list "~/.emacs.d/haskell-mode/")
     (setq haskell-program-name "ghci")
 
     ;; (add-hook 'haskell-mode-hook 'turn-on-haskell-simple-indent)
@@ -1754,10 +1755,12 @@
             (local-set-key (kbd "C-s C-h") (lambda ()
                                              (interactive)
                                              (switch-to-buffer the-buffer-before-switch-to-buffer-*haskell*)))))
+
     (global-set-key (kbd "C-s C-h") 'switch-to-buffer-*haskell*)
     #+end_src
 
 *** agda
+
     #+begin_src emacs-lisp :tangle ~/.emacs
     (add-to-list 'load-path "~/.emacs.d/agda-mode/")
 
@@ -1769,10 +1772,10 @@
 
     (require 'agda2)
 
-    (add-hook 'agda2-mode-hook
-              (lambda ()
-                ;; (add-to-list 'agda2-include-dirs "/home/xyh/friend/xieyuheng/agda-prelude/src/")
-                ))
+    (add-hook
+     'agda2-mode-hook
+     (lambda ()
+       (turn-off-indent)))
     #+end_src
 
 *** idris
@@ -1790,7 +1793,7 @@
      (lambda ()
        (local-set-key (kbd "M-n") 'forward-paragraph)
        (local-set-key (kbd "M-p") 'backward-paragraph)
-       (local-set-key (kbd "<return>") (lambda (interactive) (insert "\n")))
+       (local-set-key (kbd "<return>") 'newline)
        (turn-off-indent)))
     #+end_src
 
@@ -2999,18 +3002,18 @@
 ***** molokai-theme
 
       #+begin_src emacs-lisp :tangle ~/.emacs
-      (add-to-list 'custom-theme-load-path "~/.emacs.d/theme/molokai-theme/")
-      (load-theme 'molokai t)
+      ;; (add-to-list 'custom-theme-load-path "~/.emacs.d/theme/molokai-theme/")
+      ;; (load-theme 'molokai t)
 
-      (add-to-list 'load-path "~/.emacs.d/theme/molokai-theme/")
-      (require 'molokai-theme-kit)
+      ;; (add-to-list 'load-path "~/.emacs.d/theme/molokai-theme/")
+      ;; (require 'molokai-theme-kit)
       #+end_src
 
 ***** zenburn
 
       #+begin_src emacs-lisp :tangle ~/.emacs
-      ;; (add-to-list 'custom-theme-load-path "~/.emacs.d/theme/zenburn-emacs/")
-      ;; (load-theme 'zenburn t)
+      (add-to-list 'custom-theme-load-path "~/.emacs.d/theme/zenburn-emacs/")
+      (load-theme 'zenburn t)
       #+end_src
 
 ***** anti-zenburn
@@ -3036,18 +3039,18 @@
       ;; (load-theme 'github-modern t)
       #+end_src
 
+***** subatomic
+
+      #+begin_src emacs-lisp :tangle ~/.emacs
+      ;; (add-to-list 'custom-theme-load-path "~/.emacs.d/theme/subatomic/")
+      ;; (load-theme 'subatomic t)
+      #+end_src
+
 ***** solarized
 
       #+begin_src emacs-lisp :tangle ~/.emacs
       ;; (add-to-list 'custom-theme-load-path "~/.emacs.d/theme/solarized/")
       ;; (load-theme 'solarized t)
-      #+end_src
-
-***** github-modern
-
-      #+begin_src emacs-lisp :tangle ~/.emacs
-      ;; (add-to-list 'custom-theme-load-path "~/.emacs.d/theme/subatomic/")
-      ;; (load-theme 'subatomic t)
       #+end_src
 
 *** translucent                       :no:
