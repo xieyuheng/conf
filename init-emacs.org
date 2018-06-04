@@ -1065,6 +1065,10 @@
          (1 . +fun)
          (1 . +theorem)
 
+         (1 . +data)
+         (1 . +union)
+         (1 . +fun)
+
          ))
       #+end_src
 
@@ -1793,8 +1797,9 @@
      (lambda ()
        (local-set-key (kbd "M-n") 'forward-paragraph)
        (local-set-key (kbd "M-p") 'backward-paragraph)
-       (local-set-key (kbd "<return>") 'newline)
-       (turn-off-indent)))
+       (local-set-key (kbd "<return>") 'electric-newline-and-maybe-indent)
+       (turn-off-indent)
+       ))
     #+end_src
 
 *** erlang
@@ -1856,6 +1861,19 @@
       (setq alchemist-goto-elixir-source-dir
             "~/sd0/lang/elixir/imp/elixir")
       #+end_src
+
+*** pony
+
+    #+begin_src emacs-lisp :tangle ~/.emacs
+    (add-to-list 'load-path "~/.emacs.d/ponylang-mode/")
+    (require 'ponylang-mode)
+
+    (add-hook
+     'ponylang-mode-hook
+     (lambda ()
+       (set-variable 'indent-tabs-mode nil)
+       (set-variable 'tab-width 2)))
+    #+end_src
 
 *** graphql
 
@@ -2009,6 +2027,14 @@
     (require 'cmake-mode)
     #+end_src
 
+*** protobuf
+
+    #+begin_src emacs-lisp :tangle ~/.emacs
+    (add-to-list 'load-path "~/.emacs.d/protobuf/")
+    (require 'protobuf-mode)
+
+    (add-to-list 'auto-mode-alist '("\\.proto$" . protobuf-mode))
+    #+end_src
 
 *** BNF
     #+begin_src emacs-lisp :tangle ~/.emacs
@@ -2169,6 +2195,7 @@
           '((sequence "><" "|" "><><" "|" "><><><")
             (sequence "[todo-list]" "|" "[todo-stack]" "|" "[maybe]")
             (sequence "[note]" "|" "[test]" "|" "[bug]")
+            (sequence "[discuss]" "|" "[talk]")
             (sequence "[semantics]" "|" "[dialog]")))
     #+end_src
 
@@ -2859,10 +2886,19 @@
     (defvar irc-freenode-channel-list
       (list "#cicada-language"
             ;; "#jojo"
-            ;; "#zeromq"
+            "#zeromq"
+            "#idris"
             "#archlinux-cn"
+            "#archlinux-cn-offtopic"
             ;; "#netbsd"
             ))
+    #+end_src
+
+*** irc-anarchyplanet-channel-list
+
+    #+begin_src emacs-lisp :tangle ~/.emacs
+    (defvar irc-anarchyplanet-channel-list
+      (list "#anarchyplanet"))
     #+end_src
 
 *** erc
@@ -2887,7 +2923,10 @@
     (setq rcirc-server-alist
           `(("irc.freenode.net"
              :port 6697 :encryption tls
-             :channels ,irc-freenode-channel-list)))
+             :channels ,irc-freenode-channel-list)
+            ("irc.anarchyplanet.org"
+             :port 6697 :encryption tls
+             :channels ,irc-anarchyplanet-channel-list)))
     #+end_src
 
 * warden
@@ -2913,9 +2952,9 @@
 *** hl -- highlighting current line
 
     #+begin_src emacs-lisp :tangle ~/.emacs
-    (add-to-list 'load-path "~/.emacs.d/hl-line/")
-    (require 'hl-line)
-    (global-hl-line-mode 1)
+    ;; (add-to-list 'load-path "~/.emacs.d/hl-line/")
+    ;; (require 'hl-line)
+    ;; (global-hl-line-mode 1)
     #+end_src
 
 *** font
@@ -2930,7 +2969,8 @@
 
       #+begin_src emacs-lisp :tangle ~/.emacs
       ;; (set-fontset-font t 'han (font-spec :name "MS Song" :size 28))
-      (set-fontset-font t 'han (font-spec :name "H-宮書" :size 28))
+      ;; (set-fontset-font t 'han (font-spec :name "H-宮書" :size 28))
+      (set-fontset-font t 'han (font-spec :name "H-宮書" :size 26))
       #+end_src
 
 ***** 宋
@@ -2982,7 +3022,10 @@
       ;; (set-face-attribute 'default nil :family "Noto Mono" :height 180)
 
       ;; (set-face-attribute 'default nil :family "Meslo LG M" :height 180)
-      (set-face-attribute 'default nil :family "Hack" :height 180)
+
+      ;; (set-face-attribute 'default nil :family "Hack" :height 180)
+      (set-face-attribute 'default nil :family "Hack" :height 160)
+
       ;; (set-face-attribute 'default nil :family "monofur" :height 200)
 
       ;; (set-face-attribute 'default nil :family "PT Mono" :height 180)
@@ -3365,10 +3408,33 @@
 
 * PG
 
-  #+begin_src emacs-lisp :tangle ~/.emacs
-  ;; Open .v files with Proof General's Coq mode
-  (load "~/.emacs.d/PG/generic/proof-site")
-  #+end_src
+*** load
+
+    #+begin_src emacs-lisp :tangle ~/.emacs
+    ;; Open .v files with Proof General's Coq mode
+    (load "~/.emacs.d/PG/generic/proof-site")
+    #+end_src
+
+*** coq
+
+    - M-n
+      (C-c C-n)
+      proof-assert-next-command-interactive
+
+    - M-p
+      (C-c C-u)
+      proof-undo-last-successful-command
+
+    - C-c <C-return>
+      proof-goto-point
+
+    #+begin_src emacs-lisp :tangle ~/.emacs
+    (add-hook
+     'coq-mode-hook
+     (lambda ()
+       (local-set-key (kbd "M-n") 'forward-paragraph)
+       (local-set-key (kbd "M-p") 'backward-paragraph)))
+    #+end_src
 
 * MELPA
 
