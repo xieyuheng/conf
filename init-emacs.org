@@ -394,9 +394,9 @@
 
 * input-method
 
-*** for lambda :no:
+*** for lambda
 
-    #+begin_src emacs-lisp :tangle no
+    #+begin_src emacs-lisp :tangle ~/.emacs
     (quail-define-package
      "greek-simple" "greek" "greek-simple-title" t
      "simple greek"
@@ -408,6 +408,7 @@
     (set-input-method "greek-simple")
 
     (global-set-key (kbd "C-\\") 'toggle-input-method-with-message)
+
     (defun toggle-input-method-with-message ()
       (interactive)
       (toggle-input-method)
@@ -1292,6 +1293,13 @@
       (run-scheme "lein repl"))
     #+end_src
 
+*** julia
+
+    #+begin_src emacs-lisp :tangle ~/.emacs
+    (add-to-list 'load-path "~/.emacs.d/julia-emacs/")
+    (require 'julia-mode)
+    #+end_src
+
 *** cicada
 
     #+begin_src emacs-lisp :tangle ~/.emacs
@@ -1318,7 +1326,8 @@
        (local-set-key (kbd "{") (lambda ()
                                   (interactive)
                                   (insert "{}") (backward-char 1)))
-       (local-set-key (kbd "}") 'out->)))
+       (local-set-key (kbd "}") 'out->)
+       (turn-off-indent)))
     #+end_src
 
 *** jojo
@@ -1798,6 +1807,23 @@
        (local-set-key (kbd "M-n") 'forward-paragraph)
        (local-set-key (kbd "M-p") 'backward-paragraph)
        (local-set-key (kbd "<return>") 'electric-newline-and-maybe-indent)
+       (turn-off-indent)
+       ))
+    #+end_src
+
+*** purescript
+
+    #+begin_src emacs-lisp :tangle ~/.emacs
+    (add-to-list 'load-path "~/.emacs.d/purescript-mode/")
+    (require 'purescript-mode-autoloads)
+    (add-to-list 'Info-default-directory-list "~/.emacs.d/purescript-mode/")
+
+    (add-hook
+     'purescript-mode-hook
+     (lambda ()
+       ;; (local-set-key (kbd "M-n") 'forward-paragraph)
+       ;; (local-set-key (kbd "M-p") 'backward-paragraph)
+       ;; (local-set-key (kbd "<return>") 'newline)
        (turn-off-indent)
        ))
     #+end_src
@@ -2396,6 +2422,10 @@
               ("cf" "#+end_src\n?\n#+begin_src c" "<src lang=\"?\">\n\n</src>")
               ("c" "#+begin_src c\n?\n#+end_src" "<src lang=\"?\">\n\n</src>")
 
+              ;; cpp
+              ("cppf" "#+end_src\n?\n#+begin_src cpp" "<src lang=\"?\">\n\n</src>")
+              ("cpp" "#+begin_src cpp\n?\n#+end_src" "<src lang=\"?\">\n\n</src>")
+
               ;; java
               ("javaf" "#+end_src\n?\n#+begin_src java" "<src lang=\"?\">\n\n</src>")
               ("java" "#+begin_src java\n?\n#+end_src" "<src lang=\"?\">\n\n</src>")
@@ -2788,31 +2818,6 @@
     (setq uniquify-buffer-name-style 'forward)
     #+end_src
 
-*** send mail
-    * Gmail SMTP server address: smtp.gmail.com
-      Gmail SMTP user name: Your full Gmail address (e.g. example@gmail.com)
-      Gmail SMTP password: Your Gmail password
-      Gmail SMTP port: 465
-      Gmail SMTP TLS/SSL required: yes
-    * Gmail IMAP server address: imap.gmail.com
-      Gmail IMAP user name: Your full Gmail address (e.g. "me@gmail.com")
-      Gmail IMAP password: Your Gmail password
-      Gmail IMAP port: 993
-      Gmail IMAP TLS/SSL required: yes
-    #+begin_src emacs-lisp :tangle ~/.emacs
-    ;; (setq send-mail-function 'mailclient-send-it)
-    (setq send-mail-function 'smtpmail-send-it)
-    (setq smtpmail-smtp-server "smtp.gmail.com")
-    (setq smtpmail-smtp-service 25)
-    #+end_src
-
-*** message
-    #+begin_src emacs-lisp :tangle ~/.emacs
-    (setq user-full-name "xieyuheng"
-          user-mail-address "xyheme@gmail.com"
-          message-auto-save-directory "~/mail/draft")
-    #+end_src
-
 *** region-state
     #+begin_src emacs-lisp :tangle ~/.emacs
     (add-to-list 'load-path "~/.emacs.d/region-state/")
@@ -2887,8 +2892,8 @@
       (list "#cicada-language"
             ;; "#jojo"
             "#zeromq"
-            "#idris"
-            "#archlinux-cn"
+            ;; "#idris"
+            ;; "#archlinux-cn"
             "#archlinux-cn-offtopic"
             ;; "#netbsd"
             ))
@@ -2922,11 +2927,13 @@
     #+begin_src emacs-lisp :tangle ~/.emacs
     (setq rcirc-server-alist
           `(("irc.freenode.net"
-             :port 6697 :encryption tls
+             ;; :port 6697 :encryption tls
+             :port 6666
              :channels ,irc-freenode-channel-list)
-            ("irc.anarchyplanet.org"
-             :port 6697 :encryption tls
-             :channels ,irc-anarchyplanet-channel-list)))
+            ;; ("irc.anarchyplanet.org"
+            ;;  :port 6697 :encryption tls
+            ;;  :channels ,irc-anarchyplanet-channel-list)
+            ))
     #+end_src
 
 * warden
@@ -3002,6 +3009,7 @@
       中英等宽测试|
       sdasddassaas|
       iiiiiiiiiiii|
+      λλλλλλλλλλλλ|
 
 ***** english
 
@@ -3094,6 +3102,13 @@
       #+begin_src emacs-lisp :tangle ~/.emacs
       ;; (add-to-list 'custom-theme-load-path "~/.emacs.d/theme/solarized/")
       ;; (load-theme 'solarized t)
+      #+end_src
+
+***** arjen-grey
+
+      #+begin_src emacs-lisp :tangle ~/.emacs
+      ;; (add-to-list 'custom-theme-load-path "~/.emacs.d/theme/arjen-grey-theme/")
+      ;; (load-theme 'arjen-grey t)
       #+end_src
 
 *** translucent                       :no:
