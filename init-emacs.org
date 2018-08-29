@@ -281,13 +281,13 @@
 *** mouse
 
     #+begin_src emacs-lisp :tangle ~/.emacs
-    (dolist (k '([mouse-1] [down-mouse-1] [M-down-mouse-1] [C-down-mouse-1] [drag-mouse-1] [double-mouse-1] [triple-mouse-1]
-                 [mouse-2] [down-mouse-2] [M-down-mouse-2] [C-down-mouse-2] [drag-mouse-2] [double-mouse-2] [triple-mouse-2]
-                 [mouse-3] [down-mouse-3] [M-down-mouse-3] [C-down-mouse-3] [drag-mouse-3] [double-mouse-3] [triple-mouse-3]
-                 [mouse-4] [down-mouse-4] [M-down-mouse-4] [C-down-mouse-4] [drag-mouse-4] [double-mouse-4] [triple-mouse-4]
-                 [mouse-5] [down-mouse-5] [M-down-mouse-5] [C-down-mouse-5] [drag-mouse-5] [double-mouse-5] [triple-mouse-5]
-                 [mouse-6] [down-mouse-6] [M-down-mouse-6] [C-down-mouse-6] [drag-mouse-6] [double-mouse-6] [triple-mouse-6]
-                 [mouse-7] [down-mouse-7] [M-down-mouse-7] [C-down-mouse-7] [drag-mouse-7] [double-mouse-7] [triple-mouse-7]))
+    (dolist (k '([mouse-1] [down-mouse-1] [M-down-mouse-1] [C-down-mouse-1] [drag-mouse-1] [double-mouse-1] [triple-mouse-1] [M-drag-mouse-1]
+                 [mouse-2] [down-mouse-2] [M-down-mouse-2] [C-down-mouse-2] [drag-mouse-2] [double-mouse-2] [triple-mouse-2] [M-drag-mouse-2]
+                 [mouse-3] [down-mouse-3] [M-down-mouse-3] [C-down-mouse-3] [drag-mouse-3] [double-mouse-3] [triple-mouse-3] [M-drag-mouse-3]
+                 [mouse-4] [down-mouse-4] [M-down-mouse-4] [C-down-mouse-4] [drag-mouse-4] [double-mouse-4] [triple-mouse-4] [M-drag-mouse-4]
+                 [mouse-5] [down-mouse-5] [M-down-mouse-5] [C-down-mouse-5] [drag-mouse-5] [double-mouse-5] [triple-mouse-5] [M-drag-mouse-5]
+                 [mouse-6] [down-mouse-6] [M-down-mouse-6] [C-down-mouse-6] [drag-mouse-6] [double-mouse-6] [triple-mouse-6] [M-drag-mouse-6]
+                 [mouse-7] [down-mouse-7] [M-down-mouse-7] [C-down-mouse-7] [drag-mouse-7] [double-mouse-7] [triple-mouse-7] [M-drag-mouse-7]))
       (global-set-key k (lambda () (interactive))))
     #+end_src
 
@@ -436,10 +436,10 @@
 * paren-face
 
   #+begin_src emacs-lisp :tangle ~/.emacs
-  (add-to-list 'load-path "~/.emacs.d/paren-face/")
-  (require 'paren-face)
+  ;; (add-to-list 'load-path "~/.emacs.d/paren-face/")
+  ;; (require 'paren-face)
 
-  (global-paren-face-mode)
+  ;; (global-paren-face-mode -1)
   #+end_src
 
 * language
@@ -1282,7 +1282,7 @@
     (add-hook
      'clojure-mode-hook
      (lambda ()
-       (paren-face-mode)
+       ;; (paren-face-mode)
        (local-set-key (kbd "C-x C-e") 'scheme-send-last-sexp-split-window)
        (local-set-key (kbd "C-c C-e") 'scheme-send-definition-split-window)
        (local-set-key (kbd "C-<tab>") 'scheme-easy-to-eval)))
@@ -1313,13 +1313,12 @@
     (setq auto-mode-alist (cons `("\\.cs\\'" . cicada-mode) auto-mode-alist))
     (setq auto-mode-alist (cons `("\\.cl\\'" . cicada-mode) auto-mode-alist))
     (setq auto-mode-alist (cons `("\\.cp\\'" . cicada-mode) auto-mode-alist))
-    (setq auto-mode-alist (cons `("\\.cc\\'" . cicada-mode) auto-mode-alist))
 
     (add-hook
      'cicada-mode-hook
      (lambda ()
        ;; (turn-off-indent)
-       (paren-face-mode)
+       ;; (paren-face-mode)
        (local-set-key (kbd "C-x C-e") 'scheme-send-last-sexp-split-window)
        (local-set-key (kbd "C-c C-e") 'scheme-send-definition-split-window)
        (local-set-key (kbd "C-<tab>") 'scheme-easy-to-eval)
@@ -1345,8 +1344,8 @@
     (add-hook
      'jojo-mode-hook
      (lambda ()
+       ;; (paren-face-mode)
        ;; (turn-off-indent)
-       (paren-face-mode)
        (local-set-key (kbd "C-x C-e") 'scheme-send-last-sexp-split-window)
        (local-set-key (kbd "C-c C-e") 'scheme-send-definition-split-window)
        (local-set-key (kbd "C-<tab>") 'scheme-easy-to-eval)
@@ -1945,13 +1944,29 @@
 *** c
 
     #+begin_src emacs-lisp :tangle ~/.emacs
-    (setq-default c-basic-offset 4)
+    ;; (setq c-default-style "k&r")
+    ;; (setq c-default-style "user")
+    (setq c-default-style "bsd")
+    ;; (setq c-default-style "stroustrup")
+    ;; (setq c-default-style "whitesmith")
+    ;; (setq c-default-style "ellemtel")
+    ;; (setq c-default-style "linux")
+
+    (setq c-basic-offset 4)
     (add-hook
      'c-mode-hook
      (lambda ()
        ;; (setq comment-style 'extra)
        (setq comment-start "//")
        (setq comment-end "")))
+    #+end_src
+
+*** c++
+
+    #+begin_src emacs-lisp :tangle ~/.emacs
+    (add-to-list 'load-path "~/.emacs.d/modern-cpp-font-lock/")
+    (require 'modern-cpp-font-lock)
+    (modern-c++-font-lock-global-mode t)
     #+end_src
 
 *** java
@@ -2218,9 +2233,8 @@
 
     #+begin_src emacs-lisp :tangle ~/.emacs
     (setq org-todo-keywords
-          '((sequence "><" "|" "><><" "|" "><><><")
-            (sequence "[todo-list]" "|" "[todo-stack]" "|" "[maybe]")
-            (sequence "[note]" "|" "[test]" "|" "[bug]")
+          '((sequence "[todo]" "|" "[todo-stack]" "|" "[maybe]")
+            (sequence "[bug]" "|" "[test]" "|" "[note]")
             (sequence "[discuss]" "|" "[talk]")
             (sequence "[semantics]" "|" "[dialog]")))
     #+end_src
@@ -2890,13 +2904,8 @@
     #+begin_src emacs-lisp :tangle ~/.emacs
     (defvar irc-freenode-channel-list
       (list "#cicada-language"
-            ;; "#jojo"
-            "#zeromq"
-            ;; "#idris"
-            ;; "#archlinux-cn"
-            "#archlinux-cn-offtopic"
-            ;; "#netbsd"
-            ))
+            "#archlinux-cn"
+            "#archlinux-cn-offtopic"))
     #+end_src
 
 *** irc-anarchyplanet-channel-list
@@ -2977,14 +2986,13 @@
       #+begin_src emacs-lisp :tangle ~/.emacs
       ;; (set-fontset-font t 'han (font-spec :name "MS Song" :size 28))
       ;; (set-fontset-font t 'han (font-spec :name "H-宮書" :size 28))
-      (set-fontset-font t 'han (font-spec :name "H-宮書" :size 26))
       #+end_src
 
 ***** 宋
 
       #+begin_src emacs-lisp :tangle ~/.emacs
       ;; (set-fontset-font t 'han (font-spec :name "H-秀月" :size 28))
-      ;; (set-fontset-font t 'han (font-spec :name "臺灣新細明體" :size 28))
+      (set-fontset-font t 'han (font-spec :name "臺灣新細明體" :size 28))
       #+end_src
 
 ***** 黑
@@ -3027,14 +3035,14 @@
 
       ;; (set-face-attribute 'default nil :family "Input" :height 165)
       ;; (set-face-attribute 'default nil :family "monaco" :height 180)
-      ;; (set-face-attribute 'default nil :family "Noto Mono" :height 180)
+      ;; (set-face-attribute 'default nil :family "Noto Mono" :height 160)
 
       ;; (set-face-attribute 'default nil :family "Meslo LG M" :height 180)
 
       ;; (set-face-attribute 'default nil :family "Hack" :height 180)
-      (set-face-attribute 'default nil :family "Hack" :height 160)
+      ;; (set-face-attribute 'default nil :family "Hack" :height 160)
 
-      ;; (set-face-attribute 'default nil :family "monofur" :height 200)
+      (set-face-attribute 'default nil :family "monofur" :height 200)
 
       ;; (set-face-attribute 'default nil :family "PT Mono" :height 180)
       ;; (set-face-attribute 'default nil :family "mononoki" :height 190)
@@ -3398,7 +3406,7 @@
 *** init call to (open-eshell-for-frame)
 
     #+begin_src emacs-lisp :tangle ~/.emacs
-    (open-eshell-for-frame :off)
+    ;; (open-eshell-for-frame :off)
     #+end_src
 
 * magit
@@ -3419,6 +3427,40 @@
   (add-to-list 'load-path "~/.emacs.d/evil")
   (require 'evil)
   ;; (evil-mode 1)
+  #+end_src
+
+* scratch
+
+  #+begin_src emacs-lisp :tangle ~/.emacs
+  (setq initial-buffer-choice "~/.emacs.d/scratch/scratch.org")
+  #+end_src
+
+* ag
+
+  #+begin_src emacs-lisp :tangle ~/.emacs
+  (add-to-list 'load-path "~/.emacs.d/ag.el/")
+  (require 'ag)
+  #+end_src
+
+* projectile
+
+  #+begin_src emacs-lisp :tangle ~/.emacs
+  (add-to-list 'load-path "~/.emacs.d/projectile/")
+  (require 'projectile)
+
+  (projectile-mode t)
+  #+end_src
+
+* ggtags
+
+  #+begin_src emacs-lisp :tangle ~/.emacs
+  ;; (add-to-list 'load-path "~/.emacs.d/ggtags/")
+  ;; (require 'ggtags)
+
+  ;; (add-hook 'c-mode-common-hook
+  ;;           (lambda ()
+  ;;             (when (derived-mode-p 'c-mode 'c++-mode 'java-mode)
+  ;;               (ggtags-mode 1))))
   #+end_src
 
 * PG
