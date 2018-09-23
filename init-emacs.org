@@ -1310,23 +1310,7 @@
 
     (add-hook 'cicada-mode-hook #'enable-paredit-mode)
 
-    (setq auto-mode-alist (cons `("\\.cs\\'" . cicada-mode) auto-mode-alist))
-    (setq auto-mode-alist (cons `("\\.cl\\'" . cicada-mode) auto-mode-alist))
-    (setq auto-mode-alist (cons `("\\.cp\\'" . cicada-mode) auto-mode-alist))
-
-    (add-hook
-     'cicada-mode-hook
-     (lambda ()
-       ;; (turn-off-indent)
-       ;; (paren-face-mode)
-       (local-set-key (kbd "C-x C-e") 'scheme-send-last-sexp-split-window)
-       (local-set-key (kbd "C-c C-e") 'scheme-send-definition-split-window)
-       (local-set-key (kbd "C-<tab>") 'scheme-easy-to-eval)
-       (local-set-key (kbd "{") (lambda ()
-                                  (interactive)
-                                  (insert "{}") (backward-char 1)))
-       (local-set-key (kbd "}") 'out->)
-       (turn-off-indent)))
+    (setq auto-mode-alist (cons `("\\.cn\\'" . cicada-mode) auto-mode-alist))
     #+end_src
 
 *** jojo
@@ -1423,21 +1407,36 @@
       #+end_src
 
 *** markdown
-    #+begin_src emacs-lisp :tangle ~/.emacs
-    (add-to-list 'load-path "~/.emacs.d/markdown-mode/")
-    (autoload 'markdown-mode "markdown-mode"
-           "Major mode for editing Markdown files" t)
-    (add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
-    (add-to-list 'auto-mode-alist '("\\.markdown\\'" . markdown-mode))
 
-    (add-hook
-     'markdown-mode-hook
-     (lambda ()
-       (local-set-key (kbd "M-p") 'backward-paragraph)
-       (local-set-key (kbd "M-n") 'forward-paragraph)
-       ;; (turn-off-indent)
-       ))
-    #+end_src
+***** edit-indirect
+
+      #+begin_src emacs-lisp :tangle ~/.emacs
+      (add-to-list 'load-path "~/.emacs.d/edit-indirect/")
+      (require 'edit-indirect)
+
+      (define-key edit-indirect-mode-map
+        (kbd "C-s C-s") 'edit-indirect-commit)
+      #+end_src
+
+***** markdown
+
+      #+begin_src emacs-lisp :tangle ~/.emacs
+      (add-to-list 'load-path "~/.emacs.d/markdown-mode/")
+
+      (autoload 'markdown-mode "markdown-mode"
+        "Major mode for editing Markdown files" t)
+      (add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
+      (add-to-list 'auto-mode-alist '("\\.markdown\\'" . markdown-mode))
+
+      (setq markdown-fontify-code-blocks-natively t)
+
+      (add-hook
+       'markdown-mode-hook
+       (lambda ()
+         (local-set-key (kbd "C-s C-s") 'markdown-edit-code-block)
+         (local-set-key (kbd "M-p") 'backward-paragraph)
+         (local-set-key (kbd "M-n") 'forward-paragraph)))
+      #+end_src
 
 *** rst
 
@@ -2927,22 +2926,14 @@
            :full-name "xieyuheng"
            :nick "xieyuheng"))
 
+
     (setq erc-autojoin-channels-alist
-          (list (cons "freenode.net" irc-freenode-channel-list)))
-    #+end_src
-
-*** rcirc
-
-    #+begin_src emacs-lisp :tangle ~/.emacs
-    (setq rcirc-server-alist
-          `(("irc.freenode.net"
-             ;; :port 6697 :encryption tls
-             :port 6666
-             :channels ,irc-freenode-channel-list)
-            ;; ("irc.anarchyplanet.org"
-            ;;  :port 6697 :encryption tls
-            ;;  :channels ,irc-anarchyplanet-channel-list)
-            ))
+          '(("freenode.net"
+             "#cicada-language"
+             "#archlinux-cn"
+             "#archlinux-cn-offtopic")
+            ("irc.mozilla.org"
+             "#rust-embedded")))
     #+end_src
 
 * warden
@@ -2992,7 +2983,7 @@
 
       #+begin_src emacs-lisp :tangle ~/.emacs
       ;; (set-fontset-font t 'han (font-spec :name "H-秀月" :size 28))
-      (set-fontset-font t 'han (font-spec :name "臺灣新細明體" :size 28))
+      (set-fontset-font t 'han (font-spec :name "臺灣新細明體" :size 26))
       #+end_src
 
 ***** 黑
@@ -3032,20 +3023,16 @@
       ;; 1lJL qp QP o0O 8B
       ;; ,.  `'
       ;; <: :>
+      ;; <- ->
 
-      ;; (set-face-attribute 'default nil :family "Input" :height 165)
-      ;; (set-face-attribute 'default nil :family "monaco" :height 180)
+      ;; (set-face-attribute 'default nil :family "Input" :height 160)
+      (set-face-attribute 'default nil :family "Hack" :height 160)
+      ;; (set-face-attribute 'default nil :family "monofur" :height 190)
+      ;; (set-face-attribute 'default nil :family "monaco" :height 160)
+      ;; (set-face-attribute 'default nil :family "mononoki" :height 180)
       ;; (set-face-attribute 'default nil :family "Noto Mono" :height 160)
-
       ;; (set-face-attribute 'default nil :family "Meslo LG M" :height 180)
-
-      ;; (set-face-attribute 'default nil :family "Hack" :height 180)
-      ;; (set-face-attribute 'default nil :family "Hack" :height 160)
-
-      (set-face-attribute 'default nil :family "monofur" :height 200)
-
       ;; (set-face-attribute 'default nil :family "PT Mono" :height 180)
-      ;; (set-face-attribute 'default nil :family "mononoki" :height 190)
       ;; (set-face-attribute 'default nil :family "Monoid" :height 160)
       #+end_src
 
