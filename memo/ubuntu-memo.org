@@ -1,0 +1,1188 @@
+#+TITLE: memorandum for linux
+#+AUTHOR: XYH(谢宇恒)
+#+EMAIL: xyheme@gmail.com
+
+
+* ================================
+* 学习X
+Xephyr :2 &
++ 或者在tty*中:
+  sudo X :2
+  然后回来玩
+DISPLAY=:2 xeyes &
+DISPLAY=:2 xcalc &
+DISPLAY=:2 xmonad &
++ >< xkbcomp $DISPLAY=:2
+  not work for me
+
+* ================================
+* 不重启而更新网络配置
+文件地址:
+file:/etc/network/interfaces
+重启网络init的命令:
+restart networking
++ 从图书馆换会宿舍时使用
+  >< 但是从宿舍到图书馆还是不行
++ restart是到initctl加上一个参数的硬连接
+  而initctl根init有关
++ >< 所以有必要好好学习init
+  与initctl的使用
+
+--------------file-begin:interfaces-------------
+#开机自动启动eth0
+auto eth0
+
+#网卡通过DHCP自动获取IP或者静态分配IP或者接口为回环接口
+iface eth0 inet [dhcp|static|loopback]
+
+address ip_address
+netmask net_mask
+gateway gate_way
+--------------file-end:interfaces-------------
+
+然后执行restart networking即可
++ >< 不知道什么时候该用:
+  [ifdown|ifup] eth0
++ 注意:如果是远程登录的话
+  一定要使用ifdown eth0 && ifup eth0或者ifdown eth0;ifup eth0
+
+*** 网络配置：
+1) 命令：route, netstat -r
+2) dhcp配置：
+   echo "auto eth0" >> /etc/network/interfaces
+   echo "iface eth0 inet dhcp" >> /etc/network/interfaces
+   /etc/init.d/networking restart
+3) 静态ip地址配置
+   echo "auto eth0" >> /etc/network/interfaces
+   echo "iface eth0 inet static" >> /etc/network/interfaces
+   echo " address 192.168.0.2" >> /etc/network/interfaces
+   echo " netmask 255.255.255.0" >> /etc/network/interfaces
+   echo " gateway 192.168.0.1" >> /etc/network/interfaces
+   ifconfig eth0 down
+   ifconfig eth0 up
+4) 配置主机名：/etc/hostname
+5) DNS配置：/etc/resolv.conf 
+
+* 关于用户组的概念
+file:/etc/group
+** 用户
+- 初始化root的密码:
+  sudo passwd
+- 创建新用户:
+  adduser <new-username>  
+  用passwd初始化密码
+- 转换用户:
+  su <username>
+  
+** readings
+http://ixdba.blog.51cto.com/2895551/531787
+http://ixdba.blog.51cto.com/2895551/531793
+http://www.sourcejoy.com/other_dev_tech/linux-user-and-file-manage.html
+
+** note
+1. linux用户组的分类:
+   a.管理员 root  :具有使用系统所有权限的用户,其UID 为0.
+   b.普通用户  : 即一般用户,其使用系统的权限受限,其UID为500-60000之间.
+   c.系统用户 :保障系统运行的用户,一般不提供密码登录系统,其UID为1-499之间   
+2. 与用户有关的文件/etc/passwd，/etc/shadow
+   a．/etc/passwd文件：
+   其格式：account：password：UID:GID:GECOS:diretory:shell
+   account: 用户名或帐号
+   password ：用户密码占位符
+   UID：用户的ID号
+   GID：用户所在组的ID号
+   GECOS:用户的详细信息（如姓名，年龄，电话等）
+   diretory：用户所的家目录
+   shell：用户所在的编程环境
+   b．/etc/shadow
+   其格式：account：password：最近更改密码的日期：密码不可更该的天数：密码需要重新更改的天数：密码更改前的警告期限：密码过期的宽限时间：帐号失效日期：保留
+
+3. 用户组
+   用户组分类;
+   a.     普通用户组:可以加入多个用户
+   b.     系统组:一般加入一些系统用户
+   c.     私有组(也称基本组):当创建用户时,如果没有为其指明所属组,则就为其定义一个私有的用户组,起名称与用户名同名.
+   注:私有组可以变成普通用户组,当把其他用户加入到该组中,则其就变成了普通组 
+
+4. 组是权限的容器
+   如普通用户 a,b,c 所属组grp,则它们会继承组grp的权限
+5. 与组有关的文件:/etc/group，/etc/gshadow
+   /etc/group文件： 其格式:group_name:passwoerd:GID:user_list
+   group_name:组名
+   passwoerd:组密码
+   GID:组的ID号
+   user_list：以group_name为附加组的用户列表
+6. 修改用户及用户组的命令：useradd，usermod， groupdd，userdel
+   1) 增加用户 ：useradd [options] username
+      options：
+      1．-u ：UID
+      2．-g ：GID
+      3．-d ：指定用户家目录，默认是/home/username
+      4．-s ：指定用户所在的shell环境
+      5．-G：指定用户的附加组
+      例如增加一用户wendy UID为1888 家目录/home/oracle，shell为/bin/sh
+      #useradd –u 1888 –d /home/oracle –s /bin/sh wendy
+
+   2) 修改用户：usermod  [options] username
+      options：
+      1．-u ：UID
+      2．-g ：GID
+      3．-d ：指定用户家目录，默认是/home/username
+      -m 与-b 一起用表示把用户家目录的内容也移走
+      4．-s ：指定用户所在的shell环境
+      5．-G：指定用户的附加组
+      
+      例如修改用户wendy UID为1000 家目录/oracle，shell为/bin/bash
+      #usermod –u 1000 –d  /oracle –s /bin/bash -m wendy
+      
+   3) 增加用户组：groupadd   [options] groupname
+      options
+      1．-g ：GID 
+      例如增加用户组grp UID为1001
+      #groupadd –g 1001 grp
+
+   4) 删除用户：userdel   [options]username
+      options
+      1．-r ：连同家目录一起删除
+      例如删除用户wendy及家目录
+      #userdel –r wendy 
+      
+** archwiki
+https://wiki.archlinux.org/index.php/Users_and_Groups_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)
+文件的属主 属组可以通过chown命令更改
+文件的权限可以通过chmod命令修改
+man chown
+man chmod
+for more
+
+useradd -m -g [初始组] -G [附加组] -s [登陆shell] [用户]
+添加用户的例子:
+useradd -m -g users -s /bin/bash xyh
+
+
+通过下列命令设置GECOS字段（用户信息，例如用户全名）：
+
+# chfn [用户名]
+这样将会以交互式模式启动chfn
+
+通过下列命令设置用户密码：
+
+# passwd [用户名]
+另一个交互式界面的添加用户的工具：
+
+# adduser
+adduser会询问一些常见的设置，并使用合适的默认值，调用useradd创建用户。该命令还会设置用户信息和密码，囊括了chfn和passwd两个命令的功能。
+
+使用userdel命令删除用户：
+
+# userdel -r [用户名]
+-r选项表示一并删除用户主目录和邮件。
+
+* grub
+/etc/grub.d/这个路径中的信息会被程序grub-mkconfig用来写/boot/grub/grub.cfg
+修改这个文件file:/etc/grub.d/40_custom
+将增加一个启动条目
+
+之后需要update-grub
+#+begin_src sh
+#!/bin/sh
+    
+exec tail -n +3 $0
+# This file provides an easy way to add custom menu entries.  Simply type the
+# menu entries you want to add after this comment.  Be careful not to change
+# the 'exec tail' line above.
+
+menuentry "archlinux" {
+    linux (hd0,5)/boot/vmlinuz-linux root=/dev/sda5 ro
+    initrd (hd0,5)/boot/initramfs-linux.img
+#+end_src
+
+更改再grub的停留时间
+* --------------------------------
+* apt-get
+** 当编译软件而出现依赖关系错误时尝试:sudo apt-get build-dep ~~~
+** 卸载并清除配置:apt-get remove --purge ~~~
+** 搜索软件包:apt-cache search ~~~
+* 网络配置文件
+客户端提示：
+检测到您的认证网卡上设置有多个IP，请只保留一个IP，再进行认证
+修改配置文件：/etc/network/interfaces
+一个解决方法是：
+- 有线以太网时配置文件改为：
+  auto eth0
+  iface eth0 inet dhcp
+- wifi时配置文件改为：
+  auto lo
+  iface lo inet loopback
+这并不是最终的解决方案
+需要查阅man ifconfig与man interfaces
+然后写出不用每次都调整的配置文件
+
+* about xmodmap
+** someone's
+xev :
+
+KeyPress event, serial 21, synthetic NO, window 0x4800001,
+    root 0x36, subw 0x0, time 921569335, (87,93), root:(796,823),
+    state 0x0, keycode 66 (keysym 0xffe3, Control_L), same_screen YES,
+    XLookupString gives 0 characters:  ""
+
+KeyRelease event, serial 21, synthetic NO, window 0x4800001,
+    root 0x36, subw 0x0, time 921569438, (87,93), root:(796,823),
+    state 0x4, keycode 66 (keysym 0xffe3, Control_L), same_screen YES,
+    XLookupString gives 0 characters:  ""
+
+
+<keycode>:
+(keysym 0xffe3, Control_L)
+Be sure to note the keycodes of the keys you're interested in
+66 is the keycode of my Caps Lock
+
+executing xmodmap -pke and redirect the output to some file
+to restore your keymap without restarting your X
+
+do:
+
+xmodmap -e 'keycode 66 = Control_L'
+xmodmap -e 'clear Lock'
+xmodmap -e 'add Control = Control_L'
+
+And test if that did the trick
+If you don't get the desired effect
+try some other combinations
+You may want to put your Caps_Lock somewhere else
+find a decent key and do this:
+
+xmodmap -e 'keycode 117 = Caps_Lock'
+xmodmap -e 'add Lock = Caps_Lock'
+
+write ~/.xmodmap:
+
+keycode 66 = Control_L
+clear Lock
+add Control = Control_L
+keycode 117 = Caps_Lock
+add Lock = Caps_Lock
+
+execute xmodmap .xmodmap
+in somewhere in your X startup files
+
+** man xmodmap
+*** expression grammar
+The xmodmap program  reads a list of  expressions and parses
+them all  before attempting  to execute  any of  them.  This
+makes  it  possible  to  refer to  keysyms  that  are  being
+redefined in a  natural way without having to  worry as much
+about name conflicts.
+
+The list  of keysym names  may be  found in the  header file
+<X11/keysymdef.h> (without the  XK_ prefix), supplemented by
+the  keysym   database   /usr/share/X11/XKeysymDB.   Keysyms
+matching Unicode  characters may be specified  as "U0020" to
+"U007E" and  "U00A0" to  "U10FFFF" for all  possible Unicode
+characters.
+
+**** keycode NUMBER = KEYSYMNAME ...
+The list of keysyms is assigned to the indicated keycode
++ which may be  specified in decimal, hex, octal
+  and can be  determined by running the  xev program
+
+up to eight keysyms  may be attached to a key
+however the last four are not used
+in any major X server implementation
+
+1. the first keysym is used
+   when no modifier key is pressed in conjunction with this key
+2. the second with Shift
+3. the third when the Mode_switch key is used with this key
+4. the fourth when both the Mode_switch and Shift keys are used
+
+**** keycode any = KEYSYMNAME ...
+If no existing key has the specified list of keysyms
+assigned  to it,  a  spare key  on  the keyboard  is
+selected and  the keysyms  are assigned to  it.  The
+list of keysyms may be  specified in decimal, hex or
+octal.
+
+**** keysym KEYSYMNAME = KEYSYMNAME ...
+The KEYSYMNAME  on the left hand  side is translated
+into   matching  keycodes   used   to  perform   the
+corresponding set of keycode expressions.  Note that
+if the  same keysym is  bound to multiple  keys, the
+expression is executed for each matching keycode.
+
+**** clear MODIFIERNAME
+removes all entries in the modifier map for the given modifier
+where  valid  name are:
+Shift, Lock, Control, Mod1, Mod2, Mod3, Mod4, Mod5
++ case does not matter in modifier names
+  although it does matter for all other names
+
+For example
+``clear Lock'' will remove all any keys
+that were bound to the shift lock modifier
+
+**** add MODIFIERNAME = KEYSYMNAME ...
+this adds all keys containing the given keysyms to
+the indicated modifier map
+the keysym names are evaluated
+after all input expressions are read
+to make it easy to write expressions to swap keys
++ see the EXAMPLES section
+
+**** remove MODIFIERNAME = KEYSYMNAME ...
+this removes all keys containing the given keysyms
+from the indicated modifier map
+unlike add
+the keysym names are evaluated as the line is read in
+This allows you to remove keys from a modifier
+without having to worry about whether or not they
+have been reassigned
+
+**** pointer = default
+This  sets  the  pointer  map back  to  its  default
+settings (button 1 generates a   code of 1, button 2
+generates a 2, etc.).
+
+**** pointer = NUMBER ...
+This sets  the pointer map to  contain the indicated
+button codes.  The list always starts with the first
+physical  button.   Setting  a   button  code  to  0
+disables events from that button.
+
+**** remark
+Lines that begin with an  exclamation point (!) are taken as
+comments.
+
+If you  want to change  the binding  of a modifier  key, you
+must also remove it from the appropriate modifier map.
+
+*** examples
+	Many pointers  are designed  such that  the first  button is
+	pressed using  the index finger  of the right  hand.  People
+	who  are  left-handed  frequently   find  that  it  is  more
+	comfortable to  reverse the button codes  that get generated
+	so that the primary button is pressed using the index finger
+	of the left hand.  This could  be done on a 3 button pointer
+	as follows:
+
+		%  xmodmap -e "pointer = 3 2 1"
+
+	Many applications  support the notion of  Meta keys (similar
+	to Control   keys except that  Meta is held down  instead of
+	Control).  However, some  servers do not have  a Meta keysym
+	in the  default keymap table,  so one  needs to be  added by
+	hand.   The  following  command  will  attach  Meta  to  the
+	Multi-language  key (sometimes  labeled Compose  Character).
+	It also takes advantage of  the fact that  applications that
+	need a  Meta key simply  need to  get the keycode  and don't
+	require the keysym  to be in the first column  of the keymap
+	table.  This means that applications  that are looking for a
+	Multi_key (including the default  modifier map) won't notice
+	any change.
+
+		%  xmodmap -e "keysym Multi_key = Multi_key Meta_L"
+
+	Similarly, some keyboards  have an Alt key but  no Meta key.
+	In that case the following may be useful:
+
+		%  xmodmap -e "keysym Alt_L = Meta_L Alt_L"
+
+	One of the  more simple, yet convenient, uses  of xmodmap is
+	to set the keyboard's "rubout"  key to generate an alternate
+	keysym.  This frequently  involves exchanging Backspace with
+	Delete to be more comfortable  to the user.  If the ttyModes
+	resource in  xterm is  set as  well, all  terminal  emulator
+	windows will use the same key for erasing characters:
+
+		%  xmodmap -e "keysym BackSpace = Delete"
+		%  echo "XTerm*ttyModes:  erase ^?" | xrdb -merge
+
+	Some keyboards  do not automatically generate  less than and
+	greater than characters  when the comma and  period keys are
+	shifted.  This can be remedied with xmodmap by resetting the
+	bindings  for  the  comma  and  period  with  the  following
+	scripts:
+
+		!
+		! make shift-, be < and shift-. be >
+		!
+		keysym comma = comma less
+		keysym period = period greater
+
+	One of the more  irritating differences between keyboards is
+	the location of  the Control and Shift Lock  keys.  A common
+	use of xmodmap is to swap these two keys as follows:
+
+		!
+		! Swap Caps_Lock and Control_L
+		!
+		remove Lock = Caps_Lock
+		remove Control = Control_L
+		keysym Control_L = Caps_Lock
+		keysym Caps_Lock = Control_L
+		add Lock = Caps_Lock
+		add Control = Control_L
+
+	This example can be run again to swap the keys back to their
+	previous  assignments.
+
+	The keycode command is useful  for assigning the same keysym
+	to multiple keycodes.  Although unportable, it also makes it
+	possible to write  scripts that can reset the  keyboard to a
+	known state.  The following script sets the backspace key to
+	generate Delete (as shown above), flushes all  existing caps
+	lock bindings, makes the CapsLock key be a control key, make
+	F5 generate Escape, and makes Break/Reset be a shift lock.
+
+		!
+		! On the HP, the following keycodes have key caps as listed:
+		!
+		!     101  Backspace
+		!      55  Caps
+		!      14  Ctrl
+		!      15  Break/Reset
+		!      86  Stop
+		!      89  F5
+		!
+		keycode 101 = Delete
+		keycode 55 = Control_R
+		clear Lock
+		add Control = Control_R
+		keycode 89 = Escape
+		keycode 15 = Caps_Lock
+		add Lock = Caps_Lock
+
+* 校园网上网
+用rjsupplicant.sh这个脚本来完成
+获得对脚本的执行权限
+$ sudo chmod +x ./rjsupplicant.sh
+* 开机流程
+** 更改待网络配置的时间
+配置文件为：/etc/init/failsafe.conf 打开修改即可
+* 开机自动挂载硬盘分区
+$ sudo fdisk -l #查看分区情况
+修改下面的配置文件：
+file:/etc/fstab
+添加(例如):
+#+begin_src sh
+# /etc/fstab: static file system information.
+#
+# Use 'blkid' to print the universally unique identifier for a device
+# this may be used with UUID= as a more robust way to name devices
+# that works even if disks are added and removed. See fstab(5).
+#
+# <file system> <mount point>   <type>  <options>       <dump>  <pass>
+# / was on /dev/sda2 during installation
+UUID=f29bb57a-4b19-4020-a9a1-3d177ff13ba5 / ext4 errors=remount-ro 0 1
+# /boot was on /dev/sda1 during installation
+UUID=ed36ae7c-e113-452f-b203-77e52e5e6d2f /boot ext4 defaults 0 2
+# /home was on /dev/sda7 during installation
+UUID=52befbc9-634a-462a-b082-382c07c6d3c2 /home ext4 defaults 0 2
+# swap was on /dev/sda8 during installation
+UUID=c8034a61-fa9a-4da5-b909-092fb776ff90 none swap sw 0 0
+
+
+/dev/sda5 /home/xyh/arch ext4  errors=remount-ro 0 1
+/dev/sda6 /home/xyh/math ntfs defaults,locale=zh_CN.UTF-8 0 0
+#+end_src
+* 生成xorg.conf
+在新版的Ubuntu中
+默认系统不会生成xorg.conf文件
+但如果需要为X配置一些高级功能 这个文件是必须的
+避免手动填写内容麻烦和易错
+可以用下面的几个命令生成新的xorg.conf文件
+(注意需要在真正的终端里面运行，而并非X环境下的终端模拟器)
+#+BEGIN_SRC sh
+#   first stop display manager, assuming gdm is used
+sudo service gdm stop 
+#   generate new configure file for X, the file created is "xorg.conf.new" in current directory
+sudo Xorg -configure
+#   move configure file to target directory
+sudo mv xorg.conf.new /etc/X11/xorg.conf 
+#   restart display manager, assuming gdm is used
+sudo service gdm start
+#+END_SRC
+* 切换dm
+sudo dpkg-reconfigure <dm>
+* 开机时进入命令行
+*** note
+修改/boot/grub/grub.cfg
+但是grub.cfg是自动生成的
+所有的在里面的修改都可能被其它的操作覆盖掉
+比如update-grub命令 如果不想被覆盖
+则修改/etc/default/grub
+然后再运行一下update-grub命令
+它会自动添加上text参数到内核参数中
+#+begin_src sh
+--- /etc/default/grub.old   2013-03-22 14:37:33.000000000 +0800
++++ /etc/default/grub   2013-03-26 11:15:38.000000000 +0800
+@@ -8,7 +8,7 @@
+ GRUB_HIDDEN_TIMEOUT_QUIET=true
+ GRUB_TIMEOUT=10
+ GRUB_DISTRIBUTOR=`lsb_release -i -s 2> /dev/null || echo Debian`
+-GRUB_CMDLINE_LINUX_DEFAULT="quiet splash"
++GRUB_CMDLINE_LINUX_DEFAULT="text"
+ GRUB_CMDLINE_LINUX=""
+ # Uncomment to enable BadRAM filtering, modify to suit your needs
+#+end_src
+*** init
+**** init是Linux系统操作中不可缺少的程序之一。
+所谓的init进程，它是一个由内核启动的用户级进程。
+内核自行启动（已经被载入内存，开始运行，并已初始化所有的设备驱动程序和数据结构等）之后，就通过启动一个用户级程序init的方式，完成引导进程。
+所以init始终是第一个进程（其进程编号始终为1）。
+内核会在过去曾使用过init的几个地方查找它，它的正确位置（对Linux系统来说）是/sbin/init。
+如果内核找不到init，它就会试着运行/bin/sh，如果运行失败，系统的启动也会失败。
+**** 简单的说，运行级就是操作系统当前正在运行的功能级别。
+0 代表关机。如命令：sudo init 0，即让系统关机。
+1 代表的单用户模式。
+2 代表不运行NFS的多用户模式。
+  NFS是Network File System的简写,即网络文件系统.
+　 NFS允许一个系统在网络上与他人共享目录和文件。通过使用NFS，用户和程序可以像访问本地文件一样访问远端系统上的文件。
+3 代表完全多用户模式。这是标准的运行级。
+4 没有用到。
+5 X11,即x window
+6 代表重新启动。
+**** 关于fedora和ubuntu
+***** fedora
+fedora使用systemd完全代替init。在fedora14中测试，fedora15中开始启用。此前fedora9-14也曾经使用upstart。
+使用systemd的还有archlinux等。
+****** 以下是systemd的基本unit类型。
+1 service ：守护进程的启动、停止、重启和重载是此类 unit 中最为明显的几个类型。
+   2 socket ：此类 unit 封装系统和互联网中的一个 socket 。
+   3 device ：此类 unit 封装一个存在于 Linux 设备树中的设备。
+   4 mount ：此类 unit 封装系统结构层次中的一个挂载点。
+   5 automount ：此类 unit 封装系统结构层次中的一个自挂载点。。
+   6 target ：此类 unit 为其他 unit 进行逻辑分组。它们本身实际上并不做什么，只是引用其他 unit 而已。这样便可以对 unit 做一个统一的控制。
+   (例如：multi-user.target 相当于在传统使用 SysV 的系统中运行级别5)；
+   7 snapshot ：与 target unit 相似，快照本身不做什么，唯一的目的就是引用其他 unit 。 
+****** 系统启动时systemd的工作。
+在系统启动时 systemd 默认激活 default.target ，它的工作就是按照依赖关系来激活服务和调用其他 unit 。
+例如，如果想以multi-user方式启动，就需要ln -s 链接此target文件到default.target。
+传统的 run-levels 被下面的取代：
+systemd.unit=rescue.target 是一个设置基本系统和救援 shell 的特殊 target unit (与运行级1相似)；
+systemd.unit=emergency.target 与传递保留参数的 init=/bin/sh 给系统使系统从该状态启动相似；
+systemd.unit=multi-user.target 设置一个非图形化的多用户系统； 
+systemd.unit=graphical.target 设置一个图形化的登录界面。 
+***** ubuntu
+ubuntu使用upstart完全代替init。这是从版本6.10开始的。
+使用upstart的还有debian系的各个发行版。
+****** 当前ubuntu的启动过程：
+0 内核启动init进程
+1 进入/etc/event.d/，从/etc/event.d/rc-default问件中找到运行级别，然后由相应运行级别的脚本rcX运行；
+2 rcX运行时，进入/etc/init.d/，找到脚本rc；
+3 执行rc X
+4 rc X执行后即进入/etc/rcX.d/目录，依次执行其中的各个进程。
+
+****** upstart的详细定制。
+******* 工作文件放置在/etc/event.d里面。这是一些文本文件。
+******* 工作文件的格式：
+把一个或多个的空格或跳格(tab)当作是空白，这些空白会被跳过，除非这些空白在单引号或双引号中。
+在引号中允许有换行，不过要在换行前加上反斜杠。注释行由#号起头，直到本行行尾。 
+******* exec和script
+工作文件必须包含这二者之一。
+******** exec
+你可以向exec传送可执行文件的路径和可选的参数。任何特殊字母(比如引号或美元符号'$')将被传送到shell来进行解释。
+代码:
+#+begin_src
+exec /bin/foo --opt -xyz foo bar
+#+end_src
+******** script
+script则把脚本代码传送给/bin/sh执行。shell的-e选项将被使用，所以任何一个命令执行失败都将终止运行脚本。
+script节的最后一行为"end script"。 代码:
+#+begin_src
+script
+# do some stuff
+if [ ... ]; then
+...
+fi
+end script
+#+end_src
+******* pre-start script和post-stop script
+启动前运行的脚本和结束后运行的脚本pre-start script、 post-stop script
+******** pre-start script
+指定主进程运行前所要执行的shell代码，跟script一样，所以任何一个命令执行失败都将终止运行脚本。它也以"end script"作为结束。
+ 代码:
+#+begin_src 
+pre-start script
+# prepare environment
+mkdir -p /var/run/foo
+end script
+#+end_src
+******** post-stop script
+指定主进程终止或者被杀死后运行的shell代码。任何一个命令执行失败都将终止运行脚本。它也以"end script"作为结束。
+ 代码:
+#+begin_src 
+post-stop script
+# clean up
+rm -rf /var/run/foo
+end script 
+#+end_src  
+******* start on 和 stop on
+如果一个工作文件包含了类似下面的代码，那么这个工作文件会在相应的时刻执行。
+ 代码：
+#+begin_src
+start on startup
+start on runlevel 2
+start on runlevel 3
+start on stopped rcS
+start on started tty1
+#+end_src
+******* console
+可以指定将信息输入到哪里或者从哪里获得信息。
+output(从/dev/console获得输入输出)；
+owner(输出和Control-C发送给主进程);
+none(默认参数，输入输出指定到/dev/null)。
+ 代码：
+#+begin_src 
+exec echo example
+console output 
+#+end_src
+*** startx ~/.xinitrc xinit
+**** ~/.xinitrc 文件是 xinit 和 startx 第一次启动时会读取的脚本。
+通常用在启动 X 时执行窗口管理器 和其他程序，例如启动守护进程和设置环境变量。
+xinit程序用来启动X窗口系统，是不能直接从/etc/init启动 X 或者使用多窗口的系统中的第一个客户端。
+~/.xinitrc 一个主要功能是根据单个用户的设置决定 /usr/bin/startx 或 /usr/bin/xinit 程序启动的窗口系统。
+~/.xinitrc 中还可以加入许多系统定制选项。 
+**** ----------------------------[oops!]---------------------------
+~/.xinitrc 中应该只有 一个 未注释掉的 exec 行，而且 exec 行必须位于配置文件的末尾。
+因为它指的是运行后面的命令，并在该命令结束时退出本文件。
+**** 对于多桌面环境，可以按如下方式启动。
+如果你有一个可用的 ~/.xinitrc 文件，只想尝试下其他的窗口管理器/桌面环境，你可从命令行给 xinit 完整路径。
+#+begin_src 
+xinit [path-to-wm]
+#+end_src 
+必须使用完整路径。此外你可以选择在--后面传递 X 服务器参数.
+***** 例子
+以下代码的作用是，使用 xinit fluxbox 这样的命令启动窗口管理器。如果输入了其他的命令，将显示如下的错误提示。
+#+begin_src
+if [[ $1 == "fluxbox" ]]
+then
+  exec startfluxbox
+elif [[ $1 == "spectrwm" ]]
+then
+  exec spectrwm
+else
+  echo "Choose a window manager"
+fi
+#+end_src
+**** xinitrc和xsession的区别。
+前者是startx命令接受的脚本。后者是通过dm启动时读取的脚本。
+**** xinit解析。
+xinit的用法为：xinit [[client] options ] [-- [server] [display] options]。
+其中client用于指定一个基于X的应用程序，client后面的options是传给这个应用程序的参数，
+server是用于指定启动哪个X服务器，一般为/usr/bin/X或/usr/bin/Xorg，
+display用于指定display number，一般为0，表示第一个display，option为传给server的参数。
+
+如果不指定client，xinit会查找HOME(环境变量)目录下的.xinitrc文件，
+如果存在这个文件，xinit直接调用execvp函数执行该文件。
+如果这个文件不存在，那么client及其options为： xterm -geometry +1+1 -n login -display :0 。
+
+如果不指定server，xinit会查找HOME(环境变量)目录下的.xserverrc文件，
+如果存在这个文件，xinit直接调用execvp函数执行该文件。如果这个文件不存在，那么server及其display为： X :0。
+如果系统目录中不存在X命令，那么我们需要在系统目录下建立一个名为X的链接，使其指向真正的X server命令（Ubuntu下为Xorg）。
+***** 示例：
+加入如下代码在xinitrc中：
+#+begin_src scheme
+         xsetroot -solid gray &
+
+         xclock -g 50x50-0+0 -bw 0 &
+
+         xterm -g 80x24+0+0 &
+
+         xterm -g 80x24+0-0 &
+
+         twm
+#+end_src
+当xinit启动时，它会先启动X server，然后启动一个clock，两个xterm，最后启动窗口管理器twm。
+****** ----------------------------[oops!]-----------------------------------------
+最后一条命令必须不能后台运行，除了最后一条命令之外，其他命令都必须后台运行。因为如果所有程序都后台运行，
+那么将会返回退出。如果最后一条命令之前的某条命令没有后台运行，那么接下来的命令都不会得到执行。
+**** xinit和startx
+***** startx的默认启动过程为：
+startx调用并将系统文件/etc/X11/xinit/xinitrc和/etc/X11/xinit/xserverrc 作为参数传给xinit，
+xinit就会先执行系统文件/etc/X11/xinit/xserverrc以启动X Server，然后执行/etc/X11/xinit/xinitrc，
+而xinitrc则会执行脚本/etc/X11/Xsession，
+而Xsession则会按顺序调用执行/etc/X11/Xsession.d目录下的文件，
+从而最终调用了gnome-session这个用于启动GNOME桌面环境的程序。
+***** startx本身是一个脚本，会调用系统的xinitrc（/etc/X11/xinit/xinitrc）或用户的xinitrc（~/.xinitrc）。
+***** 对于gdm等dm
+gdm不会读取执行xinitrc，但会执行"/etc/X11/xinit/xinitrc.d/"下面所有的脚本。
+*** ～/.xsession
+**** 当你用非默认环境启动时，这个脚本就不会执行。
+因此，其他命令必须位于其之前写入。
+*** startx at login
+编辑~/.bash_profile。如果文件不存在，从/etc/skel/.bash_profile 复制一个框架版本。 
+#+begin_src
+[[ -z $DISPLAY && $XDG_VTNR -eq 1 ]] && exec startx
+#+end_src
+
+* 查看cpu参数
+
+下面是网上的例子
+
+1. 查看物理CPU的个数
+ 
+#cat /proc/cpuinfo |grep "physical id"|sort |uniq|wc -l
+ 
+ 1
+2. 查看逻辑CPU的个数
+#cat /proc/cpuinfo |grep "processor"|wc -l
+ 8
+3. 查看CPU是几核
+#cat /proc/cpuinfo |grep "cores"|uniq
+ cpu cores : 4
+4. 查看CPU的主频
+#cat /proc/cpuinfo |grep MHz|uniq
+ cpu MHz  : 1600.000
+# uname -a
+Linux 54acm 2.6.32-25-generic-pae #44-Ubuntu SMP Fri Sep 17 21:57:48 UTC 2010 i686 GNU/Linux
+(查看当前操作系统内核信息)
+ 
+# cat /etc/issue 
+Ubuntu 10.04 LTS
+(查看当前操作系统发行版信息)
+ 
+# cat /proc/cpuinfo | grep name | cut -f2 -d: | uniq -c
+       8  Intel(R) Xeon(R) CPU           E5620  @ 2.40GHz
+(看到有8个逻辑CPU, 也知道了CPU型号)
+ 
+# cat /proc/cpuinfo | grep physical | uniq -c
+      1 physical id : 1
+      1 address sizes : 40 bits physical, 48 bits virtual
+      1 physical id : 1
+      1 address sizes : 40 bits physical, 48 bits virtual
+      1 physical id : 1
+      1 address sizes : 40 bits physical, 48 bits virtual
+      1 physical id : 1
+      1 address sizes : 40 bits physical, 48 bits virtual
+      1 physical id : 1
+      1 address sizes : 40 bits physical, 48 bits virtual
+      1 physical id : 1
+      1 address sizes : 40 bits physical, 48 bits virtual
+      1 physical id : 1
+      1 address sizes : 40 bits physical, 48 bits virtual
+      1 physical id : 1
+      1 address sizes : 40 bits physical, 48 bits virtual
+ 
+(说明实际上是两颗4核的CPU)
+ 
+# getconf LONG_BIT
+32
+(说明当前CPU运行在32bit模式下, 但不代表CPU不支持64bit)
+ 
+# cat /proc/cpuinfo | grep flags | grep ' lm ' | wc -l
+8
+(结果大于0, 说明支持64bit计算. lm指long mode, 支持lm则是64bit)
+ 
+ 
+ 
+ 
+如何获得CPU的详细信息：
+linux命令：cat /proc/cpuinfo
+用命令判断几个物理CPU，几个核等：
+逻辑CPU个数：
+# cat /proc/cpuinfo | grep "processor" | wc -l
+物理CPU个数：
+# cat /proc/cpuinfo | grep "physical id" | sort | uniq | wc -l
+每个物理CPU中Core的个数：
+# cat /proc/cpuinfo | grep "cpu cores" | wc -l
+是否为超线程？
+如果有两个逻辑CPU具有相同的”core id”，那么超线程是打开的。
+每个物理CPU中逻辑CPU(可能是core, threads或both)的个数：
+# cat /proc/cpuinfo | grep "siblings"
+ 
+siblings : 8
+1.查看CPU信息命令
+cat /proc/cpuinfo
+2.查看内存信息命令
+cat /proc/meminfo
+3.查看硬盘信息命令
+fdisk -l
+ 
+* 字体
+其实就是把相应的字体文件放置到相应的目录下面
+下面的三个目录从全局到局部
+
+/usr/share/fonts/
+~/.local/share/fonts/
+~/.fonts/
+
+查看所安装的中文字体的命令
+fc-list :lang=zh-cn
+
+* >< ranger
+的配置文件:
+~/.config/ranger/rc.conf
+* >< pdf
+PDF格式文件中的文本是可以导出来再修改的。
+同样，PDF里面的插图也是可以提取出来的。
+
+PDF转纯文本：
+pdftotext -enc GBK godson2e-data.Sheet.pdf text.GBK.txt
+
+-enc (encoding)
+要参照/etc/xpdf/xpdfrc 里面提到的编码格式。对于中文，用GBK
+就可以了。
+
+
+提取插图：
+pdfimages godson2e-data.Sheet.pdf img
+
+该命令就生成N个PPM文件，（一种BMP格式）
+文件名为img-00?.ppm
+？ ＝ （1 ～ N）
+
+可以用ImageMagick里面的convert工具将其转换成相要的格式：
+convert img-001.ppm img-001.jpg
+或
+convert img-001.ppm img-001.eps 
+
+上述方法在ubuntu下测试通过。
+其中，pdfimages, pdftotext来自xpdf-utils包，xpdf的中文编码
+支持来自xpdf-chinese-simplified包。换句话说，要实现上述功能
+得安装:
+xpdf-utils
+xpdf-chinese-simplified
+
+* >< background
+桌面背景的程序（the root window）
+
+feh --bg-scale /path/to/image.file
+
+Other scaling options include:
+
+--bg-tile FILE
+--bg-center FILE
+--bg-max FILE
+--bg-fill FILE
+
+To restore the background on the next session
+add the following to your startup file
+(e.g. ~/.xinitrc, ~/.config/openbox/autostart, etc.)
+
+$ sh ~/.fehbg &
+
+To change the background image
+edit the file ~/.fehbg which gets created after running
+the command feh --bg-scale /path/to/image.file mentioned above
+
+* 在大的桌面环境之外用
+** 用户组
+此时启动某些东西时
++ 比如根声音有关的alsamixer,amixer
+需要添加用户组
+
+更改
+file:/etc/group
+或使用命令usermod
+
+** >< 在gdm之外使用fcitx
+需要在
+file:~/.xinitrc
+中加入
+#+begin_src sh
+# 浏览器等GTK程序需要
+export GTK_IM_MODULE=fcitx
+
+# export QT_IM_MODULE=fcitx
+
+# emacs和终端需要
+export XMODIFIERS="@im=fcitx"
+
+fcitx &
+#+end_src
+
+* >< tar
+** create archive files
+*** tar
+tar -cvf about-tar.tar ./index.html
+
+c – create *.tar file
+v – view progress
+f – file name
+*** tar.gz
+gz denote gzip-archive-file
+*.tar.gz or *.tgz
+
+tar cvzf about-tar.tar.gz ./index.html
+
+z - *.gz
+*** tar.bz2
+tar cvjf about-tar.tar.bz2 ./index.html
+
+j - *.bz2
+** extract archive file
+x - extract
+
+tar xvf tar-examples.tar -C ./kkk
+tar xvf tar-examples.tar.gz -C ./kkk
+tar xvf tar-examples.tar.bz2 -C ./kkk
+
+-C - specified directory
+
+*** extract some files
+tar xf kkk.tar.gz tar-examples.html
+
+tar xf kkk.tar.gz "tar-examples.tar.bz2" "tar-examples.tar"
+
+tar xf  kkk.tar.gz --wildcards "tar-examples.tar.*"
+
+** list content of file
+t - list content
+
+tar -tvf tar-examples.tar.bz2
+
+** add files or directories to archive file
+r - append
+
+tar -rvf tecmint-14-09-12.tar xyz.txt
+
+tar -rvf tecmint-14-09-12.tar php
+
+* >< find (command)
+* du
+** du
+du -h --max-depth=1 ~/*
+
+du -sh
+查看当前文件大小
+
+du -s * | sort -n
+统计当前文件夹(目录)大小
+并按文件大小排序
+
+du -sk <filename>
+查看指定文件大小
+
+* 更改swap使用量
+/etc/sysctl.conf
+中增加:
+vm.swappiness=0
+
+/proc/sys/vm/swappiness
+中可以查看当前的值
+
+* fcitx
+在emacs中使用时
+emacs必须在fcitx启动之后启动才行
+否则emacs会无法使用输入法 甚至卡死
+* --------------------------------
+* 更新与包管理
+软件中心编辑菜单中设置软件源 之后更新
+$ sudo apt-get update
+之后安装包管理器synaptic 其他软件时依赖的库用它来获得
+** redhat包.rpm需要先变为debian包.deb再安装
+需要安装alien软件 来作这个转换
+$ sudo apt-get install alien
+** 问题
+使用命令：$ sudo apt-get install ~~~ 安装软件时
+直接关闭终端 但进程没有结束
+再次调用apt-get时终端提示
+E: 无法获得锁 /var/lib/dpkg/lock - open (11: 资源暂时不可用)
+E: 无法锁定管理目录(/var/lib/dpkg/)，是否有其他进程正占用它？
+此时需要强制解锁：（在存放时常变化的文件的的/var中删除对应的文件）
+sudo rm /var/cache/apt/archives/lock
+sudo rm /var/lib/dpkg/lock
+* 浏览器
+** google-chrome需要到google的网站上下载deb包来安装
+$sudo dpkg -i googlo-chrome-~~~
+** 为firefox与google-chrome浏览器导入书签
+** 为firefox浏览器安装Adobe Flash Player插件
+直接在firefox的插件管理器中更新
+或把压缩文件中的libflashplayer.so复制到Firefox安装目录的plugins子文件夹
+sudo mv libflashplayer.so /usr/lib/mozilla/plugins
+（下载页面：http://get.adobe.com/cn/flashplayer/
+说明页面：http://support.mozilla.org/zh-CN/kb/Flash%E6%8F%92%E4%BB%B6）
+* 下载工具
+qbittorrent
+* 文本编辑器
+** emacs24
+最好直接从元代码编译
+或利用add-apt-repository
+方法介绍：https://launchpad.net/~cassou/+archive/emacs
+To add this PPA:
+$ sudo add-apt-repository ppa:cassou/emacs
+$ sudo apt-get update 
+Then, for emacs-snapshot:
+$ sudo apt-get install emacs-snapshot-el emacs-snapshot-gtk emacs-snapshot
+之后为主要用户复制所备份的配置文件
+* input method framework
+** fcitx
+
+sudo add-apt-repository ppa:wengxt/fcitx-nightly
+	sudo apt-get update
+sudo apt-get install fcitx fcitx-googlepinyin fcitx-config-gtk2
+im-switch -s fcitx -z default
+
+sudo dpkg --get-selections | grep fcitx
+** >< ibus
+* 文件管理器
+ranger
+* scheme
+** mit-scheme
+** racket
+** scheme48
+** guile
+** geiser
+编程环境辅助工具 一个emacs modes
+最好从github上来clone最新的版本 以排除最新的bug
+作者网站为：http://www.nongnu.org/geiser/geiser_2.html#Installation
+利用emacs24自带的ELPA来安装gerser管理包
+介绍ELPA的页面为：http://www.emacswiki.org/emacs/ELPA
+ELPA packages live in repositories accessible via HTTP.
+
+create a .emacs file in your ~ folder and add:
+(setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
+                         ("marmalade" . "http://marmalade-repo.org/packages/")
+                         ("melpa" . "http://melpa.milkbox.net/packages/")))
+(require 'package)
+(add-to-list 'package-archives
+	     '("geiser" . "http://download.savannah.gnu.org/releases/geiser/packages"))
+(package-initialize)
+
+And then installing Geiser is as easy as:
+M-x install-package RET geiser RET
+
+** ikarus
+使用了新技术 受chez影响
+** chicken
+https://github.com/alaricsp/chicken-scheme
+* common lisp
+** clisp
+** gcl
+** slime
+* clojure
+* haskell
+ghc（ghci是解释器）
+* 数学计算
+** octave
+** maxima
+** maxima-emacs
+* 排版工具
+下载最新的版本来安装而不要直接使用apt-get
+因为旧版本会产生很多问题
+tex:texlive-full
+texmacs
+* 版本控制工具
+** git
+（gitk 为其图形化界面 也需要安装）
+- 初始化
+  git config --global user.name "Your Name Here"
+  git config --global user.email "your_email@example.com"
+  git config --global credential.helper cache
+  git config --global credential.helper 'cache --timeout=3600'
+- repo
+  git init
+  git add ~~~
+  git commit -m '~~~'
+  git remote add origin https://github.com/xieyuheng/~~~.git
+  git push origin master
+- fork
+  git clone https://github.com/xieyuheng/~~~.git
+  git remote add upstream https://github.com/~~~/~~~.git
+  git fetch upstream
+  git push origin master
+  git fetch upstream
+  git merge upstream/master
+
+
+#+begin_src sh
+git help ...
+
+git init
+
+git config
+
+git status # general lookup
+git diff # between current and stage
+git diff --staged # between stage and last commit
+# ==
+git diff --cached
+
+git commit -v # commit with diff
+git commit -m "..." # inline message
+git commit -a # add and commit tracked files
+
+git log
+git log -p # with diff
+git log -p -3 # first 3 entries
+git log --stat # abbreviated stats
+# git log --pretty=... # changing the output format of the log
+git log --pretty=oneline  --graph
+git log --pretty=full
+git log --pretty=fuller
+git log --pretty=short
+git log --pretty=format:"%h - %an, %ar : %s"
+git log --pretty=format:"
+Commit hash:
+%H
+
+Abbreviated commit hash:
+%h
+
+Tree hash:
+%T
+
+Abbreviated tree hash:
+%t
+
+Parent hashes:
+%P
+
+Abbreviated parent hashes:
+%p
+
+Author name:
+%an
+
+Author e-mail:
+%ae
+
+Author date (format respects the date= option):
+%ad
+
+Author date, relative:
+%ar
+
+Committer name:
+%cn
+
+Committer email:
+%ce
+
+Committer date:
+%cd
+
+Committer date, relative:
+%cr
+
+Subject:
+%s
+
+
+"
+git log --since=2.weeks
+
+git commit --amend
+# usage:
+# git commit -m 'initial commit'
+# git add forgotten_file
+# git commit --amend
+
+git remote
+git remote -v
+git remote show [remote-name]
+# git remote add pb git://github.com/paulboone/ticgit.git
+# git fetch pb
+
+git fetch [remote-name]
+git pull [remote-name] # == fetch and merge
+
+git push [remote-name] [branch-name]
+git push origin master
+
+git config --global alias.s status
+# git config --global alias.visual "!gitk"
+#+end_src
+

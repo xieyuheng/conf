@@ -1,0 +1,7 @@
+#!/bin/sh
+
+copy() {
+    rsync --recursive --links --perms --times --group --owner --devices --specials --verbose --human-readable $@
+}
+
+copy $@

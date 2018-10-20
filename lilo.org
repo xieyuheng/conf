@@ -1,0 +1,148 @@
+#+TITLE: config of lilo
+#+AUTHOR: XYH(谢宇恒)
+#+EMAIL: xyheme@gmail.com
+
+*Don't forget to run `lilo' after*
+1. you make changes to this conffile
+2. or you have installed a new kernel
++ 如果不用lilo -v 或者 lilo -v -v
+  来让lilo少打印点东西出来
+  就会让程序的运行速度变慢很多
+
+I can not tangle code directly to "/etc/lilo.conf"
+so I have to copy it to "/etc/lilo.conf" as su everytime
+
+* note
+扩展分区不能被使用?
+但是我的扩展分区在哪呢??
+好像所有的分区都被使用到了
+
+lilo作为第一个的引导者时
+它的boot sector只能存储在第一快硬盘,或USB的MBR
++ 其实只要不是在扩展分区中的逻辑分区就行了
+  在主分区或者扩展分区都行???
++ 还有就是不能在地二块硬盘上
+  我只有一块硬盘
+  所以这对与我来说不是问题
++ 软盘是书中经常提到的设备
+  但是我的电脑连软驱都没有  
+* global section
+#+begin_src conf :tangle "/home/xyh/.lilo.conf"
+# With all newer systems (until year 2004) you can use the RAM
+# above 15 MB. This option allows the use of this range of RAM.
+large-memory
+
+# With all newer systems you can boot from any partition on disks 
+# with more than 1024 cylinders. This option allows the use of 
+# partitions above 1024 cylinders.
+lba32
+
+# Specifies the boot device.  This is where Lilo installs its boot
+# block.  It can be either a partition, or the raw device, in which
+# case it installs in the MBR, and will overwrite the current MBR.
+# With newer kernel you should use the ID of the boot device, which
+# can be found here: /dev/disks/by-id/ata*.
+boot = /dev/sda
+
+# This option may be needed for some software RAID installs.
+#raid-extra-boot = mbr-only
+
+# Enable map compaction.  This tries to merge read requests for 
+# adjacent sectors into a single read request. This drastically 
+# reduces load time and keeps the map smaller.  Using 'compact' 
+# is especially recommended when booting from a floppy disk.  
+# It is disabled here by default because it doesn't always work.
+#compact
+
+# Set the verbose level for bootloader installation. Value range:
+# 0 to 5. Default value is 0.
+## 没发现这个值的不同会导致什么区别???
+verbose = 2
+
+
+# Specifies the location of the map file. Lilo creates the (sector) 
+# map file of direct sector addresses which are independent of any
+# filesystem.
+map = /boot/map
+#+end_src
+* interface
+#+begin_src conf :tangle "/home/xyh/.lilo.conf"
+## 设置一个默认系统
+default = arch
+
+## 时间的单位都是0.1秒
+# prompt
+## 开启prompt时下面的时间后进入default
+# timeout = 100
+
+## 关闭prompt时试图直接进入default
+## 除非在下面的时间内等待被一些按键的打断
+## 被打断时就回到prompt
+delay = 20
+
+
+## 设置位text就是只使用最简单的prompt
+install = text
+## 欢迎信息
+message = /boot/message.txt
+
+
+# 1360x766x32
+vga = 0x3F0
+#vga = ask
+#+end_src
+* >< kernel command line options
+ :tangle "/home/xyh/.lilo.conf"
+#+begin_src conf
+# Kernel command line options that apply to all installed images go
+# here.  See 'kernel-parameters.txt' in the Linux kernel 'Documentation'
+# directory. I.g. for start into 'init 5' write:  append="5"
+#append = ""
+ 
+# If you used a serial console to install Debian, this option should be
+# enabled by default.
+#serial = 0,9600
+#+end_src
+* per-image section
+** archlinux
+#+begin_src conf :tangle "/home/xyh/.lilo.conf"
+image = /boot/vmlinuz-linux
+#       optional
+        label = "arch"
+        root = /dev/sda5
+        initrd = /boot/initramfs-linux.img
+        read-only
+
+image=/boot/vmlinuz-linux
+        label = "arch-fallback"
+        root = /dev/sda5
+        initrd = /boot/initramfs-linux-fallback.img
+        read-only
+#+end_src
+** ubuntu1
+#+begin_src conf :tangle "/home/xyh/.lilo.conf"
+image = /boot/vmlinuz-3.11.0-14-generic
+#       optional
+        label = "ubuntu"
+        root = /dev/sda2
+        initrd = /boot/initrd.img-3.11.0-14-generic
+        read-only
+#+end_src
+** ubuntu2
+#+begin_src conf :tangle "/home/xyh/.lilo.conf"
+image = /boot/vmlinuz-3.11.0-14-generic
+#       optional
+        label = "ubuntu2"
+        root = /dev/sda6
+        initrd = /boot/initrd.img-3.11.0-14-generic
+        read-only
+#+end_src
+* >< other OS
+Booting other OS on this machine must set with `other'
+Changing the device name on the `other' line
+to the partition of your other system
+ :tangle "/home/xyh/.lilo.conf"
+#+begin_src conf
+other = /dev/sda4
+      label = "minix"
+#+end_src

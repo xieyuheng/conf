@@ -1,0 +1,262 @@
+#+title:  fish configuration
+
+* term
+
+  #+begin_src fish :tangle ~/.config/fish/config.fish
+  set -x TERM xterm
+  # set -x TERM vte-256color
+  set -x TERMINFO /usr/lib/terminfo
+  #+end_src
+
+* browser
+
+  #+begin_src fish :tangle ~/.config/fish/config.fish
+  set -x BROWSER chromium-dev
+  #+end_src
+
+* ls mv rm
+
+  #+begin_src fish :tangle ~/.config/fish/config.fish
+  # alias l "ls -hCF"
+  # alias ll "ls -hlF"
+  # alias lll "ls -halF"
+
+  alias l "exa -hF"
+  alias ll "exa -hlF"
+  alias lll "exa -halF"
+
+  alias mv " mv -vi"
+
+  # alias rm " timeout 3 rm -Iv --one-file-system "
+  alias rm " rm -v "
+
+  alias df " df -h "
+  alias du " du -h "
+  #+end_src
+
+* git
+
+  #+begin_src fish :tangle ~/.config/fish/config.fish
+  alias st "git status"
+  alias add "git add .; and git status"
+  alias sub "git reset HEAD .; and git status"
+  alias ci "git commit; and git status"
+  alias br "git branch -v"
+  alias bl "git branch -vva"
+  alias ch "git checkout"
+  #+end_src
+
+* local
+
+  #+begin_src fish :tangle ~/.config/fish/config.fish
+  set PATH $PATH $HOME/.local/bin
+  #+end_src
+
+* emacs
+
+  #+begin_src fish :tangle ~/.config/fish/config.fish
+  set -x LC_CTYPE zh_CN.UTF-8
+  #+end_src
+
+* pr
+
+  #+begin_src fish :tangle ~/.config/fish/config.fish
+  alias px "proxychains4 "
+  #+end_src
+
+* look-like
+
+*** [note] about colors
+
+    #+begin_src fish :tangle ~/.config/fish/config.fish
+    # fish_color_normal, the default color
+    # fish_color_command, the color for commands
+    # fish_color_quote, the color for quoted blocks of text
+    # fish_color_redirection, the color for IO redirections
+    # fish_color_end, the color for process separators like ';' and '&'
+    # fish_color_error, the color used to highlight potential errors
+    # fish_color_param, the color for regular command parameters
+    # fish_color_comment, the color used for code comments
+    # fish_color_match, the color used to highlight matching parenthesis
+    # fish_color_search_match, the color used to highlight history search matches
+    # fish_color_operator, the color for parameter expansion operators like '*' and '~'
+    # fish_color_escape, the color used to highlight character escapes like '\n' and '\x70'
+    # fish_color_cwd, the color used for the current working directory in the default prompt
+    # fish_color_autosuggestion, the color used for autosuggestions
+    # fish_color_user, the color used to print the current username in some of fish default prompts
+    # fish_color_host, the color used to print the current host system in some of fish default prompts
+
+    # fish_pager_color_prefix, the color of the prefix string, i.e. the string that is to be completed
+    # fish_pager_color_completion, the color of the completion itself
+    # fish_pager_color_description, the color of the completion description
+    # fish_pager_color_progress, the color of the progress bar at the bottom left corner
+    # fish_pager_color_secondary, the background color of the every second completion
+    #+end_src
+
+*** colors
+
+    #+begin_src fish :tangle ~/.config/fish/config.fish
+    set fish_color_normal                   white
+    set fish_color_command                  white
+    set fish_color_quote                    white
+    set fish_color_redirection              white
+    set fish_color_end                      white
+    set fish_color_error                    white
+    set fish_color_param                    white
+    set fish_color_comment                  white
+    set fish_color_match                    white
+    set fish_color_search_match             white
+    set fish_color_operator                 white
+    set fish_color_escape                   white
+    set fish_color_cwd                      white
+    set fish_color_autosuggestion           white
+    set fish_color_user                     white
+    set fish_color_host                     white
+    set fish_pager_color_prefix             white
+    set fish_pager_color_completion         white
+    set fish_pager_color_description        white
+    set fish_pager_color_progress           white
+    set fish_pager_color_secondary          white
+
+    set fish_color_error red
+    #+end_src
+
+*** fish_greeting
+    #+begin_src fish :tangle ~/.config/fish/config.fish
+    function fish_greeting
+    end
+    #+end_src
+
+*** fish_prompt
+
+    #+begin_src fish :tangle ~/.config/fish/config.fish
+    function fish_prompt
+      set last_status $status
+      printf '\n'
+      if test $last_status -gt 0
+        set_color $fish_color_error --bold
+        printf '  %s' $last_status
+      end
+      set_color $fish_color_normal
+      printf '  %s' (pwd)
+      set_color $fish_color_operator --bold
+      printf '%s' (__fish_git_prompt)
+      set_color $fish_color_normal
+      printf '\n\n'
+    end
+    #+end_src
+
+* c
+
+  #+begin_src fish :tangle ~/.config/fish/config.fish
+  # set -x C_INCLUDE_PATH $HOME/usr/include
+  # set -x LIBRARY_PATH $HOME/usr/lib
+  set -x C_INCLUDE_PATH /usr/local/include
+  set -x LIBRARY_PATH /usr/local/lib
+  set -x LD_LIBRARY_PATH /usr/local/lib
+  #+end_src
+
+* npm
+
+  #+begin_src fish :tangle ~/.config/fish/config.fish
+  set PATH $HOME/.npm-package/bin $PATH
+  #+end_src
+
+* gem
+
+  #+begin_src fish :tangle ~/.config/fish/config.fish
+  # set PATH $PATH $HOME/.gem/ruby/2.5.0/bin
+  #+end_src
+
+* rust
+
+  #+begin_src fish :tangle ~/.config/fish/config.fish
+  set -x RUST_BACKTRACE 1
+
+  set -x RUSTUP_HOME $HOME/sd0/.rustup
+  set -x CARGO_HOME $HOME/sd0/.cargo
+
+  set PATH $PATH $CARGO_HOME/bin
+  #+end_src
+
+* python
+
+  #+begin_src fish :tangle ~/.config/fish/config.fish
+  set -x PYTHONDONTWRITEBYTECODE false
+  # set PATH $HOME/miniconda3/bin $PATH
+  # set PATH $HOME/miniconda2/bin $PATH
+  set PATH $HOME/sd0/miniconda3/bin $PATH
+  #+end_src
+
+* jojo
+
+  #+begin_src fish :tangle ~/.config/fish/config.fish
+  # set -x JOJO $HOME/.jojo
+  # set PATH $JOJO/bin $PATH
+  #+end_src
+
+* hasekll
+
+  #+begin_src fish :tangle ~/.config/fish/config.fish
+  set -x STACK_ROOT $HOME/sd0/.stack
+  #+end_src
+
+* fish_user_key_bindings
+
+  #+begin_src fish :tangle ~/.config/fish/config.fish
+  function fish_user_key_bindings
+    bind -e \ee
+    bind -e \ev
+  end
+  #+end_src
+
+* ssh-agent
+
+  #+begin_src fish :tangle ~/.config/fish/config.fish
+  # https://gist.github.com/gerbsen/5fd8aa0fde87ac7a2cae#file-ssh_agent_start-fish
+  # content has to be in .config/fish/config.fish
+  # if it does not exist, create the file
+  setenv SSH_ENV $HOME/.ssh/environment
+
+  function start_agent
+      echo "Initializing new SSH agent ..."
+      ssh-agent -c | sed 's/^echo/#echo/' > $SSH_ENV
+      echo "succeeded"
+      chmod 600 $SSH_ENV
+      . $SSH_ENV > /dev/null
+      ssh-add
+  end
+
+  function test_identities
+      ssh-add -l | grep "The agent has no identities" > /dev/null
+      if [ $status -eq 0 ]
+          ssh-add
+          if [ $status -eq 2 ]
+              start_agent
+          end
+      end
+  end
+
+  if [ -n "$SSH_AGENT_PID" ]
+      ps -ef | grep $SSH_AGENT_PID | grep ssh-agent > /dev/null
+      if [ $status -eq 0 ]
+          test_identities
+      end
+  else
+      if [ -f $SSH_ENV ]
+          . $SSH_ENV > /dev/null
+      end
+      ps -ef | grep $SSH_AGENT_PID | grep -v grep | grep ssh-agent > /dev/null
+      if [ $status -eq 0 ]
+          test_identities
+      else
+          start_agent
+      end
+  end
+  #+end_src
+
+* path
+
+  #+begin_src fish :tangle ~/.config/fish/config.fish
+  set PATH $HOME/bin $PATH
+  #+end_src

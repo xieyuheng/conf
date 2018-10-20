@@ -1,0 +1,151 @@
+#+TITLE:  init-config of conkeror
+#+AUTHOR: 謝宇恆 / XIE Yuheng
+
+* home page
+  #+begin_src javascript :tangle ~/.conkerorrc
+  // homepage = "http://cicada-language.github.io";
+  homepage = "http://0.0.0.0:4444/";
+  #+end_src
+* key binding
+  #+begin_src javascript :tangle ~/.conkerorrc
+  define_key(content_buffer_normal_keymap, "f", "follow-new-buffer");
+  define_key(content_buffer_normal_keymap, "g", "find-url-new-buffer");
+  define_key(content_buffer_normal_keymap, "C-x C-c", "kill-current-buffer");
+  #+end_src
+* webjump
+  #+begin_src javascript :tangle ~/.conkerorrc
+  define_webjump("goo","https://www.google.com.hk/search?q=%s&newwindow=1&safe=strict&client=firefox-a&hs=HoZ&rls=org.mozilla:en-US:official&channel=fflb&ei=mV6bU_uLHca48gXz4ILQBQ&start=10&sa=N&biw=1364&bih=695");
+
+  define_webjump("duck","https://duckduckgo.com/?q=%s");
+  define_webjump("wolframalpha","http://www.wolframalpha.com/input/?i=%s&dataset=");
+
+  define_webjump("fanyi","http://fanyi.baidu.com/");
+
+  define_webjump("translate,en->zh","https://translate.google.com.hk/?hl=zh-CN#en/zh-CN/%s");
+  define_webjump("translate,zh->en","https://translate.google.com.hk/#zh-CN/en/%s");
+  // https://translate.google.com.hk/?q=IOctlTerminal&newwindow=1&safe=strict&client=firefox-a&hs=HoZ&rls=org.mozilla:en-US:official&channel=fflb&biw=1364&bih=695&um=1&ie=UTF-8&hl=en&sa=N&tab=wT#zh-CN/en/%E5%81%87%E8%A3%85
+
+  define_webjump("wayback","http://archive.org/web/*/%s");
+
+  define_webjump("refheap","http://www.refheap.com");
+
+  define_webjump("LtU","http://lambda-the-ultimate.org/search/node/%s");
+
+  define_webjump("arch","https://www.archlinux.org/packages/?sort=&q=%s&maintainer=&flagged=");
+  define_webjump("archAUR","https://aur.archlinux.org/packages/?O=0&C=0&SeB=nd&K=%s&outdated=&SB=n&SO=a&PP=50&do_Search=Go=");
+  define_webjump("archwiki","https://wiki.archlinux.org/index.php?title=Special%3ASearch&search=%s");
+
+  define_webjump("baidu","http://www.baidu.com/s?wd=%s&rsv_bp=0&ch=&tn=baidu&bar=&rsv_spt=3&ie=utf-8");
+
+  define_webjump("github","https://github.com/search?q=%s&ref=cmdform");
+  // define_webjump("github","https://github.com/cicada-language/");
+
+  define_webjump("bitbucket","https://bitbucket.org/repo/all?name=%s");
+
+  define_webjump("zi","http://ctext.org/dictionary.pl?if=gb&char=%s");
+  define_webjump("wen","https://zh-classical.wikipedia.org/wiki/%s");
+
+  define_webjump("wikibooks","https://en.wikibooks.org/wiki/%s");
+  define_webjump("wiktionary","http://en.wiktionary.org/wiki/%s");
+  define_webjump("wikipedia-zh","http://zh.wikipedia.org/w/index.php?title=Special%3A%E6%90%9C%E7%B4%A2&profile=default&search=%s&fulltext=Search");
+
+  define_webjump("emacswiki","https://duckduckgo.com/?q=%s+site%3Aemacswiki.org");
+  define_webjump("osdev","http://wiki.osdev.org/index.php?title=Special%3ASearch&profile=advanced&search=%s&fulltext=Search&ns0=1&ns1=1&ns2=1&ns3=1&ns4=1&ns5=1&ns6=1&ns7=1&ns8=1&ns9=1&ns10=1&ns11=1&ns12=1&ns13=1&ns14=1&ns15=1&redirs=1&profile=advanced");
+  #+end_src
+* session
+  #+begin_src javascript :tangle ~/.conkerorrc
+  require("session.js");
+  session_auto_save_auto_load = "prompt";
+  #+end_src
+* mode line
+  #+begin_src javascript :tangle ~/.conkerorrc
+  // widget
+  add_hook("mode_line_hook", mode_line_adder(buffer_count_widget), true);
+
+  // // Big Hint Numbers
+  // register_user_stylesheet(
+  //     "data:text/css," +
+  //         escape(
+  //             "@namespace url(\"http://www.w3.org/1999/xhtml\");\n" +
+  //             "span.__conkeror_hint {\n"+
+  //             "  font-size: 18px !important;\n"+
+  //             "  line-height: 18px !important;\n"+
+  //             "}"));
+  #+end_src
+* restore-killed-buffer-url
+  #+begin_src javascript :tangle ~/.conkerorrc
+  // I think by the time kill_buffer_hook runs the buffer is gone so I
+  // patch kill_buffer
+
+  var kill_buffer_original = kill_buffer_original || kill_buffer;
+
+  var killed_buffer_urls = [];
+
+  kill_buffer = function (buffer, force) {
+      if (buffer.display_uri_string) {
+          killed_buffer_urls.push(buffer.display_uri_string);
+      }
+
+      kill_buffer_original(buffer,force);
+  };
+
+  interactive("restore-killed-buffer-url", "Loads url from a previously killed buffer",
+              function restore_killed_buffer_url (I) {
+                  if (killed_buffer_urls.length !== 0) {
+                      var url = yield I.minibuffer.read(
+                          $prompt = "Restore killed url:",
+                          $completer = new all_word_completer($completions = killed_buffer_urls, $require_match = true),
+                          $default_completion = killed_buffer_urls[killed_buffer_urls.length - 1],
+                          $auto_complete = "url",
+                          $auto_complete_initial = true,
+                          $auto_complete_delay = 0,
+                          $require_match = true);
+
+                      load_url_in_new_buffer(url);
+                  } else {
+                      I.window.minibuffer.message("No killed buffer urls");
+                  }
+              });
+  #+end_src
+* Ask before closing the window
+  #+begin_src javascript :tangle ~/.conkerorrc
+  add_hook("window_before_close_hook",
+           function () {
+               var w = get_recent_conkeror_window();
+               var result = (w == null) ||
+                   "y" == (yield w.minibuffer.read_single_character_option(
+                       $prompt = "Quit Conkeror? (y/n)",
+                       $options = ["y", "n"]));
+               yield co_return(result);
+           });
+  #+end_src
+* font
+  #+begin_src javascript :tangle ~/.conkerorrc
+  // 1. Minimum Size
+  session_pref("font.minimum-size.x-western", 12);
+  // 2. Default Fonts
+  // session_pref("font.name.serif.x-western", "Gentium");
+  // session_pref("font.name.serif.x-western", "Monaco");
+  // session_pref("font.name.serif.x-western", "Monofur");
+  session_pref("font.name.serif.x-western", "Envy-Code-R");
+  #+end_src
+* bookmark
+** note
+   Conkeror does not provide bookmark management capabilities
+   to modification or deletion.
+   However the bookmarks file is simply an SQLite file,
+   so programs like sqlitebrowser can be used to modify or delete bookmarks.
+   The SQLite file can be found in :
+   ~/.conkeror.mozdev.org/conkeror/jlbhyewr.default/places.sqlite
+** List Bookmarks from Command Line
+   The step of copying the file in the following code is necessary
+   if conkeror is running.
+   If you try to run sqlite3 on places.sqlite while conkeror is running,
+   you will get an error that the database is locked.
+
+   cp ~/.conkeror.mozdev.org/conkeror/jlbhyewr.default/places.sqlite /tmp/places.sqlite.tmp
+   sqlite3 /tmp/places.sqlite.tmp '
+       SELECT b.id, p.url, p.title, b.title
+       FROM moz_bookmarks
+       b INNER JOIN moz_places p ON b.fk = p.id
+       ORDER BY b.id DESC;'

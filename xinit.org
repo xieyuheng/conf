@@ -1,0 +1,23 @@
+* ~/.xinitrc (be readed before X)
+
+  #+begin_src sh :tangle ~/.xinitrc
+  #!/bin/sh
+
+  xrdb -merge "${HOME}/.Xresources" &
+
+  export GTK_IM_MODULE=fcitx
+  export QT_IM_MODULE=fcitx
+  export XMODIFIERS="@im=fcitx"
+
+  fcitx &
+  # xmodmap .xmodmap &
+  xbindkeys &
+  # ~/.wallpaper/random-wallpaper.sh &
+  # xcompmgr &
+  # xscreensaver -no-splash &
+
+  # for firefox
+  XDG_DESKTOP_DIR="/home/xyh"
+
+  exec i3
+  #+end_src

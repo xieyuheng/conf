@@ -1,0 +1,280 @@
+#+TITLE:  init-about-sh
+#+AUTHOR: 謝宇恆 / XIE Yuheng
+
+* ~/.bashrc (be readed before login)
+  #+begin_src sh :tangle ~/.bashrc
+  # ~/.bashrc: executed by bash(1) for non-login shells.
+  # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
+  # for examples
+
+  # If not running interactively, don't do anything
+  case $- in
+      *i*) ;;
+        *) return;;
+  esac
+
+
+  # check the window size after each command and, if necessary,
+  # update the values of LINES and COLUMNS.
+  shopt -s checkwinsize
+
+  # If set, the pattern "**" used in a pathname expansion context will
+  # match all files and zero or more directories and subdirectories.
+  #shopt -s globstar
+
+  # make less more friendly for non-text input files, see lesspipe(1)
+  [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
+
+
+
+  # enable color support of ls and also add handy aliases
+  if [ -x /usr/bin/dircolors ]; then
+      test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+      alias ls='ls --color=auto'
+      #alias dir='dir --color=auto'
+      #alias vdir='vdir --color=auto'
+
+      alias grep='grep --color=auto'
+      alias fgrep='fgrep --color=auto'
+      alias egrep='egrep --color=auto'
+  fi
+
+
+  # Add an "alert" alias for long running commands.  Use like so:
+  #   sleep 10; alert
+  alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
+
+  # Alias definitions.
+  # You may want to put all your additions into a separate file like
+  # ~/.bash_aliases, instead of adding them here directly.
+  # See /usr/share/doc/bash-doc/examples in the bash-doc package.
+
+  if [ -f ~/.bash_aliases ]; then
+      . ~/.bash_aliases
+  fi
+
+  # enable programmable completion features (you don't need to enable
+  # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
+  # sources /etc/bash.bashrc).
+  if ! shopt -oq posix; then
+    if [ -f /usr/share/bash-completion/bash_completion ]; then
+      . /usr/share/bash-completion/bash_completion
+    elif [ -f /etc/bash_completion ]; then
+      . /etc/bash_completion
+    fi
+  fi
+  ##
+
+
+
+  # don't put duplicate lines or lines starting with space in the history.
+  # See bash(1) for more options
+  HISTCONTROL=ignoreboth
+
+  # append to the history file, don't overwrite it
+  shopt -s histappend
+
+  # for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
+  HISTSIZE=100000
+
+
+
+
+  export LANG=zh_CN.UTF-8
+  export LC_ALL="zh_CN.UTF-8"
+
+
+
+  export EDITOR="e"
+
+  # for emacsclient :
+  export ALTERNATE_EDITOR="e3"
+
+  # or :
+  # export EDITOR="emacsclient -c  --alternate-editor=e3"
+
+
+
+  # export PS1='\n$?: \w\n\$ '
+  export PS1='\n $?  \w\n'
+
+
+
+  # [[ $(tty) == \/dev\/tty[0-9]* ]] && fcitx-fbterm-helper
+
+
+
+  alias sudo='sudo '
+
+  alias la='ls -hA'
+
+  alias mkdir='mkdir -p -v'
+
+  alias mv='  mv -v'
+  # This alias suspends mv after eight seconds
+  # asks confirmation to delete three or more files
+  # lists the operations in progress
+  # and does not store itself in the shell history file
+  # if the shell is configured to ignore space starting commands
+
+  alias rm=' timeout 3 rm -Iv --one-file-system '
+  # This alias suspends rm after three seconds
+  # asks confirmation to delete three or more files
+  # lists the operations in progress
+  # does not involve more than one file systems
+  # and does not store itself in the shell history file
+  # if the shell is configured to ignore space starting commands
+  # Substitute -I with -i if you prefer to confirm even for one file
+
+  # To remove directories known to be empty
+  # use rmdir as it fails in case of files inside the target
+
+  # 使用最下面的一个是为了增加可读性
+  # alias copy='rsync -avh'
+  # alias copy='rsync -rlptgoDvh'
+  alias copy='rsync --recursive --links --perms --times --group --owner --devices --specials --verbose --human-readable'
+
+
+
+  export LFS=/mnt/lfs
+
+
+  export HISTCONTROL=ignorespace:erasedups
+  export HISTIGNORE="ls":"l":"ll":"rm":"poweroff":"reboot":"halt":"exit":"ls ":"l ":"ll ":"rm ":"poweroff ":"reboot ":"halt ":"exit "
+
+
+  alias myjava='javac  -verbose  -classpath .:$CLASSPATH '
+
+
+
+  export LANG=en_US.UTF-8
+  export LC_CTYPE="en_US.UTF-8"                  #用户所使用的语言符号及其分类
+  export LC_NUMERIC="en_US.UTF-8"                #数字
+  export LC_TIME="en_US.UTF-8"                   #时间显示格式
+  export LC_COLLATE="en_US.UTF-8"                #比较和排序习惯
+  export LC_MONETARY="en_US.UTF-8"               #LC_MONETARY
+  export LC_MESSAGES="en_US.UTF-8"               #信息主要是提示信息,错误信息, 状态信息, 标题, 标签, 按钮和菜单等
+  export LC_PAPER="en_US.UTF-8"                  #默认纸张尺寸大小
+  export LC_NAME="en_US.UTF-8"                   #姓名书写方式
+  export LC_ADDRESS="en_US.UTF-8"                #地址书写方式
+  export LC_TELEPHONE="en_US.UTF-8"              #电话号码书写方式
+  export LC_MEASUREMENT="en_US.UTF-8"            #度量衡表达方式
+  export LC_IDENTIFICATION="en_US.UTF-8"         #对自身包含信息的概述
+  export LC_ALL=
+
+
+  # 优先级的关系：
+  # LC_ALL>LC_*>LANG
+  # LC_ALL的值将覆盖所有其他的locale设定
+
+
+  export LC_CTYPE="zh_CN.UTF-8"                  #用户所使用的语言符号及其分类
+
+  alias emacs='LC_CTYPE=zh_CN.UTF-8  emacs'
+
+
+
+  export PATH="$PATH:$HOME/.cabal/bin"
+
+
+
+  export PATH="`ruby -rubygems -e 'puts Gem.user_dir'`/bin:$PATH"
+  # export PATH="$PATH:$HOME/.gem/ruby/2.1.0/bin"
+
+
+
+  export PATH="$PATH:$HOME/lang/forth/retro/play"
+  export RETROIMAGE="$HOME/lang/forth/retro/play/retroImage"
+
+
+  # export HG="/usr/local/bin/hg"
+  # export PATH=$PATH:$HOME/lang/fasm/fasm/
+  alias fasm='fasm -m 500000 '
+
+
+  ## for hg
+  export PATH=$PATH:$HOME/softwares/mercurial/mercurial-3.0
+
+  ## for e3 editor
+  export PATH=$PATH:$HOME/e3
+
+  export KLH10_HOME=$HOME/os-and-vm/PDP/home
+
+
+  alias x='  exit'
+
+  alias feh='  feh -g 1366x768 -d -S filename '
+
+
+  ## for git
+  alias st="git status"
+  alias add="git add . && git status"
+  alias sub="git reset HEAD . && git status"
+  alias ci="git commit && git status"
+
+  export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$HOME/window/cicada-window/lib/
+
+  export PATH=$PATH:$HOME/cicada/vm/x86-64/linux/
+
+  export PATH=$PATH:$HOME/emx/
+  # export PATH=$PATH:$HOME/window/cicada-window/bin/
+
+
+  # export WLD_DRM_DUMB=1
+
+
+
+  # cd () {
+  #     command cd "$@";
+  #     if [ -f ./Rakefile ]; then
+  #         complete -W "$(rake -T | awk 'NR != 1 {print $10}')" rake
+  #     else
+  #         complete -r rake  2>/dev/null
+  #     fi
+  # }
+
+  # l () {
+  #     command ls -hCF;
+  #     if [ -f ./Rakefile ]; then
+  #         complete -W "$(rake -T | awk 'NR != 1 {print $2}')" rake
+  #     else
+  #         complete -r rake  2>/dev/null
+  #     fi
+  # }
+
+  # ll () {
+  #     command ls -halF;
+  #     if [ -f ./Rakefile ]; then
+  #         complete -W "$(rake -T | awk 'NR != 1 {print $2}')" rake
+  #     else
+  #         complete -r rake  2>/dev/null
+  #     fi
+  # }
+
+
+  alias l="ls -hCF"
+  alias ll="ls -halF"
+
+
+  . /home/xyh/lang/ruby/completion-ruby/completion-ruby-all
+  # . /home/xyh/lang/ruby/rake-completion/rake
+
+  alias "daxiao?"="du -sh ."
+
+
+  # chibi
+  # export CHIBI=$HOME/chibi-scheme/fake-root
+  # export PATH=$PATH:$CHIBI/bin/
+  # export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$CHIBI/
+  # export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$CHIBI/lib/chibi/
+  # export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$CHIBI/lib/chibi/io/
+  # export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$CHIBI/lib/scheme/
+
+
+  # make PREFIX=/home/xyh/chibi-scheme/fake-root/
+  # make PREFIX=/home/xyh/chibi-scheme/fake-root/ install
+
+  export PATH=$PATH:$HOME/joy/bin/
+
+  export PATH=$PATH:$HOME/lang/racket/racket-git/racket/bin
+  #+end_src

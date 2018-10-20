@@ -1,0 +1,22 @@
+* ~/.xmodmap
+
+  - 在 archlinux 下 更好的方法是
+    1. 在 /etc/X11/xorg.conf.d/10-evdev.conf 中添加
+       Option "XkbOptions" "ctrl:nocaps"
+    2. 或者在 ~/.xinitrc 中写入
+       setxkbmap -option ctrl:nocaps &
+
+  #+begin_src conf :tangle no
+  keycode 66 = Control_L
+  clear Lock
+  add Control = Control_L
+  keycode 77 =
+  #+end_src
+
+* ><
+
+  #+begin_src conf :tangle ~/.xmodmap
+  keycode 133 = Control_L
+  clear Mod4
+  add Control = Control_L
+  #+end_src

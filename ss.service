@@ -1,0 +1,8 @@
+[Unit]
+Description=ss
+
+[Service]
+ExecStart=/usr/bin/ss-local -c /home/xyh/app/ss/shang.json
+
+[Install]
+WantedBy=default.target

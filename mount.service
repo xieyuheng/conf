@@ -1,0 +1,9 @@
+[Unit]
+Description=mount
+
+[Service]
+Oneshot=true
+ExecStart=/usr/bin/mount /dev/mmcblk1 sd0/
+
+[Install]
+WantedBy=default.target

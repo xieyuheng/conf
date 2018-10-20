@@ -1,1 +1,3 @@
-cd ~/.emacs.d/dot-emacs/ && ./tangle.el && cd -
+#!/bin/bash
+
+cd ~/conf/emacs/ && ./tangle.el && cd -

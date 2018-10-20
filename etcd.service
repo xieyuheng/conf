@@ -1,0 +1,10 @@
+[Unit]
+Description=etcd
+After=network.target
+
+[Service]
+Type=notify
+ExecStart=/home/xyh/bin/etcd
+
+[Install]
+WantedBy=multi-user.target

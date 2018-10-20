@@ -1,0 +1,1194 @@
+#+TITLE:  memorandum for linux
+#+AUTHOR: 謝宇恆 / XIE Yuheng
+
+* ===================================
+* chromebook
+
+  Got speakers working on Toshiba Chromebook 2 (Fedora 22). What one needs is the `asound.state` file exported from ChromeOS. If you didn't make a backup before installing Fedora, here's mine: https://www.dropbox.com/s/gb9mhd0z4356n81/asound.state?dl=0
+
+The instructions below apply specifically to Toshiba Chromebook 2s running Fedora 22. If you are running a different distro, please make the necessary adjustments to file locations, etc.
+
+1) Make sure alsa IS NOT RUNNING. `sudo killall alsactl` did it for me.
+2) Overwrite the contents of `/var/lib/alsa/asound.state` with the ChromeOS version using your favourite text editor (vim, nano, gedit). You will need to edit as root.
+3) Again, as root, edit the `[Element Speaker]` section of `/usr/share/pulseaudio/alsa-mixer/paths/analog-output-headphones.conf`, making `switch = mute` and `volume = zero`. This enable the speaker muting when a pair of headphones is plugged in.
+4) Reboot.
+
+That's it! If you stopped alsa correctly, you should have sound at this point. If it's still not working and `/var/lib/alsa` shows `asound.state` and `asound.state.new`, it means you didn't stop alsa correctly.
+
+Edited to include headphone detection configurations.﻿
+
+* 幫朋友安裝 arch
+*** 信息
+    * 原來是一個 什麼數據都不要了的 windows 系統
+    * sony vaio 2011 年購買
+*** 預備
+    * 下載每個月的鏡像
+      https://www.archlinux.org/download/
+      並燒錄到 U 盤裏
+      dd if= of= bs=
+    * 加載 U 盤裏的 archlinux 內核
+      可能需要開機時按 某個鍵來進入 BIOS 並調整啓動順序
+      log archlinux 的終端
+*** 網絡
+    * wifi-menu
+*** Update the system clock
+    * Use systemd-timesyncd to ensure that your system clock is accurate.
+      To start it:
+      timedatectl set-ntp true
+*** 硬盤分區與文件系統格式化
+    * 先看看硬盤分區情況
+      lsblk
+      看看分區表
+      parted /dev/sda print
+    * 將使用 parted 來分區
+      parted /dev/sda
+      或者
+      gdisk /dev/sda
+      不做任何改動接受當前的分區
+    * 將要把 arch 安裝到 /dev/sda1
+      以 單分區 爲 分區方案
+      格式化分區
+      mkfs.ext4 /dev/sda1
+      掛載分區
+      mount /dev/sda1 /mnt
+      無 swap
+*** 選擇鏡像
+    * 用 nano 來編輯鏡像列表文件
+      nano /etc/pacman.d/mirrorlist
+      留下某些中國的源
+*** 安裝基礎系統
+    * 使用 pacstrap
+      pacstrap -i /mnt base base-devel
+      The -i switch ensures prompting before package installation.
+*** Generate an fstab
+    * 如若想使用 UUID
+      genfstab -U /mnt > /mnt/etc/fstab
+      如若想使用 label
+      genfstab -L /mnt > /mnt/etc/fstab
+      我選擇 label 因爲其可讀性好
+      遇到問題時再退回 UUID
+    * 生成之後檢查一下
+      cat /mnt/etc/fstab
+*** Chroot and configure the base system
+
+    * 終於要 chroot 了
+      arch-chroot /mnt /bin/bash
+      要小心
+      這裏 網絡有關的配置
+      和 跟 bootloader 有關的配置
+      是最容易遇到問題的
+
+    * Locale
+      先編輯 /etc/locale.gen
+      選擇那些地區選項是需要的
+      至少要 Uncomment en_US.UTF-8 UTF-8
+      還有 zh_CN.UTF-8 UTF-8
+      nano /etc/locale.gen
+      然後使用 locale-gen
+      locale-gen
+      創建 /etc/locale.conf
+      nano /etc/locale.conf
+      在裏面寫 LANG=en_US.UTF-8
+      或 LANG=zh_CN.UTF-8
+      我想要選擇前者
+      因爲 tty 裏不能顯示中文
+
+    * Time
+      Time zones are available in /usr/share/zoneinfo/Zone/SubZone.
+      To list them, run:
+      ls -l /usr/share/zoneinfo
+      選擇亞洲上海做爲默認時區 這是利用軟鏈接完成的
+      ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
+      It is highly recommended to set the Time standard to UTC,
+      and adjust the Time skew:
+      hwclock --systohc --utc
+      If other operating systems are installed on the machine,
+      they must be configured accordingly.
+
+    * Initramfs
+      As mkinitcpio was run on installation of linux with pacstrap,
+      most users can use the defaults provided in mkinitcpio.conf.
+      For special configurations,
+      set the correct hooks in /etc/mkinitcpio.conf
+      and re-generate the initramfs image:
+      mkinitcpio -p linux
+      因此這步驟可以省略
+
+    * bootloader
+      雖然我自己用的是 lilo
+      但是這裏我嘗試 grub
+      而 os-prober 是幫助 grub 自動探測 os 用的
+      pacman -S grub os-prober
+      安裝 bootloader 到硬盤
+      grub-install --recheck /dev/sda
+      生成 grub.cfg
+      grub-mkconfig -o /boot/grub/grub.cfg
+
+    * network
+      * 主機取名
+        起一個 hostname 就叫 LITTLE-LADY 吧 :)
+        這是通過更改 /etc/hostname 完成的
+        nano /etc/hostname
+        並且 /etc/hosts 也要跟着改
+        nano /etc/hosts
+        就是把 取的名字 加在每一行後面的 <hostname> field
+      * 有線網絡
+        dhcpcd is the default method in the install medium,
+        and part of the base installation.
+        When only requiring a single wired connection,
+        enable the dhcpcd service:
+        需要針對接口執行 systemctl enable dhcpcd@<interface>.service
+        接口我就寫 enp4s0 了 也不知道對不對
+        因此執行
+        systemctl enable dhcpcd@enp4s0.service
+      * 無線網絡
+        首先需要下面兩個程序
+        pacman -S iw wpa_supplicant
+        然後是爲了 wifi-menu
+        pacman -S dialog
+
+*** Unmount the partitions and reboot
+    * 收尾工作
+      設置密碼
+      passwd
+      退出 chroot
+      exit
+      停止掛載
+      umount -R /mnt
+      最後重啓
+      reboot
+*** ----------------------------------
+*** Users and groups
+    * 要用 zsh 做爲啓動 shell
+      所以 先安裝 zsh
+      然後
+      useradd -m -G wheel -s /bin/zsh slfg
+*** to use sudo
+    * 爲了讓新添加的用戶能使用 sudo 還需要額外的配置
+      To establish nano as the visudo editor for the duration of the current shell session, set and export the EDITOR variable before calling visudo.
+      EDITOR=nano visudo
+      To allow a user to gain full root privileges when he/she precedes a command with sudo,
+      add the following line:
+      USER_NAME   ALL=(ALL) ALL
+      To allow members of group wheel sudo access:
+      %wheel      ALL=(ALL) ALL
+*** ----------------------------------
+*** 安裝必要的程序
+    * xorg xorg-xinit xmonad
+      emacs firefox htop
+    * 之後就可以用 xmonad 和 emacs 來做其他的事情了
+    * wget curl
+    * 還有 ohmyz.sh
+    * 還有 yaourt
+*** archlinuxcn
+    * 在 /etc/pacman.conf 文件末尾添加以下两行
+      [archlinuxcn]
+      SigLevel = Optional TrustedOnly
+      Server = http://repo.archlinuxcn.org/$arch
+      之后安装 archlinuxcn-keyring 包以导入 GPG key
+*** kde
+    * 用 meta-package 來進行安裝
+      plasma-meta kde-applications-meta
+      kde-l10n-zh_cn kde-l10n-zh_tw
+* -----------------------------------
+* 每次手动降低GPU频率
+  echo low > /sys/class/drm/card0/device/power_profile
+
+
+  或者用下面的方法:
+  查看当前GPU频率:
+  $ sudo cat /sys/kernel/debug/dri/0/radeon_pm_info
+  default engine clock: 750000 kHz
+  current engine clock: 156990 kHz
+  default memory clock: 790000 kHz
+  current memory clock: 199960 kHz
+  voltage: 900 mV
+  PCIE lanes: 16
+
+  增加内核参数radeon.dpm=1后
+  $ sudo cat /sys/kernel/debug/dri/0/radeon_pm_info
+  uvd    vclk: 0 dclk: 0
+  power level 0    sclk: 15700 mclk: 20000 vddc: 900 vddci: 0
+* >< 开机自动挂载硬盘分区
+这里面遇到问题了
+对math的挂载是有错误的
+被挂载上来的东西总是只读的
+只有用root才能打开
+需要的是细致地学习一下关于用户组与权限的问题
+
+$ sudo fdisk -l #查看分区情况
+修改下面的配置文件：
+file:/etc/fstab
+添加(例如):
+#+begin_src sh
+# /etc/fstab: static file system information.
+#
+# Use 'blkid' to print the universally unique identifier for a device
+# this may be used with UUID= as a more robust way to name devices
+# that works even if disks are added and removed. See fstab(5).
+#
+# <file system> <mount point>   <type>  <options>       <dump>  <pass>
+# / was on /dev/sda2 during installation
+UUID=f29bb57a-4b19-4020-a9a1-3d177ff13ba5 / ext4 errors=remount-ro 0 1
+# /boot was on /dev/sda1 during installation
+UUID=ed36ae7c-e113-452f-b203-77e52e5e6d2f /boot ext4 defaults 0 2
+# /home was on /dev/sda7 during installation
+UUID=52befbc9-634a-462a-b082-382c07c6d3c2 /home ext4 defaults 0 2
+# swap was on /dev/sda8 during installation
+UUID=c8034a61-fa9a-4da5-b909-092fb776ff90 none swap sw 0 0
+
+
+/dev/sda5 /home/xyh/arch ext4  errors=remount-ro 0 1
+/dev/sda6 /home/xyh/math ntfs defaults,locale=zh_CN.UTF-8 0 0
+#+end_src
+* dd
+*** note
+ to copy from source to destination
+ block-by-block
+ regardless of their filesystem types or operating systems
+*** Cloning a partition
+ From physical disk /dev/sda, partition 1
+ to physical disk /dev/sdb, partition 1
+
+ dd if=/dev/sda1 of=/dev/sdb1 bs=4096 conv=notrunc,noerror
+
+ If output file of (sdb1 in the example) does not exist
+ dd will start at the beginning of the disk and create it
+*** Cloning an entire hard disk
+ From physical disk /dev/sda to physical disk /dev/sdb
+
+ dd if=/dev/sda of=/dev/sdb bs=4096 conv=notrunc,noerror
+
+ This will clone the entire drive
+ including MBR (and therefore bootloader)
+ all partitions, UUIDs, and data
+ 1. notrunc or 'do not truncate' maintains data integrity
+    by instructing dd not to truncate any data
+ 2. noerror instructs dd to continue operation
+    ignoring all input errors
+    Default behavior for dd is to halt at any error
+ 3. bs=4096 sets the block size to 4k
+    an optimal size for hard disk read/write efficiency
+    and therefore, cloning speed
+ 4. Note:
+    To regain unique UUIDs
+    use "tune2fs /dev/sdbX -U random" on every partitions
+ 5. Note:
+    Partition table changes from dd are not be registered by the kernel
+    To notify of changes without rebooting
+    use a utility like partprobe (part of GNU parted)
+    + partprobe
+      inform the OS of partition table changes
+      partprobe -d     Don't update the kernel
+      partprobe -s     Show a summary of devices and their partitions
+      partprobe -h     Show summary of options
+      partprobe -v     Show version of program
+*** Backing up the MBR
+ The MBR is stored in the the first 512 bytes of the disk
+ It consist of 3 parts:
+ 1) The first 446 bytes contain the boot loader
+ 2) The next 64 bytes contain the partition table
+    4 entries of 16 bytes each
+    one entry for each primary partition
+ 3) The last 2 bytes contain an identifier
+
+ To save the MBR into the file "mbr.img":
+ # dd if=/dev/hda of=/mnt/sda1/mbr.img bs=512 count=1
+
+ To restore
+ (be careful : this could destroy your existing partition table
+ and with it access to all data on the disk):
+ # dd if=/mnt/sda1/mbr.img of=/dev/hda
+
+ If you only want to restore the boot loader
+ but not the primary partition table entries
+ just restore the first 446 bytes of the MBR:
+ # dd if=/mnt/sda1/mbr.img of=/dev/hda bs=446 count=1
+
+ To restore only the partition table, one must use
+ # dd if=/mnt/sda1/mbr.img of=/dev/hda bs=1 skip=446 count=64
+
+ You can also get the MBR from a full dd disk image
+ # dd if=/path/to/disk.img of=/mnt/sda1/mbr.img bs=512 count=1
+*** Create disk image
+ 1. Boot from a liveCD or liveUSB
+ 2. Make sure no partitions are mounted from the source hard drive
+ 3. Mount the external HD
+ 4. Backup the drive
+    # dd if=/dev/hda conv=sync,noerror bs=64K | gzip -c  > /mnt/sda1/hda.img.gz
+ 5. Save extra information about the drive geometry necessary
+    in order to interpret the partition table stored within the image
+    The most important of which is the cylinder size
+    # fdisk -l /dev/hda > /mnt/sda1/hda_fdisk.info
+ NOTE: You may wish to use a block size (bs=)
+ that is equal to the amount of cache on the HD you are backing up
+ For example, bs=8192K works for an 8MB cache
+ The 64K mentioned in this article is better than the default bs=512 bytes
+ but it will run faster with a larger bs=
+
+ Restore system
+ To restore your system:
+ # gunzip -c /mnt/sda1/hda.img.gz | dd of=/dev/hda
+* locale (中文支持)
+*** install locale
+ in file:/etc/locale.gen free the following:
+ en_US.UTF8 UTF-8
+ zh_CN.UTF8 UTF-8
+ zh_CN.GBK GBK
+ zh_CN.GB2312 GB2312
+ zh_CN.GB18030 GB18030
+
+ run locale-gen
+ then one can use it
+
+ to see the locale in use:
+ locale
+
+ to see the locale can be use:
+ locale -a
+*** setting locale
+ in one of the following:
+ .bashrc
+ .xinitrc
+ .xprofile
+
+ add:
+ export LANG=zh_CN.UTF-8
+ export LC_ALL="zh_CN.UTF-8"
+ + 以获得中文支持
+* driver
+*** use lspci to see the hardwares
+ lspci | grep VGA
+ + PCI : (Personal Computer Interface) (Peripheral Component Interconnect)
+ + VGA : (Video Graphics Array)
+   refers specifically to the display hardware which
+   first introduced with the IBM PS/2 line of computers in 1987
+   but through its widespread adoption has also come to mean
+   1. either an analog computer display standard
+      the 15-pin D-subminiature VGA connector
+   2. or the 640×480 resolution itself
+*** 输入下面命令，查看所有开源驱动:
+ sudo pacman -Ss xf86-video | less
+
+*** graphics
+ 1. AMD/ATI :
+    xf86-video-ati
+    catalyst
+ 2. Intel :
+    xf86-video-intel
+ 3. Nvidia :
+    xf86-video-nouveau
+    xf86-video-nv
+    nvidia
+    nvidia-304xx
+    nvidia-173xx
+    nvidia-96xx
+ 4. VIA :
+    xf86-video-openchrome
+***** about xf86-video-ati
+******* 配置
+   Xorg 会自动装入驱动并通过 EDID 获得显示器分辨率，只有性能优化时才需要额外配置。
+   如果要手动配置，请添加文件 /etc/X11/xorg.conf.d/20-radeon.conf, 并加入:
+   Section "Device"
+       Identifier "Radeon"
+       Driver "radeon"
+   EndSection
+   通过此段可以调整显卡的设置。
+
+   下面这些选项属于/etc/X11/xorg.conf.d/20-radeon.conf
+********* ColorTiling
+    是绝对安全的,并且默认被启用
+    大多数用户能注意到性能的提升
+    但是这个功能R200及更早的显卡不支持
+    早的显卡虽可以启用,但是工作负担转移到了cpu上
+    Option "ColorTiling" "on"
+********* Acceleration architecture
+    这只在新卡上有用. 如果你激活了这个功能然后进不了X,删除这个选项吧
+    Option "AccelMethod" "EXA"
+********* Page Flip
+    一般来说是安全的 老显卡可以启用这个功能
+    不过这样将会禁用EXA
+    最近的驱动可以使这项功能和EXA都启用
+    Option "EnablePageFlip" "on"
+********* EXAVSync
+    选项试图通过stalling the engine until the display controller has passed the destination region来避免撕裂。在开启了Xv overlay视频选项的3D加速桌面非常有用，使用KMS时则没有必要。
+    Option "EXAVSync" "yes"
+    下面是一个简单的配置文件示例： /etc/X11/xorg.conf.d/20-radeon.conf
+    #+begin_src conf-unix :tangle
+    Section "Device"
+            Identifier  "My Graphics Card"
+            Driver	"radeon"
+            #Option	"SWcursor"              "off" #software cursor might be necessary on some rare occasions, hence set off by default
+            Option	"EnablePageFlip"        "on"  #supported on all R/RV/RS4xx and older hardware, and set on by default
+            Option	"AccelMethod"           "EXA" #valid options are XAA, EXA and Glamor. EXA is the default
+            Option	"RenderAccel"           "on"  #enabled by default on all radeon hardware
+            Option	"ColorTiling"           "on"  #enabled by default on RV300 and later radeon cards
+            Option	"EXAVSync"              "off" #default is off, otherwise on. Only works if EXA activated
+            Option	"EXAPixmaps"            "on"  #when on icreases 2D performance, but may also cause artifacts on some old cards. Only works if EXA activated
+            Option	"AccelDFS"              "on"  #default is off, read the radeon manpage for more information
+    EndSection
+    #+end_src
+    如果gartsize没有自动检测到，可以通过向kernel parameters添加radeon.gartsize=32来实现，单位时Mb，32用于RV280显卡。
+    另外可以向modprobe文件/etc/modprobe.d/radeon.conf里添加选项实现:
+    options radeon gartsize=32
+********* 关闭 PCI-E 2.0
+    从3.6版内核开始，radeon里PCI-E v2.0选项默认启用。
+    对一些主板可能不稳定，可以向kernel command line添加radeon.pcie_gen2=0来关闭。
+    参考 Phoronix article
+******* 节能
+********* note
+    开源驱动的节电功能默认关闭,需要可手动启用.
+    三种方法可供选择:
+    1. dynpm
+    2. profile
+    3. dpm(3.11内核后可用)
+    不好说哪个方法对你最合适, 你该自己试试.
+    所有vbios中有合适的电源状态表的芯片(R1xx和更新的)都支持电源管理. "dpm" 仅在R6xx和更新的芯片上被支持.(Power management is supported on all chips that include the appropriate power state tables in the vbios (R1xx and newer). "dpm" is only supported on R6xx and newer chips.)
+    详见 http://www.x.org/wiki/RadeonFeature/#index3h2 .
+********* 动态频率调整
+    此方法根据GPU负载自动改变时钟频率，所以性能忙碌时自动提高，空闲时降低。自动降频试图在垂直消隐期间工作，但由于 降频函数运行时间限制，在周期内可能无法完成，这可能导致显示闪烁。因此，动态调整只能在单显卡下正常工作。
+    可以通过以下命令启用：
+    # echo dynpm > /sys/class/drm/card0/device/power_method
+********* 基于配置文件的频率调整
+    该方法允许你选择5种不同工作方式。这些方式不同大部分在于时钟频率和电压。这种方式不同于激进方式，所以更稳定，少闪屏。而且可以在多显卡环境下工作
+    要激活此方式，可运行以下命令：
+
+    # echo profile > /sys/class/drm/card0/device/power_method
+
+    可选的配置文件方式：
+
+    default 使用默认时钟频率，不改变时钟状态。这是默认启用方式。
+    auto 根据系统是否使用电池，在状态 mid 和 high 间自动切换，当显示器进入节能状态时，将自动切换为 * low 方式
+    low 强制GPU一直以最低功耗运行，注意此方式在某些笔记本上可能导致显示问题。这就是* auto 方式只有在显示器关闭时才启用此方式的原因。
+    mid 强制GPU一直以中等功耗运行，当显示器进入节能状态时，将自动切换为 * low方式
+    high 强制GPU以最高频率运行，此时性能最高，功耗也最高。同样当显示器进入节能状态时，将自动切换为 * low方式
+    例如，我们可以激活low 配置方式，你可以根据需要替换为上述其他方式：
+
+    # echo low > /sys/class/drm/card0/device/power_profile
+*********** 永久配置
+     上述方法不是永久性的 系统重启后将丢失
+     为了让它一直有效 你可以使用systemd-tmpfiles(例如 #Dynamic frequency switching):
+     /etc/tmpfiles.d/radeon-pm.conf
+     /sys/class/drm/card0/device/power_method - - - - dynpm
+     你也可以使用udev规则替代 (例如 #Profile-based frequency switching):
+
+     /etc/udev/rules.d/30-radeon-pm.rules
+     KERNEL=="dri/card0", SUBSYSTEM=="drm", DRIVERS=="radeon", ATTR{device/power_method}="profile", ATTR{device/power_profile}="low"
+     注意: 如果上述规则失效，你可以试试删除 dri/ 前辍.
+     KERNEL=="card0", SUBSYSTEM=="drm", DRIVERS=="radeon", ATTR{device/power_method}="profile",
+
+********* 动态电源管理
+    内核3.11已默认启用ASPM，但没有启用DPM。如果要启用可加入参数 radeon.dpm=1 到 kernel parameters
+    不像#动态频率调整，“dpm"方式根据GPU负载情况动态调整时钟频率和电压，同时它会启用频率和电压门控
+*** sound
+ alsa-utils
+*** input
+ xf86-input-evdev
+***** touchpad synaptics
+******* setting
+   $ sudo pacman -S xf86-input-synaptics
+   在安装了xf86-input-synaptics之后
+   一个默认的配置文件位于/etc/X11/xorg.conf.d/50-synaptics.conf
+   $ man synaptics for more
+
+   我需要关闭双指控制
+   我需要让操作尽可能的简单
+   #+begin_src conf
+   Option "VertEdgeScroll" "on"
+   Option "VertTwoFingerScroll" "off"
+   Option "HorizEdgeScroll" "on"
+   Option "HorizTwoFingerScroll" "off"
+   #+end_src
+
+   如果你经常因为手掌扫过触摸板而导致TabButton2属性被触发
+   (大多数时候都是"粘贴”动作)
+   而你又不介意关闭掉双指触击功能
+   请将TapButton2设置为0
+
+   使用 xinput list来找到您的synaptics设备名
+   $ xinput list
+   ⎡ Virtual core pointer                          id=2	[master pointer  (3)]
+   ⎜   ↳ Virtual core XTEST pointer                id=4	[slave  pointer  (2)]
+   ⎜   ↳ SynPS/2 Synaptics TouchPad                id=11	[slave  pointer  (2)]
+   ⎣ Virtual core keyboard                         id=3	[master keyboard (2)]
+       ↳ Virtual core XTEST keyboard               id=5	[slave  keyboard (3)]
+       ↳ Sony Vaio Keys                            id=6	[slave  keyboard (3)]
+       ↳ Video Bus                                 id=7	[slave  keyboard (3)]
+       ↳ Power Button                              id=8	[slave  keyboard (3)]
+       ↳ USB 2.0 Camera                            id=9	[slave  keyboard (3)]
+       ↳ AT Translated Set 2 keyboard              id=10	[slave  keyboard (3)]
+   我的触摸板名字是"SynPS/2 Synaptics TouchPad"
+   $ xinput list-props "SynPS/2 Synaptics TouchPad" | grep Capabilities
+   Synaptics Capabilities (293):	1, 0, 1, 1, 1, 1, 1
+   从左到右，分别代表：
+       (1) 设备有物理左键
+       (0) 设备有物理中键
+       (1) 设备有物理右键
+       (1) 设备支持两指检测
+       (1) 设备支持三指检测
+       (1) 设备可以配置垂直分辨率
+       (1) 设备可以配置水平分辨率
+
+******* 软开关 (using xbindkeys)
+   将下面的脚本保存到/bin/trackpad-toggle.sh中：
+   /bin/trackpad-toggle.sh
+   #+begin_src sh
+   #!/bin/bash
+   synclient TouchpadOff=$(synclient -l | grep -c 'TouchpadOff.*=.*0')
+   #+end_src
+
+   最后绑定一个快捷键来运行这段脚本
+   #+begin_src sh
+   "/bin/trackpad-toggle.sh"
+       m:0x5 + c:65
+       Control+Shift + space
+   #+end_src
+   重启xbindkeys然后测试Ctrl+Shift+Space
+
+* networking
+*** dhcp
+    使用 dhcpcd
+    如果你只使用一个单一的固定有线网络连接,你并不需要网络管理服务的话
+    你可以简单的使用 dhcpcd 服务. 在这里, interface_name 是你的网卡名称:
+    sudo systemctl enable dhcpcd.service
+    如果不行，试试：
+    sudo systemctl enable dhcpcd@interface_name.service
+    sudo systemctl enable dhcpcd@enp4s0.service
+
+    使用 netctl
+    复制一个简单的配置样本 /etc/netctl/examples 到 /etc/netctl/:
+    # cd /etc/netctl
+    # cp examples/ethernet-dhcp my-network
+    根据你的需要修改配置文件 (修改 Interface):
+    # nano my-network
+    启用这个 my-network 配置:
+    sudo netctl enable my-network
+*** wifi
+    package :
+    iw wpa_supplicant linux-firmware
+
+    wifi-menu <interface_name>
+    sudo wifi-menu wlp2s0
+
+* browser
+*** firefox
+ packages:
+ firefox
+ arch-firefox-search
+ firefox-adblock-plus
+ firefox-firebug
+***** plugins
+  Adobe Flash Player:
+  sudo pacman -S flashplugin
+
+***** goagent
+  修改local\proxy.ini
+  [gae]下的appid=你的appid(多appid请用|隔开)
+******* local/proxy.ini (example)
+   #+begin_src conf
+   [listen]
+   #监听ip，如果需要允许局域网/公网使用，设为0.0.0.0即可
+   ip = 127.0.0.1
+   #使用GAE服务端的默认8087端口，如有需要你可以修改成其他的
+   port = 8087
+   #启动后goagent窗口是否可见，0为不可见（最小化至托盘），1为不最小化
+   visible = 1
+   #是否显示详细debug信息
+   debuginfo = 0
+
+   #GAE服务端的配置
+   [gae]
+   #你的Google app engine AppID,也就是服务器部署的APPID，配置多ID用|隔开
+   appid = goagent
+   #密码,默认为空,你可以在server目录的wsgi.py设定,如果设定了,此处需要与wsgi,py保持一致
+   password = 123456
+   #服务端路径,一般不用修改,如果不懂也不要修改.
+   path = /2
+   #使用http还是https(SSL加密传输)连接至GAE
+   mode = https
+   #填ipv6则使用[ipv6/hosts][ipv6/http]，默认ipv4使用[ipv4/hosts][ipv4/http]设置
+   #此项设置意义与之前版本不同。非IPv6环境无需考虑，请勿随意修改
+   profile = ipv4
+   #ip评优算法每次选出的ip数量
+   window = 4
+   crlf = 1
+   #是否开启流量混淆
+   obfuscate = 0
+   #是否对服务器证书进行验证
+   validate = 0
+   # 如果设置为 rc4 则开启rc4加密，需在password设置密码，否则不开启，一般mode为https时无需开启
+   options =
+
+   # 用于连接GAE的IP列表
+   [iplist]
+   google_cn = 203.208.46.131|203.208.46.132|203.208.46.133|203.208.46.134|203.208.46.135|203.208.46.136|203.208.46.137|203.208.46.138
+   google_hk = www.google.com|mail.google.com|www.google.com.hk|www.google.com.tw|www.l.google.com|mail.l.google.com
+   google_ipv6 = 2404:6800:4005:c00::64|2404:6800:4005:c00::65|2404:6800:4005:c00::5e|2404:6800:4005:c00::67|2404:6800:4005:c00::2f
+
+   # 匹配的会使用crlf并且直连，=后留空则使用远程DNS解析，也可以手动指定IP防止因解析失败而无法使用，将IP写等号后面。
+   # google_hk则表示使用[iplist]中的google_hk下的IP，google_cn则表示使用[iplist]中的google_cn下的IP
+   [ipv4/hosts]
+   s0.googleusercontent.com = google_hk
+   s1.googleusercontent.com = google_hk
+   s2.googleusercontent.com = google_hk
+   s3.googleusercontent.com = google_hk
+   s4.googleusercontent.com = google_hk
+   s5.googleusercontent.com = google_hk
+   s6.googleusercontent.com = google_hk
+   gp0.googleusercontent.com = google_hk
+   gp1.googleusercontent.com = google_hk
+   gp2.googleusercontent.com = google_hk
+   gp3.googleusercontent.com = google_hk
+   gp4.googleusercontent.com = google_hk
+   gp5.googleusercontent.com = google_hk
+   gp6.googleusercontent.com = google_hk
+   themes.googleusercontent.com = google_hk
+   producer.googleusercontent.com = google_hk
+   mail-attachment.googleusercontent.com = google_cn
+   code.google.com = google_cn
+   talk.google.com =
+   talk.l.google.com =
+   talkx.l.google.com =
+   .google.com = google_hk
+   .google.com.hk = google_hk
+   .googleapis.com = google_hk
+   .android.com = google_hk
+   .appspot.com = google_hk
+   .googlegroups.com = google_hk
+   .googlesource.com = google_hk
+   .googleusercontent.com = google_cn
+   .google-analytics.com = google_cn
+   .googlecode.com = google_cn
+   .gstatic.com = google_cn
+   .dropbox.com:443 =
+   .box.com:443 =
+   .copy.com:443 =
+   https?://.+\.c\.youtube\.com/liveplay = google_hk
+   ;https?://www\.youtube\.com/watch = google_hk
+
+   [ipv4/http]
+   crlfsites = .youtube.com|.google.com
+   #匹配以此开头的域名强制跳转到https的网站
+   forcehttps = groups.google.com|code.google.com|docs.google.com
+   #使用伪造的证书，可以用来避免出现证书错误警告
+   fakehttps = www.google.com
+   #通过GAE的地址
+   withgae = play.google.com
+
+   # 针对IPv6的设置
+   [ipv6/hosts]
+   talk.google.com =
+   talk.l.google.com =
+   talkx.l.google.com =
+   .google.com = google_ipv6
+   .googleusercontent.com = google_ipv6
+   .googleapis.com = google_ipv6
+   .google-analytics.com = google_ipv6
+   .googlecode.com = google_ipv6
+   .google.com.hk = google_ipv6
+   .googlegroups.com = google_ipv6
+   .googlesource.com = google_ipv6
+   .appspot.com = google_ipv6
+   .android.com = google_ipv6
+   .dropbox.com:443 =
+   .box.com:443 =
+   .copy.com:443 =
+
+   [ipv6/http]
+   crlfsites = .youtube.com|.google.com
+   forcehttps = groups.google.com|code.google.com|docs.google.com
+   fakehttps =
+   withgae = play.google.com
+
+   #代理自动配置脚本(Proxy auto-config)设定
+   [pac]
+   #是否启用，若启用，浏览器代理自动配置地址填http://127.0.0.1:8086/proxy.pac
+   enable = 1
+   # pacserver的监听地址
+   ip = 127.0.0.1
+   port = 8086
+   # pac文件的名称
+   file = proxy.pac
+   #被墙规则订阅地址
+   gfwlist = http://autoproxy-gfwlist.googlecode.com/svn/trunk/gfwlist.txt
+   #广告拦截规则订阅地址
+   adblock = http://adblock-chinalist.googlecode.com/svn/trunk/adblock.txt
+   #自动更新间隔时间
+   expired = 86400
+
+   #对应php server 的设置
+   [php]
+   enable = 0
+   password = 123456
+   crlf = 0
+   validate = 0
+   listen = 127.0.0.1:8089
+   fetchserver = https://.cm/
+   usehosts = 1
+
+   #二级代理,一般内网会用到
+   [proxy]
+   #是否启用
+   enable = 0
+   autodetect = 1
+   #代理服务器地址
+   host = 10.64.1.63
+   #代理服务器端口
+   port = 8080
+   #代理服务器登录用户名
+   username = username
+   #密码
+   password = 123456
+
+   # 自动分段下载，需远程服务器支持Rang
+   [autorange]
+   #匹配以下域名时自动下载
+   hosts = *.c.youtube.com|*.atm.youku.com|*.googlevideo.com|*av.vimeo.com|smile-*.nicovideo.jp|video.*.fbcdn.net|s*.last.fm|x*.last.fm|*.x.xvideos.com|*.edgecastcdn.net|*.d.rncdn3.com|cdn*.public.tube8.com|videos.flv*.redtubefiles.com|cdn*.public.extremetube.phncdn.com|cdn*.video.pornhub.phncdn.com|*.mms.vlog.xuite.net|vs*.thisav.com|archive.rthk.hk|video*.modimovie.com|*.c.docs.google.com
+   # 自动对列表中文件类型启用分段下载功能
+   endswith = .f4v|.flv|.hlv|.m4v|.mp4|.mp3|.ogg|.avi|.exe|.zip|.iso|.rar|.bz2|.xz|.dmg
+   # 禁用分段下载的文件类型
+   noendswith = .xml|.json|.html|.php|.py|.js|.css|.jpg|.jpeg|.png|.gif|.ico|.webp
+   # 线程数
+   threads = 3
+   #一次最大下载量
+   maxsize = 1048576
+   #首次读写量
+   waitsize = 524288
+   #后续读写量
+   bufsize = 8192
+
+   #DNS模块，可以用来防止DNS劫持/污染
+   [dns]
+   enable = 0
+   #DNS监听地址，使用时将系统DNS设置为127.0.0.1
+   listen = 127.0.0.1:53
+   #远程DNS查询服务器
+   remote = 8.8.8.8|8.8.4.4|114.114.114.114|114.114.115.115
+   #缓存大小
+   cachesize = 5000
+   #超时时间
+   timeout = 2
+
+   #模拟用户浏览器类型,在User-Agent里提交给服务器你的浏览器操作系统等信息
+   [useragent]
+   #是否启用
+   enable = 0
+   #可自行修改的，前提是你知道怎么改
+   string = Mozilla/5.0 (iPhone; U; CPU like Mac OS X; en) AppleWebKit/420+ (KHTML, like Gecko) Version/3.0 Mobile/1A543a Safari/419.3
+
+   [fetchmax]
+   local =
+   server =
+
+   #不用理会,显示在控制台上方的公益广告
+   [love]
+   #不愿意看到这广告就把1改成0
+   enable = 1
+   timestamp = 1347983481
+   tip = \u8bf7\u5173\u6ce8\u5317\u4eac\u5931\u5b66\u513f\u7ae5~~
+
+       纯IPv6设置方法
+           profile = ipv6并注释[iplist]中google_cn、google_hk行
+       如何播放youtube上地区限制的vevo视频，此法可正常播放大部分vevo视频
+           删除;https?://www\.youtube\.com/watch = google_hk前的‘;’注释
+
+   旧版proxy.ini各项参数介绍，方便你自己修改设置
+
+   [listen]
+   #监听ip，如果需要允许局域网/公网使用，设为0.0.0.0即可，
+   ip = 127.0.0.1
+   #使用GAE服务端的默认8087端口，如有需要你可以修改成其他的
+   port = 8087
+   #启动后goagent窗口是否可见，0为不可见（最小化至托盘），1为不最小化
+   visible=0
+   #是否显示详细debug信息
+   debuginfo = 0
+
+   #GAE服务端的配置
+   [gae]
+   #你的Google app engine AppID,也就是服务器部署的APPID，配置多ID用|隔开
+   appid = appid1|appid2|appid3
+   #密码,默认为空,你可以在上传的wsgi.py设定,如果设定了,此处需要与wsgi,py保持一致
+   password =
+   #服务端路径,一般不用修改,如果不懂也不要修改.
+   path = /2
+   #使用哪个配置段的IP来连接服务器，cn/hk/ipv6可选
+   profile = google_cn
+   crlf = 1
+   #是否在google_cn超时的情况下自动使用google_hk
+   autoswitch=1
+   #是否开启流量混淆
+   obfuscate = 0
+   #是否开启防中间人攻击，开启之后会对服务器证书进行验证
+   validate = 0
+
+   #代理自动配置脚本(Proxy auto-config)设定
+   [pac]
+   #是否启用，若启用，浏览器代理自动配置地址填http://127.0.0.1:8086/proxy.pac
+   enable = 0
+   ip = 127.0.0.1
+   port = 8086
+   file = proxy.pac
+   #规则订阅地址
+   gfwlist = http://autoproxy-gfwlist.googlecode.com/svn/trunk/gfwlist.txt
+
+   #使用pass/php的配置
+   [paas]
+   #是否启用
+   enable = 0
+   #密码,默认为空,你可以在上传的Server设定,如果设定了,此处需要与Server保持一致
+   password = 123456
+   #本地监听，表示监听本地的IP与端口，使用时浏览器地址设置为这里
+   listen = 127.0.0.1:8088
+   #paas/php server的地址
+   fetchserver = https://app.com/
+
+   #二级代理,一般内网会用到
+   [proxy]
+   #是否启用
+   enable = 0
+   autodetect = 1
+   #代理服务器地址
+   host = 10.64.1.63
+   #代理服务器端口
+   port = 8080
+   #代理服务器登录用户名
+   username = username
+   #密码
+   password = 123456
+
+   #GAE配置档 ,与这个有关profile = google_cn
+   [google_cn]
+   #使用http还是https(SSL加密传输)连接至GAE
+   mode = https
+   #ip评优算法每次选出的ip数量
+   window = 2
+   #用来连接的GAE服务器IP，可自己修改为可用IP
+   hosts = 203.208.46.131|203.208.46.132|203.208.46.133|203.208.46.134|203.208.46.135|203.208.46.136|203.208.46.137|203.208.46.138
+   #匹配以此结尾的域名匹配的会使用hosts方式直连而不通过GAE代理（仅限谷歌旗下域名）
+   sites = .google.com|.googleusercontent.com|.googleapis.com|.google-analytics.com|.googlecode.com|.google.com.hk|.appspot.com|.android.com|.googlegroups.com
+   #匹配以此开头的域名强制跳转到https的网站
+   forcehttps = groups.google.com|code.google.com|mail.google.com|docs.google.com|profiles.google.com|developer.android.com
+   #满足sites但仍通过GAE的地址，若某一满足sites段的地址无法访问，可加入withgae
+   withgae = www.google.com/imgres|www.google.com.hk/imgres|translate.googleapis.com|plus.url.google.com|plus.google.com|plusone.google.com|reader.googleusercontent.com|music.google.com|apis.google.com|feedproxy.google.com|books.google.com|autoproxy-gfwlist.googlecode.com
+
+
+   #(同上)
+   [google_hk]
+   mode = https
+   window = 4
+   #goagent自动解析以下域名的IP并将获得的IP加入用于连接GAE服务器的IP组
+   hosts = www.google.com|mail.google.com|www.google.com.hk|www.google.com.tw
+   sites = .google.com|.googleusercontent.com|.googleapis.com|.google-analytics.com|.googlecode.com|.google.com.hk|.googlegroups.com
+   forcehttps = www.google.com|groups.google.com|code.google.com|mail.google.com|docs.google.com|profiles.google.com|developer.android.com|www.google.com.hk|webcache.googleusercontent.com
+   withgae = feedproxy.google.com
+
+   #(IPV6,同上,只是IP地址以IPV6形式)
+   [google_ipv6]
+   mode = http
+   hosts = 2404:6800:8005::2f|2a00:1450:8006::30|2404:6800:8005::84
+   sites = .google.com|.googleusercontent.com|.googleapis.com|.google-analytics.com|.googlecode.com|.google.com.hk|.googlegroups.com
+   forcehttps = groups.google.com|code.google.com|mail.google.com|docs.google.com|profiles.google.com|developer.android.com
+   withgae =
+
+   # 自动分段下载，需远程服务器支持Rang
+   [autorange]
+   #匹配以下域名时自动下载
+   hosts = .c.youtube.com|.atm.youku.com|.googlevideo.com|av.vimeo.com|smile-*.nicovideo.jp|video.*.fbcdn.net|s*.last.fm|x*.last.fm|.x.xvideos.com|.edgecastcdn.net|.d.rncdn3.com|cdn*.public.tube8.com|videos.flv*.redtubefiles.com|cdn*.public.extremetube.phncdn.com|cdn*.video.pornhub.phncdn.com|.mms.vlog.xuite.net|vs*.thisav.com|archive.rthk.hk|video*.modimovie.com
+   # 自动对列表中文件类型启用分段下载功能
+   endswith = .f4v|.flv|.hlv|.m4v|.mp4|.mp3|.ogg|.avi|.exe|.zip|.iso|.rar|.bz2|.xz|.dmg
+   # 禁用分段下载的文件类型
+   noendswith = .xml|.json|.html|.php|.py|.js|.css|.jpg|.jpeg|.png|.gif|.ico
+   #线程数
+   threads = 2
+   #一次最大下载量
+   maxsize = 1048576
+   #首次读写量
+   waitsize = 524288
+   #后续读写量
+   bufsize = 8192
+
+   [crlf]
+   enable = 0
+   dns = 8.8.8.8
+   sites = .youtube.com|.ytimg.com
+
+   #DNS模块，可以用来防止DNS劫持/污染
+   [dns]
+   enable = 0
+   #DNS监听地址，使用时将系统DNS设置为127.0.0.1
+   listen = 127.0.0.1:53
+   #远程DNS查询服务器
+   remote = 8.8.8.8
+   #缓存大小
+   cachesize = 5000
+   #超时时间
+   timeout = 2
+
+   [socks5]
+   enable = 0
+   password = 123456
+   listen = 127.0.0.1:8089
+   fetchserver = http://.me:23/
+
+
+   #模拟用户浏览器类型,在User-Agent里提交给服务器你的浏览器操作系统等信息
+   [useragent]
+   #是否启用
+   enable = 0
+   #可自行修改的，前提是你知道怎么改
+   string = Mozilla/5.0 (iPhone; U; CPU like Mac OS X; en) AppleWebKit/420+ (KHTML, like Gecko) Version/3.0 Mobile/1A543a Safari/419.3
+
+   [fetchmax]
+   local =
+   server =
+
+   #不用理会,显示在控制台上方的公益广告
+   [love]
+   #不愿意看到这广告就把1改成0
+   enable = 1
+   timestamp = 1347983481
+   tip = \u8bf7\u5173\u6ce8\u5317\u4eac\u5931\u5b66\u513f\u7ae5~~
+
+   # 匹配的会使用crlf并且直连，默认使用远程DNS解析，也可以手动指定IP防止因解析失败而无法使用，将IP写等号后面。去掉对应行首的#即可启用对应的功能
+   [hosts]
+   .+\.dropbox\.com\:443 =
+   talkx?\.google\.com:5222 =
+   # youtube直播
+   #^https?://.+\.c\.youtube\.com/liveplay = www.g.cn
+   # youtubes上传视频
+   #^https?://.+\.youtube\.com/upload = www.g.cn
+   #^https?://upload\.youtube\.com = www.g.cn
+   #+end_src
+
+******* local/proxy.ini
+   #+begin_src conf
+   [listen]
+   ip = 127.0.0.1
+   port = 8087
+   visible = 1
+   debuginfo = 0
+
+   [gae]
+   appid = xyheme|xyheme2|xyheme3|xyheme4|xyheme5|xyheme6|xyheme7|xyheme8|xyheme9
+   password =
+   path = /2
+   profile = google_cn
+   mode = https
+   hosts = [google_hk]hosts
+   crlf = 1
+   obfuscate = 0
+   validate = 0
+   options =
+
+   [pac]
+   enable = 1
+   ip = 127.0.0.1
+   port = 8086
+   file = proxy.pac
+   gfwlist = http://autoproxy-gfwlist.googlecode.com/svn/trunk/gfwlist.txt
+   adblock = http://adblock-chinalist.googlecode.com/svn/trunk/adblock.txt
+   expired = 86400
+
+   [paas]
+   enable = 0
+   password = 123456
+   crlf = 0
+   validate = 0
+   listen = 127.0.0.1:8088
+   fetchserver = https://.cm/
+
+   [proxy]
+   enable = 0
+   autodetect = 1
+   host = 10.64.1.63
+   port = 8080
+   username =
+   password =
+
+   [google_cn]
+   window = 4
+   hosts = 203.208.46.131|203.208.46.132|203.208.46.133|203.208.46.134|203.208.46.135|203.208.46.136|203.208.46.137|203.208.46.138
+   sites = .google.cn|.google.com|.googleusercontent.com|.googleapis.com|.google-analytics.com|.googlecode.com|.google.com.hk|.appspot.com|.android.com|.googlegroups.com|.googlesource.com
+   forcehttps = www.google.com.hk/url|.appspot.com|www.google.com/url|groups.google.com|code.google.com|mail.google.com|docs.google.com|profiles.google.com|developer.android.com|www.google.com.hk|webcache.googleusercontent.com
+   withgae = translate.googleapis.com|play.googleapis.com|plusone.google.com|reader.googleusercontent.com|music.google.com|apis.google.com|feedproxy.google.com|books.google.com|autoproxy-gfwlist.googlecode.com|c.docs.google.com|translate.google.com
+
+   [google_hk]
+   window = 4
+   hosts = www.google.com|mail.google.com|www.google.com.hk
+   sites = .google.cn|.google.com|.googleusercontent.com|.googleapis.com|.google-analytics.com|.googlecode.com|.google.com.hk|.googlegroups.com|.googlesource.com
+   forcehttps = www.google.com.hk/url|www.google.com/url|groups.google.com|mail.google.com|docs.google.com|profiles.google.com|developer.android.com|www.google.com.hk|webcache.googleusercontent.com
+   withgae = www.google.com.hk/imgres|www.google.com/imgres|code.google.com|translate.googleapis.com|play.googleapis.com|plusone.google.com|reader.googleusercontent.com|music.google.com|apis.google.com|feedproxy.google.com|books.google.com|autoproxy-gfwlist.googlecode.com|c.docs.google.com|translate.google.com
+
+   [google_ipv6]
+   window = 2
+   hosts = 2404:6800:4005:c00::54|2404:6800:4005:c00::64|2404:6800:4005:c00::65|2404:6800:4005:c00::54|2404:6800:4005:c00::5e|2404:6800:4005:c00::67|2404:6800:4005:c00::2f|2404:6800:4005:c00::30|2404:6800:4005:c00::84
+   sites = .google.com|.googleusercontent.com|.googleapis.com|.google-analytics.com|.googlecode.com|.google.com.hk|.googlegroups.com|.googlesource.com
+   forcehttps = groups.google.com|mail.google.com|docs.google.com|profiles.google.com|developer.android.com
+   withgae =
+   withdns =
+
+   [autorange]
+   hosts = *.c.youtube.com|*.atm.youku.com|*.googlevideo.com|*av.vimeo.com|smile-*.nicovideo.jp|video.*.fbcdn.net|s*.last.fm|x*.last.fm|*.x.xvideos.com|*.edgecastcdn.net|*.d.rncdn3.com|cdn*.public.tube8.com|videos.flv*.redtubefiles.com|cdn*.public.extremetube.phncdn.com|cdn*.video.pornhub.phncdn.com|*.mms.vlog.xuite.net|vs*.thisav.com|archive.rthk.hk|video*.modimovie.com|*.c.docs.google.com
+   endswith = .f4v|.flv|.hlv|.m4v|.mp4|.mp3|.ogg|.avi|.exe|.zip|.iso|.rar|.bz2|.xz|.dmg
+   noendswith = .xml|.json|.html|.php|.py|.js|.css|.jpg|.jpeg|.png|.gif|.ico
+   threads = 2
+   maxsize = 1048576
+   waitsize = 524288
+   bufsize = 8192
+
+   [dns]
+   enable = 0
+   listen = 127.0.0.1:53
+   remote = 8.8.8.8|8.8.4.4|114.114.114.114|114.114.115.115
+   cachesize = 5000
+   timeout = 2
+
+   [light]
+   enable = 0
+   password =
+   listen = 127.0.0.1:8089
+   server = 127.0.0.1:443
+
+   [useragent]
+   enable = 0
+   string = Mozilla/5.0 (iPhone; U; CPU like Mac OS X; en) AppleWebKit/420+ (KHTML, like Gecko) Version/3.0 Mobile/1A543a Safari/419.3
+
+   [fetchmax]
+   local =
+   server =
+
+   [love]
+   enable = 1
+   tip = \u8bf7\u5173\u6ce8\u5317\u4eac\u5931\u5b66\u513f\u7ae5~~
+
+   [hosts]
+   .+\.dropbox\.com\:443 =
+   .+\.box\.com\:443 =
+   .+\.copy\.com\:443 =
+   talkx?\.(l\.)?google\.com\:5222 =
+   ^https?\://.+\.c\.youtube\.com/liveplay = [google_cn]hosts
+   #+end_src
+***** autoproxy
+******* CA.crt
+   AutoProxy+Goagent打开SSL连接的网站，如果浏览器弹出证书无效警告，可以用这样的方法解决:
+
+   导入证书：在local文件夹下的ssl文件夹有一个ca.crt证书文件；
+
+   Firefox依次操作：“首选项->高级->加密->查看证书->证书机构->导入->选择 local->sll->ca.crt 文件–>确定”，即可导入成功
+* >< pacman
+https://wiki.archlinux.org/index.php/Pacman
+*** note
+ Pacman is written in the C programming language
+ and uses the .pkg.tar.xz package format
+
+ pacman package contains useful tools:
+ makepkg, pactree, vercmp
+
+ to see the full list:
+ pacman -Ql pacman | grep bin
+
+*** Configuration
+ file:/etc/pacman.conf
+ man pacman.conf
+ to know more
+
+* xorg
+https://wiki.archlinux.org/index.php/Xorg
+*** installation
+ packages :
+ xorg-server : essential package
+ xorg-apps : something useful
+
+ use lspci to see the hardwares
+ lspci | grep VGA
+ + PCI : (Personal Computer Interface) (Peripheral Component Interconnect)
+ + VGA : (Video Graphics Array)
+   refers specifically to the display hardware which
+   first introduced with the IBM PS/2 line of computers in 1987
+   but through its widespread adoption has also come to mean
+   1. either an analog computer display standard
+      the 15-pin D-subminiature VGA connector
+   2. or the 640×480 resolution itself
+
+ graphics driver :
+ 1. AMD/ATI :
+    xf86-video-ati
+    catalyst
+ 2. Intel :
+    xf86-video-intel
+ 3. Nvidia :
+    xf86-video-nouveau
+    xf86-video-nv
+    nvidia
+    nvidia-304xx
+    nvidia-173xx
+    nvidia-96xx
+ 4. VIA :
+    xf86-video-openchrome
+
+ vesa是一个支持大部分显卡的通用驱动
+ 不提供任何 2D 和 3D 加速功能
+ 如果无法找到显卡芯片组的对应驱动或载入失败
+ Xorg 会使用vesa 要安装
+ sudo pacman -S xf86-video-vesa
+ 起码包成X运行能起来
+
+*** runing
+ packages :
+ xorg-xinit
+ xorg-xclock
+
+ startx/xinit
+ look ~/.xinitrc
+ if there is no
+ then look /etc/X11/xinit/xinitrc
+
+ X must always be run on the same tty where the login occurred
+ which is required in order to maintain the login session
+ if a problem occurs
+ then view the log at /var/log/xorg.0.log
+ in which (EE) & (WW) denote error & warning
+
+ + warning: if you choose to use xinit instead of startx
+   you are responsible for passing -nolisten tcp
+   to ensuring the session does not break by starting X on a different tty
+
+*** configuration
+ arch supplies default configuration file:/etc/x11/xorg.conf.d
+ and no extra configuration is necessary for most setups
+ the complete list of
+ 1. the folders where these files are searched
+ 2. a detailed explanation of all the available options
+ can be found by running man xorg.conf
+***** .conf files
+  the file:/etc/X11/xorg.conf.d/ directory stores user-specific configuration
+  you are free to add configuration files there
+  but they must have a .conf suffix
+  the files are read in ASCII order
+  and by convention their names start with XX-
+  + two digits and a hyphen
+    so that for example 10 is read before 20
+  these files are parsed by the X server upon startup
+  and are treated like part of the traditional xorg.conf configuration file
+  the X server essentially treats the collection of
+  configuration files as one big file with entries from xorg.conf at the end
+
+* >< Creating Packages
+https://wiki.archlinux.org/index.php/Creating_Packages
+
+* >< AMD Catalyst
+https://wiki.archlinux.org/index.php/AMD_Catalyst
+catalyst catalyst-utils lib32-catalyst-utils
+
+systemctl enable temp-links-catalyst
+systemctl start temp-links-catalyst
+* fonts
+sudo pacman -S ttf-dejavu wqy-zenhei
+sudo pacman -S wqy-microhei
+
+* Readahead
+Systemd comes with its own readahead implementation, this should in principle improve boot time. However, depending on your kernel version and the type of your hard drive, your mileage may vary (i.e. it might be slower). To enable, do:
+# systemctl enable systemd-readahead-collect systemd-readahead-replay
+Remember that in order for the readahead to work its magic, you should reboot a couple of times.
+* ===================================

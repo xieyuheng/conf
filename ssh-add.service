@@ -1,0 +1,9 @@
+[Unit]
+Description=ssh-add
+
+[Service]
+Oneshot=true
+ExecStart=/usr/bin/ssh-add /home/xyh/.ssh/to-github
+
+[Install]
+WantedBy=default.target
