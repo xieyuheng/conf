@@ -61,7 +61,7 @@
   # bindsym $mod+d focus child
 
   # switch to workspace
-  bindsym $mod+grave       workspace 0:主
+  # bindsym $mod+grave       workspace 0:主
   bindsym $mod+1           workspace 1:一
   bindsym $mod+2           workspace 2:二
   bindsym $mod+3           workspace 3:三
@@ -74,22 +74,22 @@
   bindsym $mod+0           workspace 10:十
   bindsym $mod+minus       workspace 11:十一
   bindsym $mod+equal       workspace 12:十二
-  bindsym $mod+Escape      workspace 13:輔
-  bindsym $mod+F1          workspace 14:壹
-  bindsym $mod+F2          workspace 15:贰
-  bindsym $mod+F3          workspace 16:叁
-  bindsym $mod+F4          workspace 17:肆
-  bindsym $mod+F5          workspace 18:伍
-  bindsym $mod+F6          workspace 19:陆
-  bindsym $mod+F7          workspace 20:柒
-  bindsym $mod+F8          workspace 21:捌
-  bindsym $mod+F9          workspace 22:玖
-  bindsym $mod+F10         workspace 23:拾
-  bindsym $mod+F11         workspace 24:拾壹
-  bindsym $mod+F12         workspace 25:拾贰
+  # bindsym $mod+Escape      workspace 13:輔
+  # bindsym $mod+F1          workspace 14:壹
+  # bindsym $mod+F2          workspace 15:贰
+  # bindsym $mod+F3          workspace 16:叁
+  # bindsym $mod+F4          workspace 17:肆
+  # bindsym $mod+F5          workspace 18:伍
+  # bindsym $mod+F6          workspace 19:陆
+  # bindsym $mod+F7          workspace 20:柒
+  # bindsym $mod+F8          workspace 21:捌
+  # bindsym $mod+F9          workspace 22:玖
+  # bindsym $mod+F10         workspace 23:拾
+  # bindsym $mod+F11         workspace 24:拾壹
+  # bindsym $mod+F12         workspace 25:拾贰
 
   # move focused container to workspace
-  bindsym $mod+Shift+grave     move container to workspace 0:主
+  # bindsym $mod+Shift+grave     move container to workspace 0:主
   bindsym $mod+Shift+1         move container to workspace 1:一
   bindsym $mod+Shift+2         move container to workspace 2:二
   bindsym $mod+Shift+3         move container to workspace 3:三
@@ -102,19 +102,19 @@
   bindsym $mod+Shift+0         move container to workspace 10:十
   bindsym $mod+Shift+minus     move container to workspace 11:十一
   bindsym $mod+Shift+equal     move container to workspace 12:十二
-  bindsym $mod+Shift+Escape    move container to workspace 13:輔
-  bindsym $mod+Shift+F1        move container to workspace 14:壹
-  bindsym $mod+Shift+F2        move container to workspace 15:贰
-  bindsym $mod+Shift+F3        move container to workspace 16:叁
-  bindsym $mod+Shift+F4        move container to workspace 17:肆
-  bindsym $mod+Shift+F5        move container to workspace 18:伍
-  bindsym $mod+Shift+F6        move container to workspace 19:陆
-  bindsym $mod+Shift+F7        move container to workspace 20:柒
-  bindsym $mod+Shift+F8        move container to workspace 21:捌
-  bindsym $mod+Shift+F9        move container to workspace 22:玖
-  bindsym $mod+Shift+F10       move container to workspace 23:拾
-  bindsym $mod+Shift+F11       move container to workspace 24:拾壹
-  bindsym $mod+Shift+F12       move container to workspace 25:拾贰
+  # bindsym $mod+Shift+Escape    move container to workspace 13:輔
+  # bindsym $mod+Shift+F1        move container to workspace 14:壹
+  # bindsym $mod+Shift+F2        move container to workspace 15:贰
+  # bindsym $mod+Shift+F3        move container to workspace 16:叁
+  # bindsym $mod+Shift+F4        move container to workspace 17:肆
+  # bindsym $mod+Shift+F5        move container to workspace 18:伍
+  # bindsym $mod+Shift+F6        move container to workspace 19:陆
+  # bindsym $mod+Shift+F7        move container to workspace 20:柒
+  # bindsym $mod+Shift+F8        move container to workspace 21:捌
+  # bindsym $mod+Shift+F9        move container to workspace 22:玖
+  # bindsym $mod+Shift+F10       move container to workspace 23:拾
+  # bindsym $mod+Shift+F11       move container to workspace 24:拾壹
+  # bindsym $mod+Shift+F12       move container to workspace 25:拾贰
 
 
   # about randr output

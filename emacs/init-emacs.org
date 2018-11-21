@@ -1308,7 +1308,7 @@
 
     (add-hook 'cicada-mode-hook #'enable-paredit-mode)
 
-    (setq auto-mode-alist (cons `("\\.cn\\'" . cicada-mode) auto-mode-alist))
+    (setq auto-mode-alist (cons `("\\.cic\\'" . cicada-mode) auto-mode-alist))
 
     (add-hook
      'cicada-mode-hook
@@ -1361,7 +1361,7 @@
                         (insert "\n")))))
     #+end_src
 
-*** js
+*** web
 
 ***** js-mode
 
@@ -1377,25 +1377,26 @@
 ***** nodejs-repl
 
       #+begin_src emacs-lisp :tangle ~/.emacs
-      (add-to-list 'load-path "~/.emacs.d/nodejs-repl/")
-      (require 'nodejs-repl)
-      ;; (global-set-key (kbd "C-s C-n") 'nodejs-repl)
-      (setq nodejs-repl-command "node")
+      ;; (add-to-list 'load-path "~/.emacs.d/nodejs-repl/")
+      ;; (require 'nodejs-repl)
+      ;; ;; (global-set-key (kbd "C-s C-n") 'nodejs-repl)
+      ;; (setq nodejs-repl-command "node")
       #+end_src
 
 ***** flycheck
 
       #+begin_src emacs-lisp :tangle ~/.emacs
-      (add-to-list 'load-path "~/.emacs.d/flycheck/")
-      (require 'let-alist)
-      (require 'flycheck)
-
-      (add-hook 'js-mode-hook
-                (lambda () (flycheck-mode t)))
-      ;; (global-flycheck-mode)
+      ;; (add-to-list 'load-path "~/.emacs.d/flycheck/")
+      ;; (require 'let-alist)
+      ;; (require 'flycheck)
+      ;;
+      ;; (add-hook 'js-mode-hook
+      ;;           (lambda () (flycheck-mode t)))
+      ;; ;; (global-flycheck-mode)
       #+end_src
 
 ***** coffee-mode
+
       #+begin_src emacs-lisp :tangle ~/.emacs
       (add-to-list 'load-path "~/.emacs.d/coffee-mode/")
       (require 'coffee-mode)
@@ -1408,6 +1409,43 @@
          (turn-off-indent)
          (local-set-key (kbd "<return>") 'newline)
          ))
+      #+end_src
+
+***** js2-mode
+
+      #+begin_src emacs-lisp :tangle ~/.emacs
+      (add-to-list 'load-path "~/.emacs.d/js2-mode/")
+      (require 'js2-mode)
+      #+end_src
+
+***** rjsx-mode
+
+      #+begin_src emacs-lisp :tangle ~/.emacs
+      (add-to-list 'load-path "~/.emacs.d/rjsx-mode/")
+      (require 'rjsx-mode)
+      #+end_src
+
+***** typescript-mode
+
+      #+begin_src emacs-lisp :tangle ~/.emacs
+      (add-to-list 'load-path "~/.emacs.d/typescript.el/")
+      (require 'typescript-mode)
+      #+end_src
+
+***** web-mode
+
+      #+begin_src emacs-lisp :tangle ~/.emacs
+      (add-to-list 'load-path "~/.emacs.d/web-mode/")
+      (setq web-mode-comment-style 2)
+      (require 'web-mode)
+      (add-to-list 'auto-mode-alist '("\\.ts\\'" . web-mode))
+      (add-to-list 'auto-mode-alist '("\\.js\\'" . web-mode))
+      (add-to-list 'auto-mode-alist '("\\.jsx\\'" . web-mode))
+      (add-to-list 'auto-mode-alist '("\\.tsx\\'" . web-mode))
+      (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
+      (setq web-mode-content-types-alist
+            '(("jsx"  . "\\.js\\'")
+              ("tsx"  . "\\.ts\\'")))
       #+end_src
 
 *** markdown
@@ -3045,25 +3083,12 @@
       ;; <: :>
       ;; <- ->
 
-      ;; (set-face-attribute 'default nil :family "Input" :height 165)
+      (set-face-attribute 'default nil :family "Input" :height 165)
       ;; (set-face-attribute 'default nil :family "Hack" :height 180)
-
-      ;; (set-face-attribute 'default nil
-      ;;                     :family "Terminus (TTF)"
-      ;;                     :height 200
-      ;;                     :weight 'bold)
-
-      ;; (set-face-attribute 'default nil
-      ;;                     :family "Terminus (TTF)"
-      ;;                     :height 200
-      ;;                     :weight 'normal)
-
       ;; (set-face-attribute 'default nil :family "Terminus (TTF)" :height 200)
-
       ;; (set-face-attribute 'default nil :family "PragmataPro Mono" :height 180)
-
       ;; (set-face-attribute 'default nil :family "monofur" :height 200)
-      (set-face-attribute 'default nil :family "monaco" :height 180)
+      ;; (set-face-attribute 'default nil :family "monaco" :height 180)
       ;; (set-face-attribute 'default nil :family "mononoki" :height 180)
       ;; (set-face-attribute 'default nil :family "Noto Mono" :height 180)
       #+end_src
@@ -3083,8 +3108,8 @@
       ;; (add-to-list 'custom-theme-load-path "~/.emacs.d/theme/molokai-theme/")
       ;; (load-theme 'molokai t)
 
-      ;; (add-to-list 'load-path "~/.emacs.d/theme/molokai-theme/")
-      ;; (require 'molokai-theme-kit)
+      (add-to-list 'load-path "~/.emacs.d/theme/molokai-theme/")
+      (require 'molokai-theme-kit)
       #+end_src
 
 ***** zenburn

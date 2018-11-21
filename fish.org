@@ -17,13 +17,13 @@
 * ls mv rm
 
   #+begin_src fish :tangle ~/.config/fish/config.fish
-  # alias l "ls -hCF"
-  # alias ll "ls -hlF"
-  # alias lll "ls -halF"
+  alias l "ls -hCF"
+  alias ll "ls -hlF"
+  alias lll "ls -halF"
 
-  alias l "exa -hF"
-  alias ll "exa -hlF"
-  alias lll "exa -halF"
+  # alias l "exa -hF"
+  # alias ll "exa -hlF"
+  # alias lll "exa -halF"
 
   alias mv " mv -vi"
 
@@ -159,7 +159,8 @@
 * npm
 
   #+begin_src fish :tangle ~/.config/fish/config.fish
-  set PATH $HOME/.npm-package/bin $PATH
+  set PATH $HOME/sd0/.npm-package/bin $PATH
+  # set PATH $HOME/.npm-package/bin $PATH
   #+end_src
 
 * gem
@@ -171,7 +172,7 @@
 * rust
 
   #+begin_src fish :tangle ~/.config/fish/config.fish
-  set -x RUST_BACKTRACE 1
+  set -x RUST_MIN_STACK 1073741824
 
   set -x RUSTUP_HOME $HOME/sd0/.rustup
   set -x CARGO_HOME $HOME/sd0/.cargo
