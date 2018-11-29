@@ -1,4 +1,4 @@
-#+title:  init emacs ^-^
+#+title: init emacs ^-^
 
 * lib
 
@@ -1313,8 +1313,16 @@
     (add-hook
      'cicada-mode-hook
      (lambda ()
-       (turn-off-indent)
-       ))
+       (turn-off-indent)))
+    #+end_src
+
+*** sql
+
+    #+begin_src emacs-lisp :tangle ~/.emacs
+    (add-hook
+     'sql-mode-hook
+     (lambda ()
+       (turn-off-indent)))
     #+end_src
 
 *** jojo
@@ -1430,22 +1438,25 @@
       #+begin_src emacs-lisp :tangle ~/.emacs
       (add-to-list 'load-path "~/.emacs.d/typescript.el/")
       (require 'typescript-mode)
+      (add-to-list 'auto-mode-alist '("\\.ts\\'" . typescript-mode))
       #+end_src
 
 ***** web-mode
 
       #+begin_src emacs-lisp :tangle ~/.emacs
-      (add-to-list 'load-path "~/.emacs.d/web-mode/")
-      (setq web-mode-comment-style 2)
-      (require 'web-mode)
-      (add-to-list 'auto-mode-alist '("\\.ts\\'" . web-mode))
-      (add-to-list 'auto-mode-alist '("\\.js\\'" . web-mode))
-      (add-to-list 'auto-mode-alist '("\\.jsx\\'" . web-mode))
-      (add-to-list 'auto-mode-alist '("\\.tsx\\'" . web-mode))
-      (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
-      (setq web-mode-content-types-alist
-            '(("jsx"  . "\\.js\\'")
-              ("tsx"  . "\\.ts\\'")))
+      ;; (add-to-list 'load-path "~/.emacs.d/web-mode/")
+      ;; (setq web-mode-comment-style 2)
+      ;; (require 'web-mode)
+      ;; (add-to-list 'auto-mode-alist '("\\.ts\\'" . web-mode))
+      ;; (add-to-list 'auto-mode-alist '("\\.js\\'" . web-mode))
+      ;; (add-to-list 'auto-mode-alist '("\\.jsx\\'" . web-mode))
+      ;; (add-to-list 'auto-mode-alist '("\\.tsx\\'" . web-mode))
+      ;; (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
+      ;; (setq web-mode-content-types-alist
+      ;;       '(("js"  . "\\.js\\'")
+      ;;         ("jsx"  . "\\.js\\'")
+      ;;         ("tsx"  . "\\.ts\\'")
+      ;;         ("ts"  . "\\.ts\\'")))
       #+end_src
 
 *** markdown
@@ -2505,6 +2516,10 @@
               ("jsf" "#+end_src\n?\n#+begin_src js" "<src lang=\"?\">\n\n</src>")
               ("js" "#+begin_src js\n?\n#+end_src" "<src lang=\"?\">\n\n</src>")
 
+              ;; ts
+              ("tsf" "#+end_src\n?\n#+begin_src typescript" "<src lang=\"?\">\n\n</src>")
+              ("ts" "#+begin_src typescript\n?\n#+end_src" "<src lang=\"?\">\n\n</src>")
+
               ;; coffeescript
               ("cof" "#+end_src\n?\n#+begin_src coffee" "<src lang=\"?\">\n\n</src>")
               ("co" "#+begin_src coffee\n?\n#+end_src" "<src lang=\"?\">\n\n</src>")
@@ -3083,12 +3098,12 @@
       ;; <: :>
       ;; <- ->
 
-      (set-face-attribute 'default nil :family "Input" :height 165)
+      ;; (set-face-attribute 'default nil :family "Input" :height 165)
       ;; (set-face-attribute 'default nil :family "Hack" :height 180)
       ;; (set-face-attribute 'default nil :family "Terminus (TTF)" :height 200)
       ;; (set-face-attribute 'default nil :family "PragmataPro Mono" :height 180)
       ;; (set-face-attribute 'default nil :family "monofur" :height 200)
-      ;; (set-face-attribute 'default nil :family "monaco" :height 180)
+      (set-face-attribute 'default nil :family "monaco" :height 180)
       ;; (set-face-attribute 'default nil :family "mononoki" :height 180)
       ;; (set-face-attribute 'default nil :family "Noto Mono" :height 180)
       #+end_src

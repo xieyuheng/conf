@@ -156,6 +156,12 @@
   set -x LD_LIBRARY_PATH /usr/local/lib
   #+end_src
 
+* deno
+
+  #+begin_src fish :tangle ~/.config/fish/config.fish
+  set PATH $PATH $HOME/.deno/bin
+  #+end_src
+
 * npm
 
   #+begin_src fish :tangle ~/.config/fish/config.fish
