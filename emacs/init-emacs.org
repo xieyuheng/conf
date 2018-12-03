@@ -1444,19 +1444,20 @@
 ***** web-mode
 
       #+begin_src emacs-lisp :tangle ~/.emacs
-      ;; (add-to-list 'load-path "~/.emacs.d/web-mode/")
-      ;; (setq web-mode-comment-style 2)
-      ;; (require 'web-mode)
-      ;; (add-to-list 'auto-mode-alist '("\\.ts\\'" . web-mode))
-      ;; (add-to-list 'auto-mode-alist '("\\.js\\'" . web-mode))
-      ;; (add-to-list 'auto-mode-alist '("\\.jsx\\'" . web-mode))
-      ;; (add-to-list 'auto-mode-alist '("\\.tsx\\'" . web-mode))
-      ;; (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
-      ;; (setq web-mode-content-types-alist
-      ;;       '(("js"  . "\\.js\\'")
-      ;;         ("jsx"  . "\\.js\\'")
-      ;;         ("tsx"  . "\\.ts\\'")
-      ;;         ("ts"  . "\\.ts\\'")))
+      (add-to-list 'load-path "~/.emacs.d/web-mode/")
+      (setq web-mode-comment-style 2)
+      (require 'web-mode)
+      (add-to-list 'auto-mode-alist '("\\.ts\\'" . web-mode))
+      (add-to-list 'auto-mode-alist '("\\.js\\'" . web-mode))
+      (add-to-list 'auto-mode-alist '("\\.jsx\\'" . web-mode))
+      (add-to-list 'auto-mode-alist '("\\.tsx\\'" . web-mode))
+      (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
+      (add-to-list 'auto-mode-alist '("\\.vue\\'" . web-mode))
+      (setq web-mode-content-types-alist
+            '(("js"  . "\\.js\\'")
+              ("jsx"  . "\\.js\\'")
+              ("tsx"  . "\\.ts\\'")
+              ("ts"  . "\\.ts\\'")))
       #+end_src
 
 *** markdown
