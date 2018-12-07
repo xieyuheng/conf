@@ -1380,6 +1380,8 @@
          (setq comment-style 'extra)
          (setq js-indent-level 4)
          (setq js2-basic-offset 4)))
+
+      (add-to-list 'auto-mode-alist '("\\.js\\'" . js-mode))
       #+end_src
 
 ***** nodejs-repl
@@ -1439,6 +1441,7 @@
       (add-to-list 'load-path "~/.emacs.d/typescript.el/")
       (require 'typescript-mode)
       (add-to-list 'auto-mode-alist '("\\.ts\\'" . typescript-mode))
+      (add-to-list 'auto-mode-alist '("\\.d.ts\\'" . typescript-mode))
       #+end_src
 
 ***** web-mode
@@ -1448,7 +1451,6 @@
       (setq web-mode-comment-style 2)
       (require 'web-mode)
       (add-to-list 'auto-mode-alist '("\\.ts\\'" . web-mode))
-      (add-to-list 'auto-mode-alist '("\\.js\\'" . web-mode))
       (add-to-list 'auto-mode-alist '("\\.jsx\\'" . web-mode))
       (add-to-list 'auto-mode-alist '("\\.tsx\\'" . web-mode))
       (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))

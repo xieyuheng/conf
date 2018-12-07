@@ -11,7 +11,7 @@
 * browser
 
   #+begin_src fish :tangle ~/.config/fish/config.fish
-  set -x BROWSER chromium-dev
+  set -x BROWSER google-chrome-stable
   #+end_src
 
 * ls mv rm
