@@ -169,6 +169,12 @@
   # set PATH $HOME/.npm-package/bin $PATH
   #+end_src
 
+* yarn
+
+  #+begin_src fish :tangle ~/.config/fish/config.fish
+  set -x YARN_CACHE_FOLDER $HOME/sd0/.yarn-cache
+  #+end_src
+
 * gem
 
   #+begin_src fish :tangle ~/.config/fish/config.fish
