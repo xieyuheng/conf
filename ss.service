@@ -2,7 +2,7 @@
 Description=ss
 
 [Service]
-ExecStart=/usr/bin/ss-local -c /home/xyh/app/ss/shang.json
+ExecStart=/usr/bin/ss-local -c /home/xyh/app/ss/bnw2.json
 
 [Install]
 WantedBy=default.target

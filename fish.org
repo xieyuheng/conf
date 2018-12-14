@@ -52,6 +52,12 @@
   set PATH $PATH $HOME/.local/bin
   #+end_src
 
+* sd0
+
+  #+begin_src fish :tangle ~/.config/fish/config.fish
+  set PATH $PATH $HOME/sd0/app/bin
+  #+end_src
+
 * emacs
 
   #+begin_src fish :tangle ~/.config/fish/config.fish
