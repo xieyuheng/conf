@@ -1378,10 +1378,26 @@
        'js-mode-hook
        (lambda ()
          (setq comment-style 'extra)
-         (setq js-indent-level 4)
-         (setq js2-basic-offset 4)))
+         (setq js-indent-level 4)))
 
       (add-to-list 'auto-mode-alist '("\\.js\\'" . js-mode))
+      #+end_src
+
+***** js2-mode
+
+      #+begin_src emacs-lisp :tangle ~/.emacs
+      (add-to-list 'load-path "~/.emacs.d/js2-mode/")
+      (require 'js2-mode)
+
+      (add-hook
+       'js2-mode-hook
+       (lambda ()
+         (setq comment-style 'extra)
+         (setq js2-basic-offset 4)
+         (js2-mode-hide-warnings-and-errors)))
+
+      ;; (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
+
       #+end_src
 
 ***** nodejs-repl
@@ -1419,13 +1435,6 @@
          (turn-off-indent)
          (local-set-key (kbd "<return>") 'newline)
          ))
-      #+end_src
-
-***** js2-mode
-
-      #+begin_src emacs-lisp :tangle ~/.emacs
-      (add-to-list 'load-path "~/.emacs.d/js2-mode/")
-      (require 'js2-mode)
       #+end_src
 
 ***** rjsx-mode
