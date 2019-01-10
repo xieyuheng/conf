@@ -392,6 +392,12 @@
     (setq tab-width 2)
     #+end_src
 
+*** bell
+
+    #+begin_src emacs-lisp :tangle ~/.emacs
+    (setq visible-bell t)
+    #+end_src
+
 * input-method
 
 *** for lambda
@@ -1444,15 +1450,6 @@
       (require 'rjsx-mode)
       #+end_src
 
-***** typescript-mode
-
-      #+begin_src emacs-lisp :tangle ~/.emacs
-      (add-to-list 'load-path "~/.emacs.d/typescript.el/")
-      (require 'typescript-mode)
-      (add-to-list 'auto-mode-alist '("\\.ts\\'" . typescript-mode))
-      (add-to-list 'auto-mode-alist '("\\.d.ts\\'" . typescript-mode))
-      #+end_src
-
 ***** web-mode
 
       #+begin_src emacs-lisp :tangle ~/.emacs
@@ -1469,6 +1466,15 @@
               ("jsx"  . "\\.js\\'")
               ("tsx"  . "\\.ts\\'")
               ("ts"  . "\\.ts\\'")))
+      #+end_src
+
+***** typescript-mode
+
+      #+begin_src emacs-lisp :tangle ~/.emacs
+      (add-to-list 'load-path "~/.emacs.d/typescript.el/")
+      (require 'typescript-mode)
+      (add-to-list 'auto-mode-alist '("\\.ts\\'" . typescript-mode))
+      (add-to-list 'auto-mode-alist '("\\.d.ts\\'" . typescript-mode))
       #+end_src
 
 *** markdown
@@ -2057,6 +2063,13 @@
       (c-set-offset 'arglist-intro '+))
 
     (add-hook 'java-mode-hook 'my-indent-setup)
+    #+end_src
+
+*** scala
+
+    #+begin_src emacs-lisp :tangle ~/.emacs
+    (add-to-list 'load-path "~/.emacs.d/emacs-scala-mode/")
+    (require 'scala-mode)
     #+end_src
 
 *** ruby
@@ -3081,7 +3094,7 @@
       ;; (set-fontset-font t 'han (font-spec :name "Noto Sans CJK TC Thin" :size 26))
       ;; (set-fontset-font t 'han (font-spec :name "Noto Sans CJK TC Light" :size 26))
 
-      (set-fontset-font t 'han (font-spec :name "Noto Sans CJK TC DemiLight" :size 28))
+      (set-fontset-font t 'han (font-spec :name "Noto Sans CJK TC DemiLight" :size 34))
 
       ;; (set-fontset-font t 'han (font-spec :name "Noto Sans CJK TC Medium" :size 26))
       ;; (set-fontset-font t 'han (font-spec :name "Noto Sans CJK TC Bold" :size 26))
@@ -3115,7 +3128,7 @@
       ;; (set-face-attribute 'default nil :family "Terminus (TTF)" :height 200)
       ;; (set-face-attribute 'default nil :family "PragmataPro Mono" :height 180)
       ;; (set-face-attribute 'default nil :family "monofur" :height 200)
-      (set-face-attribute 'default nil :family "monaco" :height 180)
+      (set-face-attribute 'default nil :family "monaco" :height 220)
       ;; (set-face-attribute 'default nil :family "mononoki" :height 180)
       ;; (set-face-attribute 'default nil :family "Noto Mono" :height 180)
       #+end_src

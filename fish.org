@@ -165,14 +165,13 @@
 * deno
 
   #+begin_src fish :tangle ~/.config/fish/config.fish
-  set PATH $PATH $HOME/.deno/bin
+  # set PATH $PATH $HOME/.deno/bin
   #+end_src
 
 * npm
 
   #+begin_src fish :tangle ~/.config/fish/config.fish
-  set PATH $HOME/sd0/.npm-package/bin $PATH
-  # set PATH $HOME/.npm-package/bin $PATH
+  set PATH $HOME/sd0/.npm-packages/bin $PATH
   #+end_src
 
 * yarn
@@ -205,7 +204,7 @@
   # set PATH $HOME/miniconda3/bin $PATH
   # set PATH $HOME/miniconda2/bin $PATH
   set PATH $HOME/sd0/miniconda3/bin $PATH
-  set PATH $HOME/sd0/miniconda2/bin $PATH
+  # set PATH $HOME/sd0/miniconda2/bin $PATH
   #+end_src
 
 * jojo
