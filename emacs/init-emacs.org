@@ -2479,6 +2479,10 @@
               ("cnf" "#+end_src\n?\n#+begin_src cicada" "<src lang=\"?\">\n\n</src>")
               ("cn" "#+begin_src cicada\n?\n#+end_src" "<src lang=\"?\">\n\n</src>")
 
+              ;; scala
+              ("slf" "#+end_src\n?\n#+begin_src scala" "<src lang=\"?\">\n\n</src>")
+              ("sl" "#+begin_src scala\n?\n#+end_src" "<src lang=\"?\">\n\n</src>")
+
               ;; forth
               ("forthf" "#+end_src\n?\n#+begin_src forth" "<src lang=\"?\">\n\n</src>")
               ("forth" "#+begin_src forth\n?\n#+end_src" "<src lang=\"?\">\n\n</src>")
