@@ -41,6 +41,7 @@
   alias add "git add .; and git status"
   alias sub "git reset HEAD .; and git status"
   alias ci "git commit; and git status"
+  alias up "git commit -m 'up'; and git push; and git status"
   alias br "git branch -v"
   alias bl "git branch -vva"
   alias ch "git checkout"
