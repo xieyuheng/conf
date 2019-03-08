@@ -1329,6 +1329,7 @@
     (add-hook 'cicada-mode-hook #'enable-paredit-mode)
 
     (setq auto-mode-alist (cons `("\\.cic\\'" . cicada-mode) auto-mode-alist))
+    (setq auto-mode-alist (cons `("\\.cn\\'" . cicada-mode) auto-mode-alist))
 
     (add-hook
      'cicada-mode-hook
@@ -1398,7 +1399,7 @@
        'js-mode-hook
        (lambda ()
          (setq comment-style 'extra)
-         (setq js-indent-level 4)))
+         (setq js-indent-level 2)))
 
       (add-to-list 'auto-mode-alist '("\\.js\\'" . js-mode))
       #+end_src
@@ -1413,7 +1414,7 @@
        'js2-mode-hook
        (lambda ()
          (setq comment-style 'extra)
-         (setq js2-basic-offset 4)
+         (setq js2-basic-offset 2)
          (js2-mode-hide-warnings-and-errors)))
 
       ;; (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
@@ -1489,6 +1490,10 @@
       (require 'typescript-mode)
       (add-to-list 'auto-mode-alist '("\\.ts\\'" . typescript-mode))
       (add-to-list 'auto-mode-alist '("\\.d.ts\\'" . typescript-mode))
+      (add-hook
+       'typescript-mode-hook
+       (lambda ()
+         (setq typescript-indent-level 2)))
       #+end_src
 
 *** markdown
@@ -3112,7 +3117,7 @@
       ;; (set-fontset-font t 'han (font-spec :name "Noto Sans CJK TC Thin" :size 26))
       ;; (set-fontset-font t 'han (font-spec :name "Noto Sans CJK TC Light" :size 26))
 
-      (set-fontset-font t 'han (font-spec :name "Noto Sans CJK TC DemiLight" :size 34))
+      (set-fontset-font t 'han (font-spec :name "Noto Sans CJK TC DemiLight" :size 28))
 
       ;; (set-fontset-font t 'han (font-spec :name "Noto Sans CJK TC Medium" :size 26))
       ;; (set-fontset-font t 'han (font-spec :name "Noto Sans CJK TC Bold" :size 26))
@@ -3146,7 +3151,7 @@
       ;; (set-face-attribute 'default nil :family "Terminus (TTF)" :height 200)
       ;; (set-face-attribute 'default nil :family "PragmataPro Mono" :height 180)
       ;; (set-face-attribute 'default nil :family "monofur" :height 200)
-      (set-face-attribute 'default nil :family "monaco" :height 220)
+      (set-face-attribute 'default nil :family "monaco" :height 180)
       ;; (set-face-attribute 'default nil :family "mononoki" :height 180)
       ;; (set-face-attribute 'default nil :family "Noto Mono" :height 180)
       #+end_src
@@ -3613,14 +3618,14 @@
 * pomidor
 
   #+begin_src emacs-lisp :tangle ~/.emacs
-  ;; (add-to-list 'load-path "~/.emacs.d/pomidor/")
-  (require 'pomidor)
+  ;; ;; (add-to-list 'load-path "~/.emacs.d/pomidor/")
+  ;; (require 'pomidor)
 
-  (setq pomidor-sound-tick nil
-        pomidor-sound-tack nil
-        ;; pomidor-sound-overwork (expand-file-name (concat pomidor-dir "overwork.wav"))
-        ;; pomidor-sound-break-over (expand-file-name (concat (getenv "HOME") "/Music/overwork.wav"))
-        )
+  ;; (setq pomidor-sound-tick nil
+  ;;       pomidor-sound-tack nil
+  ;;       ;; pomidor-sound-overwork (expand-file-name (concat pomidor-dir "overwork.wav"))
+  ;;       ;; pomidor-sound-break-over (expand-file-name (concat (getenv "HOME") "/Music/overwork.wav"))
+  ;;       )
 
-  ;; (pomidor)
+  ;; ;; (pomidor)
   #+end_src
