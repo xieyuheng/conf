@@ -3301,6 +3301,31 @@
     (setq frame-resize-pixelwise t)
     #+end_src
 
+* awesome
+
+*** awesome-tray
+
+    #+begin_src emacs-lisp :tangle ~/.emacs
+    (add-to-list 'load-path "~/.emacs.d/awesome-tray/")
+    (require 'awesome-tray)
+    (awesome-tray-mode 1)
+    #+end_src
+
+*** aweshell
+
+    #+begin_src emacs-lisp :tangle ~/.emacs
+    ;; (add-to-list 'load-path "~/.emacs.d/aweshell/")
+    ;; (require 'aweshell)
+    #+end_src
+
+*** awesome-tab
+
+    #+begin_src emacs-lisp :tangle ~/.emacs
+    ;; (add-to-list 'load-path "~/.emacs.d/awesome-tab/")
+    ;; (require 'awesome-tab)
+    ;; (awesome-tab-mode t)
+    #+end_src
+
 * emacs server & eshell
 
 *** [note]
