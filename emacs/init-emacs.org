@@ -1458,31 +1458,6 @@
          ))
       #+end_src
 
-***** rjsx-mode
-
-      #+begin_src emacs-lisp :tangle ~/.emacs
-      (add-to-list 'load-path "~/.emacs.d/rjsx-mode/")
-      (require 'rjsx-mode)
-      #+end_src
-
-***** web-mode
-
-      #+begin_src emacs-lisp :tangle ~/.emacs
-      (add-to-list 'load-path "~/.emacs.d/web-mode/")
-      (setq web-mode-comment-style 2)
-      (require 'web-mode)
-      (add-to-list 'auto-mode-alist '("\\.ts\\'" . web-mode))
-      (add-to-list 'auto-mode-alist '("\\.jsx\\'" . web-mode))
-      (add-to-list 'auto-mode-alist '("\\.tsx\\'" . web-mode))
-      (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
-      (add-to-list 'auto-mode-alist '("\\.vue\\'" . web-mode))
-      (setq web-mode-content-types-alist
-            '(("js"  . "\\.js\\'")
-              ("jsx"  . "\\.js\\'")
-              ("tsx"  . "\\.ts\\'")
-              ("ts"  . "\\.ts\\'")))
-      #+end_src
-
 ***** typescript-mode
 
       #+begin_src emacs-lisp :tangle ~/.emacs
@@ -3306,9 +3281,9 @@
 *** awesome-tray
 
     #+begin_src emacs-lisp :tangle ~/.emacs
-    (add-to-list 'load-path "~/.emacs.d/awesome-tray/")
-    (require 'awesome-tray)
-    (awesome-tray-mode 1)
+    ;; (add-to-list 'load-path "~/.emacs.d/awesome-tray/")
+    ;; (require 'awesome-tray)
+    ;; (awesome-tray-mode nil)
     #+end_src
 
 *** aweshell
@@ -3653,4 +3628,17 @@
   ;;       )
 
   ;; ;; (pomidor)
+  #+end_src
+
+* hl-todo
+
+  #+begin_src emacs-lisp :tangle ~/.emacs
+  (add-to-list 'load-path "~/.emacs.d/hl-todo/")
+  (require 'hl-todo)
+
+  (global-hl-todo-mode)
+
+  (define-key hl-todo-mode-map (kbd "C-c p") 'hl-todo-previous)
+  (define-key hl-todo-mode-map (kbd "C-c n") 'hl-todo-next)
+  (define-key hl-todo-mode-map (kbd "C-c o") 'hl-todo-occur)
   #+end_src
