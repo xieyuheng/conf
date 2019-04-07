@@ -1401,7 +1401,7 @@
          (setq comment-style 'extra)
          (setq js-indent-level 2)))
 
-      (add-to-list 'auto-mode-alist '("\\.js\\'" . js-mode))
+      ;; (add-to-list 'auto-mode-alist '("\\.js\\'" . js-mode))
       #+end_src
 
 ***** js2-mode
@@ -1418,7 +1418,6 @@
          (js2-mode-hide-warnings-and-errors)))
 
       ;; (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
-
       #+end_src
 
 ***** nodejs-repl
@@ -1463,6 +1462,7 @@
       #+begin_src emacs-lisp :tangle ~/.emacs
       (add-to-list 'load-path "~/.emacs.d/typescript.el/")
       (require 'typescript-mode)
+      (add-to-list 'auto-mode-alist '("\\.js\\'" . typescript-mode))
       (add-to-list 'auto-mode-alist '("\\.ts\\'" . typescript-mode))
       (add-to-list 'auto-mode-alist '("\\.d.ts\\'" . typescript-mode))
       (add-hook
@@ -3167,8 +3167,8 @@
 ***** tao
 
       #+begin_src emacs-lisp :tangle ~/.emacs
-      ;; (add-to-list 'custom-theme-load-path "~/.emacs.d/theme/tao-theme-emacs/")
-      ;; (add-to-list 'load-path "~/.emacs.d/theme/tao-theme-emacs/")
+      (add-to-list 'custom-theme-load-path "~/.emacs.d/theme/tao-theme-emacs/")
+      (add-to-list 'load-path "~/.emacs.d/theme/tao-theme-emacs/")
       ;; (load-theme 'tao-yang t)
       ;; (load-theme 'tao-yin t)
       #+end_src
