@@ -1464,6 +1464,7 @@
       (require 'typescript-mode)
       (add-to-list 'auto-mode-alist '("\\.js\\'" . typescript-mode))
       (add-to-list 'auto-mode-alist '("\\.ts\\'" . typescript-mode))
+      (add-to-list 'auto-mode-alist '("\\.cs\\'" . typescript-mode))
       (add-to-list 'auto-mode-alist '("\\.d.ts\\'" . typescript-mode))
       (add-hook
        'typescript-mode-hook
