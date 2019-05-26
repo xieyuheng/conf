@@ -1496,6 +1496,16 @@
       (setq css-indent-offset 2)
       #+end_src
 
+***** html-mode
+
+      #+begin_src emacs-lisp :tangle ~/.emacs
+      (add-hook
+       'html-mode-hook
+       (lambda ()
+         (set (make-local-variable 'sgml-basic-offset) 2)
+         ))
+      #+end_src
+
 ***** jsx
 
       #+begin_src emacs-lisp :tangle ~/.emacs
@@ -1533,16 +1543,6 @@
          (local-set-key (kbd "M-p") 'backward-paragraph)
          (local-set-key (kbd "M-n") 'forward-paragraph)))
       #+end_src
-
-*** html
-
-    #+begin_src emacs-lisp :tangle ~/.emacs
-    (add-to-list 'load-path "~/.emacs.d/html-fold/")
-    (require 'html-fold)
-    (add-hook 'html-mode-hook 'html-fold-mode)
-    (setq sgml-basic-offset 4)
-    (setq sgml-attribute-offset 4)
-    #+end_src
 
 *** xml
 
@@ -2064,7 +2064,7 @@
     ;; (setq c-default-style "ellemtel")
     ;; (setq c-default-style "linux")
 
-    (setq c-basic-offset 4)
+    (setq c-basic-offset 2)
     (add-hook
      'c-mode-hook
      (lambda ()
