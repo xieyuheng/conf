@@ -1091,8 +1091,19 @@
          (1 . +union)
          (1 . +fun)
 
+         ;; pie
+         (1 . which-Nat)
+         (1 . the)
+         (1 . check-same)
+         (1 . claim)
          ))
       #+end_src
+
+*** pie
+
+    #+begin_src emacs-lisp :tangle ~/.emacs
+    (setq auto-mode-alist (cons `("\\.pie$" . scheme-mode) auto-mode-alist))
+    #+end_src
 
 *** racket
     #+begin_src emacs-lisp :tangle ~/.emacs
@@ -1102,7 +1113,6 @@
 
     ;; (setq auto-mode-alist (cons `("\\.rkt$" . scheme-mode) auto-mode-alist))
     (setq auto-mode-alist (cons `("\\.rkt$" . racket-mode) auto-mode-alist))
-    (setq auto-mode-alist (cons `("\\.pie$" . racket-mode) auto-mode-alist))
 
     ;; (defun switch-to-buffer-*racket* ()
     ;;   (interactive)
