@@ -1093,6 +1093,7 @@
 
          ;; pie
          (1 . which-Nat)
+         (1 . iter-Nat)
          (1 . the)
          (1 . check-same)
          (1 . claim)
