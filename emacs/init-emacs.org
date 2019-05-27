@@ -272,10 +272,11 @@
     (global-whitespace-mode t)
     #+end_src
 
-*** mania
+*** save-buffer
 
     #+begin_src emacs-lisp :tangle ~/.emacs
-    (global-set-key (kbd "C-s C-x") 'save-buffer)
+    (global-set-key (kbd "C-x C-s") (lambda () (interactive) (save-buffer) (redraw-display)))
+    (global-set-key (kbd "C-s C-x") (lambda () (interactive) (save-buffer) (redraw-display)))
     #+end_src
 
 *** mouse
@@ -1101,6 +1102,7 @@
 
     ;; (setq auto-mode-alist (cons `("\\.rkt$" . scheme-mode) auto-mode-alist))
     (setq auto-mode-alist (cons `("\\.rkt$" . racket-mode) auto-mode-alist))
+    (setq auto-mode-alist (cons `("\\.pie$" . racket-mode) auto-mode-alist))
 
     ;; (defun switch-to-buffer-*racket* ()
     ;;   (interactive)
