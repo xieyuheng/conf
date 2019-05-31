@@ -954,7 +954,7 @@
          (1 . new)
          (1 . send)
          (0 . :)
-         (0 . ::)
+         (1 . ::)
          (1 . super)
          (1 . test-case)
          (0 . check-expect)
@@ -1094,9 +1094,19 @@
          ;; pie
          (1 . which-Nat)
          (1 . iter-Nat)
+         (1 . rec-Nat)
+         (1 . ind-Nat)
+
+         (1 . which-List)
+         (1 . iter-List)
+         (1 . rec-List)
+         (1 . ind-List)
+
          (1 . the)
          (1 . check-same)
          (1 . claim)
+         (1 . Pi)
+         (1 . same)
          ))
       #+end_src
 
