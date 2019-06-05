@@ -1031,7 +1031,7 @@
          (0 . ^)
          (0 . -)
          (0 . %)
-         (0 . =)
+         ;; (0 . =)
 
          (0 . <)
          (0 . >)
@@ -1102,11 +1102,15 @@
          (1 . rec-List)
          (1 . ind-List)
 
+         (1 . =)
          (1 . the)
          (1 . check-same)
          (1 . claim)
          (1 . Pi)
+         (1 . Sigma)
          (1 . same)
+         (1 . cong)
+         (1 . replace)
          ))
       #+end_src
 
