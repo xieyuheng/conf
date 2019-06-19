@@ -1102,6 +1102,8 @@
          (1 . rec-List)
          (1 . ind-List)
 
+         (2 . ind-Vec)
+
          (1 . =)
          (1 . the)
          (1 . check-same)
@@ -2115,6 +2117,12 @@
       (c-set-offset 'arglist-intro '+))
 
     (add-hook 'java-mode-hook 'my-indent-setup)
+    ;; (add-hook
+    ;;  'java-mode-hook
+    ;;  (lambda ()
+    ;;    (interactive)
+
+    ;;    ))
     #+end_src
 
 *** scala
