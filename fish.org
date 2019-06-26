@@ -172,7 +172,7 @@
 * npm
 
   #+begin_src fish :tangle ~/.config/fish/config.fish
-  set PATH $HOME/sd0/.npm-packages/bin $PATH
+  set PATH $HOME/sd0/.npm-package/bin $PATH
   #+end_src
 
 * yarn
@@ -185,6 +185,7 @@
 
   #+begin_src fish :tangle ~/.config/fish/config.fish
   # set PATH $PATH $HOME/.gem/ruby/2.5.0/bin
+  set PATH $PATH $HOME/.gem/ruby/2.6.0/bin
   #+end_src
 
 * rust
