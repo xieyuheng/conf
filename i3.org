@@ -27,7 +27,8 @@
   # kill focused window
   bindsym $mod+Shift+c kill
 
-  bindsym $mod+Tab focus left
+  # bindsym $mod+Tab focus left
+  bindsym $mod+Tab focus right
   bindsym $mod+j focus left
   bindsym $mod+k focus right
   # bindsym $mod+h focus up
