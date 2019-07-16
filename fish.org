@@ -219,7 +219,7 @@
 * hasekll
 
   #+begin_src fish :tangle ~/.config/fish/config.fish
-  set -x STACK_ROOT $HOME/sd0/.stack
+  # set -x STACK_ROOT $HOME/sd0/.stack
   #+end_src
 
 * fish_user_key_bindings

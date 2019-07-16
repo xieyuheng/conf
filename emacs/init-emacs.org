@@ -1493,7 +1493,6 @@
       (require 'typescript-mode)
       (add-to-list 'auto-mode-alist '("\\.js\\'" . typescript-mode))
       (add-to-list 'auto-mode-alist '("\\.ts\\'" . typescript-mode))
-      (add-to-list 'auto-mode-alist '("\\.cs\\'" . typescript-mode))
       (add-to-list 'auto-mode-alist '("\\.d.ts\\'" . typescript-mode))
       (add-hook
        'typescript-mode-hook
@@ -2129,6 +2128,7 @@
 
     #+begin_src emacs-lisp :tangle ~/.emacs
     (add-to-list 'load-path "~/.emacs.d/emacs-scala-mode/")
+    (add-to-list 'auto-mode-alist '("\\.cs\\'" . scala-mode))
     (require 'scala-mode)
     #+end_src
 
