@@ -1372,7 +1372,8 @@
     (add-hook
      'sql-mode-hook
      (lambda ()
-       (turn-off-indent)))
+       (turn-off-indent)
+       ))
     #+end_src
 
 *** jojo
