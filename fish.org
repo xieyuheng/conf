@@ -53,12 +53,6 @@
   set PATH $PATH $HOME/.local/bin
   #+end_src
 
-* sd0
-
-  #+begin_src fish :tangle ~/.config/fish/config.fish
-  set PATH $PATH $HOME/sd0/app/bin
-  #+end_src
-
 * emacs
 
   #+begin_src fish :tangle ~/.config/fish/config.fish
@@ -172,13 +166,13 @@
 * npm
 
   #+begin_src fish :tangle ~/.config/fish/config.fish
-  set PATH $HOME/sd0/.npm-package/bin $PATH
+  set PATH $HOME/.npm-package/bin $PATH
   #+end_src
 
 * yarn
 
   #+begin_src fish :tangle ~/.config/fish/config.fish
-  set -x YARN_CACHE_FOLDER $HOME/sd0/.yarn-cache
+  set -x YARN_CACHE_FOLDER $HOME/.yarn-cache
   #+end_src
 
 * gem
@@ -193,8 +187,8 @@
   #+begin_src fish :tangle ~/.config/fish/config.fish
   set -x RUST_MIN_STACK 1073741824
 
-  set -x RUSTUP_HOME $HOME/sd0/.rustup
-  set -x CARGO_HOME $HOME/sd0/.cargo
+  set -x RUSTUP_HOME $HOME/.rustup
+  set -x CARGO_HOME $HOME/.cargo
 
   set PATH $PATH $CARGO_HOME/bin
   #+end_src
@@ -205,8 +199,8 @@
   set -x PYTHONDONTWRITEBYTECODE false
   # set PATH $HOME/miniconda3/bin $PATH
   # set PATH $HOME/miniconda2/bin $PATH
-  set PATH $HOME/sd0/miniconda3/bin $PATH
-  # set PATH $HOME/sd0/miniconda2/bin $PATH
+  set PATH $HOME/miniconda3/bin $PATH
+  # set PATH $HOME/miniconda2/bin $PATH
   #+end_src
 
 * jojo
@@ -219,7 +213,7 @@
 * hasekll
 
   #+begin_src fish :tangle ~/.config/fish/config.fish
-  # set -x STACK_ROOT $HOME/sd0/.stack
+  # set -x STACK_ROOT $HOME/.stack
   #+end_src
 
 * fish_user_key_bindings
