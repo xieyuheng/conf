@@ -2256,6 +2256,13 @@
     (require 'fish-mode)
     #+end_src
 
+* comment
+
+  #+begin_src emacs-lisp :tangle ~/.emacs
+  (global-set-key (kbd "M-.") 'comment-dwim)
+  ;; (global-set-key (kbd "M-,") 'org-babel-previous-src-block)
+  #+end_src
+
 * org-mode
 
 *** change                            :no:
@@ -3667,20 +3674,6 @@
        (local-set-key (kbd "M-n") 'forward-paragraph)
        (local-set-key (kbd "M-p") 'backward-paragraph)))
     #+end_src
-
-* MELPA
-
-  #+begin_src emacs-lisp :tangle ~/.emacs
-  (require 'package)
-  (let* ((no-ssl (and (memq system-type '(windows-nt ms-dos))
-                      (not (gnutls-available-p))))
-         (url (concat (if no-ssl "http" "https") "://melpa.org/packages/")))
-    (add-to-list 'package-archives (cons "melpa" url) t))
-  (when (< emacs-major-version 24)
-    ;; For important compatibility libraries like cl-lib
-    (add-to-list 'package-archives '("gnu" . "https://elpa.gnu.org/packages/")))
-  (package-initialize)
-  #+end_src
 
 * pomidor
 
