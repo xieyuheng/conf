@@ -3200,7 +3200,9 @@
       ;; (set-face-attribute 'default nil :family "Terminus (TTF)" :height 200)
       ;; (set-face-attribute 'default nil :family "PragmataPro Mono" :height 180)
       ;; (set-face-attribute 'default nil :family "monofur" :height 200)
-      (set-face-attribute 'default nil :family "monaco" :height 180)
+      ;; (set-face-attribute 'default nil :family "monaco" :height 180)
+      ;; (set-face-attribute 'default nil :family "Source Code Pro" :height 180)
+      (set-face-attribute 'default nil :family "DejaVuSansMono Nerd Font Mono" :height 180)
       ;; (set-face-attribute 'default nil :family "mononoki" :height 180)
       ;; (set-face-attribute 'default nil :family "Noto Mono" :height 180)
       #+end_src
