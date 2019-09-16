@@ -193,11 +193,18 @@
   set PATH $PATH $CARGO_HOME/bin
   #+end_src
 
+* graal
+
+  #+begin_src fish :tangle ~/.config/fish/config.fish
+  set PATH $PATH /home/xyh/app/graalvm-ce-19.2.0/bin
+  #+end_src
+
 * python
 
   #+begin_src fish :tangle ~/.config/fish/config.fish
   set -x PYTHONDONTWRITEBYTECODE false
   set PATH $HOME/.miniconda3/bin $PATH
+  set PATH $HOME/.miniconda2/bin $PATH
   #+end_src
 
 * jojo
@@ -205,6 +212,12 @@
   #+begin_src fish :tangle ~/.config/fish/config.fish
   # set -x JOJO $HOME/.jojo
   # set PATH $JOJO/bin $PATH
+  #+end_src
+
+* java
+
+  #+begin_src fish :tangle ~/.config/fish/config.fish
+  set PATH /usr/lib/jvm/java-8-openjdk/bin $PATH
   #+end_src
 
 * hasekll
