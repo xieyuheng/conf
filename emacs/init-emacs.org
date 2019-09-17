@@ -197,6 +197,7 @@
 *** query-replace
 
     #+begin_src emacs-lisp :tangle ~/.emacs
+    (setq case-fold-search nil)
     (global-set-key (kbd "M-i") 'query-replace)
     (global-set-key (kbd "<C-M-i>") 'replace-string)
     #+end_src
