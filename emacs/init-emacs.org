@@ -3196,16 +3196,20 @@
       ;; 1lJL qp QP o0O 8B 08
       ;; ,.  `'
       ;; <: :>
+      ;; |- |--
       ;; <- ->
+      ;; |- |--
+      ;; |- |--
 
       ;; (set-face-attribute 'default nil :family "Input" :height 165)
       ;; (set-face-attribute 'default nil :family "Hack" :height 180)
       ;; (set-face-attribute 'default nil :family "Terminus (TTF)" :height 200)
-      ;; (set-face-attribute 'default nil :family "PragmataPro Mono" :height 180)
+      (set-face-attribute 'default nil :family "xos4 Terminus" :height 200)
+      ;; (set-face-attribute 'default nil :family "PragmataPro Mono" :height 200)
       ;; (set-face-attribute 'default nil :family "monofur" :height 200)
       ;; (set-face-attribute 'default nil :family "monaco" :height 180)
       ;; (set-face-attribute 'default nil :family "Source Code Pro" :height 180)
-      (set-face-attribute 'default nil :family "DejaVuSansMono Nerd Font Mono" :height 180)
+      ;; (set-face-attribute 'default nil :family "DejaVuSansMono Nerd Font Mono" :height 180)
       ;; (set-face-attribute 'default nil :family "mononoki" :height 180)
       ;; (set-face-attribute 'default nil :family "Noto Mono" :height 180)
       #+end_src
@@ -3246,8 +3250,8 @@
 ***** tao
 
       #+begin_src emacs-lisp :tangle ~/.emacs
-      (add-to-list 'custom-theme-load-path "~/.emacs.d/theme/tao-theme-emacs/")
-      (add-to-list 'load-path "~/.emacs.d/theme/tao-theme-emacs/")
+      ;; (add-to-list 'custom-theme-load-path "~/.emacs.d/theme/tao-theme-emacs/")
+      ;; (add-to-list 'load-path "~/.emacs.d/theme/tao-theme-emacs/")
       ;; (load-theme 'tao-yang t)
       ;; (load-theme 'tao-yin t)
       #+end_src
