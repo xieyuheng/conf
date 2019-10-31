@@ -677,6 +677,12 @@
       (message "kkk")
       #+end_src
 
+*** eopl
+
+    #+begin_src emacs-lisp :tangle ~/.emacs
+    (add-to-list 'auto-mode-alist '("\\.eopl\\'" . js-mode))
+    #+end_src
+
 *** scheme
 
 ***** load-path
@@ -1447,8 +1453,6 @@
          (setq comment-style 'extra)
          (setq js2-basic-offset 2)
          (js2-mode-hide-warnings-and-errors)))
-
-      ;; (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
       #+end_src
 
 ***** nodejs-repl
@@ -3204,10 +3208,12 @@
       ;; (set-face-attribute 'default nil :family "Input" :height 165)
       ;; (set-face-attribute 'default nil :family "Hack" :height 180)
       ;; (set-face-attribute 'default nil :family "Terminus (TTF)" :height 200)
-      (set-face-attribute 'default nil :family "xos4 Terminus" :height 200)
+      ;; (set-face-attribute 'default nil :family "xos4 Terminus" :height 200)
       ;; (set-face-attribute 'default nil :family "PragmataPro Mono" :height 200)
       ;; (set-face-attribute 'default nil :family "monofur" :height 200)
-      ;; (set-face-attribute 'default nil :family "monaco" :height 180)
+      (set-face-attribute 'default nil :family "monaco" :height 180)
+      ;; (set-face-attribute 'default nil :family "Fira Code" :height 170)
+      ;; (set-face-attribute 'default nil :family "Fira Mono" :height 170)
       ;; (set-face-attribute 'default nil :family "Source Code Pro" :height 180)
       ;; (set-face-attribute 'default nil :family "DejaVuSansMono Nerd Font Mono" :height 180)
       ;; (set-face-attribute 'default nil :family "mononoki" :height 180)
