@@ -1364,13 +1364,14 @@
 
     (add-hook 'cicada-mode-hook #'enable-paredit-mode)
 
-    (setq auto-mode-alist (cons `("\\.cic\\'" . cicada-mode) auto-mode-alist))
-    (setq auto-mode-alist (cons `("\\.cn\\'" . cicada-mode) auto-mode-alist))
-
     (add-hook
      'cicada-mode-hook
      (lambda ()
        (turn-off-indent)))
+
+    (add-to-list 'auto-mode-alist '("\\.cs\\'" . js-mode))
+    (add-to-list 'auto-mode-alist '("\\.sc\\'" . js-mode))
+    (add-to-list 'auto-mode-alist '("\\.cic\\'" . js-mode))
     #+end_src
 
 *** sql
@@ -2134,9 +2135,6 @@
 
     #+begin_src emacs-lisp :tangle ~/.emacs
     (add-to-list 'load-path "~/.emacs.d/emacs-scala-mode/")
-    (add-to-list 'auto-mode-alist '("\\.cs\\'" . scala-mode))
-    (add-to-list 'auto-mode-alist '("\\.sc\\'" . scala-mode))
-    (add-to-list 'auto-mode-alist '("\\.cic\\'" . scala-mode))
     (require 'scala-mode)
     #+end_src
 
