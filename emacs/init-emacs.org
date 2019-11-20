@@ -1454,6 +1454,8 @@
          (setq comment-style 'extra)
          (setq js2-basic-offset 2)
          (js2-mode-hide-warnings-and-errors)))
+
+      (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
       #+end_src
 
 ***** nodejs-repl
@@ -1498,7 +1500,6 @@
       #+begin_src emacs-lisp :tangle ~/.emacs
       (add-to-list 'load-path "~/.emacs.d/typescript.el/")
       (require 'typescript-mode)
-      (add-to-list 'auto-mode-alist '("\\.js\\'" . typescript-mode))
       (add-to-list 'auto-mode-alist '("\\.ts\\'" . typescript-mode))
       (add-to-list 'auto-mode-alist '("\\.d.ts\\'" . typescript-mode))
       (add-hook
@@ -1540,12 +1541,19 @@
          (set (make-local-variable 'sgml-basic-offset) 2)
          ))
       #+end_src
-
 ***** jsx
 
       #+begin_src emacs-lisp :tangle ~/.emacs
       ;; (add-to-list 'auto-mode-alist '("\\.jsx\\'" . js-jsx-mode))
       #+end_src
+
+*** php
+
+    #+begin_src emacs-lisp :tangle ~/.emacs
+    (add-to-list 'load-path "~/.emacs.d/php-mode/")
+    (add-to-list 'auto-mode-alist '("\\.\\(?:php\\|phtml\\)\\'" . php-mode))
+    (require 'php-mode)
+    #+end_src
 
 *** markdown
 
@@ -3603,18 +3611,6 @@
     #+begin_src emacs-lisp :tangle ~/.emacs
     ;; (open-eshell-for-frame :off)
     #+end_src
-
-* magit
-
-  #+begin_src emacs-lisp :tangle ~/.emacs
-  (add-to-list 'load-path "~/.emacs.d/with-editor/")
-  (require 'with-editor)
-
-  (add-to-list 'load-path "~/.emacs.d/magit/lisp/")
-  (require 'magit)
-
-  (global-set-key (kbd "C-x g") 'magit-status)
-  #+end_src
 
 * evil
 
