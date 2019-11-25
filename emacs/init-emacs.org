@@ -1439,7 +1439,7 @@
          (setq comment-style 'extra)
          (setq js-indent-level 2)))
 
-      ;; (add-to-list 'auto-mode-alist '("\\.js\\'" . js-mode))
+      (add-to-list 'auto-mode-alist '("\\.js\\'" . js-mode))
       #+end_src
 
 ***** js2-mode
@@ -1455,7 +1455,7 @@
          (setq js2-basic-offset 2)
          (js2-mode-hide-warnings-and-errors)))
 
-      (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
+      ;; (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
       #+end_src
 
 ***** nodejs-repl
