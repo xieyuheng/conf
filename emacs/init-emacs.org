@@ -3628,7 +3628,8 @@
 * scratch
 
   #+begin_src emacs-lisp :tangle ~/.emacs
-  (setq initial-buffer-choice "~/.emacs.d/scratch/scratch.org")
+  ;; (setq initial-buffer-choice "~/.emacs.d/scratch/scratch.org")
+  (setq initial-buffer-choice "~/todo/TODO.md")
   #+end_src
 
 * ag
@@ -3715,4 +3716,11 @@
   (define-key hl-todo-mode-map (kbd "C-c p") 'hl-todo-previous)
   (define-key hl-todo-mode-map (kbd "C-c n") 'hl-todo-next)
   (define-key hl-todo-mode-map (kbd "C-c o") 'hl-todo-occur)
+  #+end_src
+
+* pinky-mode
+
+  #+begin_src emacs-lisp :tangle ~/.emacs
+  (add-to-list 'load-path "~/.emacs.d/pinky-mode/")
+  (require 'pinky-mode)
   #+end_src

@@ -193,6 +193,12 @@
   set PATH $PATH $CARGO_HOME/bin
   #+end_src
 
+* go
+
+  #+begin_src fish :tangle ~/.config/fish/config.fish
+  set PATH $PATH $HOME/go/bin
+  #+end_src
+
 * graal
 
   #+begin_src fish :tangle ~/.config/fish/config.fish
