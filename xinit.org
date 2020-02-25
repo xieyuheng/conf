@@ -8,16 +8,20 @@
   export GTK_IM_MODULE=fcitx
   export QT_IM_MODULE=fcitx
   export XMODIFIERS="@im=fcitx"
+  export XDG_DESKTOP_DIR="/home/xyh"
 
+  rmdir Desktop &
   fcitx &
-  # xmodmap .xmodmap &
+  xmodmap .xmodmap &
   xbindkeys &
+  nm-applet &
   # ~/.wallpaper/random-wallpaper.sh &
   # xcompmgr &
+  # compton -bc &
   # xscreensaver -no-splash &
 
   # for firefox
-  XDG_DESKTOP_DIR="/home/xyh"
+  # XDG_DESKTOP_DIR="/home/xyh"
 
   exec i3
   #+end_src
