@@ -5,7 +5,7 @@
     "editor.fontWeight": "400",
     "workbench.activityBar.visible": false,
     "editor.renderWhitespace": "none",
-    "window.menuBarVisibility": "hidden",
+    // "window.menuBarVisibility": "hidden",
     "editor.formatOnSave": true,
     "workbench.iconTheme": "simple-icons",
     "editor.lineNumbers": "off",
@@ -14,4 +14,9 @@
     "markdownlint.config": {
         "default": false,
     },
+    "workbench.colorCustomizations": {
+        "statusBar.background": "#1A1A1A",
+        "statusBar.noFolderBackground": "#212121",
+        "statusBar.debuggingBackground": "#263238"
+    }
 }
