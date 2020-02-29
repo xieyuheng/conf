@@ -214,6 +214,12 @@
     (global-set-key (kbd "C-x C-h") 'mark-whole-buffer)
     #+end_src
 
+*** C-x k
+
+    #+begin_src emacs-lisp :tangle ~/.emacs
+    (global-set-key (kbd "C-x k") 'kill-this-buffer)
+    #+end_src
+
 *** rename-buffer
 
     #+begin_src emacs-lisp :tangle ~/.emacs
@@ -2927,82 +2933,6 @@
     (setq gc-cons-threshold 800000)
     #+end_src
 
-*** ido
-
-***** [note]
-
-      - ido is part of emacs
-
-***** main
-
-      - use C-f during file selection to switch to regular find-file
-
-      #+begin_src emacs-lisp :tangle ~/.emacs
-      (ido-mode t)
-      (ido-everywhere t)
-      (setq ido-enable-flex-matching t)
-      (setq ido-use-filename-at-point nil)
-      (setq ido-auto-merge-work-directories-length 0)
-      (setq ido-use-virtual-buffers t)
-      (setq ido-default-buffer-method 'switch-buffer)
-      #+end_src
-
-***** ido-switch-buffer
-
-      - default key-binding
-        | RET     |                         | Select the buffer at the front of the list of matches.            |
-        |         |                         | If the list is empty, possibly prompt to create new buffer.       |
-        | C-j     | ido-select-text         | Use the current input string verbatim.                            |
-        | C-s     | ido-next-match          | Put the first element at the end of the list.                     |
-        | C-r     | ido-prev-match          | Put the last element at the start of the list.                    |
-        | TAB     | ido-complete            | Complete a common suffix to the current string that matches       |
-        |         |                         | all buffers.  If there is only one match, select that buffer.     |
-        |         |                         | If there is no common suffix, show a list of all matching buffers |
-        |         |                         | in a separate window.                                             |
-        | C-e     | ido-edit-input          | Edit input string.                                                |
-        | C-x C-b | ido-fallback-command    | Fallback to non-ido version of current command.                   |
-        | C-t     | ido-toggle-regexp       | Toggle regexp searching.                                          |
-        | C-p     | ido-toggle-prefix       | Toggle between substring and prefix matching.                     |
-        | C-c     | ido-toggle-case         | Toggle case-sensitive searching of buffer names.                  |
-        | ?       | ido-completion-help     | Show list of matching buffers in separate window.                 |
-        | C-x C-f | ido-enter-find-file     | Drop into `ido-find-file'.                                        |
-        | C-k     | ido-kill-buffer-at-head | Kill buffer at head of buffer list.                               |
-        | C-a     | ido-toggle-ignore       | Toggle ignoring buffers listed in `ido-ignore-buffers'.           |
-
-      #+begin_src emacs-lisp :tangle ~/.emacs
-      (global-set-key (kbd "C-x b") 'list-buffers)
-      (global-set-key (kbd "C-x C-b") 'ido-switch-buffer)
-      (add-hook 'ido-minibuffer-setup-hook
-                (lambda ()
-                  (local-set-key (kbd "C-s") 'ido-toggle-prefix)
-                  (local-set-key (kbd "C-r") 'ido-toggle-regexp)
-                  (local-set-key (kbd "C-n") 'ido-next-match)
-                  (local-set-key (kbd "C-p") 'ido-prev-match)))
-      #+end_src
-
-***** ido-ubiquitions                 :no:
-
-      #+begin_src emacs-lisp :tangle no
-      (add-to-list 'load-path "~/.emacs.d/ido-ubiquitous/")
-      (require 'ido-ubiquitous)
-      (ido-ubiquitous-mode t)
-      #+end_src
-
-***** ido-at-point
-      #+begin_src emacs-lisp :tangle ~/.emacs
-      (add-to-list 'load-path "~/.emacs.d/ido-at-point/")
-      (require 'ido-at-point)
-      (ido-at-point-mode)
-      #+end_src
-
-***** ido-vertical-mode
-
-      #+begin_src emacs-lisp :tangle ~/.emacs
-      (add-to-list 'load-path "~/.emacs.d/ido-vertical-mode/")
-      (require 'ido-vertical-mode)
-      (ido-mode 1)
-      (ido-vertical-mode 1)
-      #+end_src
 
 *** cua-selection-mode
     #+begin_src emacs-lisp :tangle ~/.emacs
