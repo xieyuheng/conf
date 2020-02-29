@@ -1,6 +1,11 @@
 // Place your key bindings in this file to override the defaults
 [
     {
+        "key": "tab",
+        "command": "editor.action.reindentselectedlines",
+        "when": "editorTextFocus"
+    },
+    {
         "key": "ctrl+s ctrl+w",
         "command": "workbench.view.explorer"
     },

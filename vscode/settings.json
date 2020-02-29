@@ -11,4 +11,7 @@
     "editor.lineNumbers": "off",
     "editor.folding": false,
     "editor.glyphMargin": false,
+    "markdownlint.config": {
+        "default": false,
+    },
 }
