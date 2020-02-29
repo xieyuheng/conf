@@ -1,0 +1,76 @@
+// Place your key bindings in this file to override the defaults
+[
+    {
+        "key": "ctrl+s ctrl+w",
+        "command": "workbench.view.explorer"
+    },
+    {
+        "key": "ctrl+w",
+        "command": "-closeFindWidget",
+        "when": "editorFocus && findWidgetVisible"
+    },
+    {
+        "key": "ctrl-t",
+        "command": "actions.find",
+        "when": "editorFocus"
+    },
+    {
+        "key": "ctrl+t",
+        "command": "actions.find",
+        "when": "!findWidgetVisible"
+    },
+    {
+        "key": "ctrl+t",
+        "command": "actions.find",
+        "when": "findWidgetVisible && textInputFocus"
+    },
+    {
+        "key": "ctrl+t",
+        "command": "editor.action.nextMatchFindAction",
+        "when": "findWidgetVisible"
+    },
+    {
+        "key": "ctrl+o",
+        "command": "-editor.action.insertLineBefore",
+        "when": "editorTextFocus && !editorReadonly"
+    },
+    {
+        "key": "ctrl+o",
+        "command": "workbench.action.navigateEditorGroups"
+    },
+    {
+        "key": "ctrl+i",
+        "command": "editor.action.startFindReplaceAction",
+        "when": "editorFocus"
+    },
+    {
+        "key": "ctrl+shift+i",
+        "command": "editor.action.replaceOne",
+        "when": "editorFocus && findWidgetVisible"
+    },
+    {
+        "key": "ctrl+shift+i",
+        "command": "search.action.replace",
+        "when": "matchFocus && replaceActive && searchViewletVisible"
+    },
+    {
+        "key": "ctrl+shift+i",
+        "command": "search.action.replaceAllInFile",
+        "when": "fileMatchFocus && replaceActive && searchViewletVisible"
+    },
+    {
+        "key": "ctrl+shift+alt+i",
+        "command": "search.action.replaceAllInFolder",
+        "when": "folderMatchFocus && replaceActive && searchViewletVisible"
+    },
+    {
+        "key": "ctrl+alt+alt+i",
+        "command": "search.action.replaceAll",
+        "when": "replaceActive && searchViewletVisible && !findWidgetVisible"
+    },
+    {
+        "key": "ctrl+shift+alt+i",
+        "command": "search.action.replaceAllInFile",
+        "when": "fileMatchFocus && replaceActive && searchViewletVisible"
+    },
+]

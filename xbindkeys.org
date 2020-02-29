@@ -197,9 +197,9 @@
    '(control mod1 "c:36")
    "rofi -font \"Hack 16\" -show run")
 
-  (xbindkey
-   '(control mod1 space)
-   "rofi -font \"Hack 16\" -show window rofi")
+  ;; (xbindkey
+  ;;  '(control mod1 space)
+  ;;  "rofi -font \"Hack 16\" -show window rofi")
 
   (xbindkey
    '(control F10)

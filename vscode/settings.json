@@ -1,0 +1,14 @@
+{
+    "editor.fontFamily": "Noto Mono",
+    "editor.fontSize": 20,
+    "window.zoomLevel": 2,
+    "editor.fontWeight": "400",
+    "workbench.activityBar.visible": false,
+    "editor.renderWhitespace": "none",
+    "window.menuBarVisibility": "hidden",
+    "editor.formatOnSave": true,
+    "workbench.iconTheme": "simple-icons",
+    "editor.lineNumbers": "off",
+    "editor.folding": false,
+    "editor.glyphMargin": false,
+}
