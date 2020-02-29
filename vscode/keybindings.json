@@ -6,6 +6,14 @@
         "when": "editorTextFocus"
     },
     {
+        "key": "ctrl+tab",
+        "command": "workbench.action.nextEditor"
+    },
+    {
+        "key": "ctrl+shift+tab",
+        "command": "workbench.action.previousEditor"
+    }    
+    {
         "key": "ctrl+s ctrl+w",
         "command": "workbench.view.explorer"
     },
