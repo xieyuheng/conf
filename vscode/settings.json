@@ -5,7 +5,7 @@
     "editor.fontWeight": "400",
     "workbench.activityBar.visible": false,
     "editor.renderWhitespace": "none",
-    // "window.menuBarVisibility": "hidden",
+    "window.menuBarVisibility": "hidden",
     "editor.formatOnSave": true,
     "workbench.iconTheme": "simple-icons",
     "editor.lineNumbers": "off",
