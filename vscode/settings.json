@@ -1,7 +1,7 @@
 {
     "editor.fontFamily": "Noto Mono",
     "editor.fontSize": 20,
-    "window.zoomLevel": 2,
+    "window.zoomLevel": 1,
     "editor.fontWeight": "400",
     "workbench.activityBar.visible": false,
     "editor.renderWhitespace": "none",
@@ -18,5 +18,9 @@
         "statusBar.background": "#1A1A1A",
         "statusBar.noFolderBackground": "#212121",
         "statusBar.debuggingBackground": "#263238"
-    }
+    },
+    "editor.multiCursorModifier": "alt",
+    "workbench.statusBar.visible": true,
+    "window.customMenuBarAltFocus": false,
+    "window.enableMenuBarMnemonics": false
 }

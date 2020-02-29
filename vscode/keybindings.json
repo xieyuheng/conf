@@ -1,6 +1,20 @@
 // Place your key bindings in this file to override the defaults
 [
     {
+        "key": "alt+p",
+        "command": "block-travel.jumpUp",
+        "when": "editorFocus"
+    },
+    {
+        "key": "alt+n",
+        "command": "block-travel.jumpDown",
+        "when": "editorFocus"
+    },
+    {
+        "key": "ctrl+n",
+        "command": "-workbench.action.files.newUntitledFile"
+    },
+    {
         "key": "tab",
         "command": "editor.action.reindentselectedlines",
         "when": "editorTextFocus"
