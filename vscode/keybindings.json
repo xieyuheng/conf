@@ -1,6 +1,10 @@
 // Place your key bindings in this file to override the defaults
 [
     {
+        "key": "ctrl+x ctrl+n",
+        "command": "-workbench.action.newWindow"
+    },
+    {
         "key": "alt+p",
         "command": "block-travel.jumpUp",
         "when": "editorFocus"

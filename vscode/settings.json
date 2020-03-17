@@ -22,5 +22,6 @@
     "editor.multiCursorModifier": "alt",
     "workbench.statusBar.visible": true,
     "window.customMenuBarAltFocus": false,
-    "window.enableMenuBarMnemonics": false
+    "window.enableMenuBarMnemonics": false,
+    "workbench.colorTheme": "Zenburn+ Dark"
 }
