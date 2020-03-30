@@ -1,3 +1,5 @@
+#!/bin/bash
+
 modprobe zram
 echo lz4 > /sys/block/zram0/comp_algorithm
 echo 4G > /sys/block/zram0/disksize
