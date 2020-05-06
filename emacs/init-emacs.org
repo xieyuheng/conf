@@ -1442,7 +1442,7 @@
       (add-hook
        'js-mode-hook
        (lambda ()
-         (setq comment-style 'extra)
+         ;; (setq comment-style 'extra)
          (setq js-indent-level 2)))
 
       (add-to-list 'auto-mode-alist '("\\.js\\'" . js-mode))
@@ -1457,7 +1457,8 @@
       (add-hook
        'js2-mode-hook
        (lambda ()
-         (setq comment-style 'extra)
+         ;; (setq comment-style 'extra)
+         ;; (setq comment-style 'multi-char)
          (setq js2-basic-offset 2)
          (js2-mode-hide-warnings-and-errors)))
 
@@ -1506,14 +1507,14 @@
       #+begin_src emacs-lisp :tangle ~/.emacs
       (add-to-list 'load-path "~/.emacs.d/typescript.el/")
       (require 'typescript-mode)
-      (add-to-list 'auto-mode-alist '("\\.ts\\'" . typescript-mode))
-      (add-to-list 'auto-mode-alist '("\\.d.ts\\'" . typescript-mode))
+
       (add-hook
        'typescript-mode-hook
        (lambda ()
-         (setq typescript-indent-level 2)
-         ;; (setq typescript-indent-level 4)
-         ))
+         (setq typescript-indent-level 2)))
+
+      (add-to-list 'auto-mode-alist '("\\.ts\\'" . typescript-mode))
+      (add-to-list 'auto-mode-alist '("\\.d.ts\\'" . typescript-mode))
       #+end_src
 
 ***** web-mode
@@ -1549,10 +1550,24 @@
          (set (make-local-variable 'sgml-basic-offset) 2)
          ))
       #+end_src
+
 ***** jsx
 
       #+begin_src emacs-lisp :tangle ~/.emacs
       ;; (add-to-list 'auto-mode-alist '("\\.jsx\\'" . js-jsx-mode))
+      #+end_src
+
+***** prettier
+
+      #+begin_src emacs-lisp :tangle ~/.emacs
+      (add-to-list 'load-path "~/.emacs.d/prettier-emacs/")
+      (require 'prettier-js)
+      ;; (add-hook 'js2-mode-hook 'prettier-js-mode)
+      ;; (add-hook 'js-mode-hook 'prettier-js-mode)
+      ;; (add-hook 'typescript-mode-hook 'prettier-js-mode)
+      ;; (add-hook 'web-mode-hook 'prettier-js-mode)
+
+      (setq prettier-js-args '("--no-semi" "--trailing-comma" "es5"))
       #+end_src
 
 *** php
