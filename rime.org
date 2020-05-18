@@ -17,7 +17,8 @@
 
   punctuator:
     full_shape:
-      " " : { commit: "　" }
+      # " " : { commit: "　" }
+      " " : { commit: " " }
       "," : { commit: ， }
       "." : { commit: 。 }
       "<" : [ 《, 〈, «, ‹ ]
@@ -89,12 +90,9 @@
 
   #+begin_src yaml :tangle ~/.config/fcitx/rime/default.custom.yaml
   patch:
-
     "menu/page_size": 9
-
     "schema_list":
       - schema: luna_pinyin
-
     "ascii_composer/switch_key":
         Shift_L: noop # inline_ascii
         Shift_R: noop
@@ -110,13 +108,13 @@
   patch:
     "punctuator/import_preset": myseting
     "switches":
-      - name: simplification
-        states: ["汉字", "漢字"]
       - name: full_shape
-        states: ["全角", "半角"]
+        states: ["全", "半"]
+      - name: simplification
+        states: ["汉", "漢"]
       # - name: ascii_mode
       #   reset: 0
-      #   states: ["中文", "西文"]
+      #   states: ["中", "西"]
       # - name: ascii_punct
       #   states: ["。，", "．，"]
   #+end_src
