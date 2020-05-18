@@ -3126,7 +3126,8 @@
       ;; (set-fontset-font t 'han (font-spec :name "Noto Sans CJK TC Thin" :size 26))
       ;; (set-fontset-font t 'han (font-spec :name "Noto Sans CJK TC Light" :size 26))
 
-      (set-fontset-font t 'han (font-spec :name "Noto Sans CJK TC DemiLight" :size 28))
+      ;; (set-fontset-font t 'han (font-spec :name "Noto Sans CJK TC DemiLight" :size 28))
+      (set-fontset-font t 'han (font-spec :name "Sarasa Mono SC" :size 28))
 
       ;; (set-fontset-font t 'han (font-spec :name "Noto Sans CJK TC Medium" :size 26))
       ;; (set-fontset-font t 'han (font-spec :name "Noto Sans CJK TC Bold" :size 26))
@@ -3169,7 +3170,9 @@
       ;; (set-face-attribute 'default nil :family "3270 Condensed" :height 210)
       ;; (set-face-attribute 'default nil :family "ibm3270" :height 190)
       ;; (set-face-attribute 'default nil :family "Fira Code" :height 170)
-      (set-face-attribute 'default nil :family "Fira Mono" :height 170)
+      ;; (set-face-attribute 'default nil :family "Fira Mono" :height 170)
+      (set-face-attribute 'default nil :family "Sarasa Mono SC" :height 200)
+
       ;; (set-face-attribute 'default nil :family "Source Code Pro" :height 180)
       ;; (set-face-attribute 'default nil :family "mononoki" :height 180)
       ;; (set-face-attribute 'default nil :family "Noto Mono" :height 180)
@@ -3178,7 +3181,9 @@
 ***** symbol
 
       #+begin_src emacs-lisp :tangle ~/.emacs
-      (set-fontset-font t 'symbol (font-spec :name "Noto Mono"))
+      ;; (set-fontset-font t 'symbol (font-spec :name "Noto Mono"))
+      (set-fontset-font t 'symbol (font-spec :name "Sarasa Mono SC"))
+
       ;; (set-fontset-font t 'symbol (font-spec :name "Noto Emoji"))
       #+end_src
 
