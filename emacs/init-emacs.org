@@ -1375,9 +1375,9 @@
      (lambda ()
        (turn-off-indent)))
 
-    (add-to-list 'auto-mode-alist '("\\.cs\\'" . js-mode))
-    (add-to-list 'auto-mode-alist '("\\.sc\\'" . js-mode))
-    (add-to-list 'auto-mode-alist '("\\.cic\\'" . js-mode))
+    (add-to-list 'auto-mode-alist '("\\.cs\\'" . scala-mode))
+    (add-to-list 'auto-mode-alist '("\\.sc\\'" . scala-mode))
+    (add-to-list 'auto-mode-alist '("\\.cic\\'" . scala-mode))
     #+end_src
 
 *** sql
