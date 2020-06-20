@@ -1617,10 +1617,15 @@
     (setq nxml-attribute-indent 2)
     #+end_src
 
-*** rst
+*** txt
 
     #+begin_src emacs-lisp :tangle ~/.emacs
-    (add-to-list 'auto-mode-alist '("\\.txt\\'" . rst-mode))
+    (add-to-list 'auto-mode-alist '("\\.txt\\'" . text-mode))
+
+    (add-hook
+     'text-mode-hook
+     (lambda ()
+       (turn-off-indent)))
     #+end_src
 
 *** return-stack
