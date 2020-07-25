@@ -1523,13 +1523,18 @@
       (add-to-list 'load-path "~/.emacs.d/web-mode/")
       (require 'web-mode)
 
+      (define-key web-mode-map (kbd "C-c C-c") 'web-mode-tag-match)
+
+      (define-key web-mode-map (kbd "<tab>") 'web-mode-fold-or-unfold)
+
       (add-hook
        'web-mode-hook
        (lambda ()
          (setq web-mode-markup-indent-offset 2)
          (setq web-mode-css-indent-offset 2)
          (setq web-mode-code-indent-offset 2)
-         ))
+         (setq web-mode-style-padding 0)
+         (setq web-mode-script-padding 0)))
 
       (add-to-list 'auto-mode-alist '("\\.jsx\\'" . web-mode))
       (add-to-list 'auto-mode-alist '("\\.tsx\\'" . web-mode))
@@ -1560,23 +1565,7 @@
 ***** vue
 
       #+begin_src emacs-lisp :tangle ~/.emacs
-      (add-to-list 'load-path "~/.emacs.d/mmm-mode/")
-      (require 'mmm-mode)
-
-      (add-to-list 'load-path "~/.emacs.d/vue-html-mode/")
-      (require 'vue-html-mode)
-
-      (add-to-list 'load-path "~/.emacs.d/ssass-mode/")
-      (require 'ssass-mode)
-
-      (add-to-list 'load-path "~/.emacs.d/vue-mode/")
-      (require 'vue-mode)
-
-      (add-to-list 'auto-mode-alist '("\\.vue\\'" . vue-mode))
-
-      (add-hook 'mmm-mode-hook
-          (lambda ()
-            (set-face-background 'mmm-default-submode-face nil)))
+      (add-to-list 'auto-mode-alist '("\\.vue\\'" . web-mode))
       #+end_src
 
 ***** prettier
@@ -1638,7 +1627,8 @@
     (setq nxml-child-indent 4)
     (setq nxml-attribute-indent 2)
 
-    (add-to-list 'auto-mode-alist '("\\.xml\\'" . nxml-mode))
+    ;; (add-to-list 'auto-mode-alist '("\\.xml\\'" . nxml-mode))
+    (add-to-list 'auto-mode-alist '("\\.xml\\'" . web-mode))
 
     (setq rng-nxml-auto-validate-flag nil)
 
