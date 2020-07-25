@@ -1525,11 +1525,12 @@
 
       (define-key web-mode-map (kbd "C-c C-c") 'web-mode-tag-match)
 
-      (define-key web-mode-map (kbd "<tab>") 'web-mode-fold-or-unfold)
-
       (add-hook
        'web-mode-hook
        (lambda ()
+         (electric-indent-local-mode -1)
+         (local-set-key (kbd "RET") 'electric-newline-and-maybe-indent)
+         (turn-off-indent)
          (setq web-mode-markup-indent-offset 2)
          (setq web-mode-css-indent-offset 2)
          (setq web-mode-code-indent-offset 2)
