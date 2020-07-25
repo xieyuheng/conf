@@ -1524,12 +1524,12 @@
       (require 'web-mode)
 
       (define-key web-mode-map (kbd "C-c C-c") 'web-mode-tag-match)
+      (setq web-mode-enable-auto-indentation nil)
 
       (add-hook
        'web-mode-hook
        (lambda ()
          (electric-indent-local-mode -1)
-         (local-set-key (kbd "RET") 'electric-newline-and-maybe-indent)
          (turn-off-indent)
          (setq web-mode-markup-indent-offset 2)
          (setq web-mode-css-indent-offset 2)
@@ -1657,8 +1657,8 @@
         (kbd "<tab>")
         (lambda ()
           (interactive)
-             (message "nxml-show")
-             (nxml-show)))
+          (message "nxml-show")
+          (nxml-show)))
        (local-set-key (kbd "RET") 'electric-newline-and-maybe-indent)))
 
     (add-to-list 'load-path "~/.emacs.d/rnc-mode/")
@@ -2341,6 +2341,17 @@
     (add-to-list 'load-path "~/.emacs.d/fish-mode/")
     (require 'fish-mode)
     #+end_src
+
+* yasnippet
+
+  #+begin_src emacs-lisp :tangle ~/.emacs
+  ;; (add-to-list 'load-path "~/.emacs.d/yasnippet")
+  ;; (require 'yasnippet)
+  ;; (yas-global-mode 1)
+  ;; (setq yas-indent-line nil)
+  ;; (setq yas-also-indent-empty-lines nil)
+  ;; (setq yas-also-auto-indent-first-line nil)
+  #+end_src
 
 * comment
 
