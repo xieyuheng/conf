@@ -56,6 +56,7 @@
 
   #+begin_src fish :tangle ~/.config/fish/config.fish
   set -x LC_CTYPE zh_CN.UTF-8
+  set -x EDITOR emacs --no-init-file --no-window-system
   #+end_src
 
 * pr
@@ -130,21 +131,21 @@
 *** fish_prompt
 
     #+begin_src fish :tangle ~/.config/fish/config.fish
-    function fish_prompt
-      set last_status $status
-      printf '\n'
-      printf '  '
-      if test $last_status -gt 0
-        set_color $fish_color_error --bold
-        printf '%s ' $last_status
-      end
-      set_color $fish_color_normal
-      printf '%s@%s %s' (whoami) (hostname) (pwd)
-      set_color $fish_color_operator --bold
-      printf '%s' (__fish_git_prompt)
-      set_color $fish_color_normal
-      printf '\n\n'
-    end
+    # function fish_prompt
+    #   set last_status $status
+    #   printf '\n'
+    #   printf '  '
+    #   if test $last_status -gt 0
+    #     set_color $fish_color_error --bold
+    #     printf '%s ' $last_status
+    #   end
+    #   set_color $fish_color_normal
+    #   printf '%s@%s %s' (whoami) (hostname) (pwd)
+    #   set_color $fish_color_operator --bold
+    #   printf '%s' (__fish_git_prompt)
+    #   set_color $fish_color_normal
+    #   printf '\n\n'
+    # end
     #+end_src
 
 * c
@@ -166,7 +167,7 @@
 * npm
 
   #+begin_src fish :tangle ~/.config/fish/config.fish
-  set PATH $HOME/.npm-package/bin $PATH
+  set PATH $HOME/.npm-packages/bin $PATH
   #+end_src
 
 * yarn

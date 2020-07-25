@@ -1557,6 +1557,21 @@
       ;; (add-to-list 'auto-mode-alist '("\\.jsx\\'" . js-jsx-mode))
       #+end_src
 
+***** vue
+
+      #+begin_src emacs-lisp :tangle ~/.emacs
+      (add-to-list 'load-path "~/.emacs.d/mmm-mode/")
+      (require 'mmm-mode)
+
+      (add-to-list 'load-path "~/.emacs.d/vue-html-mode/")
+      (require 'vue-html-mode)
+
+      (add-to-list 'load-path "~/.emacs.d/vue-mode/")
+      (require 'vue-mode)
+
+      (add-to-list 'auto-mode-alist '("\\.vue\\'" . vue-mode))
+      #+end_src
+
 ***** prettier
 
       #+begin_src emacs-lisp :tangle ~/.emacs
@@ -1615,17 +1630,49 @@
     #+begin_src emacs-lisp :tangle ~/.emacs
     (setq nxml-child-indent 4)
     (setq nxml-attribute-indent 2)
+
+    (add-to-list 'auto-mode-alist '("\\.xml\\'" . nxml-mode))
+
+    (setq rng-nxml-auto-validate-flag nil)
+
+    (setq nxml-tab-flag t)
+
+    (setq nxml-backtab-state 1)
+
+    (add-hook
+     'nxml-mode-hook
+     (lambda ()
+       (local-set-key
+        (kbd "<backtab>")
+        (lambda ()
+          (interactive)
+          (cond
+            ((eq nxml-backtab-state 1)
+             (message "nxml-show-all")
+             (nxml-show-all)
+             (setq nxml-backtab-state 2))
+            ((eq nxml-backtab-state 2)
+             (message "nxml-hide-all-text-content")
+             (nxml-hide-all-text-content)
+             (setq nxml-backtab-state 1)))))
+       (local-set-key
+        (kbd "<tab>")
+        (lambda ()
+          (interactive)
+             (message "nxml-show")
+             (nxml-show)))
+       (local-set-key (kbd "RET") 'electric-newline-and-maybe-indent)))
+
+    (add-to-list 'load-path "~/.emacs.d/rnc-mode/")
+    (require 'rnc-mode)
+
+    (add-to-list 'auto-mode-alist '("\\.rnc\\'" . rnc-mode))
     #+end_src
 
 *** txt
 
     #+begin_src emacs-lisp :tangle ~/.emacs
     (add-to-list 'auto-mode-alist '("\\.txt\\'" . text-mode))
-
-    (add-hook
-     'text-mode-hook
-     (lambda ()
-       (turn-off-indent)))
     #+end_src
 
 *** return-stack
@@ -2953,7 +3000,6 @@
     (setq gc-cons-threshold 800000)
     #+end_src
 
-
 *** cua-selection-mode
     #+begin_src emacs-lisp :tangle ~/.emacs
     (cua-selection-mode 1)
@@ -3643,6 +3689,16 @@
        (local-set-key (kbd "M-n") 'forward-paragraph)
        (local-set-key (kbd "M-p") 'backward-paragraph)))
     #+end_src
+
+* ido
+
+  #+begin_src emacs-lisp :tangle ~/.emacs
+  (add-to-list 'load-path "~/.emacs.d/ido-vertical-mode/")
+  (require 'ido-vertical-mode)
+  (ido-mode 1)
+  (ido-vertical-mode 1)
+  (setq ido-vertical-define-keys 'C-n-and-C-p-only)
+  #+end_src
 
 * pomidor
 
