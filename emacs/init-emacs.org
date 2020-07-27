@@ -1434,6 +1434,13 @@
                         (insert "\n")))))
     #+end_src
 
+*** s.el
+
+    #+begin_src emacs-lisp :tangle ~/.emacs
+    (add-to-list 'load-path "~/.emacs.d/s.el/")
+    (require 's)
+    #+end_src
+
 *** web
 
 ***** js-mode
@@ -1524,18 +1531,12 @@
       (require 'web-mode)
 
       (define-key web-mode-map (kbd "C-c C-c") 'web-mode-tag-match)
-      (setq web-mode-enable-auto-indentation nil)
 
-      (add-hook
-       'web-mode-hook
-       (lambda ()
-         (electric-indent-local-mode -1)
-         (turn-off-indent)
-         (setq web-mode-markup-indent-offset 2)
-         (setq web-mode-css-indent-offset 2)
-         (setq web-mode-code-indent-offset 2)
-         (setq web-mode-style-padding 0)
-         (setq web-mode-script-padding 0)))
+      (setq web-mode-markup-indent-offset 2)
+      (setq web-mode-css-indent-offset 2)
+      (setq web-mode-code-indent-offset 2)
+      (setq web-mode-style-padding 2)
+      (setq web-mode-script-padding 2)
 
       (add-to-list 'auto-mode-alist '("\\.jsx\\'" . web-mode))
       (add-to-list 'auto-mode-alist '("\\.tsx\\'" . web-mode))
@@ -1629,7 +1630,6 @@
     (setq nxml-attribute-indent 2)
 
     ;; (add-to-list 'auto-mode-alist '("\\.xml\\'" . nxml-mode))
-    (add-to-list 'auto-mode-alist '("\\.xml\\'" . web-mode))
 
     (setq rng-nxml-auto-validate-flag nil)
 
@@ -1665,6 +1665,29 @@
     (require 'rnc-mode)
 
     (add-to-list 'auto-mode-alist '("\\.rnc\\'" . rnc-mode))
+    #+end_src
+
+*** myxml-mode
+
+    #+begin_src emacs-lisp :tangle ~/.emacs
+    (add-to-list 'load-path "~/.emacs.d/myxml-mode/")
+    (require 'myxml-mode)
+
+    (define-key myxml-mode-map (kbd "C-c C-c") 'myxml-mode-tag-match)
+    (setq myxml-mode-enable-auto-indentation nil)
+
+    (add-to-list 'auto-mode-alist '("\\.xml\\'" . myxml-mode))
+
+    (add-hook
+     'myxml-mode-hook
+     (lambda ()
+       (electric-indent-local-mode -1)
+       (turn-off-indent)
+       (setq myxml-mode-markup-indent-offset 2)
+       (setq myxml-mode-css-indent-offset 2)
+       (setq myxml-mode-code-indent-offset 2)
+       (setq myxml-mode-style-padding 0)
+       (setq myxml-mode-script-padding 0)))
     #+end_src
 
 *** txt
