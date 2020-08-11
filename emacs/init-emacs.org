@@ -1540,6 +1540,7 @@
 
       (add-to-list 'auto-mode-alist '("\\.jsx\\'" . web-mode))
       (add-to-list 'auto-mode-alist '("\\.tsx\\'" . web-mode))
+      (add-to-list 'auto-mode-alist '("\\.svelte\\'" . web-mode))
       #+end_src
 
 ***** css-mode
@@ -1580,7 +1581,9 @@
       ;; (add-hook 'typescript-mode-hook 'prettier-js-mode)
       ;; (add-hook 'web-mode-hook 'prettier-js-mode)
 
-      (setq prettier-js-args '("--no-semi" "--trailing-comma" "es5"))
+      (setq prettier-js-args
+            '("--no-semi"
+              "--trailing-comma" "es5"))
       #+end_src
 
 *** php
@@ -2363,6 +2366,15 @@
     #+begin_src emacs-lisp :tangle ~/.emacs
     (add-to-list 'load-path "~/.emacs.d/fish-mode/")
     (require 'fish-mode)
+    #+end_src
+
+*** jq
+
+    #+begin_src emacs-lisp :tangle ~/.emacs
+    (add-to-list 'load-path "~/.emacs.d/jq-mode/")
+    (autoload 'jq-mode "jq-mode.el"
+        "Major mode for editing jq files" t)
+    (add-to-list 'auto-mode-alist '("\\.jq$" . jq-mode))
     #+end_src
 
 * yasnippet
