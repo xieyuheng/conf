@@ -3161,13 +3161,21 @@
              "#rust-embedded")))
     #+end_src
 
-* warden
+* ranger
 
   #+begin_src emacs-lisp :tangle ~/.emacs
-  (add-to-list 'load-path "~/.emacs.d/warden/")
-  (require 'warden)
+  (add-to-list 'load-path "~/.emacs.d/ranger.el/")
+  (require 'ranger)
 
-  (global-set-key (kbd "C-s C-w") 'warden)
+  (global-set-key (kbd "C-s C-w") 'ranger)
+
+  (setq ranger-hide-cursor nil)
+  (setq ranger-modify-header nil)
+  (setq ranger-preview-file t)
+  (setq ranger-show-literal nil)
+  (setq ranger-parent-depth 0)
+  (setq ranger-width-preview 0.7)
+  (setq ranger-cleanup-eagerly t)
   #+end_src
 
 * looks like
