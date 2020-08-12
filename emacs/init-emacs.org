@@ -3172,7 +3172,9 @@
   (add-hook
    'ranger-mode-hook
    (lambda ()
-     (local-set-key (kbd "C-s C-w") 'other-window)))
+     (local-set-key (kbd "C-s C-w") 'other-window)
+     (local-set-key (kbd "C-x C-s") (lambda () (interactive)))
+     (local-set-key (kbd "C-s C-x") (lambda () (interactive)))))
 
   (setq ranger-hide-cursor nil)
   (setq ranger-modify-header nil)
