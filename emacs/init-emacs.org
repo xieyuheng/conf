@@ -3169,13 +3169,17 @@
 
   (global-set-key (kbd "C-s C-w") 'ranger)
 
+  (add-hook
+   'ranger-mode-hook
+   (lambda ()
+     (local-set-key (kbd "C-s C-w") 'other-window)))
+
   (setq ranger-hide-cursor nil)
   (setq ranger-modify-header nil)
   (setq ranger-preview-file t)
   (setq ranger-show-literal nil)
   (setq ranger-parent-depth 0)
   (setq ranger-width-preview 0.7)
-  (setq ranger-cleanup-eagerly t)
   #+end_src
 
 * looks like
