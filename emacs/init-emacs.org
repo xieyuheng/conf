@@ -2987,6 +2987,7 @@
 *** hippie-expand
     #+begin_src emacs-lisp :tangle ~/.emacs
     (global-set-key (kbd "C-h") 'hippie-expand)
+
     (setq hippie-expand-try-functions-list
           '(try-expand-dabbrev
             try-expand-dabbrev-visible
