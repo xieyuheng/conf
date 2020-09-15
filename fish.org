@@ -242,6 +242,14 @@
   end
   #+end_src
 
+* __fish_command_not_found_handler
+
+  #+begin_src fish :tangle ~/.config/fish/config.fish
+  function __fish_command_not_found_handler --on-event fish_command_not_found
+    __fish_default_command_not_found_handler $argv[1]
+  end
+  #+end_src
+
 * ssh-agent
 
   #+begin_src fish :tangle ~/.config/fish/config.fish
