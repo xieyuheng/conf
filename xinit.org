@@ -23,5 +23,13 @@
   # for firefox
   # XDG_DESKTOP_DIR="/home/xyh"
 
+  # for gnome
+  # export XDG_SESSION_TYPE=x11
+  # export GDK_BACKEND=x11
+  # exec gnome-session
+
+  # for kde
+  # exec startplasma-x11
+
   exec i3
   #+end_src
