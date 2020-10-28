@@ -1452,7 +1452,7 @@
        ;; (setq comment-style 'extra)
        (setq js-indent-level 2)))
 
-    (add-to-list 'auto-mode-alist '("\\.js\\'" . js-mode))
+    ;; (add-to-list 'auto-mode-alist '("\\.js\\'" . js-mode))
     #+end_src
 
 *** js2-mode
@@ -1470,6 +1470,23 @@
        (js2-mode-hide-warnings-and-errors)))
 
     ;; (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
+    #+end_src
+
+*** typescript-mode
+
+    #+begin_src emacs-lisp :tangle ~/.emacs
+    (add-to-list 'load-path "~/.emacs.d/typescript.el/")
+    (require 'typescript-mode)
+
+    (add-hook
+     'typescript-mode-hook
+     (lambda ()
+       (setq typescript-indent-level 2)
+       (setq tab-width 2)))
+
+    (add-to-list 'auto-mode-alist '("\\.js\\'" . typescript-mode))
+    (add-to-list 'auto-mode-alist '("\\.ts\\'" . typescript-mode))
+    (add-to-list 'auto-mode-alist '("\\.d.ts\\'" . typescript-mode))
     #+end_src
 
 *** nodejs-repl
@@ -1507,22 +1524,6 @@
        (turn-off-indent)
        (local-set-key (kbd "<return>") 'newline)
        ))
-    #+end_src
-
-*** typescript-mode
-
-    #+begin_src emacs-lisp :tangle ~/.emacs
-    (add-to-list 'load-path "~/.emacs.d/typescript.el/")
-    (require 'typescript-mode)
-
-    (add-hook
-     'typescript-mode-hook
-     (lambda ()
-       (setq typescript-indent-level 2)
-       (setq tab-width 2)))
-
-    (add-to-list 'auto-mode-alist '("\\.ts\\'" . typescript-mode))
-    (add-to-list 'auto-mode-alist '("\\.d.ts\\'" . typescript-mode))
     #+end_src
 
 *** web-mode
@@ -3257,6 +3258,9 @@
 *** english
 
     #+begin_src emacs-lisp :tangle ~/.emacs
+    ;; 【“”""】【。.】【，,】【!！】【0 o】
+    ;; [1i]
+
     ;; ~!@#$%^&*+=
     ;; 01234567890
     ;; -- ~~ __
