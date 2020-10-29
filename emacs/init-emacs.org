@@ -3219,7 +3219,7 @@
 *** 楷
 
     #+begin_src emacs-lisp :tangle ~/.emacs
-    (set-fontset-font t 'han (font-spec :name "MS Song" :size 26))
+    (set-fontset-font t 'han (font-spec :name "MS Song" :size 28))
     ;; (set-fontset-font t 'han (font-spec :name "H-宮書" :size 26))
     #+end_src
 
@@ -3281,7 +3281,7 @@
     ;; (set-face-attribute 'default nil :family "Terminus (TTF)" :height 200)
     ;; (set-face-attribute 'default nil :family "xos4 Terminus" :height 200)
     ;; (set-face-attribute 'default nil :family "PragmataPro Mono" :height 200)
-    (set-face-attribute 'default nil :family "monofur" :height 190)
+    (set-face-attribute 'default nil :family "monofur" :height 200)
     ;; (set-face-attribute 'default nil :family "monaco" :height 180)
     ;; (set-face-attribute 'default nil :family "Fixedsys Excelsior 3.01" :height 190)
     ;; (set-face-attribute 'default nil :family "Fira Code" :height 170)
