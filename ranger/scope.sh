@@ -48,6 +48,7 @@ handle_extension() {
             atool --list -- "${FILE_PATH}" && exit 5
             bsdtar --list --file "${FILE_PATH}" && exit 5
             exit 1;;
+
         rar)
             # Avoid password prompt by providing empty password
             unrar lt -p- -- "${FILE_PATH}" && exit 5
@@ -62,11 +63,16 @@ handle_extension() {
             7z l -p -- "${FILE_PATH}" && exit 5
             exit 1;;
 
-        # PDF
         pdf)
             # Preview as text conversion
             pdftotext -l 10 -nopgbrk -q -- "${FILE_PATH}" - | fmt -w ${PV_WIDTH} && exit 5
             mutool draw -F txt -i -- "${FILE_PATH}" 1-10 | fmt -w ${PV_WIDTH} && exit 5
+            exiftool "${FILE_PATH}" && exit 5
+            exit 1;;
+
+        djvu)
+            ## Preview as text conversion (requires djvulibre)
+            djvutxt "${FILE_PATH}" | fmt -w "${PV_WIDTH}" && exit 5
             exiftool "${FILE_PATH}" && exit 5
             exit 1;;
 
@@ -89,10 +95,24 @@ handle_extension() {
             elinks -dump "${FILE_PATH}" && exit 5
             ;; # Continue with next handler on failure
 
+        *)
+            handle_file && exit 5
+            exit 1;;
+
+    esac
+}
+
+handle_file() {
+    case $(file -b "$FILE_PATH") in
+
+        *text*)
+            cat "$FILE_PATH" && exit 5
+            exit 1;;
 
         *)
-            cat $FILE_PATH && exit 5
+            file -b "$FILE_PATH" && exit 5
             exit 1;;
+
     esac
 }
 
