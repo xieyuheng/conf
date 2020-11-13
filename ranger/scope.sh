@@ -88,6 +88,11 @@ handle_extension() {
             lynx -dump -- "${FILE_PATH}" && exit 5
             elinks -dump "${FILE_PATH}" && exit 5
             ;; # Continue with next handler on failure
+
+
+        *)
+            cat $FILE_PATH && exit 5
+            exit 1;;
     esac
 }
 
