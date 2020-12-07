@@ -2415,10 +2415,11 @@
    ;; a compiled version of org mode is installed
    (require 'org)
 
-   (add-to-list 'load-path "~/.emacs.d/htmlize/")
+   ;; (add-to-list 'load-path "~/.emacs.d/htmlize/")
+   (add-to-list 'load-path "~/.emacs.d/emacs-htmlize/")
    (require 'htmlize)
 
-   (setq htmlize-output-type 'css)
+   ;; (setq htmlize-output-type 'css)
    ;; (setq htmlize-output-type 'inline-css)
    ;; (setq htmlize-output-type 'font)
    #+end_src
