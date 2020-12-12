@@ -3800,3 +3800,9 @@
   (add-to-list 'load-path "~/.emacs.d/pinky-mode/")
   (require 'pinky-mode)
   #+end_src
+
+* global-auto-revert-mode
+
+  #+begin_src emacs-lisp :tangle ~/.emacs
+  (global-auto-revert-mode t)
+  #+end_src
