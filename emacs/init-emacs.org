@@ -3801,8 +3801,9 @@
   (require 'pinky-mode)
   #+end_src
 
-* global-auto-revert-mode
+* auto revert
 
   #+begin_src emacs-lisp :tangle ~/.emacs
   (global-auto-revert-mode t)
+  (setq auto-revert-interval 1)
   #+end_src
