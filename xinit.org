@@ -10,7 +10,7 @@
   export XMODIFIERS="@im=fcitx"
   export XDG_DESKTOP_DIR="/home/xyh"
 
-  rmdir Desktop &
+  # rmdir Desktop &
   fcitx &
   xmodmap .xmodmap &
   xbindkeys &

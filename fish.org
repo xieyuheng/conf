@@ -180,7 +180,8 @@
 
   #+begin_src fish :tangle ~/.config/fish/config.fish
   # set PATH $PATH $HOME/.gem/ruby/2.5.0/bin
-  set PATH $PATH $HOME/.gem/ruby/2.6.0/bin
+  # set PATH $PATH $HOME/.gem/ruby/2.6.0/bin
+  set PATH $PATH $HOME/.gem/ruby/2.7.0/bin
   #+end_src
 
 * rust
