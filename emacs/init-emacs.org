@@ -1378,6 +1378,7 @@
    (add-to-list 'auto-mode-alist '("\\.cs\\'" . scala-mode))
    (add-to-list 'auto-mode-alist '("\\.sc\\'" . scala-mode))
    (add-to-list 'auto-mode-alist '("\\.cic\\'" . scala-mode))
+   (add-to-list 'auto-mode-alist '("\\.jo\\'" . scala-mode))
    (add-to-list 'auto-mode-alist '("\\.grammar\\'" . scala-mode))
    (add-to-list 'auto-mode-alist '("\\.table\\'" . scala-mode))
    #+end_src
@@ -1402,7 +1403,7 @@
 
    (add-hook 'jojo-mode-hook #'enable-paredit-mode)
 
-   (setq auto-mode-alist (cons `("\\.jo" . jojo-mode) auto-mode-alist))
+   ;; (setq auto-mode-alist (cons `("\\.jo" . jojo-mode) auto-mode-alist))
 
    (add-hook
     'jojo-mode-hook
@@ -3236,7 +3237,7 @@
 *** 黑
 
     #+begin_src emacs-lisp :tangle ~/.emacs
-    (set-fontset-font t 'han (font-spec :name "H-雲林呉竹体" :size 38))
+    (set-fontset-font t 'han (font-spec :name "H-雲林呉竹体" :size 42))
     ;; (set-fontset-font t 'han (font-spec :name "H-明蘭" :size 28))
     ;; (set-fontset-font t 'han (font-spec :name "H-新雅蘭" :size 28))
 
@@ -3285,7 +3286,7 @@
     ;; (set-face-attribute 'default nil :family "xos4 Terminus" :height 200)
     ;; (set-face-attribute 'default nil :family "PragmataPro Mono" :height 200)
     ;; (set-face-attribute 'default nil :family "monofur" :height 200)
-    (set-face-attribute 'default nil :family "monaco" :height 230)
+    (set-face-attribute 'default nil :family "monaco" :height 260)
     ;; (set-face-attribute 'default nil :family "Fixedsys Excelsior 3.01" :height 190)
     ;; (set-face-attribute 'default nil :family "Fira Code" :height 170)
     ;; (set-face-attribute 'default nil :family "Fira Mono" :height 170)

@@ -177,35 +177,9 @@
 * my bindings
 
   #+begin_src scheme :tangle ~/.xbindkeysrc.scm
-  (xbindkey
-   '(shift mod1 x)
-   "LC_CTYPE=zh_CN.UTF-8 emacsclient  -c -e \"(open-eshell-for-frame :off)\"")
-
-  (xbindkey
-   '(shift mod1 "c:36")
-   "termite")
-
-  ;; (xbindkey
-  ;;  '(F1)
-  ;;  "rofi -font \"Hack 16\" -show window rofi")
-
-  ;; (xbindkey
-  ;;  '(F2)
-  ;;  "rofi -font \"Hack 16\" -show run")
-
-  (xbindkey
-   '(control mod1 "c:36")
-   "rofi -font \"Hack 16\" -show run")
-
-  ;; (xbindkey
-  ;;  '(control mod1 space)
-  ;;  "rofi -font \"Hack 16\" -show window rofi")
-
-  (xbindkey
-   '(control F10)
-   "scrot")
-
-  (xbindkey
-   '(control F9)
-   "i3lock")
+  (xbindkey '(shift mod1 x) "LC_CTYPE=zh_CN.UTF-8 emacsclient  -c -e \"(open-eshell-for-frame :off)\"")
+  (xbindkey '(shift mod1 "c:36") "termite")
+  (xbindkey '(control mod1 "c:36") "rofi -font \"Monaco 32\" -show run")
+  (xbindkey '(control F9) "i3lock")
+  (xbindkey '(control F10) "scrot")
   #+end_src

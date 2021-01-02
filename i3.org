@@ -13,7 +13,7 @@
 
   # Font for window titles. Will also be used by the bar unless a different font
   # is used in the bar {} block below.
-  font pango:H-minglan 13
+  font pango:H-minglan 24
 
   client.background       #505050
 
@@ -197,7 +197,7 @@
           interval = 5
   }
 
-  order += "battery 0"
+  # order += "battery 0"
   order += "tztime local"
 
   battery 0 {
@@ -212,6 +212,6 @@
   }
 
   tztime local {
-          format = "(%m月 %d日 %H時 %M分)"
+          format = "%m月 %d日 %H時 %M分"
   }
   #+end_src
