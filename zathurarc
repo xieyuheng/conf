@@ -1,0 +1,4 @@
+set font "Monaco 28"
+set default-bg "#E7E7E6"
+set default-fg "#F7F7F6"
+set smooth-scroll "true"
