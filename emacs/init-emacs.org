@@ -3223,29 +3223,29 @@
 *** 楷
 
     #+begin_src emacs-lisp :tangle ~/.emacs
-    ;; (set-fontset-font t 'han (font-spec :name "MS Song" :size 28))
+    ;; (set-fontset-font t 'han (font-spec :name "MS Song" :size 40))
     ;; (set-fontset-font t 'han (font-spec :name "H-宮書" :size 26))
     #+end_src
 
 *** 宋
 
     #+begin_src emacs-lisp :tangle ~/.emacs
-    ;; (set-fontset-font t 'han (font-spec :name "H-秀月" :size 28))
+    ;; (set-fontset-font t 'han (font-spec :name "H-秀月" :size 40))
     ;; (set-fontset-font t 'han (font-spec :name "臺灣新細明體" :size 26))
     #+end_src
 
 *** 黑
 
     #+begin_src emacs-lisp :tangle ~/.emacs
-    (set-fontset-font t 'han (font-spec :name "H-雲林呉竹体" :size 42))
+    (set-fontset-font t 'han (font-spec :name "H-雲林呉竹体" :size 44))
     ;; (set-fontset-font t 'han (font-spec :name "H-明蘭" :size 28))
     ;; (set-fontset-font t 'han (font-spec :name "H-新雅蘭" :size 28))
 
-    ;; (set-fontset-font t 'han (font-spec :name "Noto Sans CJK TC Thin" :size 26))
-    ;; (set-fontset-font t 'han (font-spec :name "Noto Sans CJK TC Light" :size 26))
+    ;; (set-fontset-font t 'han (font-spec :name "Noto Sans CJK TC Thin" :size 44))
+    ;; (set-fontset-font t 'han (font-spec :name "Noto Sans CJK TC Light" :size 44))
 
     ;; (set-fontset-font t 'han (font-spec :name "Noto Sans CJK TC DemiLight" :size 28))
-    ;; (set-fontset-font t 'han (font-spec :name "Sarasa Mono SC" :size 26))
+    ;; (set-fontset-font t 'han (font-spec :name "Sarasa Mono SC" :size 44))
 
     ;; (set-fontset-font t 'han (font-spec :name "Noto Sans CJK TC Medium" :size 26))
     ;; (set-fontset-font t 'han (font-spec :name "Noto Sans CJK TC Bold" :size 26))
@@ -3286,7 +3286,7 @@
     ;; (set-face-attribute 'default nil :family "xos4 Terminus" :height 200)
     ;; (set-face-attribute 'default nil :family "PragmataPro Mono" :height 200)
     ;; (set-face-attribute 'default nil :family "monofur" :height 200)
-    (set-face-attribute 'default nil :family "monaco" :height 260)
+    (set-face-attribute 'default nil :family "monaco" :height 140)
     ;; (set-face-attribute 'default nil :family "Fixedsys Excelsior 3.01" :height 190)
     ;; (set-face-attribute 'default nil :family "Fira Code" :height 170)
     ;; (set-face-attribute 'default nil :family "Fira Mono" :height 170)
