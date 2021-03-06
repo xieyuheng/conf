@@ -13,7 +13,7 @@
 
   # Font for window titles. Will also be used by the bar unless a different font
   # is used in the bar {} block below.
-  font pango:H-minglan 24
+  font pango:H-minglan 12
 
   client.background       #505050
 
