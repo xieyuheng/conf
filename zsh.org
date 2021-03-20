@@ -1,5 +1,10 @@
 #+title:  zsh configuration
 
+* info
+
+  - https://www.zsh.org
+  - https://wiki.archlinux.org/index.php/zsh
+
 * zsh-newuser-install
 
   #+begin_src fish :tangle ~/.zshrc
@@ -58,4 +63,43 @@
   alias up="git status && git commit -m 'up' && git push"
   alias br="git branch -v"
   alias bl="git branch -vva"
+  #+end_src
+
+* px
+
+  #+begin_src fish :tangle ~/.zshrc
+  alias px="proxychains4"
+  #+end_src
+
+* npm
+
+  #+begin_src fish :tangle ~/.zshrc
+  export PATH=$HOME/.npm-packages/bin:$PATH
+  #+end_src
+
+* rust
+
+  #+begin_src fish :tangle ~/.zshrc
+  export RUSTUP_HOME=$HOME/.rustup
+  export CARGO_HOME=$HOME/.cargo
+  export PATH=$CARGO_HOME/bin:$PATH
+  #+end_src
+
+* go
+
+  #+begin_src fish :tangle ~/.zshrc
+  export PATH=$HOME/go/bin:$PATH
+  #+end_src
+
+* python
+
+  #+begin_src fish :tangle ~/.zshrc
+  export PATH=$HOME/.miniconda3/bin:$PATH
+  export PATH=$HOME/.miniconda2/bin:$PATH
+  #+end_src
+
+* path
+
+  #+begin_src fish :tangle ~/.zshrc
+  export PATH=$HOME/bin:$PATH
   #+end_src
