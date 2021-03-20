@@ -60,7 +60,7 @@
   alias add="git add . && git status"
   alias sub="git reset HEAD . && git status"
   alias ci="git commit && git status"
-  alias up="git status && git commit -m 'up' && git push"
+  alias up="git add . && git commit -m 'up' && git push"
   alias br="git branch -v"
   alias bl="git branch -vva"
   #+end_src
