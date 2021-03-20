@@ -121,3 +121,24 @@
    %(?..%F{red}%B%?%b%f) %F{green}%n%f@%F{magenta}%m%f %F{blue}%B%~%b%f \$vcs_info_msg_0_
   "
   #+end_src
+
+* title
+
+  #+begin_src fish :tangle ~/.zshrc
+  autoload -Uz add-zsh-hook
+
+  function xterm_title_precmd () {
+          print -Pn -- '\e]2;%n@%m %~\a'
+           [[ "$TERM" == 'screen'* ]] && print -Pn -- '\e_\005{g}%n\005{-}@\005{m}%m\005{-} \005{B}%~\005{-}\e\\'
+  }
+
+  function xterm_title_preexec () {
+          print -Pn -- '\e]2;%n@%m %~ %# ' && print -n -- "${(q)1}\a"
+           [[ "$TERM" == 'screen'* ]] && { print -Pn -- '\e_\005{g}%n\005{-}@\005{m}%m\005{-} \005{B}%~\005{-} %# ' && print -n -- "${(q)1}\e\\"; }
+  }
+
+  if [[ "$TERM" == (alacritty*|gnome*|konsole*|putty*|rxvt*|screen*|tmux*|xterm*|termite*) ]]; then
+          add-zsh-hook -Uz precmd xterm_title_precmd
+          add-zsh-hook -Uz preexec xterm_title_preexec
+  fi
+  #+end_src
