@@ -103,3 +103,21 @@
   #+begin_src fish :tangle ~/.zshrc
   export PATH=$HOME/bin:$PATH
   #+end_src
+
+* prompt
+
+  #+begin_src fish :tangle ~/.zshrc
+  autoload -Uz vcs_info
+  precmd_vcs_info() { vcs_info }
+  precmd_functions+=( precmd_vcs_info )
+  setopt prompt_subst
+
+  zstyle ':vcs_info:*' check-for-changes true
+  zstyle ':vcs_info:*' stagedstr '+'
+  zstyle ':vcs_info:*' unstagedstr '-'
+  zstyle ':vcs_info:*' formats '(%b%c%u)'
+
+  PROMPT="
+   %(?..%F{red}%B%?%b%f) %F{green}%n%f@%F{magenta}%m%f %F{blue}%B%~%b%f \$vcs_info_msg_0_
+  "
+  #+end_src
