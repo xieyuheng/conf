@@ -38,11 +38,18 @@
   source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
   #+end_src
 
+* ssh
+
+  #+begin_src fish :tangle ~/.zshrc
+  alias startx="ssh-agent startx"
+  #+end_src
+
 * ls mv rm
 
   #+begin_src fish :tangle ~/.zshrc
-  alias ll="ls -hlF"
-  alias lll="ls -halF"
+  alias l="ls --color=auto"
+  alias ll="ls -hlF --color=auto"
+  alias lll="ls -halF --color=auto"
 
   alias mv=" mv -vi"
 
