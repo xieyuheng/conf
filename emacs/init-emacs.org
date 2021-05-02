@@ -3354,13 +3354,6 @@
     ;; (load-theme 'subatomic t)
     #+end_src
 
-*** solarized
-
-    #+begin_src emacs-lisp :tangle ~/.emacs
-    ;; (add-to-list 'custom-theme-load-path "~/.emacs.d/theme/solarized/")
-    ;; (load-theme 'solarized t)
-    #+end_src
-
 *** arjen-grey
 
     #+begin_src emacs-lisp :tangle ~/.emacs

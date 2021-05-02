@@ -47,9 +47,9 @@
 * ls mv rm
 
   #+begin_src fish :tangle ~/.zshrc
-  alias l="ls --color=auto"
-  alias ll="ls -hlF --color=auto"
-  alias lll="ls -halF --color=auto"
+  alias l="ls --color=auto --group-directories-first"
+  alias ll="ls -hlF --color=auto --group-directories-first"
+  alias lll="ls -halF --color=auto --group-directories-first"
 
   alias mv=" mv -vi"
 
@@ -96,6 +96,13 @@
 
   #+begin_src fish :tangle ~/.zshrc
   export PATH=$HOME/go/bin:$PATH
+  #+end_src
+
+* deno
+
+  #+begin_src fish :tangle ~/.zshrc
+  export DENO_INSTALL="$HOME/.deno"
+  export PATH="$DENO_INSTALL/bin:$PATH"
   #+end_src
 
 * python
