@@ -38,6 +38,15 @@
   source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
   #+end_src
 
+* zsh keybindings
+
+  #+begin_src fish :tangle ~/.zshrc
+  bindkey '^[F' vi-forward-word
+  bindkey '^[B' vi-backward-word
+  bindkey '^[f' vi-forward-word
+  bindkey '^[b' vi-backward-word
+  #+end_src
+
 * ssh
 
   #+begin_src fish :tangle ~/.zshrc
