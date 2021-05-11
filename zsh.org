@@ -41,10 +41,13 @@
 * zsh keybindings
 
   #+begin_src fish :tangle ~/.zshrc
-  bindkey '^[F' vi-forward-word
-  bindkey '^[B' vi-backward-word
-  bindkey '^[f' vi-forward-word
-  bindkey '^[b' vi-backward-word
+  bindkey "^W" vi-backward-kill-word
+  bindkey "^[^H" vi-backward-kill-word
+  bindkey "^[^?" vi-backward-kill-word
+  bindkey "^[F" vi-forward-word
+  bindkey "^[B" vi-backward-word
+  bindkey "^[f" vi-forward-word
+  bindkey "^[b" vi-backward-word
   #+end_src
 
 * ssh
