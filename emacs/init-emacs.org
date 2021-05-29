@@ -362,7 +362,6 @@
    (setq modes-about-lisp
          '(scheme-mode
            jojo-mode
-           cicada-mode
            esse-mode
            inferior-scheme-mode
 
@@ -381,10 +380,6 @@
 
    (setq modes-about-C
          '(c-mode
-           ))
-
-   (setq modes-about-cicada
-         '(cicada-mode
            ))
    #+end_src
 
@@ -537,7 +532,6 @@
 
     (add-hook 'scheme-mode-hook           #'enable-paredit-mode)
     (add-hook 'jojo-mode-hook             #'enable-paredit-mode)
-    (add-hook 'cicada-mode-hook           #'enable-paredit-mode)
     (add-hook 'esse-mode-hook             #'enable-paredit-mode)
     (add-hook 'inferior-scheme-mode-hook  #'enable-paredit-mode)
 
@@ -577,7 +571,6 @@
          (local-set-key (kbd "RET") 'comint-send-input))
         ((memq major-mode '(scheme-mode
                             jojo-mode
-                            cicada-mode
                             esse-mode
                             emacs-lisp-mode
                             lisp-mode
@@ -1368,19 +1361,17 @@
 
    (add-to-list 'interpreter-mode-alist '("cicada" . cicada-mode))
 
-   (add-hook 'cicada-mode-hook #'enable-paredit-mode)
-
    (add-hook
     'cicada-mode-hook
     (lambda ()
       (turn-off-indent)))
 
-   (add-to-list 'auto-mode-alist '("\\.cs\\'" . scala-mode))
-   (add-to-list 'auto-mode-alist '("\\.sc\\'" . scala-mode))
-   (add-to-list 'auto-mode-alist '("\\.cic\\'" . scala-mode))
-   (add-to-list 'auto-mode-alist '("\\.jo\\'" . scala-mode))
-   (add-to-list 'auto-mode-alist '("\\.grammar\\'" . scala-mode))
-   (add-to-list 'auto-mode-alist '("\\.table\\'" . scala-mode))
+   (add-to-list 'auto-mode-alist '("\\.cs\\'" . cicada-mode))
+   (add-to-list 'auto-mode-alist '("\\.sc\\'" . cicada-mode))
+   (add-to-list 'auto-mode-alist '("\\.cic\\'" . cicada-mode))
+   (add-to-list 'auto-mode-alist '("\\.jo\\'" . cicada-mode))
+   (add-to-list 'auto-mode-alist '("\\.grammar\\'" . cicada-mode))
+   (add-to-list 'auto-mode-alist '("\\.table\\'" . cicada-mode))
    #+end_src
 
 ** sql
