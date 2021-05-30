@@ -1620,8 +1620,6 @@
     (custom-set-faces
      '(fixed-pitch ((t (:inherit font-lock-constant-face)))))
 
-    (setq markdown-fontify-code-blocks-natively t)markdown-inline-code-face
-
     (add-hook
      'markdown-mode-hook
      (lambda ()
