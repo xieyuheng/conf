@@ -1618,7 +1618,8 @@
     (setq markdown-fontify-code-blocks-natively t)
 
     (custom-set-faces
-     '(fixed-pitch ((t (:inherit font-lock-constant-face)))))
+     '(fixed-pitch ((t (:family (face-attribute 'default :family))))))
+
 
     (add-hook
      'markdown-mode-hook
