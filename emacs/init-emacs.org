@@ -3225,7 +3225,7 @@
 
     #+begin_src emacs-lisp :tangle ~/.emacs
     ;; (set-fontset-font t 'han (font-spec :name "MS Song" :size 44))
-    (set-fontset-font t 'han (font-spec :name "H-宮書" :size 44))
+    ;; (set-fontset-font t 'han (font-spec :name "H-宮書" :size 44))
     #+end_src
 
 *** 宋
@@ -3238,9 +3238,9 @@
 *** 黑
 
     #+begin_src emacs-lisp :tangle ~/.emacs
-    ;; (set-fontset-font t 'han (font-spec :name "H-雲林呉竹体" :size 44))
-    ;; (set-fontset-font t 'han (font-spec :name "H-明蘭" :size 28))
-    ;; (set-fontset-font t 'han (font-spec :name "H-新雅蘭" :size 28))
+    (set-fontset-font t 'han (font-spec :name "H-雲林呉竹体" :size 44))
+    ;; (set-fontset-font t 'han (font-spec :name "H-明蘭" :size 44))
+    ;; (set-fontset-font t 'han (font-spec :name "H-新雅蘭" :size 44))
 
     ;; (set-fontset-font t 'han (font-spec :name "Noto Sans CJK TC Thin" :size 44))
     ;; (set-fontset-font t 'han (font-spec :name "Noto Sans CJK TC Light" :size 44))
