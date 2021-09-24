@@ -1620,21 +1620,20 @@
     (custom-set-faces
      '(fixed-pitch ((t (:family (face-attribute 'default :family))))))
 
-
     (add-hook
      'markdown-mode-hook
      (lambda ()
        (local-set-key (kbd "C-s C-s") 'markdown-edit-code-block)
        (local-set-key (kbd "M-p") 'backward-paragraph)
-       (local-set-key (kbd "M-n") 'forward-paragraph)))
-
-    (set-face-attribute 'markdown-header-face-1 nil :foreground "#DFAF8F")
-    (set-face-attribute 'markdown-header-face-2 nil :foreground "#BFEBBF")
-    (set-face-attribute 'markdown-header-face-3 nil :foreground "#7CB8BB")
-    (set-face-attribute 'markdown-header-face-4 nil :foreground "#D0BF8F")
-    (set-face-attribute 'markdown-header-face-5 nil :foreground "#93E0E3")
-    (set-face-attribute 'markdown-header-face-6 nil :foreground "#9FC59F")
-    ;; (set-face-attribute 'markdown-header-delimiter-face nil :foreground 'unspecified)
+       (local-set-key (kbd "M-n") 'forward-paragraph)
+       (set-face-attribute 'markdown-header-face-1 nil :foreground "#DFAF8F")
+       (set-face-attribute 'markdown-header-face-2 nil :foreground "#BFEBBF")
+       (set-face-attribute 'markdown-header-face-3 nil :foreground "#7CB8BB")
+       (set-face-attribute 'markdown-header-face-4 nil :foreground "#D0BF8F")
+       (set-face-attribute 'markdown-header-face-5 nil :foreground "#93E0E3")
+       (set-face-attribute 'markdown-header-face-6 nil :foreground "#9FC59F")
+       ;; (set-face-attribute 'markdown-header-delimiter-face nil :foreground 'unspecified)
+       ))
     #+end_src
 
 ** xml
