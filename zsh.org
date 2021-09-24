@@ -117,6 +117,12 @@
   export PATH="$DENO_INSTALL/bin:$PATH"
   #+end_src
 
+* php
+
+  #+begin_src fish :tangle ~/.zshrc
+  export PATH="$HOME/.config/composer/vendor/bin:$PATH"
+  #+end_src
+
 * python
 
   #+begin_src fish :tangle ~/.zshrc
@@ -167,4 +173,10 @@
           add-zsh-hook -Uz precmd xterm_title_precmd
           add-zsh-hook -Uz preexec xterm_title_preexec
   fi
+  #+end_src
+
+* nix
+
+  #+begin_src fish :tangle ~/.zshrc
+  if [ -e /home/xyh/.nix-profile/etc/profile.d/nix.sh ]; then . /home/xyh/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer
   #+end_src

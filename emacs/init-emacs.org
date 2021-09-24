@@ -1627,6 +1627,14 @@
        (local-set-key (kbd "C-s C-s") 'markdown-edit-code-block)
        (local-set-key (kbd "M-p") 'backward-paragraph)
        (local-set-key (kbd "M-n") 'forward-paragraph)))
+
+    (set-face-attribute 'markdown-header-face-1 nil :foreground "#DFAF8F")
+    (set-face-attribute 'markdown-header-face-2 nil :foreground "#BFEBBF")
+    (set-face-attribute 'markdown-header-face-3 nil :foreground "#7CB8BB")
+    (set-face-attribute 'markdown-header-face-4 nil :foreground "#D0BF8F")
+    (set-face-attribute 'markdown-header-face-5 nil :foreground "#93E0E3")
+    (set-face-attribute 'markdown-header-face-6 nil :foreground "#9FC59F")
+    ;; (set-face-attribute 'markdown-header-delimiter-face nil :foreground 'unspecified)
     #+end_src
 
 ** xml
@@ -3149,25 +3157,18 @@
    #+begin_src emacs-lisp :tangle ~/.emacs
    (defun irc ()
      (interactive)
-     ;; (erc :server "irc.mozilla.org"
-     ;;      :full-name "xieyuheng")
-     (erc :server "irc.freenode.net"
-          :port 6666
-          :full-name "xieyuheng"
-          :nick "xieyuheng"))
+     (erc-tls :server "irc.libera.chat"
+              :port 6697
+              :full-name "xieyuheng"
+              :nick "xieyuheng"))
 
-   (erc :server "irc.libera.chat"
-             :port 6697
-             :full-name "xieyuheng"
-             :nick "xieyuheng")
 
    (setq erc-autojoin-channels-alist
-         '(("freenode.net"
+         '(("irc.libera.chat"
             "#cicada-language"
-            "#archlinux-cn"
-            "#archlinux-cn-offtopic")
-           ("irc.mozilla.org"
-            "#rust-embedded")))
+            "#cicada-lang"
+            "##prolog"
+            "#archlinux-cn-offtopic")))
    #+end_src
 
 * ranger
@@ -3286,7 +3287,9 @@
     ;; (set-face-attribute 'default nil :family "Terminus (TTF)" :height 200)
     ;; (set-face-attribute 'default nil :family "xos4 Terminus" :height 200)
     ;; (set-face-attribute 'default nil :family "PragmataPro Mono" :height 200)
-    ;; (set-face-attribute 'default nil :family "monofur" :height 140)
+    ;; (set-face-attribute 'default nil :family "monofur" :height 160)
+    ;; (set-face-attribute 'default nil :family "Monofur Nerd Font" :height 160)
+
     ;; (set-face-attribute 'default nil :family "monaco" :height 140)
     ;; (set-face-attribute 'default nil :family "Fixedsys Excelsior 3.01" :height 190)
     ;; (set-face-attribute 'default nil :family "Fira Code" :height 140)
