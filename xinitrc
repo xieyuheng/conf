@@ -1,0 +1,32 @@
+#!/bin/sh
+
+xrdb -merge "${HOME}/.Xresources" &
+
+export GTK_IM_MODULE=fcitx
+export QT_IM_MODULE=fcitx
+export XMODIFIERS="@im=fcitx"
+export XDG_DESKTOP_DIR="/home/xyh"
+
+# rmdir Desktop &
+fcitx5 &
+# xmodmap .xmodmap &
+xbindkeys &
+nm-applet &
+cbatticon &
+~/.wallpaper/random-wallpaper.sh &
+# xcompmgr &
+# compton -bc &
+# xscreensaver -no-splash &
+
+# for firefox
+# XDG_DESKTOP_DIR="/home/xyh"
+
+# for gnome
+# export XDG_SESSION_TYPE=x11
+# export GDK_BACKEND=x11
+# exec gnome-session
+
+# for kde
+# exec startplasma-x11
+
+exec i3
