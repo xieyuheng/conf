@@ -9,7 +9,7 @@ export XDG_DESKTOP_DIR="/home/xyh"
 
 # rmdir Desktop &
 fcitx5 &
-# xmodmap .xmodmap &
+xmodmap .xmodmap &
 xbindkeys &
 nm-applet &
 cbatticon &
