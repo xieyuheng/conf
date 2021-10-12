@@ -3238,7 +3238,7 @@
 *** 黑
 
     #+begin_src emacs-lisp :tangle ~/.emacs
-    (set-fontset-font t 'han (font-spec :name "H-雲林呉竹体" :size 44))
+    (set-fontset-font t 'han (font-spec :name "H-雲林呉竹体" :size 26))
     ;; (set-fontset-font t 'han (font-spec :name "H-明蘭" :size 44))
     ;; (set-fontset-font t 'han (font-spec :name "H-新雅蘭" :size 44))
 
@@ -3293,7 +3293,7 @@
     ;; (set-face-attribute 'default nil :family "Fixedsys Excelsior 3.01" :height 190)
     ;; (set-face-attribute 'default nil :family "Fira Code" :height 140)
     ;; (set-face-attribute 'default nil :family "Fira Mono" :height 140)
-    (set-face-attribute 'default nil :family "Sarasa Mono SC" :height 160)
+    (set-face-attribute 'default nil :family "Sarasa Mono SC" :height 190)
 
     ;; (set-face-attribute 'default nil :family "Source Code Pro" :height 180)
     ;; (set-face-attribute 'default nil :family "mononoki" :height 180)
