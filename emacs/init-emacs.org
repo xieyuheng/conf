@@ -3238,7 +3238,9 @@
 *** 黑
 
     #+begin_src emacs-lisp :tangle ~/.emacs
-    (set-fontset-font t 'han (font-spec :name "H-雲林呉竹体" :size 26))
+    ;; (set-fontset-font t 'han (font-spec :name "H-雲林呉竹体" :size 26))
+    (set-fontset-font t 'han (font-spec :name "Sarasa Mono SC" :size 26))
+
     ;; (set-fontset-font t 'han (font-spec :name "H-明蘭" :size 44))
     ;; (set-fontset-font t 'han (font-spec :name "H-新雅蘭" :size 44))
 
@@ -3283,7 +3285,7 @@
 
     ;; (set-face-attribute 'default nil :family "Input" :height 130)
     ;; (set-face-attribute 'default nil :family "Hack" :height 140)
-    ;; (set-face-attribute 'default nil :family "Terminus (TTF)" :height 200)
+    ;; (set-face-attribute 'default nil :family "Terminus (TTF)" :height 190)
     ;; (set-face-attribute 'default nil :family "xos4 Terminus" :height 200)
     ;; (set-face-attribute 'default nil :family "PragmataPro Mono" :height 200)
     ;; (set-face-attribute 'default nil :family "monofur" :height 160)
@@ -3291,8 +3293,8 @@
 
     ;; (set-face-attribute 'default nil :family "monaco" :height 140)
     ;; (set-face-attribute 'default nil :family "Fixedsys Excelsior 3.01" :height 190)
-    ;; (set-face-attribute 'default nil :family "Fira Code" :height 140)
-    ;; (set-face-attribute 'default nil :family "Fira Mono" :height 140)
+    ;; (set-face-attribute 'default nil :family "Fira Code" :height 160)
+    ;; (set-face-attribute 'default nil :family "Fira Mono" :height 190)
     (set-face-attribute 'default nil :family "Sarasa Mono SC" :height 190)
 
     ;; (set-face-attribute 'default nil :family "Source Code Pro" :height 180)
@@ -3304,8 +3306,56 @@
 
     #+begin_src emacs-lisp :tangle ~/.emacs
     ;; (set-fontset-font t 'symbol (font-spec :name "Noto Mono"))
-    (set-fontset-font t 'symbol (font-spec :name "Sarasa Mono SC"))
+    ;; (set-fontset-font t 'symbol (font-spec :name "Sarasa Mono SC"))
+    (set-fontset-font t 'symbol (font-spec :name "Fira Code"))
     ;; (set-fontset-font t 'symbol (font-spec :name "Noto Emoji"))
+    #+end_src
+
+*** ligature
+
+    #+begin_src emacs-lisp :tangle ~/.emacs
+    (add-to-list 'load-path "~/.emacs.d/ligature.el")
+    (require 'ligature)
+
+    ;; Enable the "www" ligature in every possible major mode
+    (ligature-set-ligatures 't '("www"))
+    ;; Enable traditional ligature support in eww-mode, if the
+    ;; `variable-pitch' face supports it
+    (ligature-set-ligatures 'eww-mode '("ff" "fi" "ffi"))
+    ;; Enable all Cascadia Code ligatures in programming modes
+    ;; (ligature-set-ligatures
+    ;;  'prog-mode
+    ;;  '("|||>" "<|||" "<==>" "<!--" "####" "~~>" "***" "||=" "||>"
+    ;;    ":::" "::=" "=:=" "===" "==>" "=!=" "=>>" "=<<" "=/=" "!=="
+    ;;    "!!." ">=>" ">>=" ">>>" ">>-" ">->" "->>" "-->" "---" "-<<"
+    ;;    "<~~" "<~>" "<*>" "<||" "<|>" "<$>" "<==" "<=>" "<=<" "<->"
+    ;;    "<--" "<-<" "<<=" "<<-" "<<<" "<+>" "</>" "###" "#_(" "..<"
+    ;;    "..." "+++" "/==" "///" "_|_" "www" "&&" "^=" "~~" "~@" "~="
+    ;;    "~>" "~-" "**" "*>" "*/" "||" "|}" "|]" "|=" "|>" "|-" "{|"
+    ;;    "[|" "]#" "::" ":=" ":>" ":<" "$>" "==" "=>" "!=" "!!" ">:"
+    ;;    ">=" ">>" ">-" "-~" "-|" "->" "--" "-<" "<~" "<*" "<|" "<:"
+    ;;    "<$" "<=" "<>" "<-" "<<" "<+" "</" "#{" "#[" "#:" "#=" "#!"
+    ;;    "##" "#(" "#?" "#_" "%%" ".=" ".-" ".." ".?" "+>" "++" "?:"
+    ;;    "?=" "?." "??" ";;" "/*" "/=" "/>" "//" "__" "~~" "(*" "*)"
+    ;;    "\\\\" "://"))
+
+    ;; Enable Fira Code ligatures in programming modes
+    (ligature-set-ligatures
+     'prog-mode
+     '("www" "**" "***" "**/" "*>" "*/" "\\\\" "\\\\\\" "{-" "::"
+       ":::" ":=" "!!" "!=" "!==" "-}" "----" "-->" "->" "->>"
+       "-<" "-<<" "-~" "#{" "#[" "##" "###" "####" "#(" "#?" "#_"
+       "#_(" ".-" ".=" ".." "..<" "..." "?=" "??" ";;" "/*" "/**"
+       "/=" "/==" "/>" "//" "///" "&&" "||" "||=" "|=" "|>" "^=" "$>"
+       "++" "+++" "+>" "=:=" "==" "===" "==>" "=>" "=>>" "<="
+       "=<<" "=/=" ">-" ">=" ">=>" ">>" ">>-" ">>=" ">>>" "<*"
+       "<*>" "<|" "<|>" "<$" "<$>" "<!--" "<-" "<--" "<->" "<+"
+       "<+>" "<=" "<==" "<=>" "<=<" "<>" "<<" "<<-" "<<=" "<<<"
+       "<~" "<~~" "</" "</>" "~@" "~-" "~>" "~~" "~~>" "%%"))
+
+    ;; Enables ligature checks globally in all buffers. You can also do it
+    ;; per mode with `ligature-mode'.
+    (global-ligature-mode t)
     #+end_src
 
 ** theme
