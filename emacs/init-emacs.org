@@ -3213,6 +3213,12 @@
    ;; (global-hl-line-mode 1)
    #+end_src
 
+** line-spacing
+
+   #+begin_src emacs-lisp :tangle ~/.emacs
+   (setq-default line-spacing 0.2)
+   #+end_src
+
 ** font
 
 *** [note]
@@ -3225,7 +3231,8 @@
 
     #+begin_src emacs-lisp :tangle ~/.emacs
     ;; (set-fontset-font t 'han (font-spec :name "MS Song" :size 30))
-    (set-fontset-font t 'han (font-spec :name "H-宮書" :size 30))
+    ;; (set-fontset-font t 'han (font-spec :name "H-宮書" :size 30))
+    (set-fontset-font t 'han (font-spec :name "H-宮書" :size 50))
     #+end_src
 
 *** 宋
@@ -3293,7 +3300,7 @@
 
     ;; (set-face-attribute 'default nil :family "monaco" :height 140)
     ;; (set-face-attribute 'default nil :family "Fixedsys Excelsior 3.01" :height 190)
-    (set-face-attribute 'default nil :family "Fira Code" :height 190)
+    (set-face-attribute 'default nil :family "Fira Code" :height 150)
     ;; (set-face-attribute 'default nil :family "Fira Mono" :height 190)
     ;; (set-face-attribute 'default nil :family "Sarasa Mono SC" :height 190)
 
