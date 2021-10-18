@@ -1,4 +1,4 @@
-#+title: init emacs ^-^
+#+title: init emacs ^-
 
 * lib
 
@@ -540,7 +540,7 @@
 
 
     (add-hook 'lisp-mode-hook             #'enable-paredit-mode)
-    (add-hook 'slime-repl-mode-hook       #'enable-paredit-mode)
+    ;; (add-hook 'slime-repl-mode-hook       #'enable-paredit-mode)
 
     (add-hook 'shen-mode-hook             #'enable-paredit-mode)
     (add-hook 'inferior-shen-mode-hook    #'enable-paredit-mode)
@@ -1154,20 +1154,21 @@
    ;; (setq inferior-lisp-program "ecl")
    ;; (setq inferior-lisp-program "ccl")
 
-   (defun lisp-easy-to-eval ()
-     (interactive)
-     (if (>= (+ 1 (point))
-             (point-max))
-         (message "C-<tab> : last sexp is evaled")
-       (let ()
-         (forward-sexp)
-         (slime-eval-last-expression))))
+   ;; (defun lisp-easy-to-eval ()
+   ;;  (interactive)
+   ;;  (if (>= (+ 1 (point))
+   ;;          (point-max))
+   ;;      (message "C-<tab> : last sexp is evaled")
+   ;;    (let ()
+   ;;      (forward-sexp)
+   ;;      (slime-eval-last-expression))))
 
    (add-hook
     'lisp-mode-hook
     (lambda ()
       (local-set-key (kbd "M-i") 'query-replace)
-      (local-set-key (kbd "C-<tab>") 'lisp-easy-to-eval)))
+      ;; (local-set-key (kbd "C-<tab>") 'lisp-easy-to-eval)
+      ))
    #+end_src
 
 ** lisp-add-keywords
@@ -1233,21 +1234,21 @@
 ** slime
 
    #+begin_src emacs-lisp :tangle ~/.emacs
-   (add-to-list 'load-path "~/.emacs.d/slime/")
+   ;; (add-to-list 'load-path "~/.emacs.d/slime/")
 
-   (setq slime-contribs '(slime-fancy))
+   ;; (setq slime-contribs '(slime-fancy))
 
-   (require 'slime)
+   ;; (require 'slime)
 
-   (setf common-lisp-hyperspec-root "/home/xyh/sd0/lang/lisp/docs/hyperspec/"
-         slime-complete-symbol-function 'slime-fuzzy-complete-symbol
-         lisp-indent-function 'common-lisp-indent-function)
+   ;; (setf common-lisp-hyperspec-root "/home/xyh/sd0/lang/lisp/docs/hyperspec/"
+   ;;     slime-complete-symbol-function 'slime-fuzzy-complete-symbol
+   ;;      lisp-indent-function 'common-lisp-indent-function)
 
-   (add-hook 'slime-repl-mode-hook
-             (lambda ()
-               (local-set-key (kbd "C-M-.") 'next-buffer)
-               (local-set-key (kbd "C-M-,") 'previous-buffer)
-               (local-set-key (kbd "C-c C-k") 'slime-restart-inferior-lisp)))
+   ;; (add-hook 'slime-repl-mode-hook
+   ;;          (lambda ()
+   ;;            (local-set-key (kbd "C-M-.") 'next-buffer)
+   ;;            (local-set-key (kbd "C-M-,") 'previous-buffer)
+   ;;            (local-set-key (kbd "C-c C-k") 'slime-restart-inferior-lisp)))
    #+end_src
 
 ** elisp
@@ -1587,10 +1588,11 @@
 
 ** php
 
+   https://github.com/emacs-php/php-mode/wiki/Manual-installation
+
    #+begin_src emacs-lisp :tangle ~/.emacs
-   (add-to-list 'load-path "~/.emacs.d/php-mode/")
-   (add-to-list 'auto-mode-alist '("\\.\\(?:php\\|phtml\\)\\'" . php-mode))
-   (require 'php-mode)
+   (when (file-directory-p "~/.emacs.d/php-mode")
+     (load "~/.emacs.d/php-mode/lisp/php-mode-autoloads.el"))
    #+end_src
 
 ** markdown
@@ -2094,8 +2096,8 @@
 ** erlang
 
    #+begin_src emacs-lisp :tangle ~/.emacs
-   (add-to-list 'load-path "~/.emacs.d/erlmode/")
-   (require 'erlmode-start)
+   ;; (add-to-list 'load-path "~/.emacs.d/erlmode/")
+   ;; (require 'erlmode-start)
    #+end_src
 
 ** elixir
@@ -2145,10 +2147,10 @@
 
     (require 'alchemist)
 
-    (setq alchemist-goto-erlang-source-dir
-          "~/sd0/lang/erlang/imp/otp")
-    (setq alchemist-goto-elixir-source-dir
-          "~/sd0/lang/elixir/imp/elixir")
+    ;; (setq alchemist-goto-erlang-source-dir
+    ;;       "~/sd0/lange/rlang/imp/otp")
+    ;; (setq alchemist-goto-elixir-source-dir
+     ;;     "~/sd0/lang/elixir/imp/elixir")
     #+end_src
 
 ** pony
@@ -3231,8 +3233,8 @@
 
     #+begin_src emacs-lisp :tangle ~/.emacs
     ;; (set-fontset-font t 'han (font-spec :name "MS Song" :size 30))
-    ;; (set-fontset-font t 'han (font-spec :name "H-宮書" :size 30))
-    (set-fontset-font t 'han (font-spec :name "H-宮書" :size 50))
+    (set-fontset-font t 'han (font-spec :name "H-宮書" :size 28))
+    ;; (set-fontset-font t 'han (font-spec :name "H-宮書" :size 50))
     #+end_src
 
 *** 宋
@@ -3300,7 +3302,7 @@
 
     ;; (set-face-attribute 'default nil :family "monaco" :height 140)
     ;; (set-face-attribute 'default nil :family "Fixedsys Excelsior 3.01" :height 190)
-    (set-face-attribute 'default nil :family "Fira Code" :height 150)
+    (set-face-attribute 'default nil :family "Fira Code" :height 170)
     ;; (set-face-attribute 'default nil :family "Fira Mono" :height 190)
     ;; (set-face-attribute 'default nil :family "Sarasa Mono SC" :height 190)
 
@@ -3736,14 +3738,6 @@
    #+begin_src emacs-lisp :tangle ~/.emacs
    ;; (open-eshell-for-frame :off)
    #+end_src
-
-* evil
-
-  #+begin_src emacs-lisp :tangle ~/.emacs
-  (add-to-list 'load-path "~/.emacs.d/evil")
-  (require 'evil)
-  ;; (evil-mode 1)
-  #+end_src
 
 * scratch
 
