@@ -3233,8 +3233,8 @@
 
     #+begin_src emacs-lisp :tangle ~/.emacs
     ;; (set-fontset-font t 'han (font-spec :name "MS Song" :size 30))
-    (set-fontset-font t 'han (font-spec :name "H-宮書" :size 28))
-    ;; (set-fontset-font t 'han (font-spec :name "H-宮書" :size 50))
+    ;; (set-fontset-font t 'han (font-spec :name "H-宮書" :size 28))
+    (set-fontset-font t 'han (font-spec :name "H-宮書" :size 50))
     #+end_src
 
 *** 宋
@@ -3302,7 +3302,7 @@
 
     ;; (set-face-attribute 'default nil :family "monaco" :height 140)
     ;; (set-face-attribute 'default nil :family "Fixedsys Excelsior 3.01" :height 190)
-    (set-face-attribute 'default nil :family "Fira Code" :height 170)
+    (set-face-attribute 'default nil :family "Fira Code" :height 150)
     ;; (set-face-attribute 'default nil :family "Fira Mono" :height 190)
     ;; (set-face-attribute 'default nil :family "Sarasa Mono SC" :height 190)
 
@@ -3350,6 +3350,7 @@
     (setq fira-code-ligatures
           '("www" "**" "***" "**/" "*>" "*/" "\\\\" "\\\\\\" "{-" "::"
             ":::" ":=" "!!" "!=" "!==" "-}" "----" "-->" "->" "->>"
+            "|-" "|="
             "-<" "-<<" "-~" "#{" "#[" "##" "###" "####" "#(" "#?" "#_"
             "#_(" ".-" ".=" ".." "..<" "..." "?=" "??" ";;" "/*" "/**"
             "/=" "/==" "/>" "//" "///" "&&" "||" "||=" "|=" "|>" "^=" "$>"
@@ -3361,6 +3362,7 @@
 
     (ligature-set-ligatures 'prog-mode fira-code-ligatures)
     (ligature-set-ligatures 'markdown-mode fira-code-ligatures)
+    (ligature-set-ligatures 'org-mode fira-code-ligatures)
 
     ;; Enables ligature checks globally in all buffers. You can also do it
     ;; per mode with `ligature-mode'.
