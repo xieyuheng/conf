@@ -307,3 +307,9 @@
   #+begin_src fish :tangle ~/.config/fish/config.fish
   starship init fish | source
   #+end_src
+
+* php
+
+  #+begin_src fish :tangle ~/.config/fish/config.fish
+  set PATH $HOME/.config/composer/vendor/bin $PATH
+  #+end_src

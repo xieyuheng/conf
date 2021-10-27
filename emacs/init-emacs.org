@@ -1,4 +1,4 @@
-#+title: init emacs ^-
+#+title: init emacs ^-^
 
 * lib
 
