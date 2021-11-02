@@ -145,6 +145,12 @@
    (global-set-key (kbd "C-M-g") 'toggle-truncate-lines)
    #+end_src
 
+** line number
+
+   #+begin_src emacs-lisp :tangle ~/.emacs
+   (add-hook 'prog-mode-hook (lambda () (display-line-numbers-mode 1)))
+   #+end_src
+
 ** comment
 
    #+begin_src emacs-lisp :tangle ~/.emacs
