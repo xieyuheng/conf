@@ -107,7 +107,8 @@
 * go
 
   #+begin_src fish :tangle ~/.zshrc
-  export PATH=$HOME/go/bin:$PATH
+  export GOPATH=$HOME/.go
+  export PATH=$GOPATH/bin:$PATH
   #+end_src
 
 * deno
