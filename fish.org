@@ -198,7 +198,12 @@
 * go
 
   #+begin_src fish :tangle ~/.config/fish/config.fish
-  set PATH $PATH $HOME/go/bin
+  set -x GOPATH $HOME/.go
+  set PATH $PATH $GOPATH/bin
+
+  # https://goproxy.io/
+  # Set the GOPROXY environment variable
+  set -x GOPROXY "https://goproxy.io,direct"
   #+end_src
 
 * graal
