@@ -1606,11 +1606,11 @@
 *** edit-indirect
 
     #+begin_src emacs-lisp :tangle ~/.emacs
-    (add-to-list 'load-path "~/.emacs.d/edit-indirect/")
-    (require 'edit-indirect)
+    ;; (add-to-list 'load-path "~/.emacs.d/edit-indirect/")
+    ;; (require 'edit-indirect)
 
-    (define-key edit-indirect-mode-map
-      (kbd "C-s C-s") 'edit-indirect-commit)
+    ;; (define-key edit-indirect-mode-map
+    ;;   (kbd "C-s C-s") 'edit-indirect-commit)
     #+end_src
 
 *** markdown
@@ -1623,7 +1623,7 @@
     (add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
     (add-to-list 'auto-mode-alist '("\\.markdown\\'" . markdown-mode))
 
-    (setq markdown-fontify-code-blocks-natively nil)
+    (setq markdown-fontify-code-blocks-natively t)
 
     (custom-set-faces
      '(fixed-pitch ((t (:family (face-attribute 'default :family))))))
