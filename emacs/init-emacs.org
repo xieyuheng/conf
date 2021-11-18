@@ -1606,11 +1606,11 @@
 *** edit-indirect
 
     #+begin_src emacs-lisp :tangle ~/.emacs
-    ;; (add-to-list 'load-path "~/.emacs.d/edit-indirect/")
-    ;; (require 'edit-indirect)
+    (add-to-list 'load-path "~/.emacs.d/edit-indirect/")
+    (require 'edit-indirect)
 
-    ;; (define-key edit-indirect-mode-map
-    ;;   (kbd "C-s C-s") 'edit-indirect-commit)
+    (define-key edit-indirect-mode-map
+      (kbd "C-s C-s") 'edit-indirect-commit)
     #+end_src
 
 *** markdown
@@ -3368,7 +3368,7 @@
             "<~" "<~~" "</" "</>" "~@" "~-" "~>" "~~" "~~>" "%%"))
 
     (ligature-set-ligatures 'prog-mode fira-code-ligatures)
-    (ligature-set-ligatures 'markdown-mode fira-code-ligatures)
+    ;; (ligature-set-ligatures 'markdown-mode fira-code-ligatures)
     (ligature-set-ligatures 'org-mode fira-code-ligatures)
 
     ;; Enables ligature checks globally in all buffers. You can also do it
