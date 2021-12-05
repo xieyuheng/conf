@@ -3765,10 +3765,10 @@
 * projectile
 
   #+begin_src emacs-lisp :tangle ~/.emacs
-  (add-to-list 'load-path "~/.emacs.d/projectile/")
-  (require 'projectile)
+  ;; (add-to-list 'load-path "~/.emacs.d/projectile/")
+  ;; (require 'projectile)
 
-  (projectile-mode t)
+  ;; (projectile-mode 1)
   #+end_src
 
 * ggtags
