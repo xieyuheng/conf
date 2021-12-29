@@ -318,3 +318,9 @@
   #+begin_src fish :tangle ~/.config/fish/config.fish
   set PATH $HOME/.config/composer/vendor/bin $PATH
   #+end_src
+
+* app
+
+  #+begin_src fish :tangle ~/.config/fish/config.fish
+  set PATH $HOME/app/xmind/opt/XMind $PATH
+  #+end_src
