@@ -3240,7 +3240,7 @@
     #+begin_src emacs-lisp :tangle ~/.emacs
     ;; (set-fontset-font t 'han (font-spec :name "MS Song" :size 30))
     ;; (set-fontset-font t 'han (font-spec :name "H-宮書" :size 28))
-    (set-fontset-font t 'han (font-spec :name "H-宮書" :size 50))
+    ;; (set-fontset-font t 'han (font-spec :name "H-宮書" :size 50))
     (set-fontset-font t 'han (font-spec :name "霞鹜文楷" :size 50))
     #+end_src
 
