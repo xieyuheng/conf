@@ -148,7 +148,7 @@
 ** line number
 
    #+begin_src emacs-lisp :tangle ~/.emacs
-   (add-hook 'prog-mode-hook (lambda () (display-line-numbers-mode 1)))
+   ;; (add-hook 'prog-mode-hook (lambda () (display-line-numbers-mode 1)))
    #+end_src
 
 ** comment
@@ -3224,7 +3224,7 @@
 ** line-spacing
 
    #+begin_src emacs-lisp :tangle ~/.emacs
-   (setq-default line-spacing 0.2)
+   ;; (setq-default line-spacing 0.2)
    #+end_src
 
 ** font
@@ -3497,40 +3497,9 @@
    ;; (set-frame-parameter nil 'cursor-type '(hbar . 8))
    #+end_src
 
-** [not using] display
-   #+begin_src emacs-lisp :tangle ~/.emacs
-   ;; (display-battery-mode t)
-   ;; (display-time-mode t)
-   #+end_src
-
 ** fullscreen
    #+begin_src emacs-lisp :tangle ~/.emacs
    (setq frame-resize-pixelwise t)
-   #+end_src
-
-* awesome
-
-** awesome-tray
-
-   #+begin_src emacs-lisp :tangle ~/.emacs
-   ;; (add-to-list 'load-path "~/.emacs.d/awesome-tray/")
-   ;; (require 'awesome-tray)
-   ;; (awesome-tray-mode nil)
-   #+end_src
-
-** aweshell
-
-   #+begin_src emacs-lisp :tangle ~/.emacs
-   ;; (add-to-list 'load-path "~/.emacs.d/aweshell/")
-   ;; (require 'aweshell)
-   #+end_src
-
-** awesome-tab
-
-   #+begin_src emacs-lisp :tangle ~/.emacs
-   ;; (add-to-list 'load-path "~/.emacs.d/awesome-tab/")
-   ;; (require 'awesome-tab)
-   ;; (awesome-tab-mode t)
    #+end_src
 
 * emacs server & eshell
