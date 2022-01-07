@@ -3224,7 +3224,7 @@
 ** line-spacing
 
    #+begin_src emacs-lisp :tangle ~/.emacs
-   ;; (setq-default line-spacing 0.2)
+   (setq-default line-spacing 0.2)
    #+end_src
 
 ** font
