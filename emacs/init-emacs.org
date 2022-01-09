@@ -3753,36 +3753,6 @@
   ;;               (ggtags-mode 1))))
   #+end_src
 
-* PG
-
-** load
-
-   #+begin_src emacs-lisp :tangle ~/.emacs
-   ;; Open .v files with Proof General's Coq mode
-   (load "~/.emacs.d/PG/generic/proof-site")
-   #+end_src
-
-** coq
-
-   - M-n
-     (C-c C-n)
-     proof-assert-next-command-interactive
-
-   - M-p
-     (C-c C-u)
-     proof-undo-last-successful-command
-
-   - C-c <C-return>
-     proof-goto-point
-
-   #+begin_src emacs-lisp :tangle ~/.emacs
-   (add-hook
-    'coq-mode-hook
-    (lambda ()
-      (local-set-key (kbd "M-n") 'forward-paragraph)
-      (local-set-key (kbd "M-p") 'backward-paragraph)))
-   #+end_src
-
 * ido
 
   #+begin_src emacs-lisp :tangle ~/.emacs
