@@ -423,6 +423,12 @@
 
 * input-method
 
+** x-gtk-use-native-input
+
+   #+begin_src emacs-lisp :tangle ~/.emacs
+   (setq x-gtk-use-native-input t)
+   #+end_src
+
 ** for lambda
 
    #+begin_src emacs-lisp :tangle ~/.emacs
