@@ -7,5 +7,5 @@
 > usually for the worse, but sometimes  
 > surprisingly for the better, and it is this personality  
 > that is the real object of motorcycle maintenance.  
-
--- "Zen and The Art of Motorcycle Maintenance"
+>
+> -- "Zen and The Art of Motorcycle Maintenance"
