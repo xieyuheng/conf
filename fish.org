@@ -21,10 +21,6 @@
   alias ll "ls -hlF"
   alias lll "ls -halF"
 
-  # alias l "exa -hF"
-  # alias ll "exa -hlF"
-  # alias lll "exa -halF"
-
   alias mv " mv -vi"
 
   # alias rm " timeout 3 rm -Iv --one-file-system "
@@ -317,10 +313,4 @@
 
   #+begin_src fish :tangle ~/.config/fish/config.fish
   set PATH $HOME/.config/composer/vendor/bin $PATH
-  #+end_src
-
-* app
-
-  #+begin_src fish :tangle ~/.config/fish/config.fish
-  set PATH $HOME/app/xmind/opt/XMind $PATH
   #+end_src

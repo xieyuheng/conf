@@ -1,0 +1,54 @@
+#+title:  fish on server
+
+* ls mv rm
+
+  #+begin_src fish :tangle ~/.config/fish/config.fish
+  alias l "ls -hCF"
+  alias ll "ls -hlF"
+  alias lll "ls -halF"
+
+  alias mv " mv -vi"
+
+  # alias rm " timeout 3 rm -Iv --one-file-system "
+  alias rm " rm -v "
+
+  alias df " df -h "
+  alias du " du -h "
+  #+end_src
+
+* git
+
+  #+begin_src fish :tangle ~/.config/fish/config.fish
+  alias st "git status"
+  alias add "git add .; and git status"
+  alias sub "git reset HEAD .; and git status"
+  alias ci "git commit; and git status"
+  alias up "git add .; and git commit -m 'up'; and git push"
+  # alias br "git branch -v"
+  # alias bl "git branch -vva"
+  #+end_src
+
+* emacs
+
+  #+begin_src fish :tangle ~/.config/fish/config.fish
+  set -x LC_CTYPE zh_CN.UTF-8
+  set -x EDITOR emacs --no-init-file --no-window-system
+  #+end_src
+
+* pr
+
+  #+begin_src fish :tangle ~/.config/fish/config.fish
+  alias px "proxychains4 "
+  #+end_src
+
+* npm
+
+  #+begin_src fish :tangle ~/.config/fish/config.fish
+  set PATH $HOME/.npm-packages/bin $PATH
+  #+end_src
+
+* php
+
+  #+begin_src fish :tangle ~/.config/fish/config.fish
+  set PATH $HOME/.config/composer/vendor/bin $PATH
+  #+end_src
