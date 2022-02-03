@@ -3,7 +3,8 @@
 * term
 
   #+begin_src fish :tangle ~/.config/fish/config.fish
-  set -x TERM alacritty
+  # set -x TERM alacritty
+  set -x TERM konsole
   set -x TERMINFO /usr/lib/terminfo
   #+end_src
 
