@@ -307,6 +307,12 @@
 
 * general setting
 
+** title
+
+   #+begin_src emacs-lisp :tangle ~/.emacs
+   (setq frame-title-format "%b")
+   #+end_src
+
 ** variable
 
    #+begin_src emacs-lisp :tangle ~/.emacs
@@ -3685,7 +3691,8 @@
                "  eshell number " (frame-parameter nil 'name) "\n"
                "  the main eshell for this frame\n")
        (eshell-interrupt-process)
-       (rename-buffer .buffer-name)))
+       ;; (rename-buffer .buffer-name)
+       ))
 
    ;; can be used in 'emacs -nw'
    (defun new-eshell-for-frame (&optional translucent)
@@ -3699,7 +3706,8 @@
                "  eshell sub-number " .sub-number-string "\n"
                "  a sub eshell of this frame\n")
        (eshell-interrupt-process)
-       (rename-buffer .buffer-name)))
+       ;; (rename-buffer .buffer-name)
+       ))
 
    (global-set-key (kbd "C-s e") 'new-eshell-for-frame)
    #+end_src
