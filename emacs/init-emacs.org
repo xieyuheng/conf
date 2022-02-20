@@ -3683,31 +3683,25 @@
      (concatenate 'string "eshell:" (frame-parameter nil 'name)))
 
    (defun open-eshell-for-frame (&optional translucent)
-     (set-frame-parameter nil 'name (number-to-string (number-generator)))
-     (let ((.buffer-name (frame-eshell-name)))
+     (let ()
        (eshell t)
        (delete-region 1 (buffer-size))
        (insert "* (eshell)\n"
                "  eshell number " (frame-parameter nil 'name) "\n"
                "  the main eshell for this frame\n")
-       (eshell-interrupt-process)
-       ;; (rename-buffer .buffer-name)
-       ))
+       (eshell-interrupt-process)))
 
    ;; can be used in 'emacs -nw'
    (defun new-eshell-for-frame (&optional translucent)
      (interactive)
-     (let* ((.sub-number-string (number-to-string (number-generator)))
-            (.buffer-name (concatenate 'string (frame-eshell-name) ":" .sub-number-string)))
+     (let* ((.sub-number-string (number-to-string (number-generator))))
        (eshell t)
        (delete-region 1 (buffer-size))
        (insert "* (eshell)\n"
                "  eshell number " (frame-parameter nil 'name) "\n"
                "  eshell sub-number " .sub-number-string "\n"
                "  a sub eshell of this frame\n")
-       (eshell-interrupt-process)
-       ;; (rename-buffer .buffer-name)
-       ))
+       (eshell-interrupt-process)))
 
    (global-set-key (kbd "C-s e") 'new-eshell-for-frame)
    #+end_src
