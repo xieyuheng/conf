@@ -256,6 +256,12 @@
      (backward-char 1))
    #+end_src
 
+** format
+
+   #+begin_src emacs-lisp :tangle ~/.emacs
+   (global-set-key (kbd "C-M-f") 'prettier-js)
+   #+end_src
+
 ** whitespace
 
    #+begin_src emacs-lisp :tangle ~/.emacs
