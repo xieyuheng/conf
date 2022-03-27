@@ -1139,10 +1139,13 @@
        (1 . check-same)
        (1 . claim)
        (1 . Pi)
+       (1 . forall)
        (1 . Sigma)
        (1 . same)
        (1 . cong)
        (1 . replace)
+
+       (0 . comments)
        ))
     #+end_src
 
