@@ -1146,6 +1146,8 @@
        (1 . replace)
 
        (0 . comments)
+       (0 . assert-equal)
+       (0 . assert-not-equal)
        ))
     #+end_src
 
