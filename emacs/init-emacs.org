@@ -1148,6 +1148,9 @@
        (0 . comments)
        (0 . assert-equal)
        (0 . assert-not-equal)
+
+       (1 . Self)
+       (1 . Iota)
        ))
     #+end_src
 
