@@ -1151,6 +1151,7 @@
 
        (1 . Self)
        (1 . Iota)
+       (1 . check)
        ))
     #+end_src
 
