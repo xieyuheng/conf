@@ -1073,6 +1073,8 @@
 
        (1 . define-type)
        (1 . define-data)
+       (3 . datatype)
+       (3 . define-datatype)
        (1 . define-jojo)
        (1 . define-function)
 
@@ -1152,6 +1154,10 @@
        (1 . Self)
        (1 . Iota)
        (1 . check)
+       (0 . object)
+
+       (1 . induction)
+       (1 . induction/motive)
        ))
     #+end_src
 
