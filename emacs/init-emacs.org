@@ -1141,11 +1141,18 @@
        (1 . check-same)
        (1 . claim)
        (1 . Pi)
+       (1 . Pi*)
+       (1 . lambda*)
+       (1 . Pi/implicit)
+       (1 . lambda/implicit)
+       (1 . Pi/vague)
+       (1 . lambda/vague)
        (1 . forall)
        (1 . Sigma)
        (1 . same)
        (1 . cong)
        (1 . replace)
+       (1 . implicit)
 
        (0 . comments)
        (0 . assert-equal)
@@ -1154,6 +1161,7 @@
        (1 . Self)
        (1 . Iota)
        (1 . check)
+       (1 . Check)
        (0 . object)
 
        (1 . induction)
@@ -3832,4 +3840,13 @@
   #+begin_src emacs-lisp :tangle ~/.emacs
   (global-auto-revert-mode t)
   (setq auto-revert-interval 1)
+  #+end_src
+
+* package
+
+  #+begin_src emacs-lisp :tangle ~/.emacs
+  (require 'package)
+  ;; (setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3") ; see remark below
+  (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
+  (package-initialize)
   #+end_src
