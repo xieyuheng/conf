@@ -1165,7 +1165,7 @@
        (0 . object)
 
        (1 . induction)
-       (1 . induction/motive)
+       (1 . recursion)
        ))
     #+end_src
 
