@@ -1123,6 +1123,8 @@
        (1 . +union)
        (1 . +fun)
 
+       (1 . fixpoint)
+
        ;; pie
        (1 . which-Nat)
        (1 . iter-Nat)
