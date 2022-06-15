@@ -1646,9 +1646,7 @@
     ;; (add-hook 'typescript-mode-hook 'prettier-js-mode)
     ;; (add-hook 'web-mode-hook 'prettier-js-mode)
 
-    (setq prettier-js-args
-          '("--no-semi"
-            "--trailing-comma" "es5"))
+    (setq prettier-js-args nil)
     #+end_src
 
 ** php
