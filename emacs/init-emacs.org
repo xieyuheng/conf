@@ -1499,6 +1499,22 @@
     ;; (add-to-list 'auto-mode-alist '("\\.js\\'" . js-mode))
     #+end_src
 
+*** emmet-mode
+
+    #+begin_src emacs-lisp :tangle ~/.emacs
+    (add-to-list 'load-path "~/.emacs.d/emmet-mode")
+    (require 'emmet-mode)
+
+    (add-hook 'web-mode-hook 'emmet-mode)
+    ;; (add-hook 'css-mode-hook  'emmet-mode)
+
+    (add-to-list 'emmet-jsx-major-modes 'js-jsx-mode)
+    (add-hook
+     'js-jsx-mode-hook
+     (lambda ()
+       (define-key js-jsx-mode-map (kbd "C-j") 'emmet-expand-line)))
+    #+end_src
+
 *** js2-mode
 
     #+begin_src emacs-lisp :tangle ~/.emacs
@@ -1587,8 +1603,6 @@
     (setq web-mode-style-padding 0)
     (setq web-mode-script-padding 0)
 
-    (add-to-list 'auto-mode-alist '("\\.jsx\\'" . web-mode))
-    (add-to-list 'auto-mode-alist '("\\.tsx\\'" . web-mode))
     (add-to-list 'auto-mode-alist '("\\.svelte\\'" . web-mode))
     #+end_src
 
@@ -1611,7 +1625,9 @@
 *** jsx
 
     #+begin_src emacs-lisp :tangle ~/.emacs
-    ;; (add-to-list 'auto-mode-alist '("\\.jsx\\'" . js-jsx-mode))
+    (add-to-list 'auto-mode-alist '("\\.jsx\\'" . js-jsx-mode))
+    ;; (add-to-list 'auto-mode-alist '("\\.jsx\\'" . web-mode))
+    ;; (add-to-list 'auto-mode-alist '("\\.tsx\\'" . web-mode))
     #+end_src
 
 *** vue
