@@ -1520,6 +1520,11 @@
      'js-jsx-mode-hook
      (lambda ()
        (define-key js-jsx-mode-map (kbd "C-j") 'emmet-expand-line)))
+
+    (add-hook
+     'typescript-mode-hook
+     (lambda ()
+       (define-key typescript-mode-map (kbd "C-j") 'emmet-expand-line)))
     #+end_src
 
 *** js2-mode
