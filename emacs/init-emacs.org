@@ -1513,6 +1513,12 @@
     (require 'emmet-mode)
 
     (add-hook 'web-mode-hook 'emmet-mode)
+    (add-hook
+     'web-mode-hook
+     (lambda ()
+       (electric-indent-local-mode -1)
+       (define-key web-mode-map (kbd "<return>") 'newline)))
+
     ;; (add-hook 'css-mode-hook  'emmet-mode)
 
     (add-to-list 'emmet-jsx-major-modes 'js-jsx-mode)

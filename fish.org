@@ -158,6 +158,7 @@
 
   #+begin_src fish :tangle ~/.config/fish/config.fish
   # set PATH $PATH $HOME/.deno/bin
+  set PATH $PATH $HOME/.bun/bin
   #+end_src
 
 * npm
