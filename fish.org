@@ -154,10 +154,15 @@
   set -x LD_LIBRARY_PATH /usr/local/lib
   #+end_src
 
-* deno
+* insomnia
 
   #+begin_src fish :tangle ~/.config/fish/config.fish
-  # set PATH $PATH $HOME/.deno/bin
+  set PATH $PATH /opt/insomnia
+  #+end_src
+
+* bun
+
+  #+begin_src fish :tangle ~/.config/fish/config.fish
   set PATH $PATH $HOME/.bun/bin
   #+end_src
 

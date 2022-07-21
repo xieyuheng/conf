@@ -1516,8 +1516,7 @@
     (add-hook
      'web-mode-hook
      (lambda ()
-       (electric-indent-local-mode -1)
-       (define-key web-mode-map (kbd "<return>") 'newline)))
+       (electric-indent-local-mode -1)))
 
     ;; (add-hook 'css-mode-hook  'emmet-mode)
 
