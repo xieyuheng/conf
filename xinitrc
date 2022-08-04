@@ -1,5 +1,5 @@
 #!/bin/sh
-
+xin
 xrdb -merge "${HOME}/.Xresources" &
 
 export GTK_IM_MODULE=fcitx
@@ -13,7 +13,10 @@ xmodmap .xmodmap &
 xbindkeys &
 nm-applet &
 cbatticon &
-~/.wallpaper/random-wallpaper.sh &
+# dunst &
+/usr/lib/xfce4/notifyd/xfce4-notifyd &
+# /usr/lib/notification-daemon-1.0/notification-daemon &
+~/.wallpapers/random-wallpaper.sh &
 # xcompmgr &
 # compton -bc &
 # xscreensaver -no-splash &
@@ -27,6 +30,9 @@ cbatticon &
 # exec gnome-session
 
 # for kde
+# export DESKTOP_SESSION=plasma
 # exec startplasma-x11
+
+# exec startxfce4
 
 exec i3
