@@ -160,6 +160,12 @@
   set PATH $PATH /opt/insomnia
   #+end_src
 
+* fly
+
+  #+begin_src fish :tangle ~/.config/fish/config.fish
+  set PATH $PATH $HOME/.fly/bin
+  #+end_src
+
 * bun
 
   #+begin_src fish :tangle ~/.config/fish/config.fish
