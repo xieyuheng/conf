@@ -244,7 +244,7 @@
 * hasekll
 
   #+begin_src fish :tangle ~/.config/fish/config.fish
-  # set -x STACK_ROOT $HOME/.stack
+  set PATH $PATH $HOME/.cabal/bin
   #+end_src
 
 * fish_user_key_bindings
