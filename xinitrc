@@ -7,15 +7,15 @@ export QT_IM_MODULE=fcitx
 export XMODIFIERS="@im=fcitx"
 export XDG_DESKTOP_DIR="/home/xyh"
 
+/usr/lib/xfce4/notifyd/xfce4-notifyd &
+# dunst &
+# /usr/lib/notification-daemon-1.0/notification-daemon &
 # rmdir Desktop &
 fcitx5 &
 xmodmap .xmodmap &
 xbindkeys &
 nm-applet &
 cbatticon &
-# dunst &
-/usr/lib/xfce4/notifyd/xfce4-notifyd &
-# /usr/lib/notification-daemon-1.0/notification-daemon &
 ~/.wallpapers/random-wallpaper.sh &
 # xcompmgr &
 # compton -bc &
