@@ -22,6 +22,7 @@ cbatticon &
 # xscreensaver -no-splash &
 
 # for firefox
+export MOZ_USE_XINPUT2=1
 # XDG_DESKTOP_DIR="/home/xyh"
 
 # for gnome
