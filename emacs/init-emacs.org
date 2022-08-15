@@ -263,12 +263,6 @@
      (backward-char 1))
    #+end_src
 
-** format
-
-   #+begin_src emacs-lisp :tangle ~/.emacs
-   (global-set-key (kbd "C-M-f") 'prettier-js)
-   #+end_src
-
 ** whitespace
 
    #+begin_src emacs-lisp :tangle ~/.emacs
@@ -1632,6 +1626,8 @@
 *** html-mode
 
     #+begin_src emacs-lisp :tangle ~/.emacs
+    (add-to-list 'auto-mode-alist '("\\.mimor\\'" . html-mode))
+
     (add-hook
      'html-mode-hook
      (lambda ()
@@ -1658,13 +1654,12 @@
 
     #+begin_src emacs-lisp :tangle ~/.emacs
     (add-to-list 'load-path "~/.emacs.d/prettier-emacs/")
+
     (require 'prettier-js)
     ;; (add-hook 'js2-mode-hook 'prettier-js-mode)
     ;; (add-hook 'js-mode-hook 'prettier-js-mode)
     ;; (add-hook 'typescript-mode-hook 'prettier-js-mode)
     ;; (add-hook 'web-mode-hook 'prettier-js-mode)
-
-    (setq prettier-js-args nil)
     #+end_src
 
 ** php
@@ -3410,9 +3405,6 @@
 
     ;; Enable the "www" ligature in every possible major mode
     (ligature-set-ligatures 't '("www"))
-    ;; Enable traditional ligature support in eww-mode, if the
-    ;; `variable-pitch' face supports it
-    (ligature-set-ligatures 'eww-mode '("ff" "fi" "ffi"))
 
     (setq cascadia-code-ligatures
           '("|||>" "<|||" "<==>" "<!--" "####" "~~>" "***" "||=" "||>"
@@ -3427,24 +3419,30 @@
             "<$" "<=" "<>" "<-" "<<" "<+" "</" "#{" "#[" "#:" "#=" "#!"
             "##" "#(" "#?" "#_" "%%" ".=" ".-" ".." ".?" "+>" "++" "?:"
             "?=" "?." "??" ";;" "/*" "/=" "/>" "//" "__" "~~" "(*" "*)"
-            "\\\\" "://"))
+            "://"))
 
     (setq fira-code-ligatures
-          '("www" "**" "***" "**/" "*>" "*/" "\\\\" "\\\\\\" "{-" "::"
+          '("www" "**" "***" "**/" "*>" "*/" "{-" "::"
             ":::" ":=" "!!" "!=" "!==" "-}" "----" "-->" "->" "->>"
             "|-" "|="
             "|}" "|]" "{|" "[|"
             "-<" "-<<" "-~" "#{" "#[" "##" "###" "####" "#(" "#?" "#_"
+
             "#_(" ".-" ".=" ".." "..<" "..." "?=" "??" ";;" "/*" "/**"
-            "/=" "/==" "/>" "//" "///" "&&" "||" "||=" "|=" "|>" "^=" "$>"
+            "/>" "//" "///" "&&" "||" "||=" "|=" "|>" "^=" "$>"
             "++" "+++" "+>" "=:=" "==" "===" "==>" "=>" "=>>" "<="
+
             "=<<" "=/=" ">-" ">=" ">=>" ">>" ">>-" ">>=" ">>>" "<*"
             "<*>" "<|" "<|>" "<$" "<$>" "<!--" "<-" "<--" "<->" "<+"
-            "<+>" "<=" "<==" "<=>" "<=<" "<>" "<<" "<<-" "<<=" "<<<"
-            "<~" "<~~" "</" "</>" "~@" "~-" "~>" "~~" "~~>" "%%"))
+
+            "<+>"
+            "<="
+            "<==" "<=>" "<=<" "<>" "<<" "<<-" "<<=" "<<<"
+            "<~" "<~~" "</" "</>" "~@" "~-" "~>" "~~" "~~>" "%%"
+            ))
 
     (ligature-set-ligatures 'prog-mode fira-code-ligatures)
-    ;; (ligature-set-ligatures 'markdown-mode fira-code-ligatures)
+    (ligature-set-ligatures 'markdown-mode fira-code-ligatures)
     (ligature-set-ligatures 'org-mode fira-code-ligatures)
 
     ;; Enables ligature checks globally in all buffers. You can also do it
