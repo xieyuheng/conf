@@ -1653,13 +1653,26 @@
 *** prettier
 
     #+begin_src emacs-lisp :tangle ~/.emacs
-    (add-to-list 'load-path "~/.emacs.d/prettier-emacs/")
+    (defun prettier ()
+      (interactive)
+      (let ((mark (point)))
+        (shell-command-on-region
+         ;; beginning and end of buffer
+         (point-min)
+         (point-max)
+         ;; command and parameters
+         (concat "npx prettier " (buffer-file-name))
+         ;; output buffer
+         (current-buffer)
+         ;; replace?
+         t
+         ;; name of the error buffer
+         "*Prettier Error Buffer*"
+         ;; show error buffer?
+         t)
+        (goto-char mark)))
 
-    (require 'prettier-js)
-    ;; (add-hook 'js2-mode-hook 'prettier-js-mode)
-    ;; (add-hook 'js-mode-hook 'prettier-js-mode)
-    ;; (add-hook 'typescript-mode-hook 'prettier-js-mode)
-    ;; (add-hook 'web-mode-hook 'prettier-js-mode)
+    (global-set-key (kbd "C-M-f") 'prettier)
     #+end_src
 
 ** php
