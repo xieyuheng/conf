@@ -1656,6 +1656,7 @@
     (defun prettier ()
       (interactive)
       (let ((mark (point)))
+        (save-buffer)
         (shell-command-on-region
          ;; beginning and end of buffer
          (point-min)
