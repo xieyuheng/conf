@@ -3885,7 +3885,7 @@
 
   #+begin_src emacs-lisp :tangle ~/.emacs
   (global-auto-revert-mode t)
-  (setq auto-revert-interval 1)
+  (setq auto-revert-interval 0.3)
   #+end_src
 
 * package
