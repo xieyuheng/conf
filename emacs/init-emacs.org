@@ -1420,6 +1420,7 @@
    (add-to-list 'auto-mode-alist '("\\.cs\\'" . cicada-mode))
    (add-to-list 'auto-mode-alist '("\\.sc\\'" . cicada-mode))
    (add-to-list 'auto-mode-alist '("\\.cic\\'" . cicada-mode))
+   (add-to-list 'auto-mode-alist '("\\.cw\\'" . cicada-mode))
    (add-to-list 'auto-mode-alist '("\\.jo\\'" . cicada-mode))
    (add-to-list 'auto-mode-alist '("\\.grammar\\'" . cicada-mode))
    (add-to-list 'auto-mode-alist '("\\.table\\'" . cicada-mode))
