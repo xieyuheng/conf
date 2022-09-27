@@ -178,6 +178,12 @@
   set PATH $HOME/.npm-packages/bin $PATH
   #+end_src
 
+* riscv
+
+  #+begin_src fish :tangle ~/.config/fish/config.fish
+  set PATH $HOME/riscv/bin $PATH
+  #+end_src
+
 * yarn
 
   #+begin_src fish :tangle ~/.config/fish/config.fish
