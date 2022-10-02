@@ -1627,8 +1627,6 @@
 *** html-mode
 
     #+begin_src emacs-lisp :tangle ~/.emacs
-    (add-to-list 'auto-mode-alist '("\\.mimor\\'" . html-mode))
-
     (add-hook
      'html-mode-hook
      (lambda ()
@@ -1643,6 +1641,12 @@
     (add-to-list 'auto-mode-alist '("\\.tsx\\'" . js-jsx-mode))
     ;; (add-to-list 'auto-mode-alist '("\\.jsx\\'" . web-mode))
     ;; (add-to-list 'auto-mode-alist '("\\.tsx\\'" . web-mode))
+    #+end_src
+
+*** mimor
+
+    #+begin_src emacs-lisp :tangle ~/.emacs
+    (add-to-list 'auto-mode-alist '("\\.mimor\\'" . web-mode))
     #+end_src
 
 *** vue
