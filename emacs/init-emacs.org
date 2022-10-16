@@ -737,6 +737,7 @@
     (setq auto-mode-alist (cons `("\\.sld$" . scheme-mode) auto-mode-alist))
     (setq auto-mode-alist (cons `("\\.ss$" . scheme-mode) auto-mode-alist))
     (setq auto-mode-alist (cons `("\\.sls$" . scheme-mode) auto-mode-alist))
+    (setq auto-mode-alist (cons `("\\.mu$" . scheme-mode) auto-mode-alist))
 
     (defun switch-to-buffer-*scheme* ()
       (interactive)
@@ -994,7 +995,7 @@
        (1 . match)
        (1 . match*)
        (0 . match-lambda**)
-       (0 . fun)
+       (2 . fun)
        (1 . just-fun)
        (1 . define/match)
 
@@ -1005,7 +1006,10 @@
        (0 . note)
 
        (1 . type)
-       (1 . data)
+       (2 . data)
+       (2 . codata)
+       (2 . fn)
+       (2 . cofn)
        (0 . example)
        (0 . effect)
        (2 . oer)
@@ -3474,18 +3478,18 @@
 *** molokai-theme
 
     #+begin_src emacs-lisp :tangle ~/.emacs
-    ;; (add-to-list 'custom-theme-load-path "~/.emacs.d/theme/molokai-theme/")
-    ;; (load-theme 'molokai t)
+    (add-to-list 'custom-theme-load-path "~/.emacs.d/theme/molokai-theme/")
+    (load-theme 'molokai t)
 
-    ;; (add-to-list 'load-path "~/.emacs.d/theme/molokai-theme/")
-    ;; (require 'molokai-theme-kit)
+    (add-to-list 'load-path "~/.emacs.d/theme/molokai-theme/")
+    (require 'molokai-theme-kit)
     #+end_src
 
 *** zenburn
 
     #+begin_src emacs-lisp :tangle ~/.emacs
-    (add-to-list 'custom-theme-load-path "~/.emacs.d/theme/zenburn-emacs/")
-    (load-theme 'zenburn t)
+    ;; (add-to-list 'custom-theme-load-path "~/.emacs.d/theme/zenburn-emacs/")
+    ;; (load-theme 'zenburn t)
     #+end_src
 
 *** anti-zenburn
