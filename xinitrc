@@ -1,5 +1,5 @@
 #!/bin/sh
-xin
+
 xrdb -merge "${HOME}/.Xresources" &
 
 export GTK_IM_MODULE=fcitx

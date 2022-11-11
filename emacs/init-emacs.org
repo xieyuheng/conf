@@ -1006,8 +1006,9 @@
        (0 . note)
 
        (1 . type)
-       (2 . data)
-       (2 . codata)
+       (3 . data)
+       (3 . codata)
+       (1 . import)
        (2 . fn)
        (2 . cofn)
        (0 . example)
@@ -1651,6 +1652,15 @@
 
     #+begin_src emacs-lisp :tangle ~/.emacs
     (add-to-list 'auto-mode-alist '("\\.mimor\\'" . web-mode))
+    #+end_src
+
+*** wasm
+
+    #+begin_src emacs-lisp :tangle ~/.emacs
+    (add-to-list 'load-path "~/.emacs.d/wat-mode/")
+    (require 'wat-mode)
+    (add-to-list 'auto-mode-alist '("\\.wat\\'" . wat-mode))
+    (add-to-list 'auto-mode-alist '("\\.wast\\'" . wat-mode))
     #+end_src
 
 *** vue
@@ -3478,18 +3488,17 @@
 *** molokai-theme
 
     #+begin_src emacs-lisp :tangle ~/.emacs
-    (add-to-list 'custom-theme-load-path "~/.emacs.d/theme/molokai-theme/")
-    (load-theme 'molokai t)
-
-    (add-to-list 'load-path "~/.emacs.d/theme/molokai-theme/")
-    (require 'molokai-theme-kit)
+    ;; (add-to-list 'custom-theme-load-path "~/.emacs.d/theme/molokai-theme/")
+    ;; (load-theme 'molokai t)
+    ;; (add-to-list 'load-path "~/.emacs.d/theme/molokai-theme/")
+    ;; (require 'molokai-theme-kit)
     #+end_src
 
 *** zenburn
 
     #+begin_src emacs-lisp :tangle ~/.emacs
-    ;; (add-to-list 'custom-theme-load-path "~/.emacs.d/theme/zenburn-emacs/")
-    ;; (load-theme 'zenburn t)
+    (add-to-list 'custom-theme-load-path "~/.emacs.d/theme/zenburn-emacs/")
+    (load-theme 'zenburn t)
     #+end_src
 
 *** anti-zenburn
