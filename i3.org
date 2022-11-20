@@ -157,8 +157,8 @@
     }
   }
 
-  exec_always ~/.wallpaper/random-wallpaper.sh
-  exec_always "rmdir Desktop"
+  # exec_always ~/.wallpaper/random-wallpaper.sh
+  # exec_always "rmdir Desktop"
   #+end_src
 
 * i3status

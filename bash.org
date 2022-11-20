@@ -89,6 +89,12 @@
   # export PATH=$HOME/.cargo/bin:$PATH
   #+end_src
 
+* path
+
+  #+begin_src fish :tangle ~/.bash_profile
+  export PATH=$HOME/bin:$PATH
+  #+end_src
+
 * color
 
   #+begin_src bash :tangle ~/.bash_profile

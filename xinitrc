@@ -15,7 +15,7 @@ fcitx5 &
 xmodmap .xmodmap &
 xbindkeys &
 nm-applet &
-cbatticon &
+cbatticon --icon-type symbolic --hide-notification --low-level 30 --critical-level 10 &
 ~/.wallpapers/random-wallpaper.sh &
 # xcompmgr &
 # compton -bc &

@@ -53,6 +53,7 @@
 * ssh
 
   #+begin_src fish :tangle ~/.zshrc
+  export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
   alias startx="ssh-agent startx"
   #+end_src
 
