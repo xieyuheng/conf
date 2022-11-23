@@ -3497,8 +3497,8 @@
 *** zenburn
 
     #+begin_src emacs-lisp :tangle ~/.emacs
-    (add-to-list 'custom-theme-load-path "~/.emacs.d/theme/zenburn-emacs/")
-    (load-theme 'zenburn t)
+    ;; (add-to-list 'custom-theme-load-path "~/.emacs.d/theme/zenburn-emacs/")
+    ;; (load-theme 'zenburn t)
     #+end_src
 
 *** anti-zenburn
@@ -3520,8 +3520,15 @@
 *** github-modern
 
     #+begin_src emacs-lisp :tangle ~/.emacs
+    (add-to-list 'custom-theme-load-path "~/.emacs.d/theme/github-modern-theme/")
+    (load-theme 'github-modern t)
+    #+end_src
+
+*** github
+
+    #+begin_src emacs-lisp :tangle ~/.emacs
     ;; (add-to-list 'custom-theme-load-path "~/.emacs.d/theme/github-theme/")
-    ;; (load-theme 'github-modern t)
+    ;; (load-theme 'github t)
     #+end_src
 
 *** subatomic
@@ -3555,19 +3562,19 @@
            (setq alpha-list (cdr (append alpha-list (list h))))))
    (global-set-key (kbd "<f9>") 'translucent)
 
-   (setq alpha-list-on `((100 100) ,translucent-pair))
-   (defun translucent-on ()
+   (setq alpha-list-off `((100 100) ,translucent-pair))
+   (defun translucent-off ()
      (interactive)
-     (let* ((h (car alpha-list-on))
+     (let* ((h (car alpha-list-off))
             (a (car h))
             (ab (car (cdr h))))
            (set-frame-parameter (selected-frame) 'alpha (list a ab))
            (add-to-list 'default-frame-alist (cons 'alpha (list a ab)))))
 
-   (setq alpha-list-off `(,translucent-pair (100 100)))
-   (defun translucent-off ()
+   (setq alpha-list-on `(,translucent-pair (100 100)))
+   (defun translucent-on ()
      (interactive)
-     (let* ((h (car alpha-list-off))
+     (let* ((h (car alpha-list-on))
             (a (car h))
             (ab (car (cdr h))))
            (set-frame-parameter (selected-frame) 'alpha (list a ab))
