@@ -164,8 +164,8 @@
 * i3status
 
   #+begin_src conf :tangle ~/.i3status.conf
-  order += "battery 0"
-  order += "battery 1"
+  # order += "battery 0"
+  # order += "battery 1"
   order += "tztime local"
 
   general {
