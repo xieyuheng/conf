@@ -55,6 +55,7 @@
   #+begin_src fish :tangle ~/.zshrc
   export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
   alias startx="ssh-agent startx"
+  alias ssh="TERM=xterm ssh"
   #+end_src
 
 * ls mv rm
@@ -103,6 +104,12 @@
   export RUSTUP_HOME=$HOME/.rustup
   export CARGO_HOME=$HOME/.cargo
   export PATH=$CARGO_HOME/bin:$PATH
+  #+end_src
+
+* racket
+
+  #+begin_src fish :tangle ~/.zshrc
+  alias drracket="PLT_DISPLAY_BACKING_SCALE=2.3 drracket"
   #+end_src
 
 * go

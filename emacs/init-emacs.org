@@ -324,7 +324,7 @@
 
    #+begin_src emacs-lisp :tangle ~/.emacs
    (setq case-fold-search nil)
-   (setq case-replace nil)
+   (setq case-replace t)
    (setq indent-tabs-mode nil)
    (setq-default indent-tabs-mode nil)
    ;; 全局设置上面的变量并没有用
