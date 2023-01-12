@@ -340,7 +340,10 @@
 
    (setq kill-ring-max 200)
 
-   (setq enable-recursive-minibuffers t)
+   (setq enable-recursive-minibuffers nil)
+
+   (add-hook 'minibuffer-setup-hook
+     (lambda () (setq truncate-lines t)))
 
    ;; (setq scroll-margin 4)
    (setq scroll-margin 7)
@@ -531,6 +534,10 @@
 
     (defun <-out () (interactive) (backward-up-list))
     (global-set-key (kbd "M-q") '<-out)
+
+    (add-hook 'prog-mode-hook
+      (lambda ()
+       (local-set-key (kbd "M-q") '<-out)))
 
     (defun out-> () (interactive) (up-list))
     ;; (global-set-key (kbd "s-d") 'out->)
@@ -1728,21 +1735,18 @@
 
     (setq markdown-fontify-code-blocks-natively t)
 
-    (custom-set-faces
-     '(fixed-pitch ((t (:family (face-attribute 'default :family))))))
-
     (add-hook
      'markdown-mode-hook
      (lambda ()
        (local-set-key (kbd "C-s C-s") 'markdown-edit-code-block)
        (local-set-key (kbd "M-p") 'backward-paragraph)
        (local-set-key (kbd "M-n") 'forward-paragraph)
-       (set-face-attribute 'markdown-header-face-1 nil :foreground "#DFAF8F")
-       (set-face-attribute 'markdown-header-face-2 nil :foreground "#BFEBBF")
-       (set-face-attribute 'markdown-header-face-3 nil :foreground "#7CB8BB")
-       (set-face-attribute 'markdown-header-face-4 nil :foreground "#D0BF8F")
-       (set-face-attribute 'markdown-header-face-5 nil :foreground "#93E0E3")
-       (set-face-attribute 'markdown-header-face-6 nil :foreground "#9FC59F")
+       ;; (set-face-attribute 'markdown-header-face-1 nil :foreground "#DFAF8F")
+       ;; (set-face-attribute 'markdown-header-face-2 nil :foreground "#BFEBBF")
+       ;; (set-face-attribute 'markdown-header-face-3 nil :foreground "#7CB8BB")
+       ;; (set-face-attribute 'markdown-header-face-4 nil :foreground "#D0BF8F")
+       ;; (set-face-attribute 'markdown-header-face-5 nil :foreground "#93E0E3")
+       ;; (set-face-attribute 'markdown-header-face-6 nil :foreground "#9FC59F")
        ;; (set-face-attribute 'markdown-header-delimiter-face nil :foreground 'unspecified)
        ))
     #+end_src
@@ -2516,511 +2520,6 @@
   ;; (global-set-key (kbd "M-,") 'org-babel-previous-src-block)
   #+end_src
 
-* org-mode
-
-** change                             :no:
-
-   - (org-escape-code-in-region (point-min) (point-max))
-     in org-edit-src-code
-     in lisp/org-src.el
-
-** path
-
-   #+begin_src emacs-lisp :tangle ~/.emacs
-   ;; (add-to-list 'load-path "~/.emacs.d/org/lisp/")
-   ;; a compiled version of org mode is installed
-   (require 'org)
-
-   ;; (add-to-list 'load-path "~/.emacs.d/htmlize/")
-   (add-to-list 'load-path "~/.emacs.d/emacs-htmlize/")
-   (require 'htmlize)
-
-   ;; (setq htmlize-output-type 'css)
-   ;; (setq htmlize-output-type 'inline-css)
-   ;; (setq htmlize-output-type 'font)
-   #+end_src
-
-** export
-
-   #+begin_src emacs-lisp :tangle ~/.emacs
-   (setq org-html-head-include-default-style nil)
-
-   ;; (setq org-html-preamble t)
-   ;; (setq org-html-preamble-format
-   ;;       '(("en" ".")))
-
-   ;; (setq org-html-postamble t)
-   ;; (setq org-html-postamble-format
-   ;;       '(("en" ".")))
-   #+end_src
-
-** publishing
-
-   #+begin_src emacs-lisp :tangle ~/.emacs
-   (setq org-export-headline-levels 5)
-
-   (setq org-publish-project-alist
-         '(("the-little-language-designer"
-            :base-directory "~/cicada-nymph/"
-            :publishing-directory "~/cicada-nymph/"
-            :publishing-function org-html-publish-to-html
-            :section-numbers nil
-            :with-toc nil
-            :html-head "<link rel=\"stylesheet\"
-                       href=\"../other/mystyle.css\"
-                       type=\"text/css\"/>")))
-   #+end_src
-
-** **-in-org
-   #+begin_src emacs-lisp :tangle ~/.emacs
-   (defun **-in-org ()
-     "abc ==> *abc*"
-     (interactive)
-     (progn
-           (insert "*")
-           (org-end-of-line)
-           (insert "*")))
-   #+end_src
-
-** key binding
-   #+begin_src emacs-lisp :tangle ~/.emacs
-   (eval-after-load 'org
-     '(progn
-
-       ;; **-in-org
-       (define-key org-mode-map (kbd "M-*") '**-in-org)
-
-       ;; cruise
-       (define-key org-mode-map (kbd "M-n") 'outline-next-visible-heading)
-       (define-key org-mode-map (kbd "M-p") 'outline-previous-visible-heading)
-       ;; (define-key org-mode-map (kbd "M-n") 'org-forward-paragraph)
-       ;; (define-key org-mode-map (kbd "M-p") 'org-backward-paragraph)
-       (define-key org-mode-map (kbd "<M-up>") nil)
-       (define-key org-mode-map (kbd "<M-down>") nil)
-
-       (define-key org-mode-map (kbd "M-e") 'backward-sexp)
-
-       ;; text migration
-       ;; ``org-metaup'' and ``org-metadown''
-       ;; are really dangerous functions
-       ;; so it should be as hard as possible to mis-type it
-       (define-key org-mode-map (kbd "C-M-p") 'org-metaup)
-       (define-key org-mode-map (kbd "C-M-n") 'org-metadown)
-
-       (define-key org-mode-map (kbd "M-l") 'org-metaright)
-       (define-key org-mode-map (kbd "M-h") 'org-metaleft)
-
-       (define-key org-mode-map (kbd "M-S-l") 'org-metashiftright)
-       (define-key org-mode-map (kbd "M-S-h") 'org-metashiftleft)
-
-       ;; in babel
-       (define-key org-mode-map (kbd "M-.") 'org-babel-next-src-block)
-       (define-key org-mode-map (kbd "M-,") 'org-babel-previous-src-block)
-       (define-key org-mode-map (kbd "C-s C-s") 'org-edit-src-code)
-       ;; (turn-off-indent)
-       ))
-
-   (add-hook
-    'org-src-mode-hook
-    (lambda ()
-      (local-set-key (kbd "C-s C-s") 'org-edit-src-exit)
-      ))
-   #+end_src
-
-** variable
-   #+begin_src emacs-lisp :tangle ~/.emacs
-   (add-hook 'org-mode-hook
-         (lambda ()
-           (setq case-fold-search nil)))
-
-   (setq org-startup-indented nil)
-   (setq org-babel-no-eval-on-ctrl-c-ctrl-c t)
-   ;; (setq org-agenda-window-setup )
-   ;; (setq org-agenda-restore-windows-after-quit )
-
-   ;; (setq org-hide-leading-stars t)
-   ;; (setq org-odd-levels-only t)
-
-   (setq org-hide-leading-stars nil)
-   (setq org-odd-levels-only nil)
-   #+end_src
-
-** todo-keyword
-
-   #+begin_src emacs-lisp :tangle ~/.emacs
-   (setq org-todo-keywords
-         '((sequence "[TODO]" "|" "[NOTE]")))
-   #+end_src
-
-** tag
-   #+begin_src emacs-lisp :tangle ~/.emacs
-   (setq org-tags-column 38)
-   #+end_src
-
-** [babel] load-language
-   #+begin_src emacs-lisp :tangle ~/.emacs
-   (org-babel-do-load-languages
-      'org-babel-load-languages
-      '())
-   #+end_src
-
-** [babel] edit
-
-   #+begin_src emacs-lisp :tangle ~/.emacs
-   (add-hook
-    'org-mode-hook
-    (lambda ()
-      (setq org-src-preserve-indentation nil)
-      (setq org-src-do-not-insert-comma t)
-      (setq org-edit-src-content-indentation 0)
-      (setq org-src-fontify-natively t)
-      ;; if turn on, the structure-template-alist will be unable to use
-      ;; (setq org-src-tab-acts-natively t)
-      (setq org-src-window-setup 'current-window)
-      (setq org-src-ask-before-returning-to-edit-buffer nil)))
-   #+end_src
-
-** [babel] structure-template-alist
-
-*** [note]
-    1. C-c C-v d
-       org-babel-demarcate-block
-    2. begin_src <lang-name> 会去搜索<lang-name>的 major-mode
-       只要能搜索到就都能用编辑功能
-    3. ob-<lang-name>.el 是用来提供更多的关于语言的其他功能的
-
-*** basic
-    #+begin_src emacs-lisp :tangle ~/.emacs
-    (setq org-structure-template-basic
-          '(
-            ;; just src
-            ("sf" "#+end_src\n?\n#+begin_src" "<src lang=\"?\">\n\n</src>")
-            ("s" "#+begin_src\n?\n#+end_src" "<src lang=\"?\">\n\n</src>")
-
-            ;; picture
-            ("picturef" "#+end_src\n?\n#+begin_src picture" "<src lang=\"?\">\n\n</src>")
-            ("picture" "#+begin_src picture\n?\n#+end_src" "<src lang=\"?\">\n\n</src>")
-
-            ;; not using
-            ;; ("e" "#+begin_example\n?\n#+end_example" "<example>\n?\n</example>")
-            ;; ("q" "#+begin_quote\n?\n#+end_quote" "<quote>\n?\n</quote>")
-            ;; ("C" "#+begin_center\n?\n#+end_center" "<center>\n?\n</center>")
-            ;; ("v" "#+BEGIN_VERSE\n?\n#+END_VERSE" "<verse>\n?\n</verse>")
-            ;; ("V" "#+BEGIN_VERBATIM\n?\n#+END_VERBATIM" "<verbatim>\n?\n</verbatim>")
-            ;; ("l" "#+BEGIN_LaTeX\n?\n#+END_LaTeX" "<literal style=\"latex\">\n?\n</literal>")
-            ;; ("L" "#+LaTeX: " "<literal style=\"latex\">?</literal>")
-            ;; ("h" "#+BEGIN_HTML\n?\n#+END_HTML" "<literal style=\"html\">\n?\n</literal>")
-            ;; ("H" "#+HTML: " "<literal style=\"html\">?</literal>")
-            ;; ("a" "#+BEGIN_ASCII\n?\n#+END_ASCII")
-            ;; ("A" "#+ASCII: ")
-            ;; ("i" "#+INDEX: ?" "#+INDEX: ?")
-            ;; ("I" "#+INCLUDE: %file ?" "<include file=%file markup=\"?\">")
-
-            ))
-    #+end_src
-
-*** erlang-family
-    #+begin_src emacs-lisp :tangle ~/.emacs
-    (setq org-structure-template-erlang-family
-          '(
-            ;; perl
-            ("plf" "#+end_src\n?\n#+begin_src prolog" "<src lang=\"?\">\n\n</src>")
-            ("pl" "#+begin_src prolog\n?\n#+end_src" "<src lang=\"?\">\n\n</src>")
-
-            ;; erlang
-            ("erlangf" "#+end_src\n?\n#+begin_src erlang" "<src lang=\"?\">\n\n</src>")
-            ("erlang" "#+begin_src erlang\n?\n#+end_src" "<src lang=\"?\">\n\n</src>")
-
-            ;; elixir
-            ("exf" "#+end_src\n?\n#+begin_src elixir" "<src lang=\"?\">\n\n</src>")
-            ("ex" "#+begin_src elixir\n?\n#+end_src" "<src lang=\"?\">\n\n</src>")
-
-            ))
-    #+end_src
-
-*** lisp-family
-    #+begin_src emacs-lisp :tangle ~/.emacs
-    (setq org-structure-template-lisp-family
-          '(
-            ;; scheme
-            ("ssf" "#+end_src\n?\n#+begin_src scheme" "<src lang=\"?\">\n\n</src>")
-            ("ss" "#+begin_src scheme\n?\n#+end_src" "<src lang=\"?\">\n\n</src>")
-
-            ;; jojo
-            ("jof" "#+end_src\n?\n#+begin_src jojo" "<src lang=\"?\">\n\n</src>")
-            ("jo" "#+begin_src jojo\n?\n#+end_src" "<src lang=\"?\">\n\n</src>")
-
-            ;; rust
-            ("rsf" "#+end_src\n?\n#+begin_src rust" "<src lang=\"?\">\n\n</src>")
-            ("rs" "#+begin_src rust\n?\n#+end_src" "<src lang=\"?\">\n\n</src>")
-
-            ;; racket
-            ("srf" "#+end_src\n?\n#+begin_src racket" "<src lang=\"?\">\n\n</src>")
-            ("sr" "#+begin_src racket\n?\n#+end_src" "<src lang=\"?\">\n\n</src>")
-
-            ;; lisp
-            ("lispf" "#+end_src\n?\n#+begin_src lisp" "<src lang=\"?\">\n\n</src>")
-            ("lisp" "#+begin_src lisp\n?\n#+end_src" "<src lang=\"?\">\n\n</src>")
-
-            ;; shen
-            ("shenf" "#+end_src\n?\n#+begin_src shen" "<src lang=\"?\">\n\n</src>")
-            ("shen" "#+begin_src shen\n?\n#+end_src" "<src lang=\"?\">\n\n</src>")
-
-            ;; clojure
-            ("clojuref" "#+end_src\n?\n#+begin_src clojure" "<src lang=\"?\">\n\n</src>")
-            ("clojure" "#+begin_src clojure\n?\n#+end_src" "<src lang=\"?\">\n\n</src>")
-
-            ;; emacs-lisp
-            ("seef" "#+end_src\n?\n#+begin_src emacs-lisp :tangle ~/.emacs" "<src lang=\"?\">\n\n</src>")
-            ("see" "#+begin_src emacs-lisp :tangle ~/.emacs\n?\n#+end_src" "<src lang=\"?\">\n\n</src>")
-            ("sef" "#+end_src\n?\n#+begin_src emacs-lisp" "<src lang=\"?\">\n\n</src>")
-            ("se" "#+begin_src emacs-lisp\n?\n#+end_src" "<src lang=\"?\">\n\n</src>")
-
-            ))
-    #+end_src
-
-*** forth-family
-    #+begin_src emacs-lisp :tangle ~/.emacs
-    (setq org-structure-template-forth-family
-          '(
-            ;; cicada
-            ("cnf" "#+end_src\n?\n#+begin_src cicada" "<src lang=\"?\">\n\n</src>")
-            ("cn" "#+begin_src cicada\n?\n#+end_src" "<src lang=\"?\">\n\n</src>")
-
-            ;; scala
-            ("slf" "#+end_src\n?\n#+begin_src scala" "<src lang=\"?\">\n\n</src>")
-            ("sl" "#+begin_src scala\n?\n#+end_src" "<src lang=\"?\">\n\n</src>")
-
-            ;; forth
-            ("forthf" "#+end_src\n?\n#+begin_src forth" "<src lang=\"?\">\n\n</src>")
-            ("forth" "#+begin_src forth\n?\n#+end_src" "<src lang=\"?\">\n\n</src>")
-
-            ))
-    #+end_src
-
-*** ml-family
-    #+begin_src emacs-lisp :tangle ~/.emacs
-    (setq org-structure-template-ml-family
-          '(
-            ;; sml
-            ("smlf" "#+end_src\n?\n#+begin_src sml" "<src lang=\"?\">\n\n</src>")
-            ("sml" "#+begin_src sml\n?\n#+end_src" "<src lang=\"?\">\n\n</src>")
-
-            ;; caml
-            ("camlf" "#+end_src\n?\n#+begin_src caml" "<src lang=\"?\">\n\n</src>")
-            ("caml" "#+begin_src caml\n?\n#+end_src" "<src lang=\"?\">\n\n</src>")
-
-            ))
-    #+end_src
-
-*** asm-family
-    #+begin_src emacs-lisp :tangle ~/.emacs
-    (setq org-structure-template-asm-family
-          '(
-            ;; fasm
-            ("fasmf" "#+end_src\n?\n#+begin_src fasm" "<src lang=\"?\">\n\n</src>")
-            ("fasm" "#+begin_src fasm\n?\n#+end_src" "<src lang=\"?\">\n\n</src>")
-
-            ;; nasm
-            ("nasmf" "#+end_src\n?\n#+begin_src nasm" "<src lang=\"?\">\n\n</src>")
-            ("nasm" "#+begin_src nasm\n?\n#+end_src" "<src lang=\"?\">\n\n</src>")
-
-            ))
-    #+end_src
-
-*** mark-language
-    #+begin_src emacs-lisp :tangle ~/.emacs
-    (setq org-structure-template-mark-language
-          '(
-            ;; yaml
-            ("yamlf" "#+end_src\n?\n#+begin_src yaml" "<src lang=\"?\">\n\n</src>")
-            ("yaml" "#+begin_src yaml\n?\n#+end_src" "<src lang=\"?\">\n\n</src>")
-
-            ;; css
-            ("cssf" "#+end_src\n?\n#+begin_src css" "<src lang=\"?\">\n\n</src>")
-            ("css" "#+begin_src css\n?\n#+end_src" "<src lang=\"?\">\n\n</src>")
-
-            ;; bnf
-            ("bnff" "#+end_src\n?\n#+begin_src bnf" "<src lang=\"?\">\n\n</src>")
-            ("bnf" "#+begin_src bnf\n?\n#+end_src" "<src lang=\"?\">\n\n</src>")
-
-            ))
-    #+end_src
-
-*** c-family
-    #+begin_src emacs-lisp :tangle ~/.emacs
-    (setq org-structure-template-c-family
-          '(
-            ;; c
-            ("cf" "#+end_src\n?\n#+begin_src c" "<src lang=\"?\">\n\n</src>")
-            ("c" "#+begin_src c\n?\n#+end_src" "<src lang=\"?\">\n\n</src>")
-
-            ;; cpp
-            ("cppf" "#+end_src\n?\n#+begin_src cpp" "<src lang=\"?\">\n\n</src>")
-            ("cpp" "#+begin_src cpp\n?\n#+end_src" "<src lang=\"?\">\n\n</src>")
-
-            ;; java
-            ("javaf" "#+end_src\n?\n#+begin_src java" "<src lang=\"?\">\n\n</src>")
-            ("java" "#+begin_src java\n?\n#+end_src" "<src lang=\"?\">\n\n</src>")
-
-            ;; js
-            ("jsf" "#+end_src\n?\n#+begin_src js" "<src lang=\"?\">\n\n</src>")
-            ("js" "#+begin_src js\n?\n#+end_src" "<src lang=\"?\">\n\n</src>")
-
-            ;; ts
-            ("tsf" "#+end_src\n?\n#+begin_src typescript" "<src lang=\"?\">\n\n</src>")
-            ("ts" "#+begin_src typescript\n?\n#+end_src" "<src lang=\"?\">\n\n</src>")
-
-            ;; coffeescript
-            ("cof" "#+end_src\n?\n#+begin_src coffee" "<src lang=\"?\">\n\n</src>")
-            ("co" "#+begin_src coffee\n?\n#+end_src" "<src lang=\"?\">\n\n</src>")
-
-            ;; py
-            ("pyf" "#+end_src\n?\n#+begin_src python" "<src lang=\"?\">\n\n</src>")
-            ("py" "#+begin_src python\n?\n#+end_src" "<src lang=\"?\">\n\n</src>")
-
-            ;; lua
-            ("luaf" "#+end_src\n?\n#+begin_src lua" "<src lang=\"?\">\n\n</src>")
-            ("lua" "#+begin_src lua\n?\n#+end_src" "<src lang=\"?\">\n\n</src>")
-
-            ;; perl
-            ("perlf" "#+end_src\n?\n#+begin_src perl" "<src lang=\"?\">\n\n</src>")
-            ("perl" "#+begin_src perl\n?\n#+end_src" "<src lang=\"?\">\n\n</src>")
-
-            ;; shell
-            ("shf" "#+end_src\n?\n#+begin_src sh" "<src lang=\"?\">\n\n</src>")
-            ("sh" "#+begin_src sh\n?\n#+end_src" "<src lang=\"?\">\n\n</src>")
-
-            ))
-    #+end_src
-
-*** human-language
-    #+begin_src emacs-lisp :tangle ~/.emacs
-    (setq org-structure-template-human-language
-          '(
-            ;; lojban
-            ("ljf" "#+end_src\n?\n#+begin_src lojban" "<src lang=\"?\">\n\n</src>")
-            ("lj" "#+begin_src lojban\n?\n#+end_src" "<src lang=\"?\">\n\n</src>")
-
-            ))
-    #+end_src
-
-*** haskell
-    #+begin_src emacs-lisp :tangle ~/.emacs
-    (setq org-structure-template-haskell-family
-          '(
-            ;; haskell
-            ("hsf" "#+end_src\n?\n#+begin_src haskell" "<src lang=\"?\">\n\n</src>")
-            ("hs" "#+begin_src haskell\n?\n#+end_src" "<src lang=\"?\">\n\n</src>")
-
-            ;; agda
-            ("agf" "#+end_src\n?\n#+begin_src agda2" "<src lang=\"?\">\n\n</src>")
-            ("ag" "#+begin_src agda2\n?\n#+end_src" "<src lang=\"?\">\n\n</src>")
-
-            ;; idris
-            ("idf" "#+end_src\n?\n#+begin_src idris" "<src lang=\"?\">\n\n</src>")
-            ("id" "#+begin_src idris\n?\n#+end_src" "<src lang=\"?\">\n\n</src>")
-
-            ))
-    #+end_src
-
-*** other-family
-    #+begin_src emacs-lisp :tangle ~/.emacs
-    (setq org-structure-template-other-family
-          '(
-            ;; fish
-            ("fishf" "#+end_src\n?\n#+begin_src fish" "<src lang=\"?\">\n\n</src>")
-            ("fish" "#+begin_src fish\n?\n#+end_src" "<src lang=\"?\">\n\n</src>")
-
-            ;; sql
-            ("sqlf" "#+end_src\n?\n#+begin_src sql" "<src lang=\"?\">\n\n</src>")
-            ("sql" "#+begin_src sql\n?\n#+end_src" "<src lang=\"?\">\n\n</src>")
-
-            ;; ruby
-            ("rubyf" "#+end_src\n?\n#+begin_src ruby" "<src lang=\"?\">\n\n</src>")
-            ("ruby" "#+begin_src ruby\n?\n#+end_src" "<src lang=\"?\">\n\n</src>")
-
-            ;; tcl
-            ("tclf" "#+end_src\n?\n#+begin_src tcl" "<src lang=\"?\">\n\n</src>")
-            ("tcl" "#+begin_src tcl\n?\n#+end_src" "<src lang=\"?\">\n\n</src>")
-
-            ;; for many kinds of conf-modes
-            ("conff" "#+end_src\n?\n#+begin_src conf :tangle " "<src lang=\"?\">\n\n</src>")
-            ("conf" "#+begin_src conf :tangle \n?\n#+end_src" "<src lang=\"?\">\n\n</src>")
-            ("confuf" "#+end_src\n?\n#+begin_src conf-unix :tangle " "<src lang=\"?\">\n\n</src>")
-            ("confu" "#+begin_src conf-unix :tangle \n?\n#+end_src" "<src lang=\"?\">\n\n</src>")
-            ("confxf" "#+end_src\n?\n#+begin_src conf-xdefaults :tangle " "<src lang=\"?\">\n\n</src>")
-            ("confx" "#+begin_src conf-xdefaults :tangle \n?\n#+end_src" "<src lang=\"?\">\n\n</src>")
-            ))
-    #+end_src
-
-*** main
-    #+begin_src emacs-lisp :tangle ~/.emacs
-    (setq org-structure-template-alist
-          (append
-           org-structure-template-basic
-
-           org-structure-template-mark-language
-           org-structure-template-human-language
-
-           org-structure-template-lisp-family
-           org-structure-template-forth-family
-           org-structure-template-ml-family
-           org-structure-template-erlang-family
-
-           org-structure-template-asm-family
-           org-structure-template-c-family
-
-           org-structure-template-haskell-family
-
-           org-structure-template-other-family
-
-           ))
-    #+end_src
-
-** [babel] evaluation
-   #+begin_src emacs-lisp :tangle ~/.emacs
-   ;; (add-hook 'org-mode-hook
-   ;;           (lambda ()
-   ;;             (setq org-confirm-babel-evaluate nil)))
-
-   ;; default arguments to use when evaluating a source block
-   (setq org-babel-default-header-args
-         '((:session . "none")
-           (:results . "replace")
-           (:exports . "code")
-           (:cache   . "no")
-           (:noweb   . "yes")
-           (:hlines  . "no")
-           (:tangle  . "no")
-
-           ;; shebang `#!' needs the following
-           ;; (:padline . "no")
-
-           (:padline . "yes")
-           ))
-   #+end_src
-
-** [agenda] setting
-
-   #+begin_src emacs-lisp :tangle ~/.emacs
-   (setq org-agenda-files "~/.emacs.d/agenda/file-name-list")
-   (global-set-key (kbd "C-M-o") 'org-cycle-agenda-files)
-   (global-set-key (kbd "C-c a") 'org-agenda)
-
-   ;; (define-prefix-command 'C-o-map)
-   ;; (global-set-key (kbd "C-o") 'C-o-map)
-   ;; (global-set-key (kbd "C-o C-b") 'org-iswitchb)
-
-   (eval-after-load 'org
-     '(progn
-       (define-key org-mode-map (kbd "C-c C-l") 'org-toggle-link-display)))
-   #+end_src
-
-** [agenda] org-agenda-files
-   tangle take too long so just edit
-   file:~/.org-agenda-files
-
 * folding
 
 ** origami.el
@@ -3433,6 +2932,9 @@
 *** ligature
 
     #+begin_src emacs-lisp :tangle ~/.emacs
+    (custom-set-faces
+     '(fixed-pitch ((t (:family (face-attribute 'default :family))))))
+
     (add-to-list 'load-path "~/.emacs.d/ligature.el")
     (require 'ligature)
 
