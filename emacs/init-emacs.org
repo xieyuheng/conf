@@ -378,6 +378,13 @@
    ;;        dired-kept-versions 1)
    #+end_src
 
+** dired
+
+   #+begin_src emacs-lisp :tangle ~/.emacs
+   (add-to-list 'load-path "~/.emacs.d/dired/")
+   (require 'dired-aux)
+   #+end_src
+
 ** variable about mode
 
    #+begin_src emacs-lisp :tangle ~/.emacs
@@ -2032,12 +2039,12 @@
    #+end_src
 
 ** fasm
+
    #+begin_src emacs-lisp :tangle ~/.emacs
    (add-to-list 'load-path "~/.emacs.d/fasm-mode/")
    (require 'fasm-mode)
    (add-to-list 'auto-mode-alist '("\\.fasm$" . fasm-mode))
    (add-to-list 'auto-mode-alist '("\\.inc$"  . fasm-mode))
-   (add-to-list 'auto-mode-alist '("\\.s$"    . fasm-mode))
 
    (defun fasm-indent-line-and-next-line ()
      (interactive)
