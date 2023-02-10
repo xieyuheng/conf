@@ -2808,7 +2808,7 @@
   (setq ranger-preview-file t)
   (setq ranger-show-literal nil)
   (setq ranger-parent-depth 0)
-  (setq ranger-width-preview 0.64)
+  (setq ranger-width-preview 0.60)
   (setq ranger-preview-delay 0.01)
   #+end_src
 
