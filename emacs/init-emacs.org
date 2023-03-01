@@ -2331,21 +2331,32 @@
 ** c
 
    #+begin_src emacs-lisp :tangle ~/.emacs
-   ;; (setq c-default-style "k&r")
-   ;; (setq c-default-style "user")
-   (setq c-default-style "bsd")
+   (setq c-basic-offset 4)
+   (setq c-default-style "k&r")
+
    ;; (setq c-default-style "stroustrup")
    ;; (setq c-default-style "whitesmith")
    ;; (setq c-default-style "ellemtel")
    ;; (setq c-default-style "linux")
 
-   (setq c-basic-offset 2)
    (add-hook
     'c-mode-hook
     (lambda ()
       ;; (setq comment-style 'extra)
       (setq comment-start "//")
       (setq comment-end "")))
+
+   (defun format-c (&optional b e)
+     (interactive "r")
+     (when (not (buffer-file-name))
+       (error "A buffer must be associated with a file in order to use REFORMAT-REGION."))
+     (when (not (executable-find "clang-format"))
+       (error "clang-format not found."))
+     (shell-command-on-region
+      b e
+      "clang-format -style=LLVM"
+      (current-buffer) t)
+     (indent-region b e))
    #+end_src
 
 ** c++
