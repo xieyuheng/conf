@@ -1,7 +1,9 @@
 {
   "update.mode": "none",
-  "editor.fontFamily": "Hack",
-  "editor.fontSize": 18,
+  "editor.fontFamily": "Fira Code",
+  // "editor.fontFamily": "Monaco",
+  // "editor.fontFamily": "Hack",
+  "editor.fontSize": 16,
   "editor.fontWeight": "400",
   "editor.formatOnSave": true,
   "explorer.confirmDelete": false,
