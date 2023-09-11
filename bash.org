@@ -38,6 +38,7 @@
   PATH=$PATH:/usr/local/bin
   PATH=$PATH:$HOME/bin
   PATH=$PATH:$HOME/.local/bin
+  PATH=$PATH:$HOME/.nix-profile/bin
   #+end_src
 
 * emacs
