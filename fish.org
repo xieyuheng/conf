@@ -331,7 +331,7 @@
 * starship
 
   #+begin_src fish :tangle ~/.config/fish/config.fish
-  starship init fish | source
+  # starship init fish | source
   #+end_src
 
 * php
