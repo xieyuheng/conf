@@ -2858,7 +2858,7 @@
 ** line-spacing
 
    #+begin_src emacs-lisp :tangle ~/.emacs
-   (setq-default line-spacing 0.2)
+   (setq-default line-spacing 0.1)
    #+end_src
 
 ** font
@@ -2900,7 +2900,7 @@
       ;; (set-fontset-font t 'han (font-spec :name "Noto Sans CJK TC DemiLight" :size 28))
       ;; (set-fontset-font t 'han (font-spec :name "Sarasa Mono SC" :size 44))
 
-      (set-fontset-font t 'han (font-spec :name "Noto Sans CJK TC Medium" :size 28))
+      (set-fontset-font t 'han (font-spec :name "Noto Sans CJK TC Medium" :size 54))
       ;; (set-fontset-font t 'han (font-spec :name "Noto Sans CJK TC Bold" :size 26))
       ;; (set-fontset-font t 'han (font-spec :name "Noto Sans CJK TC Black" :size 26))
     #+end_src
@@ -2957,9 +2957,9 @@
 *** symbol
 
     #+begin_src emacs-lisp :tangle ~/.emacs
-    ;; (set-fontset-font t 'symbol (font-spec :name "Noto Mono"))
+    (set-fontset-font t 'symbol (font-spec :name "Noto Mono"))
     ;; (set-fontset-font t 'symbol (font-spec :name "Sarasa Mono SC"))
-    (set-fontset-font t 'symbol (font-spec :name "Fira Code"))
+    ;; (set-fontset-font t 'symbol (font-spec :name "Fira Code"))
     ;; (set-fontset-font t 'symbol (font-spec :name "Noto Emoji"))
     #+end_src
 
