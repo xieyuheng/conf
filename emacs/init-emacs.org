@@ -154,7 +154,7 @@
 ** line height
 
    #+begin_src emacs-lisp :tangle ~/.emacs
-   (setq-default line-spacing 20)
+   (setq-default line-spacing 0)
    #+end_src
 
 
@@ -2855,12 +2855,6 @@
    ;; (global-hl-line-mode 1)
    #+end_src
 
-** line-spacing
-
-   #+begin_src emacs-lisp :tangle ~/.emacs
-   (setq-default line-spacing 0.1)
-   #+end_src
-
 ** font
 
 *** [note]
@@ -2900,7 +2894,7 @@
       ;; (set-fontset-font t 'han (font-spec :name "Noto Sans CJK TC DemiLight" :size 28))
       ;; (set-fontset-font t 'han (font-spec :name "Sarasa Mono SC" :size 44))
 
-      (set-fontset-font t 'han (font-spec :name "Noto Sans CJK TC Medium" :size 54))
+      (set-fontset-font t 'han (font-spec :name "Noto Sans CJK TC" :size 48))
       ;; (set-fontset-font t 'han (font-spec :name "Noto Sans CJK TC Bold" :size 26))
       ;; (set-fontset-font t 'han (font-spec :name "Noto Sans CJK TC Black" :size 26))
     #+end_src
@@ -2934,7 +2928,7 @@
     ;; |- |--
 
     ;; (set-face-attribute 'default nil :family "Input" :height 130)
-    (set-face-attribute 'default nil :family "Hack" :height 170)
+    (set-face-attribute 'default nil :family "Monaco" :height 150)
     ;; (set-face-attribute 'default nil :family "Monoid" :height 140)
     ;; (set-face-attribute 'default nil :family "Monoid Nerd Font" :height 140)
     ;; (set-face-attribute 'default nil :family "Terminus (TTF)" :height 190)
