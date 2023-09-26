@@ -179,7 +179,7 @@
   set PATH $HOME/.npm-packages/bin $PATH
   #+end_src
 
-* n
+* node
 
   #+begin_src fish :tangle ~/.config/fish/config.fish
   set -x N_PREFIX $HOME/n

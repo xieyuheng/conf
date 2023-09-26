@@ -90,6 +90,13 @@
   # export PATH=$HOME/.cargo/bin:$PATH
   #+end_src
 
+* node
+
+  #+begin_src bash :tangle ~/.bash_profile
+  export N_PREFIX=$HOME/n
+  export PATH=$N_PREFIX/bin:$PATH
+  #+end_src
+
 * path
 
   #+begin_src fish :tangle ~/.bash_profile
