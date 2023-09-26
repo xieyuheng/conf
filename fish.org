@@ -183,7 +183,6 @@
 
   #+begin_src fish :tangle ~/.config/fish/config.fish
   set PATH $N_PREFIX/bin $PATH
-  set PATH $HOME/n/bin $PATH
   #+end_src
 
 * riscv
