@@ -173,12 +173,6 @@
   set PATH $PATH $HOME/.bun/bin
   #+end_src
 
-* npm
-
-  #+begin_src fish :tangle ~/.config/fish/config.fish
-  set PATH $HOME/.npm-packages/bin $PATH
-  #+end_src
-
 * node
 
   #+begin_src fish :tangle ~/.config/fish/config.fish

@@ -154,7 +154,7 @@
 ** line height
 
    #+begin_src emacs-lisp :tangle ~/.emacs
-   (setq-default line-spacing 0)
+   (setq-default line-spacing 0.15)
    #+end_src
 
 
@@ -1445,16 +1445,6 @@
      (add-to-list 'auto-mode-alist '("\\.jo\\'" . cicada-mode))
      (add-to-list 'auto-mode-alist '("\\.grammar\\'" . cicada-mode))
      (add-to-list 'auto-mode-alist '("\\.table\\'" . cicada-mode))
-   #+end_src
-
-** sql
-
-   #+begin_src emacs-lisp :tangle ~/.emacs
-   (add-hook
-    'sql-mode-hook
-    (lambda ()
-      (turn-off-indent)
-      ))
    #+end_src
 
 ** jojo
@@ -2894,7 +2884,8 @@
       ;; (set-fontset-font t 'han (font-spec :name "Noto Sans CJK TC DemiLight" :size 28))
       ;; (set-fontset-font t 'han (font-spec :name "Sarasa Mono SC" :size 44))
 
-      (set-fontset-font t 'han (font-spec :name "Noto Sans CJK TC" :size 48))
+      ;; (set-fontset-font t 'han (font-spec :name "Noto Sans CJK TC" :size 48))
+      (set-fontset-font t 'han (font-spec :name "unifont" :size 48))
       ;; (set-fontset-font t 'han (font-spec :name "Noto Sans CJK TC Bold" :size 26))
       ;; (set-fontset-font t 'han (font-spec :name "Noto Sans CJK TC Black" :size 26))
     #+end_src
@@ -2928,7 +2919,9 @@
     ;; |- |--
 
     ;; (set-face-attribute 'default nil :family "Input" :height 130)
-    (set-face-attribute 'default nil :family "Monaco" :height 150)
+    ;; (set-face-attribute 'default nil :family "Monaco" :height 150)
+    (set-face-attribute 'default nil :family "Unifont" :height 180)
+    ;; (set-face-attribute 'default nil :family "minecraft" :height 180)
     ;; (set-face-attribute 'default nil :family "Monoid" :height 140)
     ;; (set-face-attribute 'default nil :family "Monoid Nerd Font" :height 140)
     ;; (set-face-attribute 'default nil :family "Terminus (TTF)" :height 190)
@@ -2951,7 +2944,8 @@
 *** symbol
 
     #+begin_src emacs-lisp :tangle ~/.emacs
-    (set-fontset-font t 'symbol (font-spec :name "Noto Mono"))
+    ;; (set-fontset-font t 'symbol (font-spec :name "Noto Mono"))
+    (set-fontset-font t 'symbol (font-spec :name "Unifont"))
     ;; (set-fontset-font t 'symbol (font-spec :name "Sarasa Mono SC"))
     ;; (set-fontset-font t 'symbol (font-spec :name "Fira Code"))
     ;; (set-fontset-font t 'symbol (font-spec :name "Noto Emoji"))
