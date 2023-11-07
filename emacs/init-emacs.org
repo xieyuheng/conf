@@ -383,6 +383,11 @@
    #+begin_src emacs-lisp :tangle ~/.emacs
    (add-to-list 'load-path "~/.emacs.d/dired/")
    (require 'dired-aux)
+
+   (add-hook 'dired-mode-hook
+     (lambda ()
+       (local-set-key (kbd "C-n") 'ranger-next-file)
+       (local-set-key (kbd "C-p") 'ranger-prev-file)))
    #+end_src
 
 ** variable about mode
