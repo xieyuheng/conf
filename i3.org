@@ -109,13 +109,14 @@
     bindsym $mod+Shift+End       move container to workspace 27:拾肆
 
     # about randr output
-    bindsym $mod+Shift+i move workspace to output HDMI1
+    # bindsym $mod+Shift+i move workspace to output HDMI1
+    bindsym $mod+Shift+i move workspace to output HDMI-2
     bindsym $mod+Shift+o move workspace to output primary
 
-    workspace 14:壹 output HDMI1
-    workspace 15:贰 output HDMI1
-    workspace 16:叁 output HDMI1
-    workspace 17:肆 output HDMI1
+    workspace 14:壹 output HDMI-2
+    workspace 15:贰 output HDMI-2
+    workspace 16:叁 output HDMI-2
+    workspace 17:肆 output HDMI-2
 
     # restart i3 inplace
     # (preserves your layout/session, can be used to upgrade i3)
