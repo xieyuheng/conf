@@ -154,7 +154,8 @@
 ** line height
 
    #+begin_src emacs-lisp :tangle ~/.emacs
-   (setq-default line-spacing 0.15)
+   ;; (setq-default line-spacing 0.15)
+   (setq-default line-spacing 0)
    #+end_src
 
 
@@ -2890,7 +2891,7 @@
       ;; (set-fontset-font t 'han (font-spec :name "Sarasa Mono SC" :size 44))
 
       ;; (set-fontset-font t 'han (font-spec :name "Noto Sans CJK TC" :size 48))
-      (set-fontset-font t 'han (font-spec :name "unifont" :size 48))
+      (set-fontset-font t 'han (font-spec :name "unifont" :size 30))
       ;; (set-fontset-font t 'han (font-spec :name "Noto Sans CJK TC Bold" :size 26))
       ;; (set-fontset-font t 'han (font-spec :name "Noto Sans CJK TC Black" :size 26))
     #+end_src
@@ -2925,7 +2926,7 @@
 
     ;; (set-face-attribute 'default nil :family "Input" :height 130)
     ;; (set-face-attribute 'default nil :family "Monaco" :height 150)
-    (set-face-attribute 'default nil :family "Unifont" :height 180)
+    (set-face-attribute 'default nil :family "Unifont" :height 220)
     ;; (set-face-attribute 'default nil :family "minecraft" :height 180)
     ;; (set-face-attribute 'default nil :family "Monoid" :height 140)
     ;; (set-face-attribute 'default nil :family "Monoid Nerd Font" :height 140)
