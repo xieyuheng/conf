@@ -74,12 +74,19 @@
     bindsym $mod+F10         workspace 23:拾
     bindsym $mod+F11         workspace 24:拾壹
     bindsym $mod+F12         workspace 25:拾贰
+<<<<<<< HEAD
     bindsym $mod+Delete      workspace 26:删除
     bindsym $mod+Insert      workspace 27:插入
     bindsym $mod+Home        workspace 28:开头
     bindsym $mod+End         workspace 29:末尾
     bindsym $mod+Prior       workspace 30:前页
     bindsym $mod+Next        workspace 31:后页
+=======
+    bindsym $mod+Insert      workspace 26:插入
+    bindsym $mod+Delete      workspace 27:删除
+    bindsym $mod+Home        workspace 28:开头
+    bindsym $mod+End         workspace 29:结尾
+>>>>>>> c079ada06470b73d7f528a08e63af442852924b3
 
     # move focused container to workspace
     bindsym $mod+Shift+grave     move container to workspace 0:主
@@ -108,12 +115,19 @@
     bindsym $mod+Shift+F10       move container to workspace 23:拾
     bindsym $mod+Shift+F11       move container to workspace 24:拾壹
     bindsym $mod+Shift+F12       move container to workspace 25:拾贰
+<<<<<<< HEAD
     bindsym $mod+Shift+Delete    move container to workspace 26:删除
     bindsym $mod+Shift+Insert    move container to workspace 27:插入
     bindsym $mod+Shift+Home      move container to workspace 28:开头
     bindsym $mod+Shift+End       move container to workspace 29:末尾
     bindsym $mod+Shift+Prior     move container to workspace 30:前页
     bindsym $mod+Shift+Next      move container to workspace 31:后页
+=======
+    bindsym $mod+Shift+Insert    move container to workspace 26:插入
+    bindsym $mod+Shift+Delete    move container to workspace 27:删除
+    bindsym $mod+Shift+Home      move container to workspace 28:开头
+    bindsym $mod+Shift+End       move container to workspace 29:结尾
+>>>>>>> c079ada06470b73d7f528a08e63af442852924b3
 
     # about randr output
     bindsym $mod+Shift+i move workspace to output HDMI-2 HDMI-1
