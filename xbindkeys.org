@@ -183,4 +183,6 @@
   (xbindkey '(control mod1 "c:36") "rofi -font \"Monaco 32\" -show run")
   (xbindkey '(control F9) "i3lock")
   (xbindkey '(control F10) "scrot")
+  ;; shutter
+  ;; spectacle
   #+end_src
