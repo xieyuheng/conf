@@ -1708,15 +1708,6 @@
     (global-set-key (kbd "C-M-f") 'prettier)
     #+end_src
 
-** php
-
-   https://github.com/emacs-php/php-mode/wiki/Manual-installation
-
-   #+begin_src emacs-lisp :tangle ~/.emacs
-   (when (file-directory-p "~/.emacs.d/php-mode")
-     (load "~/.emacs.d/php-mode/lisp/php-mode-autoloads.el"))
-   #+end_src
-
 ** markdown
 
 *** edit-indirect

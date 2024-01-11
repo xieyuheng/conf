@@ -72,8 +72,8 @@
     bindsym $mod+F8          workspace 21:捌
     bindsym $mod+F9          workspace 22:玖
     bindsym $mod+F10         workspace 23:拾
-    bindsym $mod+F11         workspace 24:拾壹
     bindsym $mod+F12         workspace 25:拾贰
+    bindsym $mod+F11         workspace 24:拾壹
     bindsym $mod+Insert      workspace 26:插入
     bindsym $mod+Delete      workspace 27:删除
     bindsym $mod+Home        workspace 28:开头
@@ -104,8 +104,8 @@
     bindsym $mod+Shift+F8        move container to workspace 21:捌
     bindsym $mod+Shift+F9        move container to workspace 22:玖
     bindsym $mod+Shift+F10       move container to workspace 23:拾
-    bindsym $mod+Shift+F11       move container to workspace 24:拾壹
     bindsym $mod+Shift+F12       move container to workspace 25:拾贰
+    bindsym $mod+Shift+F11       move container to workspace 24:拾壹
     bindsym $mod+Shift+Insert    move container to workspace 26:插入
     bindsym $mod+Shift+Delete    move container to workspace 27:删除
     bindsym $mod+Shift+Home      move container to workspace 28:开头
