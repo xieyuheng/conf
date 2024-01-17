@@ -2883,7 +2883,7 @@
       ;; (set-fontset-font t 'han (font-spec :name "Sarasa Mono SC" :size 44))
 
       ;; (set-fontset-font t 'han (font-spec :name "Noto Sans CJK TC" :size 48))
-      (set-fontset-font t 'han (font-spec :name "unifont" :size 30))
+      (set-fontset-font t 'han (font-spec :name "unifont" :size 58))
       ;; (set-fontset-font t 'han (font-spec :name "Noto Sans CJK TC Bold" :size 26))
       ;; (set-fontset-font t 'han (font-spec :name "Noto Sans CJK TC Black" :size 26))
     #+end_src
