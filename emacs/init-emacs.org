@@ -1708,15 +1708,6 @@
     (global-set-key (kbd "C-M-f") 'prettier)
     #+end_src
 
-** php
-
-   https://github.com/emacs-php/php-mode/wiki/Manual-installation
-
-   #+begin_src emacs-lisp :tangle ~/.emacs
-   (when (file-directory-p "~/.emacs.d/php-mode")
-     (load "~/.emacs.d/php-mode/lisp/php-mode-autoloads.el"))
-   #+end_src
-
 ** markdown
 
 *** edit-indirect
@@ -2892,7 +2883,7 @@
       ;; (set-fontset-font t 'han (font-spec :name "Sarasa Mono SC" :size 44))
 
       ;; (set-fontset-font t 'han (font-spec :name "Noto Sans CJK TC" :size 48))
-      (set-fontset-font t 'han (font-spec :name "unifont" :size 30))
+      (set-fontset-font t 'han (font-spec :name "unifont" :size 50))
       ;; (set-fontset-font t 'han (font-spec :name "Noto Sans CJK TC Bold" :size 26))
       ;; (set-fontset-font t 'han (font-spec :name "Noto Sans CJK TC Black" :size 26))
     #+end_src
@@ -2927,7 +2918,7 @@
 
     ;; (set-face-attribute 'default nil :family "Input" :height 130)
     ;; (set-face-attribute 'default nil :family "Monaco" :height 150)
-    (set-face-attribute 'default nil :family "Unifont" :height 220)
+    (set-face-attribute 'default nil :family "Unifont" :height 190)
     ;; (set-face-attribute 'default nil :family "minecraft" :height 180)
     ;; (set-face-attribute 'default nil :family "Monoid" :height 140)
     ;; (set-face-attribute 'default nil :family "Monoid Nerd Font" :height 140)
