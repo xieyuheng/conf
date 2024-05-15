@@ -133,6 +133,11 @@
     bindsym $mod+Shift+Down resize shrink height 1 px or 1 ppt
     bindsym $mod+Shift+Left resize grow width 1 px or 1 ppt
 
+    # Media volume controls
+    bindsym XF86AudioMute exec amixer sset 'Master' toggle
+    bindsym XF86AudioLowerVolume exec amixer sset 'Master' 3%-
+    bindsym XF86AudioRaiseVolume exec amixer sset 'Master' 3%+
+
     # Start i3bar to display a workspace bar
     # (plus the system information i3status finds out, if available)
     bar {

@@ -1448,7 +1448,8 @@
      (add-to-list 'auto-mode-alist '("\\.i\\'" . cicada-mode))
      (add-to-list 'auto-mode-alist '("\\.p\\'" . cicada-mode))
 
-     (add-to-list 'auto-mode-alist '("\\.mo\\'" . cicada-mode))
+     (add-to-list 'auto-mode-alist '("\\.ch\\'" . cicada-mode))
+     (add-to-list 'auto-mode-alist '("\\.chu\\'" . cicada-mode))
      (add-to-list 'auto-mode-alist '("\\.jo\\'" . cicada-mode))
      (add-to-list 'auto-mode-alist '("\\.grammar\\'" . cicada-mode))
      (add-to-list 'auto-mode-alist '("\\.table\\'" . cicada-mode))
@@ -1680,32 +1681,6 @@
 
     #+begin_src emacs-lisp :tangle ~/.emacs
     (add-to-list 'auto-mode-alist '("\\.vue\\'" . web-mode))
-    #+end_src
-
-*** prettier
-
-    #+begin_src emacs-lisp :tangle ~/.emacs
-    (defun prettier ()
-      (interactive)
-      (let ((mark (point)))
-        (save-buffer)
-        (shell-command-on-region
-         ;; beginning and end of buffer
-         (point-min)
-         (point-max)
-         ;; command and parameters
-         (concat "npx prettier " (buffer-file-name))
-         ;; output buffer
-         (current-buffer)
-         ;; replace?
-         t
-         ;; name of the error buffer
-         "*Prettier Error Buffer*"
-         ;; show error buffer?
-         t)
-        (goto-char mark)))
-
-    (global-set-key (kbd "C-M-f") 'prettier)
     #+end_src
 
 ** markdown
@@ -2883,7 +2858,7 @@
       ;; (set-fontset-font t 'han (font-spec :name "Sarasa Mono SC" :size 44))
 
       ;; (set-fontset-font t 'han (font-spec :name "Noto Sans CJK TC" :size 48))
-      (set-fontset-font t 'han (font-spec :name "unifont" :size 50))
+      (set-fontset-font t 'han (font-spec :name "unifont" :size 54))
       ;; (set-fontset-font t 'han (font-spec :name "Noto Sans CJK TC Bold" :size 26))
       ;; (set-fontset-font t 'han (font-spec :name "Noto Sans CJK TC Black" :size 26))
     #+end_src
@@ -2917,8 +2892,8 @@
     ;; |- |--
 
     ;; (set-face-attribute 'default nil :family "Input" :height 130)
-    ;; (set-face-attribute 'default nil :family "Monaco" :height 150)
-    (set-face-attribute 'default nil :family "Unifont" :height 190)
+    ;; (set-face-attribute 'default nil :family "Monaco" :height 170)
+    (set-face-attribute 'default nil :family "Unifont" :height 200)
     ;; (set-face-attribute 'default nil :family "minecraft" :height 180)
     ;; (set-face-attribute 'default nil :family "Monoid" :height 140)
     ;; (set-face-attribute 'default nil :family "Monoid Nerd Font" :height 140)
