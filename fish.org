@@ -176,7 +176,7 @@
 * node
 
   #+begin_src fish :tangle ~/.config/fish/config.fish
-  set -x N_PREFIX $HOME/n
+  set -x N_PREFIX $HOME/.n
   set PATH $N_PREFIX/bin $PATH
 
   set PATH $HOME/.local/share/pnpm $PATH
