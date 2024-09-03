@@ -2863,7 +2863,7 @@
     ;; (set-fontset-font t 'han (font-spec :name "Sarasa Mono SC" :size 44))
 
     ;; (set-fontset-font t 'han (font-spec :name "Noto Sans CJK SC" :size 50))
-    ;; (set-fontset-font t 'han (font-spec :name "unifont" :size 54))
+    (set-fontset-font t 'han (font-spec :name "unifont" :size 54))
     ;; (set-fontset-font t 'han (font-spec :name "Noto Sans CJK TC Bold" :size 26))
     ;; (set-fontset-font t 'han (font-spec :name "Noto Sans CJK TC Black" :size 26))
     #+end_src
@@ -2896,9 +2896,9 @@
     ;; |- |--
     ;; |- |--
 
-    (set-face-attribute 'default nil :family "Input" :height 150)
+    ;; (set-face-attribute 'default nil :family "Input" :height 150)
     ;; (set-face-attribute 'default nil :family "Monaco" :height 170)
-    ;; (set-face-attribute 'default nil :family "Unifont" :height 200)
+    (set-face-attribute 'default nil :family "Unifont" :height 200)
     ;; (set-face-attribute 'default nil :family "minecraft" :height 180)
     ;; (set-face-attribute 'default nil :family "Monoid" :height 140)
     ;; (set-face-attribute 'default nil :family "Monoid Nerd Font" :height 140)
@@ -2923,9 +2923,9 @@
 
     #+begin_src emacs-lisp :tangle ~/.emacs
     ;; (set-fontset-font t 'symbol (font-spec :name "Noto Mono"))
-    ;; (set-fontset-font t 'symbol (font-spec :name "Unifont"))
+    (set-fontset-font t 'symbol (font-spec :name "Unifont"))
     ;; (set-fontset-font t 'symbol (font-spec :name "Sarasa Mono SC"))
-    (set-fontset-font t 'symbol (font-spec :name "Fira Code"))
+    ;; (set-fontset-font t 'symbol (font-spec :name "Fira Code"))
     ;; (set-fontset-font t 'symbol (font-spec :name "Noto Emoji"))
     #+end_src
 
