@@ -45,7 +45,9 @@
 
     # change container layout (stacked, tabbed, toggle split)
     bindsym $mod+Shift+f fullscreen toggle
+    bindsym $mod+Shift+g floating toggle
     bindsym $mod+space layout toggle tabbed splith splitv
+    for_window [class="canvas"] floating enable
 
     # switch to workspace
     bindsym $mod+grave       workspace 0:主

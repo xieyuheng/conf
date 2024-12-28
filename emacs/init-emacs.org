@@ -154,8 +154,8 @@
 ** line height
 
    #+begin_src emacs-lisp :tangle ~/.emacs
-   ;; (setq-default line-spacing 0.15)
-   (setq-default line-spacing 0)
+   (setq-default line-spacing 0.15)
+   ;; (setq-default line-spacing 0)
    #+end_src
 
 
@@ -1201,6 +1201,17 @@
 
    #+begin_src emacs-lisp :tangle ~/.emacs
    (setq auto-mode-alist (cons `("\\.pie$" . scheme-mode) auto-mode-alist))
+   #+end_src
+
+** uxn
+
+   #+begin_src emacs-lisp :tangle ~/.emacs
+   ;; ensure the directory containing uxntal-mode.el is mentioned
+   ;; in emacs' load-path variable.
+   (add-to-list 'load-path "~/.emacs.d/uxntal-mode/")
+
+   ;; then load uxntal-mode
+   (require 'uxntal-mode)
    #+end_src
 
 ** racket
@@ -2836,7 +2847,7 @@
     ;; (set-fontset-font t 'han (font-spec :name "MS Song" :size 30))
     ;; (set-fontset-font t 'han (font-spec :name "H-宮書" :size 28))
     ;; (set-fontset-font t 'han (font-spec :name "H-宮書" :size 50))
-    (set-fontset-font t 'han (font-spec :name "霞鹜文楷" :size 50))
+    ;; (set-fontset-font t 'han (font-spec :name "霞鹜文楷" :size 50))
     #+end_src
 
 *** 宋
@@ -2990,17 +3001,17 @@
 *** molokai-theme
 
     #+begin_src emacs-lisp :tangle ~/.emacs
-    ;; (add-to-list 'custom-theme-load-path "~/.emacs.d/theme/molokai-theme/")
-    ;; (load-theme 'molokai t)
-    ;; (add-to-list 'load-path "~/.emacs.d/theme/molokai-theme/")
-    ;; (require 'molokai-theme-kit)
+    (add-to-list 'custom-theme-load-path "~/.emacs.d/theme/molokai-theme/")
+    (load-theme 'molokai t)
+    (add-to-list 'load-path "~/.emacs.d/theme/molokai-theme/")
+    (require 'molokai-theme-kit)
     #+end_src
 
 *** zenburn
 
     #+begin_src emacs-lisp :tangle ~/.emacs
-    (add-to-list 'custom-theme-load-path "~/.emacs.d/theme/zenburn-emacs/")
-    (load-theme 'zenburn t)
+    ;; (add-to-list 'custom-theme-load-path "~/.emacs.d/theme/zenburn-emacs/")
+    ;; (load-theme 'zenburn t)
     #+end_src
 
 *** anti-zenburn
