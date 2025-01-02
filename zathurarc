@@ -1,4 +1,5 @@
-set font "Monaco 28"
-set default-bg "#E7E7E6"
-set default-fg "#F7F7F6"
+set font "unifont 16"
+set notification-bg "#000"
+set notification-fg "#fff"
 set smooth-scroll "true"
+set recolor true
