@@ -1,0 +1,2 @@
+deb http://mirrors.ustc.edu.cn/debian trixie main contrib non-free non-free-firmware
+deb-src http://mirrors.ustc.edu.cn/debian trixie main contrib non-free non-free-firmware
