@@ -744,12 +744,7 @@
 
     one can change the directory to save these files
     by editing the function ``scheme-start-file'' in cmuscheme.el
-    file:/home/xyh/.emacs.d/scheme/cmuscheme-init-repl/init-ikarus.scm
-    file:/home/xyh/.emacs.d/scheme/cmuscheme-init-repl/init-csi.scm
-    file:/home/xyh/.emacs.d/scheme/cmuscheme-init-repl/init-guile.scm
-    file:/home/xyh/.emacs.d/scheme/cmuscheme-init-repl/init-petite.scm
-    file:/home/xyh/.emacs.d/scheme/cmuscheme-init-repl/init-racket.scm
-    file:/home/xyh/.emacs.d/scheme/cmuscheme-init-repl/init-mit-scheme.scm
+
     #+begin_src emacs-lisp :tangle ~/.emacs
     (require 'cmuscheme)
 
@@ -858,6 +853,10 @@
     (scheme-add-keywords
      'font-lock-keyword-face
      '(
+       ;; inet-lisp
+       (1 . define-node)
+       (1 . define-rule)
+
        ;; the little prover
        (2 . dethm)
        (1 . J-Bob/step)
