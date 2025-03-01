@@ -11,17 +11,6 @@
    (global-set-key (kbd "M-[") 'change-parentheses)
    #+end_src
 
-** member-string?
-
-   #+begin_src emacs-lisp :tangle ~/.emacs
-   (defun member-string? (x l)
-     (cond ((null l) nil)
-           ((string-equal x (car l))
-            t)
-           (:else
-            (member-string? x (cdr l)))))
-   #+end_src
-
 ** <C-f1> & <C-f2>
 
    #+begin_src emacs-lisp :tangle ~/.emacs
@@ -38,28 +27,6 @@
      (delete-char 1)
      (insert "_"))
    (global-set-key (kbd "<C-f2>") 'my-<C-f2>)
-   #+end_src
-
-** generator
-
-   #+begin_src emacs-lisp :tangle ~/.emacs
-   (defvar number-generator:*counter* 0)
-   (defun number-generator ()
-     (setq number-generator:*counter* (+ number-generator:*counter* 1))
-     number-generator:*counter*)
-   #+end_src
-
-** needed
-
-   #+begin_src emacs-lisp :tangle ~/.emacs
-   (add-to-list 'load-path "~/.emacs.d/dash/")
-   (require 'dash)
-
-   (add-to-list 'load-path "~/.emacs.d/epl/")
-   (require 'epl)
-
-   (add-to-list 'load-path "~/.emacs.d/seq.el/")
-   (require 'seq)
    #+end_src
 
 * key binding
@@ -288,8 +255,6 @@
 
    (setq scroll-conservatively 10000)
 
-   ;; (setq default-major-mode 'org-mode)
-
    (show-paren-mode t)
    (setq show-paren-style 'parentheses)
    #+end_src
@@ -303,24 +268,19 @@
    (put 'downcase-region 'disabled nil)
    #+end_src
 
-** simple version control
+** disable backup
 
    #+begin_src emacs-lisp :tangle ~/.emacs
    (setq make-backup-files nil)
    (setq delete-old-versions t)
 
-   ;; Put autosave files (ie #foo#) and backup files (ie foo~) in /tmp/.
-   (custom-set-variables
-     '(auto-save-file-name-transforms '((".*" "/tmp/emacs-autosaves/\\1" t)))
-     '(backup-directory-alist '((".*" . "/tmp/emacs-backups/"))))
+   (setq auto-save-default nil)
+   (setq auto-save-timeout 100000000000000)
    #+end_src
 
 ** dired
 
    #+begin_src emacs-lisp :tangle ~/.emacs
-   (add-to-list 'load-path "~/.emacs.d/dired/")
-   (require 'dired-aux)
-
    (add-hook 'dired-mode-hook
      (lambda ()
        (local-set-key (kbd "C-n") 'ranger-next-file)
@@ -458,7 +418,6 @@
 
 
     (add-hook 'lisp-mode-hook             #'enable-paredit-mode)
-    ;; (add-hook 'slime-repl-mode-hook       #'enable-paredit-mode)
 
     (add-hook 'shen-mode-hook             #'enable-paredit-mode)
     (add-hook 'inferior-shen-mode-hook    #'enable-paredit-mode)
@@ -538,16 +497,8 @@
 
 ** scheme
 
-*** load-path
-
-    - some scheme related files are under this dir
-
-    #+begin_src emacs-lisp :tangle ~/.emacs
-    (add-to-list 'load-path "~/.emacs.d/scheme/")
-    (add-to-list 'load-path "~/.emacs.d/scheme/cmuscheme-init-repl/")
-    #+end_src
-
 *** scheme-mode
+
     file used by cmuscheme to init a *scheme* buffer
     for a prescribed interpreter's repl
 
@@ -911,61 +862,6 @@
 
 ** web
 
-*** js-mode
-
-    #+begin_src emacs-lisp :tangle ~/.emacs
-    (add-hook
-     'js-mode-hook
-     (lambda ()
-       ;; (setq comment-style 'extra)
-       (setq js-indent-level 2)))
-
-    ;; (add-to-list 'auto-mode-alist '("\\.js\\'" . js-mode))
-    #+end_src
-
-*** emmet-mode
-
-    #+begin_src emacs-lisp :tangle ~/.emacs
-    (add-to-list 'load-path "~/.emacs.d/emmet-mode")
-    (require 'emmet-mode)
-
-    (add-hook 'web-mode-hook 'emmet-mode)
-    (add-hook
-     'web-mode-hook
-     (lambda ()
-       (electric-indent-local-mode -1)))
-
-    ;; (add-hook 'css-mode-hook  'emmet-mode)
-
-    (add-to-list 'emmet-jsx-major-modes 'js-jsx-mode)
-    (add-hook
-     'js-jsx-mode-hook
-     (lambda ()
-       (define-key js-jsx-mode-map (kbd "C-j") 'emmet-expand-line)))
-
-    (add-hook
-     'typescript-mode-hook
-     (lambda ()
-       (define-key typescript-mode-map (kbd "C-j") 'emmet-expand-line)))
-    #+end_src
-
-*** js2-mode
-
-    #+begin_src emacs-lisp :tangle ~/.emacs
-    (add-to-list 'load-path "~/.emacs.d/js2-mode/")
-    (require 'js2-mode)
-
-    (add-hook
-     'js2-mode-hook
-     (lambda ()
-       ;; (setq comment-style 'extra)
-       ;; (setq comment-style 'multi-char)
-       (setq js2-basic-offset 2)
-       (js2-mode-hide-warnings-and-errors)))
-
-    ;; (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
-    #+end_src
-
 *** typescript-mode
 
     #+begin_src emacs-lisp :tangle ~/.emacs
@@ -985,32 +881,17 @@
     (add-to-list 'auto-mode-alist '("\\.d.ts\\'" . typescript-mode))
     #+end_src
 
-*** nodejs-repl
-
-    #+begin_src emacs-lisp :tangle ~/.emacs
-    ;; (add-to-list 'load-path "~/.emacs.d/nodejs-repl/")
-    ;; (require 'nodejs-repl)
-    ;; ;; (global-set-key (kbd "C-s C-n") 'nodejs-repl)
-    ;; (setq nodejs-repl-command "node")
-    #+end_src
-
-*** flycheck
-
-    #+begin_src emacs-lisp :tangle ~/.emacs
-    ;; (add-to-list 'load-path "~/.emacs.d/flycheck/")
-    ;; (require 'let-alist)
-    ;; (require 'flycheck)
-    ;;
-    ;; (add-hook 'js-mode-hook
-    ;;           (lambda () (flycheck-mode t)))
-    ;; ;; (global-flycheck-mode)
-    #+end_src
-
 *** web-mode
 
     #+begin_src emacs-lisp :tangle ~/.emacs
     (add-to-list 'load-path "~/.emacs.d/web-mode/")
     (require 'web-mode)
+
+    (add-to-list 'auto-mode-alist '("\\.jsx\\'" . web-mode))
+    (add-to-list 'auto-mode-alist '("\\.tsx\\'" . web-mode))
+    (add-to-list 'auto-mode-alist '("\\.svelte\\'" . web-mode))
+    (add-to-list 'auto-mode-alist '("\\.vue\\'" . web-mode))
+    (add-to-list 'auto-mode-alist '("\\.mimor\\'" . web-mode))
 
     (define-key web-mode-map (kbd "C-c C-c") 'web-mode-tag-match)
 
@@ -1038,25 +919,21 @@
        ))
     #+end_src
 
-*** jsx & tsx
+*** emmet-mode -- quick expend
 
     #+begin_src emacs-lisp :tangle ~/.emacs
-    ;; (add-to-list 'auto-mode-alist '("\\.jsx\\'" . js-jsx-mode))
-    ;; (add-to-list 'auto-mode-alist '("\\.tsx\\'" . js-jsx-mode))
-    (add-to-list 'auto-mode-alist '("\\.jsx\\'" . web-mode))
-    (add-to-list 'auto-mode-alist '("\\.tsx\\'" . web-mode))
-    #+end_src
+    (add-to-list 'load-path "~/.emacs.d/emmet-mode")
+    (require 'emmet-mode)
 
-*** svelte
+    (add-hook 'web-mode-hook 'emmet-mode)
+    (add-hook 'web-mode-hook (lambda () (electric-indent-local-mode -1)))
 
-    #+begin_src emacs-lisp :tangle ~/.emacs
-    (add-to-list 'auto-mode-alist '("\\.svelte\\'" . web-mode))
-    #+end_src
+    (add-to-list 'emmet-jsx-major-modes 'js-jsx-mode)
+    (add-hook 'js-jsx-mode-hook
+     (lambda () (define-key js-jsx-mode-map (kbd "C-j") 'emmet-expand-line)))
 
-*** mimor
-
-    #+begin_src emacs-lisp :tangle ~/.emacs
-    (add-to-list 'auto-mode-alist '("\\.mimor\\'" . web-mode))
+    (add-hook 'typescript-mode-hook
+     (lambda () (define-key typescript-mode-map (kbd "C-j") 'emmet-expand-line)))
     #+end_src
 
 *** wasm
@@ -1066,12 +943,6 @@
     (require 'wat-mode)
     (add-to-list 'auto-mode-alist '("\\.wat\\'" . wat-mode))
     (add-to-list 'auto-mode-alist '("\\.wast\\'" . wat-mode))
-    #+end_src
-
-*** vue
-
-    #+begin_src emacs-lisp :tangle ~/.emacs
-    (add-to-list 'auto-mode-alist '("\\.vue\\'" . web-mode))
     #+end_src
 
 ** markdown
@@ -1196,30 +1067,6 @@
    (if window-system (require 'caml-font))
    #+end_src
 
-** clean
-
-   #+begin_src emacs-lisp :tangle ~/.emacs
-   (add-to-list 'load-path "~/.emacs.d/clean-mode/")
-   (setq auto-mode-alist
-         (append auto-mode-alist
-                 '(("\\.icl$"  . clean-mode)
-                   ("\\.dcl$"  . clean-mode)
-                   ("\\.prj$"  . clean-project-mode))))
-
-   (autoload 'clean-mode "clean-mode"
-      "Major mode for editing Clean scripts." t)
-   (autoload 'clean-project-mode "clean-project-mode"
-      "Major mode for editing Clean Project Scripts." t)
-
-   (add-hook 'clean-mode-hook
-             (lambda ()
-               ;; (local-set-key (kbd "M-n") 'forward-paragraph)
-               ;; (local-set-key (kbd "M-p") 'backward-paragraph)
-               ;; (local-set-key (kbd "<return>") 'newline)
-               (turn-off-indent)
-               ))
-   #+end_src
-
 ** agda
 
    #+begin_src emacs-lisp :tangle ~/.emacs
@@ -1237,47 +1084,6 @@
     'agda2-mode-hook
     (lambda ()
       (turn-off-indent)))
-   #+end_src
-
-** idris
-
-   #+begin_src emacs-lisp :tangle ~/.emacs
-   (add-to-list 'load-path "~/.emacs.d/prop-menu-el/")
-   (require 'prop-menu)
-
-   (add-to-list 'load-path "~/.emacs.d/idris-mode/")
-   (add-to-list 'auto-mode-alist '("\\.idr$" . idris-mode))
-   (require 'idris-mode)
-
-   (add-hook
-    'idris-mode-hook
-    (lambda ()
-      (local-set-key (kbd "M-n") 'forward-paragraph)
-      (local-set-key (kbd "M-p") 'backward-paragraph)
-      (local-set-key (kbd "<return>") 'electric-newline-and-maybe-indent)
-      (turn-off-indent)
-      ))
-   #+end_src
-
-** prolog
-
-   #+begin_src emacs-lisp :tangle ~/.emacs
-   (add-to-list 'load-path "~/.emacs.d/prolog/prolog-mode/")
-   (require 'prolog)
-
-   (autoload 'run-prolog "prolog" "Start a Prolog sub-process." t)
-   (autoload 'prolog-mode "prolog" "Major mode for editing Prolog programs." t)
-
-   (setq prolog-system 'swi)
-   (setq prolog-indent-width 2)
-
-   (setq auto-mode-alist
-         (append '(("\\.pl$" . prolog-mode))
-                 auto-mode-alist))
-   (add-hook
-    'prolog-mode-hook
-    (lambda ()
-      (local-set-key (kbd "M-i") 'query-replace)))
    #+end_src
 
 ** c
@@ -1460,14 +1266,6 @@
    ;; (custom-set-variables '(initial-frame-alist (quote ((fullscreen . maximized)))))
    #+end_src
 
-** hl -- highlighting current line
-
-   #+begin_src emacs-lisp :tangle ~/.emacs
-   ;; (add-to-list 'load-path "~/.emacs.d/hl-line/")
-   ;; (require 'hl-line)
-   ;; (global-hl-line-mode 1)
-   #+end_src
-
 ** font
 
 *** [note]
@@ -1544,7 +1342,9 @@
 
     ;; (set-face-attribute 'default nil :family "Input" :height 150)
     ;; (set-face-attribute 'default nil :family "Monaco" :height 170)
-    (set-face-attribute 'default nil :family "Unifont" :height 200)
+    (set-face-attribute 'default nil :family "unifont" :height 200)
+    (set-face-attribute 'fixed-pitch nil :family "unifont")
+
     ;; (set-face-attribute 'default nil :family "minecraft" :height 180)
     ;; (set-face-attribute 'default nil :family "Monoid" :height 140)
     ;; (set-face-attribute 'default nil :family "Monoid Nerd Font" :height 140)
@@ -1569,66 +1369,10 @@
 
     #+begin_src emacs-lisp :tangle ~/.emacs
     ;; (set-fontset-font t 'symbol (font-spec :name "Noto Mono"))
-    (set-fontset-font t 'symbol (font-spec :name "Unifont"))
+    (set-fontset-font t 'symbol (font-spec :name "unifont"))
     ;; (set-fontset-font t 'symbol (font-spec :name "Sarasa Mono SC"))
     ;; (set-fontset-font t 'symbol (font-spec :name "Fira Code"))
     ;; (set-fontset-font t 'symbol (font-spec :name "Noto Emoji"))
-    #+end_src
-
-*** ligature
-
-    #+begin_src emacs-lisp :tangle ~/.emacs
-    (custom-set-faces
-     '(fixed-pitch ((t (:family (face-attribute 'default :family))))))
-
-    (add-to-list 'load-path "~/.emacs.d/ligature.el")
-    (require 'ligature)
-
-    ;; Enable the "www" ligature in every possible major mode
-    (ligature-set-ligatures 't '("www"))
-
-    (setq cascadia-code-ligatures
-          '("|||>" "<|||" "<==>" "<!--" "####" "~~>" "***" "||=" "||>"
-            ":::" "::=" "=:=" "===" "==>" "=!=" "=>>" "=<<" "=/=" "!=="
-            "!!." ">=>" ">>=" ">>>" ">>-" ">->" "->>" "-->" "---" "-<<"
-            "<~~" "<~>" "<*>" "<||" "<|>" "<$>" "<==" "<=>" "<=<" "<->"
-            "<--" "<-<" "<<=" "<<-" "<<<" "<+>" "</>" "###" "#_(" "..<"
-            "..." "+++" "/==" "///" "_|_" "www" "&&" "^=" "~~" "~@" "~="
-            "~>" "~-" "**" "*>" "*/" "||" "|}" "|]" "|=" "|>" "|-" "{|"
-            "[|" "]#" "::" ":=" ":>" ":<" "$>" "==" "=>" "!=" "!!" ">:"
-            ">=" ">>" ">-" "-~" "-|" "->" "--" "-<" "<~" "<*" "<|" "<:"
-            "<$" "<=" "<>" "<-" "<<" "<+" "</" "#{" "#[" "#:" "#=" "#!"
-            "##" "#(" "#?" "#_" "%%" ".=" ".-" ".." ".?" "+>" "++" "?:"
-            "?=" "?." "??" ";;" "/*" "/=" "/>" "//" "__" "~~" "(*" "*)"
-            "://"))
-
-    (setq fira-code-ligatures
-          '("www" "**" "***" "**/" "*>" "*/" "{-" "::"
-            ":::" ":=" "!!" "!=" "!==" "-}" "-->" "->" "->>"
-            "|-" "|="
-            "|}" "|]" "{|" "[|"
-            "-<" "-<<" "-~" "#{" "#[" "##" "###" "####" "#(" "#?" "#_"
-
-            "#_(" ".-" ".=" ".." "..<" "..." "?=" "??" ";;" "/*" "/**"
-            "/>" "//" "///" "&&" "||" "||=" "|=" "|>" "^=" "$>"
-            "++" "+++" "+>" "=:=" "==" "===" "==>" "=>" "=>>" "<="
-
-            "=<<" "=/=" ">-" ">=" ">=>" ">>" ">>-" ">>=" ">>>" "<*"
-            "<*>" "<|" "<|>" "<$" "<$>" "<!--" "<-" "<--" "<->" "<+"
-
-            "<+>"
-            "<="
-            "<==" "<=>" "<=<" "<>" "<<" "<<-" "<<=" "<<<"
-            "<~" "<~~" "</" "</>" "~@" "~-" "~>" "~~" "~~>" "%%"
-            ))
-
-    (ligature-set-ligatures 'prog-mode fira-code-ligatures)
-    (ligature-set-ligatures 'markdown-mode fira-code-ligatures)
-    (ligature-set-ligatures 'org-mode fira-code-ligatures)
-
-    ;; Enables ligature checks globally in all buffers. You can also do it
-    ;; per mode with `ligature-mode'.
-    (global-ligature-mode t)
     #+end_src
 
 ** theme
@@ -1677,20 +1421,6 @@
     #+begin_src emacs-lisp :tangle ~/.emacs
     ;; (add-to-list 'custom-theme-load-path "~/.emacs.d/theme/github-theme/")
     ;; (load-theme 'github t)
-    #+end_src
-
-*** subatomic
-
-    #+begin_src emacs-lisp :tangle ~/.emacs
-    ;; (add-to-list 'custom-theme-load-path "~/.emacs.d/theme/subatomic/")
-    ;; (load-theme 'subatomic t)
-    #+end_src
-
-*** arjen-grey
-
-    #+begin_src emacs-lisp :tangle ~/.emacs
-    ;; (add-to-list 'custom-theme-load-path "~/.emacs.d/theme/arjen-grey-theme/")
-    ;; (load-theme 'arjen-grey t)
     #+end_src
 
 ** translucent
@@ -1767,7 +1497,10 @@
 ** emacs server
 
    #+begin_src emacs-lisp :tangle ~/.emacs
-   (server-start)
+   (require 'server)
+   (unless (server-running-p) (server-start))
+
+   ;; (server-start)
    ;; (server-force-delete)
    #+end_src
 
@@ -1793,16 +1526,6 @@
   (ido-mode 1)
   (ido-vertical-mode 1)
   (setq ido-vertical-define-keys 'C-n-and-C-p-only)
-  #+end_src
-
-* hl-todo
-
-  highlight TODO
-
-  #+begin_src emacs-lisp :tangle ~/.emacs
-  (add-to-list 'load-path "~/.emacs.d/hl-todo/")
-  (require 'hl-todo)
-  (global-hl-todo-mode)
   #+end_src
 
 * auto revert
