@@ -1,8 +1,0 @@
-#+property: tangle .new-emacs
-#+title: emacs-config
-
-* ><
-
-  #+begin_src elisp
-
-  #+end_src
