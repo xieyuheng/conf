@@ -1498,7 +1498,7 @@
 
    #+begin_src emacs-lisp :tangle ~/.emacs
    (require 'server)
-   (unless (server-running-p) (server-start))
+   (when (not (server-running-p)) (server-start))
 
    ;; (server-start)
    ;; (server-force-delete)
@@ -1507,7 +1507,10 @@
 * scratch
 
   #+begin_src emacs-lisp :tangle ~/.emacs
-  (setq initial-buffer-choice "~/todo/TODO.md")
+  (if (<= (length command-line-args) 1)
+    (let ((filename "~/todo/TODO.md"))
+      (when (file-exists-p filename)
+        (setq initial-buffer-choice filename))))
   #+end_src
 
 * projectile
