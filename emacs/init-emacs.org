@@ -62,14 +62,6 @@
    (require 'seq)
    #+end_src
 
-** load xrdb
-
-   #+begin_src emacs-lisp :tangle ~/.emacs
-   (defun xrdb ()
-     (interactive)
-     (eshell-command "xrdb ~/.Xresource"))
-   #+end_src
-
 * key binding
 
 ** unbinding
@@ -132,23 +124,11 @@
    (global-set-key (kbd "C-M-k") 'enlarge-window)
    #+end_src
 
-** path
-
-   #+begin_src emacs-lisp :tangle ~/.emacs
-   (global-set-key (kbd "<C-M-return>") 'pwd)
-   #+end_src
-
 ** line wrap
 
    #+begin_src emacs-lisp :tangle ~/.emacs
    ;; (global-set-key (kbd "C-M-g") 'global-visual-line-mode)
    (global-set-key (kbd "C-M-g") 'toggle-truncate-lines)
-   #+end_src
-
-** line number
-
-   #+begin_src emacs-lisp :tangle ~/.emacs
-   ;; (add-hook 'prog-mode-hook (lambda () (display-line-numbers-mode 1)))
    #+end_src
 
 ** line height
@@ -158,15 +138,9 @@
    ;; (setq-default line-spacing 0)
    #+end_src
 
-
 ** comment
 
    #+begin_src emacs-lisp :tangle ~/.emacs
-   (define-prefix-command '<menu>-map)
-   (global-set-key (kbd "<menu>") '<menu>-map)
-   (global-set-key (kbd "<menu> '") 'comment-region)
-   (global-set-key (kbd "<menu> ;") 'uncomment-region)
-
    (global-set-key (kbd "C-.") 'comment-region)
    (global-set-key (kbd "C-,") 'uncomment-region)
    #+end_src
@@ -174,12 +148,6 @@
 ** edit
 
    #+begin_src emacs-lisp :tangle ~/.emacs
-   ;; backward-kill-sentence
-
-   ;; (defun say-not-binding ()
-   ;;   (interactive)
-   ;;   (message "this key have not binding"))
-
    (global-set-key (kbd "C-x <backspace>") 'delete-backward-char)
    #+end_src
 
@@ -216,12 +184,6 @@
    (global-set-key (kbd "<C-M-i>") 'replace-string)
    #+end_src
 
-** help
-
-   #+begin_src emacs-lisp :tangle ~/.emacs
-   (global-set-key (kbd "C-/") 'help)
-   #+end_src
-
 ** C-x C-h
 
    #+begin_src emacs-lisp :tangle ~/.emacs
@@ -240,30 +202,6 @@
    (global-set-key (kbd "C-s C-r") 'rename-buffer)
    #+end_src
 
-** insert (some trick here)
-
-   can't bind C-M-i to new function in normal way
-
-   and TAB == C-i
-
-   one can find:
-   (kbd "C-i") == (kbd "TAB") == "	"
-   (kbd "C-M-i") == [134217737]
-   in elisp-repl
-
-   #+begin_src emacs-lisp :tangle ~/.emacs
-   ;; (define-key input-decode-map [?\C-i] [control-i])
-   ;; (global-set-key [control-i] 'insert-newline-below)
-
-   (define-key input-decode-map [134217737] [C-M-i])
-   (global-set-key [C-M-i] 'insert-newline-below)
-
-   (defun insert-newline-below ()
-     (interactive)
-     (insert "\n")
-     (backward-char 1))
-   #+end_src
-
 ** whitespace
 
    #+begin_src emacs-lisp :tangle ~/.emacs
@@ -280,7 +218,6 @@
       (interactive)
       (message "* (whitespace-cleanup)")
       (whitespace-cleanup)))
-
 
    ;; 有了下面的設置 每次 C-x C-s 時 就會自動清除 whitespace
    ;; automatically clean up bad whitespace
@@ -369,14 +306,8 @@
 ** simple version control
 
    #+begin_src emacs-lisp :tangle ~/.emacs
-   (setq make-backup-files nil
-         delete-old-versions t)
-
-   ;; (setq  backup-by-copying t
-   ;;        version-control t
-   ;;        kept-new-versions 10
-   ;;        kept-old-versions 0
-   ;;        dired-kept-versions 1)
+   (setq make-backup-files nil)
+   (setq delete-old-versions t)
    #+end_src
 
 ** dired
@@ -396,7 +327,6 @@
    #+begin_src emacs-lisp :tangle ~/.emacs
    (setq modes-about-lisp
          '(scheme-mode
-           jojo-mode
            esse-mode
            inferior-scheme-mode
 
@@ -436,20 +366,6 @@
    (setq visible-bell t)
    #+end_src
 
-** autosave file
-
-   #+begin_src emacs-lisp :tangle ~/.emacs
-   (setq create-lockfiles 'nil)
-
-   ;; Put autosave files (ie #foo#) and backup files (ie foo~) in ~/.emacs.d/.
-   (custom-set-variables
-     '(auto-save-file-name-transforms '((".*" "~/.emacs.d/autosaves/\\1" t)))
-     '(backup-directory-alist '((".*" . "~/.emacs.d/backups/"))))
-
-   ;; create the autosave dir if necessary, since emacs won't.
-   (make-directory "~/.emacs.d/autosaves/" t)
-   #+end_src
-
 * input-method
 
 ** x-gtk-use-native-input
@@ -458,59 +374,12 @@
    (setq x-gtk-use-native-input t)
    #+end_src
 
-** for lambda
-
-   #+begin_src emacs-lisp :tangle ~/.emacs
-   (quail-define-package
-    "greek-simple" "greek" "greek-simple-title" t
-    "simple greek"
-    nil t nil nil nil nil nil nil nil nil t)
-
-   (quail-define-rules
-    ("\\l" ?λ))
-
-   (set-input-method "greek-simple")
-
-   (global-set-key (kbd "C-\\") 'toggle-input-method-with-message)
-
-   (defun toggle-input-method-with-message ()
-     (interactive)
-     (toggle-input-method)
-     (if (eq current-input-method nil)
-         (message "input method turned off")
-         (message current-input-method)))
-
-   (add-hook 'text-mode-hook (lambda () (interactive) (toggle-input-method)))
-   #+end_src
-
-* indent-guide
-
-** [no] indent-guide
-
-   #+begin_src emacs-lisp :tangle no
-   (add-to-list 'load-path "~/.emacs.d/indent-guide/")
-   (require 'indent-guide)
-   (indent-guide-global-mode)
-   ;; (setq indent-guide-char ":")
-   ;; (setq indent-guide-delay 0)
-   (set-face-foreground 'indent-guide-face "#333333")
-   (setq indent-guide-recursive t)
-   #+end_src
-
-* paren-face
-
-  #+begin_src emacs-lisp :tangle ~/.emacs
-  ;; (add-to-list 'load-path "~/.emacs.d/paren-face/")
-  ;; (require 'paren-face)
-
-  ;; (global-paren-face-mode -1)
-  #+end_src
-
 * language
 
 ** edit sexp
 
 *** load-path
+
     #+begin_src emacs-lisp :tangle ~/.emacs
     (add-to-list 'load-path "~/.emacs.d/edit-sexp/")
     #+end_src
@@ -576,7 +445,6 @@
       "Turn on pseudo-structural editing of Lisp code." t)
 
     (add-hook 'scheme-mode-hook           #'enable-paredit-mode)
-    (add-hook 'jojo-mode-hook             #'enable-paredit-mode)
     (add-hook 'esse-mode-hook             #'enable-paredit-mode)
     (add-hook 'inferior-scheme-mode-hook  #'enable-paredit-mode)
 
@@ -605,7 +473,6 @@
 
     ;; (add-hook 'c-mode-hook                #'enable-paredit-mode)
 
-
     (defun maybe-map-paredit-newline ()
       (cond
         ((memq major-mode '(inferior-scheme-mode
@@ -615,7 +482,6 @@
                             inferior-haskell-mode))
          (local-set-key (kbd "RET") 'comint-send-input))
         ((memq major-mode '(scheme-mode
-                            jojo-mode
                             esse-mode
                             emacs-lisp-mode
                             lisp-mode
@@ -639,24 +505,8 @@
     (add-hook 'paredit-mode-hook 'maybe-map-paredit-semicolon)
     #+end_src
 
-*** >< a easier way to insert "(" ")" (not using)
-    :tangle ~/.emacs
-    #+begin_src emacs-lisp
-    (defun my-insert-9 () (interactive) (insert "9"))
-    (defun my-insert-0 () (interactive) (insert "0"))
-
-    (add-hook 'scheme-mode-hook
-              (lambda ()
-                    (local-set-key (kbd "9") 'paredit-open-round)
-                    (local-set-key (kbd "0") 'paredit-close-round)
-                    (local-set-key (kbd "(") 'my-insert-9)
-                    (local-set-key (kbd ")") 'my-insert-0)
-                    ))
-    #+end_src
-
 *** mini-parentheses-editor
-    parentheses /pəˈrɛnθəsiːz/
-    is plural form of parenthesis /pəˈrɛnθəsɪs/
+
     #+begin_src emacs-lisp :tangle ~/.emacs
     (global-set-key (kbd "M-(")         'paredit-wrap-round)
     ;; (global-set-key (kbd "M-{")         'paredit-wrap-round)
@@ -680,52 +530,6 @@
     ;; (global-set-key (kbd "<backspace>") 'paredit-backward-delete)
     ;; (global-set-key (kbd "C-k")         'paredit-kill)
     #+end_src
-
-*** >< paredit-everywhere
-    :tangle ~/.emacs
-    #+begin_src emacs-lisp
-    (require 'mini-paredit)
-
-    (add-hook 'haskell-mode-hook            'mini-paredit-mode)
-    (add-hook 'inferior-haskell-mode-hook   'mini-paredit-mode)
-
-    (add-hook 'c-mode-hook                  'mini-paredit-mode)
-
-    (add-hook 'lua-mode-hook                'mini-paredit-mode)
-
-    (add-hook 'sml-mode-hook                'mini-paredit-mode)
-
-    (add-hook 'coffee-mode-hook             'mini-paredit-mode)
-    #+end_src
-
-*** >< experiment
-    1. 从 simple.el 中可以学到很多
-       file:/usr/local/share/emacs/24.3/lisp/simple.el.gz
-       尤其是当找到一个函数是在这里定义的时候
-
-    下面是三组有用的函数
-    其中 what-cursor-position 是在 simple.el 中定义的
-    #+begin_src emacs-lisp
-    (looking-at "")
-    (what-cursor-position)
-    (insert (what-cursor-position))
-    (setq kkk (what-cursor-position))
-    (insert kkk)
-
-    (following-char)
-    (memq 67 '("C"))
-    (char-to-string 67)
-
-    (point)
-
-    (message "kkk")
-    #+end_src
-
-** eopl
-
-   #+begin_src emacs-lisp :tangle ~/.emacs
-   (add-to-list 'auto-mode-alist '("\\.eopl\\'" . js-mode))
-   #+end_src
 
 ** scheme
 
@@ -753,6 +557,7 @@
     (setq auto-mode-alist (cons `("\\.ss$" . scheme-mode) auto-mode-alist))
     (setq auto-mode-alist (cons `("\\.sls$" . scheme-mode) auto-mode-alist))
     (setq auto-mode-alist (cons `("\\.mu$" . scheme-mode) auto-mode-alist))
+    (setq auto-mode-alist (cons `("\\.lisp" . scheme-mode) auto-mode-alist))
 
     (defun switch-to-buffer-*scheme* ()
       (interactive)
@@ -821,15 +626,8 @@
        ))
     #+end_src
 
-*** scheme-here
-    #+begin_src emacs-lisp :tangle ~/.emacs
-    (require 'scheme-here)
-    (add-hook 'inferior-scheme-mode-hook
-              (lambda ()
-                    (define-key scheme-mode-map (kbd "C-s C-a") 'scheme-here-send-sexp)))
-    #+end_src
-
 *** scheme-add-keywords
+
     #+begin_src emacs-lisp :tangle ~/.emacs
     ;; scheme-mode 中原本的实现不是如此
     (defun scheme-add-keywords (face-name keyword-rules)
@@ -857,6 +655,10 @@
        (1 . define-node)
        (1 . define-rule)
        (1 . define-rule*)
+       (0 . assign)
+       (0 . lend)
+       (0 . connect)
+       (0 . assert)
 
        ;; the little prover
        (2 . dethm)
@@ -876,6 +678,7 @@
        (1 . apply)
        (1 . letrec*)
        (1 . while)
+
        ;; 来自扩展的
        (1 . letcc)
        (1 . pmatch)
@@ -884,27 +687,8 @@
        (0 . add-to-list!)
        (0 . add-to-list-end!)
        (0 . append!)
-       (0 . insert-a-val-to-a-field-of-a-wlist!)
-       (0 . to-a-field-of-a-wlist--let-us-insert-a-val!)
 
-       ;; 来自 ikarus
-       (1 . make-parameter)
-       (1 . parameterize)
-
-       ;; 下面 scheme 中我还没用到以后可能需要高亮的词
-       (1 . when)
-       (1 . unless)
-       (2 . let1)
-       (1 . error)
-
-       ;; 下面是我的解释器中需要高亮的词
-       (1 . λ)
-       (0 . begin*)
-       (1 . def)
-       (1 . doc)
-       (2 . rewrite-doc)
-
-       ;;
+       ;; minikanren
        (2 . ==)
        (1 . fresh)
        (0 . conde)
@@ -917,164 +701,35 @@
        (0 . trunk)
        (1 . case-inf)
 
-       ;; 下面是 mk 的元代码中需要高亮的词
-       ;; [(lambdag@ (p) e) (lambda (p) e)]
-       ;; (1 . lambdag@)
-       ;; [(lambdaf@ () e) (lambda () e)]
-       ;; (1 . lambdaf@)
-
-       (1 . λᴳ)
-       (1 . λ~)
-
-       ;;
-       (0 . set-pointer!)
-       (1 . define-pointer)
-       ;; 下面是 vvv-mimic-ccc.scm 中需要高亮的词
-       (0 . vons)
-       (0 . vnr)
-       (0 . v0r)
-       (0 . v1r)
-       (0 . v2r)
-       (0 . v3r)
-       (0 . v4r)
-       (0 . v5r)
-       (0 . v6r)
-       (0 . v7r)
-       (0 . v8r)
-       (0 . v9r)
-       (0 . set-vnr!)
-       (0 . set-v0r!)
-       (0 . set-v1r!)
-       (0 . set-v2r!)
-       (0 . set-v3r!)
-       (0 . set-v4r!)
-       (0 . set-v5r!)
-       (0 . set-v6r!)
-       (0 . set-v7r!)
-       (0 . set-v8r!)
-       (0 . set-v9r!)
-
-       (0 . vonz)
-       (0 . vnz)
-       (0 . v0z)
-       (0 . v1z)
-       (0 . v2z)
-       (0 . v3z)
-       (0 . v4z)
-       (0 . v5z)
-       (0 . v6z)
-       (0 . v7z)
-       (0 . v8z)
-       (0 . v9z)
-       (0 . set-vnz!)
-       (0 . set-v0z!)
-       (0 . set-v1z!)
-       (0 . set-v2z!)
-       (0 . set-v3z!)
-       (0 . set-v4z!)
-       (0 . set-v5z!)
-       (0 . set-v6z!)
-       (0 . set-v7z!)
-       (0 . set-v8z!)
-       (0 . set-v9z!)
-
-       (0 . conz)
-       (0 . caz)
-       (0 . cdz)
-       (0 . set-caz!)
-       (0 . set-cdz!)
-
-       ;; 其它可能临时用到的高亮
-       (0 . *λ)
-       (0 . *l)
-
        (1 . define-primitive)
-
-       ;; racket
-       ;; (1 . require)
-       ;; (1 . provide)
-       (1 . module)
-       (1 . module+)
-       (1 . module*)
 
        (1 . class)
        (2 . class*)
        (1 . interface)
-       (2 . mixin)
-       (1 . define/public)
-       (1 . define/override)
        (1 . new)
        (1 . send)
        (0 . :)
        (1 . ::)
        (1 . super)
-       (1 . test-case)
-       (0 . check-expect)
-       (2 . check-error)
 
        (1 . match)
        (1 . match*)
-       (0 . match-lambda**)
-       (2 . fun)
-       (1 . just-fun)
-       (1 . define/match)
 
        (2 . syntax-case)
        (1 . syntax-parse)
-
-       (1 . orz)
-       (0 . note)
 
        (1 . type)
        (3 . data)
        (3 . codata)
        (1 . import)
-       (2 . fn)
-       (2 . cofn)
        (0 . example)
        (0 . effect)
-       (2 . oer)
-
-       (1 . create)
-       (1 . apply-creator-list)
-       (1 . process)
-       (1 . apply-processor-list)
-       (1 . settle)
-       (1 . apply-settler-list)
-
-       (1 . with-handlers)
-       (1 . raise)
-
-       (0 . try)
-       (1 . back-to-last-try)
-
-       ;; cicada
-       (1 . create-primitive-function)
 
        (1 . equal-t)
 
        (2 . define-function)
        (2 . define-variable)
        (2 . define-primitive-function)
-
-       (0 . here)
-       (0 . !td)
-       (0 . @t)
-       (0 . @d)
-
-       (1 . vector-map)
-
-       (1 . match-let)
-       (1 . match-let*)
-
-       (2 . deftype)
-       (0 . app)
-       (1 . with-syntax)
-
-       (0 . ret)
-       (0 . return)
-       (1 . do/monad)
-       (1 . define-monad)
 
        (0 . ~)
        ;; (0 . +)
@@ -1103,7 +758,6 @@
        (1 . define-data)
        (3 . datatype)
        (3 . define-datatype)
-       (1 . define-jojo)
        (1 . define-function)
 
        (1 . map!)
@@ -1115,43 +769,10 @@
        (0 . tail-call)
        (0 . string)
 
-       (2 . defun)
        (2 . declare)
-       (1 . defvar)
        (0 . run)
-       (0 . clib)
-
-       (0 . ifte)
-       (0 . if3)
-
-       (1 . debug0)
-
-       (1 . with)
-
-       (0 . part)
-
-       (0 . extend-from)
-
-       (0 . lhs)
-       (0 . rhs)
-
-       (1 . in)
-       (0 . map)
-
-       (0 . use-modules)
-
-       (1 . connect-db)
 
        (2 . define-class)
-
-       (1 . +fun)
-       (1 . +theorem)
-
-       (1 . +data)
-       (1 . +union)
-       (1 . +fun)
-
-       (1 . fixpoint)
 
        ;; pie
        (1 . which-Nat)
@@ -1184,15 +805,8 @@
        (1 . replace)
        (1 . implicit)
 
-       (0 . comments)
        (0 . assert-equal)
        (0 . assert-not-equal)
-
-       (1 . Self)
-       (1 . Iota)
-       (1 . check)
-       (1 . Check)
-       (0 . object)
 
        (1 . induction)
        (1 . recursion)
@@ -1217,201 +831,32 @@
    #+end_src
 
 ** racket
+
    #+begin_src emacs-lisp :tangle ~/.emacs
    (add-to-list 'load-path "~/.emacs.d/racket-mode/")
-
    (require 'racket-mode)
-
-   ;; (setq auto-mode-alist (cons `("\\.rkt$" . scheme-mode) auto-mode-alist))
    (setq auto-mode-alist (cons `("\\.rkt$" . racket-mode) auto-mode-alist))
-
-   ;; (defun switch-to-buffer-*racket* ()
-   ;;   (interactive)
-   ;;   (let ()
-   ;;     (switch-to-buffer racket--repl-buffer-name t)
-   ;;     (with-current-buffer racket--repl-buffer-name
-   ;;       (goto-char (point-max))))
-   ;;   (local-set-key (kbd "C-s C-d") 'previous-buffer))
-   ;; (global-set-key (kbd "C-s C-d") 'switch-to-buffer-*racket*)
    #+end_src
 
 ** lisp
+
    #+begin_src emacs-lisp :tangle ~/.emacs
-   ;; (setq inferior-lisp-program "lisp")
    (setq inferior-lisp-program "sbcl")
-   ;; (setq inferior-lisp-program "ecl")
-   ;; (setq inferior-lisp-program "ccl")
-
-   ;; (defun lisp-easy-to-eval ()
-   ;;  (interactive)
-   ;;  (if (>= (+ 1 (point))
-   ;;          (point-max))
-   ;;      (message "C-<tab> : last sexp is evaled")
-   ;;    (let ()
-   ;;      (forward-sexp)
-   ;;      (slime-eval-last-expression))))
-
-   (add-hook
-    'lisp-mode-hook
-    (lambda ()
-      (local-set-key (kbd "M-i") 'query-replace)
-      ;; (local-set-key (kbd "C-<tab>") 'lisp-easy-to-eval)
-      ))
-   #+end_src
-
-** lisp-add-keywords
-   #+begin_src emacs-lisp :tangle ~/.emacs
-   (defun lisp-add-keywords (face-name keyword-rules)
-     (let* ((keyword-list
-             (mapcar #'(lambda (x)
-                         (symbol-name (cdr x)))
-                     keyword-rules))
-            (keyword-regexp
-             (concat "(\\("
-                     (regexp-opt keyword-list)
-                     "\\)[ \n]")))
-       (font-lock-add-keywords
-        'lisp-mode
-        `((,keyword-regexp 1 ',face-name))))
-     (mapc #'(lambda (x)
-               (put (cdr x)
-                    'lisp-indent-function
-                    (car x)))
-           keyword-rules))
-
-   ;; note that
-   ;; a macro will be turned into keyword by slime
-   ;; slime will override the following definition
-   ;; but slime does not help some of the colors
-   (lisp-add-keywords
-    'font-lock-keyword-face
-    '(
-      (0 . quote)
-      (0 . function)
-      (0 . values)
-
-      (1 . defin)
-      (1 . with)
-
-      (1 . apply)
-      (1 . funcall)
-
-      (2 . deftest)
-      (3 . ensure)
-
-      (1 . cat)
-      (1 . orz)
-
-      (1 . add1!)
-      (1 . sub1!)
-      (2 . set!)
-      (2 . set-car!)
-      (2 . set-cdr!)
-      (2 . set-end-car!)
-      (2 . set-end-cdr!)
-
-      (1 . multiple-value-let)
-      ;; (1 . let-fun)
-      (1 . help)
-
-      (0 . put)
-      (1 . match)
-      ))
-   #+end_src
-
-** slime
-
-   #+begin_src emacs-lisp :tangle ~/.emacs
-   ;; (add-to-list 'load-path "~/.emacs.d/slime/")
-
-   ;; (setq slime-contribs '(slime-fancy))
-
-   ;; (require 'slime)
-
-   ;; (setf common-lisp-hyperspec-root "/home/xyh/sd0/lang/lisp/docs/hyperspec/"
-   ;;     slime-complete-symbol-function 'slime-fuzzy-complete-symbol
-   ;;      lisp-indent-function 'common-lisp-indent-function)
-
-   ;; (add-hook 'slime-repl-mode-hook
-   ;;          (lambda ()
-   ;;            (local-set-key (kbd "C-M-.") 'next-buffer)
-   ;;            (local-set-key (kbd "C-M-,") 'previous-buffer)
-   ;;            (local-set-key (kbd "C-c C-k") 'slime-restart-inferior-lisp)))
-   #+end_src
-
-** elisp
-   #+begin_src emacs-lisp :tangle ~/.emacs
-   (defun my-elisp-mode-keywords()
-     (font-lock-add-keywords
-      nil
-      '(("\\<\\(setq\\)" . 'font-lock-keyword-face))))
-   (add-hook 'emacs-lisp-mode-hook 'my-elisp-mode-keywords)
-   #+end_src
-
-** emacs-lisp-add-keywords
-   #+begin_src emacs-lisp :tangle ~/.emacs
-   (defun emacs-lisp-add-keywords (face-name keyword-rules)
-     (let* ((keyword-list
-             (mapcar #'(lambda (x)
-                         (symbol-name (cdr x)))
-                     keyword-rules))
-            (keyword-regexp
-             (concat "(\\("
-                     (regexp-opt keyword-list)
-                     "\\)[ \n]")))
-       (font-lock-add-keywords
-        'emacs-lisp-mode
-        `((,keyword-regexp 1 ',face-name))))
-     (mapc #'(lambda (x)
-               (put (cdr x)
-                    'emacs-lisp-indent-function
-                    (car x)))
-           keyword-rules))
-
-   (emacs-lisp-add-keywords
-    'font-lock-keyword-face
-    '(
-      (1 . add-hook)
-      ))
    #+end_src
 
 ** general seting
+
    Non-nil means print recursive structures using #N= and #N# syntax.
+
    #+begin_src emacs-lisp :tangle ~/.emacs
    (setq print-circle t)
    #+end_src
 
-** ielm = run-elisp
-   * 不知道哪个傻逼起的 ielm 这个名字
-   #+begin_src emacs-lisp :tangle ~/.emacs
-   (defun run-elisp ()
-     (interactive)
-     (ielm))
-
-   (defun switch-to-buffer-*elisp-repl* ()
-     (interactive)
-     (if (member-string? "*elisp-repl*" (mapcar 'buffer-name (buffer-list)))
-             (switch-to-buffer "*elisp-repl*")
-           (progn
-             (ielm)
-             (rename-buffer "*elisp-repl*")))
-     (local-set-key (kbd "C-s e") 'previous-buffer))
-   (global-set-key (kbd "C-s e") 'switch-to-buffer-*elisp-repl*)
-   #+end_src
-
 ** shen
+
    #+begin_src emacs-lisp :tangle ~/.emacs
    (add-to-list 'load-path "~/.emacs.d/shen-mode/")
    (require 'shen-mode)
-   (require 'inf-shen) ; <- for interaction with an external shen process
-
-   ;; (defun switch-to-buffer-*inferior-shen* ()
-   ;;   (interactive)
-   ;;   (if (member-string? "*inferior-shen*" (mapcar 'buffer-name (buffer-list)))
-   ;;           (switch-to-buffer "*inferior-shen*")
-   ;;         (switch-to-shen t))
-   ;;   (local-set-key (kbd "C-s C-w") 'previous-buffer))
-   ;; (global-set-key (kbd "C-s C-w") 'switch-to-buffer-*inferior-shen*)
    #+end_src
 
 ** clojure
@@ -1445,78 +890,18 @@
 ** cicada
 
    #+begin_src emacs-lisp :tangle ~/.emacs
-     (add-to-list 'load-path "~/.emacs.d/cicada-mode/")
-     (require 'cicada-mode)
+   (add-to-list 'load-path "~/.emacs.d/cicada-mode/")
+   (require 'cicada-mode)
 
-     (add-to-list 'interpreter-mode-alist '("cicada" . cicada-mode))
-
-     (add-hook
-      'cicada-mode-hook
-      (lambda ()
-        (turn-off-indent)))
-
-     (add-to-list 'auto-mode-alist '("\\.cs\\'" . cicada-mode))
-     (add-to-list 'auto-mode-alist '("\\.sc\\'" . cicada-mode))
-     (add-to-list 'auto-mode-alist '("\\.cic\\'" . cicada-mode))
-     (add-to-list 'auto-mode-alist '("\\.i\\'" . cicada-mode))
-     (add-to-list 'auto-mode-alist '("\\.p\\'" . cicada-mode))
-
-     (add-to-list 'auto-mode-alist '("\\.ch\\'" . cicada-mode))
-     (add-to-list 'auto-mode-alist '("\\.chu\\'" . cicada-mode))
-     (add-to-list 'auto-mode-alist '("\\.jo\\'" . cicada-mode))
-     (add-to-list 'auto-mode-alist '("\\.grammar\\'" . cicada-mode))
-     (add-to-list 'auto-mode-alist '("\\.table\\'" . cicada-mode))
-   #+end_src
-
-** jojo
-
-   #+begin_src emacs-lisp :tangle ~/.emacs
-   (add-to-list 'load-path "~/.emacs.d/jojo-mode/")
-   (require 'jojo-mode)
-
-   (add-to-list 'interpreter-mode-alist '("jojo" . jojo-mode))
-
-   (add-hook 'jojo-mode-hook #'enable-paredit-mode)
-
-   ;; (setq auto-mode-alist (cons `("\\.jo" . jojo-mode) auto-mode-alist))
+   (add-to-list 'interpreter-mode-alist '("cicada" . cicada-mode))
 
    (add-hook
-    'jojo-mode-hook
+    'cicada-mode-hook
     (lambda ()
-      ;; (paren-face-mode)
-      ;; (turn-off-indent)
-      (local-set-key (kbd "C-x C-e") 'scheme-send-last-sexp-split-window)
-      (local-set-key (kbd "C-c C-e") 'scheme-send-definition-split-window)
-      (local-set-key (kbd "C-<tab>") 'scheme-easy-to-eval)
-      (local-set-key (kbd "{") (lambda ()
-                                 (interactive)
-                                 (insert "{}") (backward-char 1)))
-      (local-set-key (kbd "}") 'out->)))
-   #+end_src
+      (turn-off-indent)))
 
-** elm
-
-   #+begin_src emacs-lisp :tangle ~/.emacs
-   (add-to-list 'load-path "~/.emacs.d/elm/")
-   (add-to-list 'load-path "~/.emacs.d/elm/elm-mode/")
-   (add-to-list 'load-path "~/.emacs.d/elm/f.el/")
-   (add-to-list 'load-path "~/.emacs.d/elm/s.el/")
-   (require 'elm-mode)
-   (add-hook
-    'elm-mode-hook
-    (lambda ()
-      (turn-off-indent)
-      (local-set-key (kbd "RET")
-                     (lambda ()
-                       (interactive)
-                       (insert "\n")))))
-   #+end_src
-
-** s.el
-
-   #+begin_src emacs-lisp :tangle ~/.emacs
-   (add-to-list 'load-path "~/.emacs.d/s.el/")
-   (require 's)
+   (add-to-list 'auto-mode-alist '("\\.cic\\'" . cicada-mode))
+   (add-to-list 'auto-mode-alist '("\\.ch\\'" . cicada-mode))
    #+end_src
 
 ** web
@@ -1614,22 +999,6 @@
     ;; (add-hook 'js-mode-hook
     ;;           (lambda () (flycheck-mode t)))
     ;; ;; (global-flycheck-mode)
-    #+end_src
-
-*** coffee-mode
-
-    #+begin_src emacs-lisp :tangle ~/.emacs
-    (add-to-list 'load-path "~/.emacs.d/coffee-mode/")
-    (require 'coffee-mode)
-    (add-to-list 'auto-mode-alist '("\\.coffee\\'" . coffee-mode))
-    (custom-set-variables '(coffee-tab-width 2))
-
-    (add-hook
-     'coffee-mode-hook
-     (lambda ()
-       (turn-off-indent)
-       (local-set-key (kbd "<return>") 'newline)
-       ))
     #+end_src
 
 *** web-mode
@@ -1740,96 +1109,15 @@
        ))
     #+end_src
 
-** xml
-
-   #+begin_src emacs-lisp :tangle ~/.emacs
-   (setq nxml-child-indent 4)
-   (setq nxml-attribute-indent 2)
-
-   ;; (add-to-list 'auto-mode-alist '("\\.xml\\'" . nxml-mode))
-
-   (setq rng-nxml-auto-validate-flag nil)
-
-   (setq nxml-tab-flag t)
-
-   (setq nxml-backtab-state 1)
-
-   (add-hook
-    'nxml-mode-hook
-    (lambda ()
-      (local-set-key
-       (kbd "<backtab>")
-       (lambda ()
-         (interactive)
-         (cond
-           ((eq nxml-backtab-state 1)
-            (message "nxml-show-all")
-            (nxml-show-all)
-            (setq nxml-backtab-state 2))
-           ((eq nxml-backtab-state 2)
-            (message "nxml-hide-all-text-content")
-            (nxml-hide-all-text-content)
-            (setq nxml-backtab-state 1)))))
-      (local-set-key
-       (kbd "<tab>")
-       (lambda ()
-         (interactive)
-         (message "nxml-show")
-         (nxml-show)))
-      (local-set-key (kbd "RET") 'electric-newline-and-maybe-indent)))
-
-   (add-to-list 'load-path "~/.emacs.d/rnc-mode/")
-   (require 'rnc-mode)
-
-   (add-to-list 'auto-mode-alist '("\\.rnc\\'" . rnc-mode))
-   #+end_src
-
-** myxml-mode
-
-   #+begin_src emacs-lisp :tangle ~/.emacs
-   (add-to-list 'load-path "~/.emacs.d/myxml-mode/")
-   (require 'myxml-mode)
-
-   (define-key myxml-mode-map (kbd "C-c C-c") 'myxml-mode-tag-match)
-   (setq myxml-mode-enable-auto-indentation nil)
-
-   (add-to-list 'auto-mode-alist '("\\.xml\\'" . myxml-mode))
-
-   (add-hook
-    'myxml-mode-hook
-    (lambda ()
-      (electric-indent-local-mode -1)
-      (turn-off-indent)
-      (setq myxml-mode-markup-indent-offset 2)
-      (setq myxml-mode-css-indent-offset 2)
-      (setq myxml-mode-code-indent-offset 2)
-      (setq myxml-mode-style-padding 0)
-      (setq myxml-mode-script-padding 0)))
-   #+end_src
-
 ** txt
 
    #+begin_src emacs-lisp :tangle ~/.emacs
    (add-to-list 'auto-mode-alist '("\\.txt\\'" . text-mode))
    #+end_src
 
-** return-stack
-   #+begin_src emacs-lisp :tangle ~/.emacs
-   (add-to-list 'load-path "~/.emacs.d/return-stack-mode/")
-   (require 'return-stack-mode)
-   #+end_src
-
 ** python
 
    #+begin_src emacs-lisp :tangle ~/.emacs
-   (add-hook
-    'python-mode-hook
-    (lambda ()
-      (setq forward-sexp-function nil)))
-
-   (setq python-shell-interpreter "ipython"
-         python-shell-interpreter-args "--simple-prompt -i")
-
    (setq python-indent-guess-indent-offset nil)
    (setq python-indent-offset 4)
    #+end_src
@@ -1864,85 +1152,14 @@
    (require 'forth-block-mode)
    (require 'forth-interaction-mode)
 
-   ;; (defun switch-to-buffer-*forth* ()
-   ;;   (interactive)
-   ;;   (if (member-string? "*forth*" (mapcar 'buffer-name (buffer-list)))
-   ;;       (switch-to-buffer "*forth*")
-   ;;       (let ((forth-name (read-from-minibuffer "run which forth? : ")))
-   ;;         (run-forth forth-name)))
-   ;;   (local-set-key (kbd "C-s C-f") 'previous-buffer))
-   ;; (global-set-key (kbd "C-s C-f") 'switch-to-buffer-*forth*)
-
    (add-to-list 'auto-mode-alist '("\\.frt$" . forth-mode))
    (add-to-list 'auto-mode-alist '("\\.fth$" . forth-mode))
    (add-to-list 'auto-mode-alist '("\\.feline" . forth-mode))
    #+end_src
 
-** tcl
-   #+begin_src emacs-lisp :tangle ~/.emacs
-   (setq tcl-application "tclsh")
-
-
-   (defun tcl-eval-defun-split-window ()
-     (interactive)
-     (split-window-with-named-buffer "*inferior-tcl*")
-     (tcl-eval-defun))
-
-   (defun tcl-send-line ()
-     (interactive)
-     (move-beginning-of-line nil)
-     (cua-set-mark)
-     (move-end-of-line nil)
-     (tcl-eval-region (region-beginning) (region-end))
-     (cua-set-mark))
-
-   (defun tcl-send-line-split-window ()
-     (interactive)
-     (split-window-with-named-buffer "*inferior-tcl*")
-     (tcl-send-line))
-
-   (defun tcl-send-line-and-goto-next-line ()
-     (interactive)
-     (tcl-send-line)
-     (next-line))
-
-   (defun tcl-send-line-and-goto-next-line-split-window ()
-     (interactive)
-     (split-window-with-named-buffer "*inferior-tcl*")
-     (tcl-send-line)
-     (next-line))
-
-   (add-hook
-    'tcl-mode-hook
-    (function (lambda ()
-      ;; note that how a function definition in tcl is viewed as a line
-      (local-set-key (kbd "C-<tab>") 'tcl-send-line-and-goto-next-line-split-window)
-      (local-set-key (kbd "C-x C-e") 'tcl-send-line-split-window)
-      (local-set-key (kbd "C-c C-e") 'tcl-eval-defun-split-window)
-      )))
-   #+end_src
-
 ** sml
    #+begin_src emacs-lisp :tangle ~/.emacs
    (add-to-list 'load-path "~/.emacs.d/sml/")
-   ;; (defun switch-to-buffer-about-sml ()
-   ;;   (interactive)
-   ;;   (cond ((member-string? "*hamlet*" (mapcar 'buffer-name (buffer-list)))
-   ;;          (switch-to-buffer "*hamlet*"))
-   ;;         ((member-string? "*mosml*" (mapcar 'buffer-name (buffer-list)))
-   ;;          (switch-to-buffer "*mosml*"))
-   ;;         ((member-string? "*poly*" (mapcar 'buffer-name (buffer-list)))
-   ;;          (switch-to-buffer "*poly*"))
-   ;;         ((member-string? "*sml*" (mapcar 'buffer-name (buffer-list)))
-   ;;          (switch-to-buffer "*sml*"))
-   ;;         (else
-   ;;          ;; (run-sml "sml" "")
-   ;;          (run-sml "hamlet" "")
-   ;;          ))
-   ;;   ;; 然后总能通过向左一个 buffer 回到之前的 buffer
-   ;;   ;; 这是笨的解决方法，某些情况下一定会出问题
-   ;;   (local-set-key (kbd "C-s C-q") 'previous-buffer))
-   ;; (global-set-key (kbd "C-s C-q") 'switch-to-buffer-about-sml)
 
    (autoload 'sml-mode "sml-mode" "Major mode for editing SML." t)
    (autoload 'run-sml "sml-proc" "Run an inferior SML process." t)
@@ -1971,94 +1188,7 @@
    (add-to-list 'interpreter-mode-alist '("ocamlrun" . caml-mode))
    (add-to-list 'interpreter-mode-alist '("ocaml" . caml-mode))
 
-
-   ;; (if window-system (require 'caml-hilit))
    (if window-system (require 'caml-font))
-
-   (defun switch-to-buffer-*inferior-caml* ()
-      (interactive)
-     (if (member-string? "*inferior-caml*" (mapcar 'buffer-name (buffer-list)))
-          (switch-to-buffer "*inferior-caml*")
-        (run-caml "ocaml"))
-      (local-set-key (kbd "C-s C-q") 'previous-buffer))
-    (global-set-key (kbd "C-s C-q") 'switch-to-buffer-*inferior-caml*)
-
-   (defun caml-eval-phrase-split-window ()
-     (interactive)
-     (caml-eval-phrase 1)
-     (split-window-with-named-buffer "*inferior-caml*"))
-
-   (add-hook
-    'caml-mode-hook
-    (lambda ()
-      (local-set-key (kbd "C-x C-e") 'caml-eval-phrase-split-window)
-      (local-set-key (kbd "C-<tab>") 'caml-eval-phrase-split-window)
-      (local-set-key (kbd "<return>") 'electric-newline-and-maybe-indent)
-      (turn-off-indent)
-      (setq comment-style 'multi-line)))
-   #+end_src
-
-** asm
-   #+begin_src emacs-lisp :tangle ~/.emacs
-   (add-to-list 'load-path "~/.emacs.d/asm-mode/")
-
-   ;; may set this variable in `asm-mode-set-comment-hook',
-   ;; which is called near the beginning of mode initialization.
-   (add-hook 'asm-mode-set-comment-hook
-             (lambda ()
-                   (setq asm-comment-char ?\#)
-                   ))
-
-   (defun asm-indent-line-by-line ()
-     (interactive)
-     (asm-indent-line)
-     (next-line))
-
-   (add-hook 'asm-mode-hook
-             (lambda ()
-                   (local-set-key (kbd "C-<tab>") 'asm-indent-line-by-line)
-                   ))
-   #+end_src
-
-** fasm
-
-   #+begin_src emacs-lisp :tangle ~/.emacs
-   (add-to-list 'load-path "~/.emacs.d/fasm-mode/")
-   (require 'fasm-mode)
-   (add-to-list 'auto-mode-alist '("\\.fasm$" . fasm-mode))
-   (add-to-list 'auto-mode-alist '("\\.inc$"  . fasm-mode))
-
-   (defun fasm-indent-line-and-next-line ()
-     (interactive)
-     (fasm-indent-line)
-     (next-line))
-
-   (add-hook 'fasm-mode-hook
-             (lambda ()
-                   ;; (setq tab-width 13)
-                   ;; (setq indent-tabs-mode t)
-                   ;; (local-set-key (kbd "<tab>") 'fasm-indent-line)
-                   ;; (local-set-key (kbd "C-<tab>") 'fasm-indent-line-and-next-line)
-                   ;; (turn-off-indent)
-                   ))
-   #+end_src
-
-** nasm
-   #+begin_src emacs-lisp :tangle ~/.emacs
-   (add-to-list 'load-path "~/.emacs.d/nasm/")
-   (autoload 'nasm-mode "~/.emacs.d/nasm/nasm-mode.el" "" t)
-
-   (add-to-list 'auto-mode-alist '("\\.asm\\'" . nasm-mode))
-   (add-to-list 'auto-mode-alist '("\\.nasm\\'" . nasm-mode))
-
-   ;; To set your own indentation level to LEVEL:
-   ;; (add-hook 'nasm-mode-hook
-   ;;           (lambda () (setq-default nasm-basic-offset LEVEL)))
-   (add-hook 'nasm-mode-hook
-             (lambda ()
-                   (setq-default nasm-basic-offset 13)
-                   (turn-off-indent)
-                   ))
    #+end_src
 
 ** clean
@@ -2083,72 +1213,6 @@
                ;; (local-set-key (kbd "<return>") 'newline)
                (turn-off-indent)
                ))
-   #+end_src
-
-** zig
-
-   #+begin_src emacs-lisp :tangle ~/.emacs
-   (add-to-list 'load-path "~/.emacs.d/emacs-reformatter/")
-   (require 'reformatter)
-
-   (unless (version< emacs-version "24")
-     (add-to-list 'load-path "~/.emacs.d/zig-mode/")
-     (autoload 'zig-mode "zig-mode" nil t)
-     (add-to-list 'auto-mode-alist '("\\.zig\\'" . zig-mode)))
-   #+end_src
-
-** haskell
-
-   #+begin_src emacs-lisp :tangle ~/.emacs
-   (add-to-list 'load-path "~/.emacs.d/haskell-mode/")
-   (require 'haskell-mode)
-   (setq haskell-program-name "ghci")
-
-   ;; (add-hook 'haskell-mode-hook 'turn-on-haskell-simple-indent)
-   ;; (add-hook 'haskell-mode-hook 'turn-on-haskell-indent)
-   ;; (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
-
-   (add-hook 'haskell-mode-hook
-             (lambda ()
-               ;; (local-set-key (kbd "M-n") 'forward-paragraph)
-               ;; (local-set-key (kbd "M-p") 'backward-paragraph)
-               ;; (local-set-key (kbd "<return>") 'newline)
-               (turn-off-indent)
-               ))
-
-   (defun haskell-split-window ()
-     (interactive)
-     (cond
-      ((= 1 (count-windows))
-           (split-window-vertically (floor (* 0.68 (window-height))))
-           (other-window 1)
-           (switch-to-buffer "*haskell*")
-           (other-window 1))
-      ((not (cl-find "*haskell*"
-                      (mapcar (lambda (w) (buffer-name (window-buffer w)))
-                              (window-list))
-                      :test 'equal))
-           (other-window 1)
-           (switch-to-buffer "*haskell*")
-           (other-window -1))))
-
-
-   (defun switch-to-buffer-*haskell* ()
-     (interactive)
-     (progn
-           (setq the-buffer-before-switch-to-buffer-*haskell*
-             (current-buffer))
-           (if (cl-find "*haskell*"
-                    (mapcar (lambda (w) (buffer-name w))
-                            (buffer-list))
-                    :test 'equal)
-           (switch-to-buffer "*haskell*")
-             (progn (run-haskell) (delete-other-windows)))
-           (local-set-key (kbd "C-s C-h") (lambda ()
-                                            (interactive)
-                                            (switch-to-buffer the-buffer-before-switch-to-buffer-*haskell*)))))
-
-   (global-set-key (kbd "C-s C-h") 'switch-to-buffer-*haskell*)
    #+end_src
 
 ** agda
@@ -2190,103 +1254,6 @@
       ))
    #+end_src
 
-** purescript
-
-   #+begin_src emacs-lisp :tangle ~/.emacs
-   (add-to-list 'load-path "~/.emacs.d/purescript-mode/")
-   (require 'purescript-mode-autoloads)
-   (add-to-list 'Info-default-directory-list "~/.emacs.d/purescript-mode/")
-
-   (add-hook
-    'purescript-mode-hook
-    (lambda ()
-      ;; (local-set-key (kbd "M-n") 'forward-paragraph)
-      ;; (local-set-key (kbd "M-p") 'backward-paragraph)
-      ;; (local-set-key (kbd "<return>") 'newline)
-      (turn-off-indent)
-      ))
-   #+end_src
-
-** erlang
-
-   #+begin_src emacs-lisp :tangle ~/.emacs
-   ;; (add-to-list 'load-path "~/.emacs.d/erlmode/")
-   ;; (require 'erlmode-start)
-   #+end_src
-
-** elixir
-
-*** smartparens
-
-    #+begin_src emacs-lisp :tangle ~/.emacs
-    (add-to-list 'load-path "~/.emacs.d/smartparens/")
-    (require 'smartparens-config)
-    #+end_src
-
-*** company-mode
-
-    #+begin_src emacs-lisp :tangle ~/.emacs
-    (add-to-list 'load-path "~/.emacs.d/company-mode/")
-    (require 'company)
-
-    (defun init-company ()
-      (setq company-idle-delay 0.3)
-      (require 'color)
-      (let ((bg (face-attribute 'default :background)))
-        (custom-set-faces
-         `(company-tooltip ((t (:inherit default :background ,(color-lighten-name bg 2)))))
-         `(company-scrollbar-bg ((t (:background ,(color-lighten-name bg 10)))))
-         `(company-scrollbar-fg ((t (:background ,(color-lighten-name bg 5)))))
-         `(company-tooltip-selection ((t (:inherit font-lock-function-name-face))))
-         `(company-tooltip-common ((t (:inherit font-lock-constant-face)))))))
-    #+end_src
-
-*** elixir-mode & alchemist
-
-    #+begin_src emacs-lisp :tangle ~/.emacs
-    (add-to-list 'load-path "~/.emacs.d/pkg-info.el/")
-    (add-to-list 'load-path "~/.emacs.d/emacs-elixir/")
-    (add-to-list 'load-path "~/.emacs.d/alchemist.el/")
-
-    (require 'elixir-mode)
-
-    (add-to-list
-     'elixir-mode-hook
-     (lambda ()
-       (alchemist-mode)
-       (company-mode)
-       (init-company)
-       (smartparens-mode)
-       (local-set-key (kbd "<return>") 'newline)))
-
-    (require 'alchemist)
-
-    ;; (setq alchemist-goto-erlang-source-dir
-    ;;       "~/sd0/lange/rlang/imp/otp")
-    ;; (setq alchemist-goto-elixir-source-dir
-     ;;     "~/sd0/lang/elixir/imp/elixir")
-    #+end_src
-
-** pony
-
-   #+begin_src emacs-lisp :tangle ~/.emacs
-   (add-to-list 'load-path "~/.emacs.d/ponylang-mode/")
-   (require 'ponylang-mode)
-
-   (add-hook
-    'ponylang-mode-hook
-    (lambda ()
-      (set-variable 'indent-tabs-mode nil)
-      (set-variable 'tab-width 2)))
-   #+end_src
-
-** graphql
-
-   #+begin_src emacs-lisp :tangle ~/.emacs
-   (add-to-list 'load-path "~/.emacs.d/graphql-mode/")
-   (require 'graphql-mode)
-   #+end_src
-
 ** prolog
 
    #+begin_src emacs-lisp :tangle ~/.emacs
@@ -2305,20 +1272,7 @@
    (add-hook
     'prolog-mode-hook
     (lambda ()
-      (local-set-key (kbd "M-i") 'query-replace)
-      (local-set-key (kbd "C-c C-k")
-                     (lambda ()
-                       (interactive)
-                       (run-prolog t)
-                       (other-window -1)))))
-
-   (add-hook
-    'prolog-inferior-mode-hook
-    (lambda ()
-      (local-set-key (kbd "C-c C-k")
-                     (lambda ()
-                       (interactive)
-                       (run-prolog t)))))
+      (local-set-key (kbd "M-i") 'query-replace)))
    #+end_src
 
 ** c
@@ -2338,41 +1292,6 @@
       ;; (setq comment-style 'extra)
       (setq comment-start "//")
       (setq comment-end "")))
-
-   (defun format-c (&optional b e)
-     (interactive "r")
-     (when (not (buffer-file-name))
-       (error "A buffer must be associated with a file in order to use REFORMAT-REGION."))
-     (when (not (executable-find "clang-format"))
-       (error "clang-format not found."))
-     (shell-command-on-region
-      b e
-      "clang-format -style=LLVM"
-      (current-buffer) t)
-     (indent-region b e))
-   #+end_src
-
-** c++
-
-   #+begin_src emacs-lisp :tangle ~/.emacs
-   (add-to-list 'load-path "~/.emacs.d/modern-cpp-font-lock/")
-   (require 'modern-cpp-font-lock)
-   (modern-c++-font-lock-global-mode t)
-   #+end_src
-
-** java
-
-   #+begin_src emacs-lisp :tangle ~/.emacs
-   (defun my-indent-setup ()
-     (c-set-offset 'arglist-intro '+))
-
-   (add-hook 'java-mode-hook 'my-indent-setup)
-   ;; (add-hook
-   ;;  'java-mode-hook
-   ;;  (lambda ()
-   ;;    (interactive)
-
-   ;;    ))
    #+end_src
 
 ** scala
@@ -2380,45 +1299,6 @@
    #+begin_src emacs-lisp :tangle ~/.emacs
    (add-to-list 'load-path "~/.emacs.d/emacs-scala-mode/")
    (require 'scala-mode)
-   #+end_src
-
-** ruby
-
-   #+begin_src emacs-lisp :tangle ~/.emacs
-   (add-to-list 'load-path "~/.emacs.d/inf-ruby/")
-   (require 'inf-ruby)
-   (autoload 'inf-ruby-minor-mode "inf-ruby" "Run an inferior Ruby process" t)
-   (add-hook 'ruby-mode-hook 'inf-ruby-minor-mode)
-
-   (add-to-list 'load-path "~/.emacs.d/enhanced-ruby-mode/")
-   (require 'enh-ruby-mode)
-   (autoload 'enh-ruby-mode "enh-ruby-mode" "Major mode for ruby files" t)
-   (add-to-list 'auto-mode-alist '("\\.rb$" . enh-ruby-mode))
-   (add-to-list 'interpreter-mode-alist '("ruby" . enh-ruby-mode))
-
-   ;; (defun ruby-send-line ()
-   ;;   (interactive)
-   ;;   (move-beginning-of-line nil)
-   ;;   (cua-set-mark)
-   ;;   (move-end-of-line nil)
-   ;;   (ruby-send-region (region-beginning) (region-end))
-   ;;   (cua-set-mark)
-   ;;   (move-end-of-line nil))
-
-   ;; (defun ruby-easy-to-eval ()
-   ;;   (interactive)
-   ;;   (if (>= (+ 1 (point))
-   ;;           (point-max))
-   ;;       (message "C-<tab> : last sexp is evaled")
-   ;;       (let ()
-   ;;         (ruby-send-line)
-   ;;         (next-line)
-   ;;         (move-end-of-line nil))))
-
-   ;; (add-hook
-   ;;  'ruby-mode-hook
-   ;;  (lambda ()
-   ;;    (local-set-key (kbd "C-<tab>") 'ruby-easy-to-eval)))
    #+end_src
 
 ** lua
@@ -2429,14 +1309,6 @@
    (autoload 'lua-mode "lua-mode" "Lua editing mode." t)
    (add-to-list 'auto-mode-alist '("\\.lua$" . lua-mode))
    (add-to-list 'interpreter-mode-alist '("lua" . lua-mode))
-
-   (add-hook 'lua-mode-hook  (lambda ()
-           (define-key lua-mode-map (kbd "C-<tab>") 'lua-send-current-line)
-           (define-key lua-mode-map (kbd "C-x C-e") 'lua-send-defun)
-           (define-key lua-mode-map (kbd "C-x C-r") 'lua-send-region)
-           (define-key lua-mode-map (kbd "C-c C-e") 'lua-send-defun)
-           (define-key lua-mode-map (kbd "C-c C-r") 'lua-send-region)
-           ))
    #+end_src
 
 ** yaml
@@ -2445,179 +1317,18 @@
    (add-to-list 'load-path "~/.emacs.d/yaml-mode/")
    (require 'yaml-mode)
    (add-to-list 'auto-mode-alist '("\\.yml$" . yaml-mode))
-
-   (add-hook
-    'yaml-mode-hook
-    (lambda ()
-      (origami-mode)))
    #+end_src
-
-** makefile
-   #+begin_src emacs-lisp :tangle ~/.emacs
-   (defun insert-tab ()
-     (interactive)
-     (insert 9))
-
-
-   (add-hook 'makefile-mode-hook
-             '(lambda ()
-                    (local-set-key (kbd "<tab>") 'insert-tab)))
-   #+end_src
-
-** cmake
-   #+begin_src emacs-lisp :tangle ~/.emacs
-   (add-to-list 'load-path "~/.emacs.d/cmake-mode/")
-   (require 'cmake-mode)
-   #+end_src
-
-** protobuf
-
-   #+begin_src emacs-lisp :tangle ~/.emacs
-   (add-to-list 'load-path "~/.emacs.d/protobuf/")
-   (require 'protobuf-mode)
-
-   (add-to-list 'auto-mode-alist '("\\.proto$" . protobuf-mode))
-   #+end_src
-
-** BNF
-   #+begin_src emacs-lisp :tangle ~/.emacs
-   (define-generic-mode 'bnf-mode
-    () ;; comment char: inapplicable because # must be at start of line
-    nil ;; keywords
-    '(
-      ("^#.*" . 'font-lock-comment-face) ;; comments at start of line
-      ;; ("^<[^ \t\n]*?>" . 'font-lock-function-name-face) ;; LHS nonterminals
-      ;; ("<[^ \t\n]*?>" . 'font-lock-builtin-face) ;; other nonterminals
-      ;; 下面的版本中<>里可以有空格
-      ("^<.*?>" . 'font-lock-function-name-face) ;; LHS nonterminals
-      ("<.*?>" . 'font-lock-builtin-face) ;; other nonterminals
-      ("::=" . 'font-lock-const-face) ;; "goes-to" symbol
-      ("\|" . 'font-lock-warning-face) ;; "OR" symbol
-      )
-    '("\\.bnf\\'") ;; filename suffixes
-    nil ;; extra function hooks
-    "Major mode for BNF highlighting.")
-   #+end_src
-
-** fish
-   #+begin_src emacs-lisp :tangle ~/.emacs
-   (add-to-list 'load-path "~/.emacs.d/fish-mode/")
-   (require 'fish-mode)
-   #+end_src
-
-** jq
-
-   #+begin_src emacs-lisp :tangle ~/.emacs
-   (add-to-list 'load-path "~/.emacs.d/jq-mode/")
-   (autoload 'jq-mode "jq-mode.el"
-       "Major mode for editing jq files" t)
-   (add-to-list 'auto-mode-alist '("\\.jq$" . jq-mode))
-   #+end_src
-
-* yasnippet
-
-  #+begin_src emacs-lisp :tangle ~/.emacs
-  ;; (add-to-list 'load-path "~/.emacs.d/yasnippet")
-  ;; (require 'yasnippet)
-  ;; (yas-global-mode 1)
-  ;; (setq yas-indent-line nil)
-  ;; (setq yas-also-indent-empty-lines nil)
-  ;; (setq yas-also-auto-indent-first-line nil)
-  #+end_src
 
 * comment
 
   #+begin_src emacs-lisp :tangle ~/.emacs
-  (global-set-key (kbd "M-.") 'comment-dwim)
-  ;; (global-set-key (kbd "M-,") 'org-babel-previous-src-block)
+  (global-set-key (kbd "M-;") 'comment-dwim)
   #+end_src
-
-* folding
-
-** origami.el
-
-   #+begin_src emacs-lisp :tangle ~/.emacs
-   (add-to-list 'load-path "~/.emacs.d/origami.el/")
-   (require 'origami)
-
-   (add-hook
-    'origami-mode-hook
-    (lambda ()
-      (local-set-key (kbd "C-<tab>") 'origami-toggle-node)
-      (local-set-key (kbd "<backtab>") 'origami-toggle-all-nodes)))
-   #+end_src
-
-** hideshow
-
-   #+begin_src emacs-lisp :tangle ~/.emacs
-   ;; (add-hook
-   ;;  'prog-mode-hook
-   ;;  (lambda ()
-   ;;    (hs-minor-mode)))
-
-   ;; ;; hs-show-all
-   ;; ;; hs-hide-all
-
-   ;; ;; hs-show-block
-   ;; ;; hs-hide-block
-
-   ;; (global-set-key (kbd "C-<tab>") 'hs-toggle-hiding)
-   #+end_src
 
 * app
 
-** w3m
-
-   #+begin_src emacs-lisp :tangle ~/.emacs
-   (add-to-list 'load-path "~/.emacs.d/emacs-w3m/")
-   (require 'w3m-load)
-
-   (setq w3m-home-page "file:///home/xyh/.w3m/bookmark.html")
-
-   ;; (setq browse-url-browser-function 'w3m-browse-url)
-   ;; (autoload 'w3m-browse-url "w3m" "Ask a WWW browser to show a URL." t)
-
-   ;; optional keyboard short-cut
-
-   (add-hook
-    'w3m-mode-hook
-    (lambda ()
-
-
-      (local-set-key (kbd "h") 'backward-char)
-      (local-set-key (kbd "l") 'forward-char)
-      (local-set-key (kbd "j") 'next-line)
-      (local-set-key (kbd "k") 'previous-line)
-
-      (local-set-key (kbd "<left>") 'w3m-view-previous-page)
-      (local-set-key (kbd "<right>") 'w3m-view-next-page)
-
-      (local-set-key (kbd "<down>") 'forward-paragraph)
-      (local-set-key (kbd "<up>") 'backward-paragraph)
-
-      (local-set-key (kbd "M-n") 'forward-paragraph)
-      (local-set-key (kbd "M-p") 'backward-paragraph)
-
-      (local-set-key (kbd "RET") 'w3m-view-this-url)
-      (local-set-key (kbd "M-RET") 'w3m-view-this-url-new-session)
-
-      ;; bookmark
-      (local-set-key (kbd "b") 'w3m-bookmark-view-new-session)
-      (local-set-key (kbd "C-M-b") 'w3m-bookmark-edit)
-      ;; tab
-      (local-set-key (kbd "<C-tab>") 'w3m-next-buffer)
-      (local-set-key (kbd "<C-iso-lefttab>") 'w3m-previous-buffer)
-      ;; 獲取當前光標下的 url
-      ;; 光標下沒有就獲取當前的 url
-      ;; 點擊回車編輯 html
-      (local-set-key (kbd "e") 'w3m-edit-url)
-
-      ;; give back keys
-      (local-set-key (kbd "C-t") 'isearch-forward)
-      (local-set-key (kbd "M-s") 'forward-sexp)))
-   #+end_src
-
 ** hippie-expand
+
    #+begin_src emacs-lisp :tangle ~/.emacs
    (global-set-key (kbd "C-h") 'hippie-expand)
 
@@ -2638,36 +1349,12 @@
    #+end_src
 
 ** primary-clipboard-yank
+
    #+begin_src emacs-lisp :tangle ~/.emacs
-   ;; ;; (eshell-command &optional COMMAND ARG)
-   ;; ;; Execute the Eshell command string COMMAND
-   ;; ;; With prefix ARG, insert output into the current buffer at point
-
-   ;; (shell-command "xterm &")
-   ;; (eshell-command "xterm &")
-
-   ;; ;; 下面这句会开一个 out-put-buffer 然后显示输出的东西
-   ;; (eshell-command "parcellite -p")
-   ;; ;; == (eshell-command "parcellite -p" nil)
-
-
-   ;; ;; 下面这个不开 out-put-buffer 会把光标停在粘贴的东西前面
-   ;; (eshell-command "parcellite -p" nil)
-
-
-   ;; ;; (eshell-command-result "parcellite -p")
-   ;; ;; 下面这个会把光标停在粘贴的东西后面
-   ;; (insert (eshell-command-result "parcellite -p"))
-
-   ;; ;; 下面这个函数虽然跑的快
-   ;; ;; 但是从 emacs 的 kill-ring 中粘贴东西的时候却会死掉
-   ;; ;; (insert (shell-command-to-string "parcellite -p"))
-
    (defun primary-clipboard-yank ()
      (interactive)
-     ;; (insert (eshell-command-result "clipit -p"))
-     (insert (eshell-command-result "xclip -o"))
-     )
+     (insert (eshell-command-result "xclip -o")))
+
    (global-set-key (kbd "C-M-y") 'primary-clipboard-yank)
    #+end_src
 
@@ -2679,11 +1366,13 @@
    #+end_src
 
 ** cua-selection-mode
+
    #+begin_src emacs-lisp :tangle ~/.emacs
    (cua-selection-mode 1)
    #+end_src
 
 ** uniquify
+
    #+begin_src emacs-lisp :tangle ~/.emacs
    (require 'uniquify)
    ;(setq uniquify-buffer-name-style 'reverse)
@@ -2691,6 +1380,7 @@
    #+end_src
 
 ** region-state
+
    #+begin_src emacs-lisp :tangle ~/.emacs
    (add-to-list 'load-path "~/.emacs.d/region-state/")
    (require 'region-state)
@@ -2717,79 +1407,17 @@
    (global-set-key (kbd "M-z") 'smex-major-mode-commands)
    #+end_src
 
-** helm
-
-   #+begin_src emacs-lisp :tangle ~/.emacs
-   ;; (add-to-list 'load-path "~/.emacs.d/emacs-async/")
-   ;; (require 'async)
-
-   ;; (add-to-list 'load-path "~/.emacs.d/helm/")
-   ;; (require 'helm-config)
-   ;; (helm-mode 1)
-
-   ;; (global-set-key (kbd "M-x") 'helm-M-x)
-   ;; (global-set-key (kbd "C-x C-y") 'helm-show-kill-ring)
-   ;; (global-set-key (kbd "C-x C-f") 'helm-find-files)
-   ;; (global-set-key (kbd "C-x C-b") 'helm-mini)
-
-   ;; (setq helm-buffers-fuzzy-matching t
-   ;;       helm-recentf-fuzzy-match    t)
-
-   ;; (add-hook
-   ;;  'helm-after-initialize-hook
-   ;;  (lambda ()
-   ;;    (define-key helm-map (kbd "C-h") 'helm-execute-persistent-action)))
-   #+end_src
-
 * search
 
 ** default
 
    #+begin_src emacs-lisp :tangle ~/.emacs
    (global-set-key (kbd "C-t") 'isearch-forward)
-   (global-set-key (kbd "C-s C-o") 'helm-occur)
 
    (add-hook
     'isearch-mode-hook
     (lambda ()
       (define-key isearch-mode-map (kbd "C-t") 'isearch-repeat-forward)))
-   #+end_src
-
-* irc
-
-** irc-freenode-channel-list
-
-   #+begin_src emacs-lisp :tangle ~/.emacs
-   (defvar irc-freenode-channel-list
-     (list "#cicada-language"
-           "#archlinux-cn"
-           "#archlinux-cn-offtopic"))
-   #+end_src
-
-** irc-anarchyplanet-channel-list
-
-   #+begin_src emacs-lisp :tangle ~/.emacs
-   (defvar irc-anarchyplanet-channel-list
-     (list "#anarchyplanet"))
-   #+end_src
-
-** erc
-
-   #+begin_src emacs-lisp :tangle ~/.emacs
-   (defun irc ()
-     (interactive)
-     (erc-tls :server "irc.libera.chat"
-              :port 6697
-              :full-name "xieyuheng"
-              :nick "xieyuheng"))
-
-
-   (setq erc-autojoin-channels-alist
-         '(("irc.libera.chat"
-            "#cicada-language"
-            "#cicada-lang"
-            "##prolog"
-            "#archlinux-cn-offtopic")))
    #+end_src
 
 * ranger
@@ -3129,251 +1757,27 @@
    (setq frame-resize-pixelwise t)
    #+end_src
 
-* emacs server & eshell
-
-** [note]
-   * 需要與 bash 或 zsh 配合使用
-     給 emacsclient 以 "e" 爲其別名
-     並注意設置 emacsclient 的命令行參數
-   * 但是如果先有一个 emacs-sever
-     再打开 emacs 時 就会有警告
-     我保留对这个警告的显示
-     因为它提示了当前 emacs-sever 的开启状态
-     (server-force-delete)
-   * 因此常使用的方式是
-     将(server-start)写在.emacs 中
-     将 alias e='emacsclient -c -a "" -e \(eshell\)'写在.bashrc 中
-     第一个 emacs 在终端中用 emacs 打开
-     之后在终端中使用 e 就会以这个 emacs 为 sever
-     退出这第一个 emacs 之后就会关闭被它打开的 emacs-sever
+* emacs server
 
 ** emacs server
+
    #+begin_src emacs-lisp :tangle ~/.emacs
    (server-start)
-   ;; (setq server-name "><")
    ;; (server-force-delete)
-   #+end_src
-
-** load-path
-   #+begin_src emacs-lisp :tangle ~/.emacs
-   (add-to-list 'load-path "~/.emacs.d/eshell/")
-   (require 'eshell)
-   #+end_src
-
-** hook
-   #+begin_src emacs-lisp :tangle ~/.emacs
-   (add-hook
-    'eshell-mode-hook
-    (lambda ()
-      (local-set-key (kbd "C-c h")
-                     (lambda ()
-                           (interactive)
-                           (insert
-                            (ido-completing-read "eshell history: "
-                                             (delete-dups
-                                              (ring-elements eshell-history-ring))))))
-      (local-set-key (kbd "C-c C-h") 'eshell-list-history)))
-   #+end_src
-
-** [note] how to use
-
-*** startup scripts
-    *for i use org-mode, this is not very useful*
-    like most shells,
-    eshell supports both login and profile/rc shell scripts
-    The full filepaths for both are stored in the variables
-    eshell-login-script and eshell-rc-script
-    but by default the files login and profile are stored in ~/.eshell/
-
-    It bears mention that the comment syntax is #
-
-*** jump
-    it maintains a ring the last 32 directories seen.
-
-    To view the ring: ‘cd =’
-    Changing to an index within the ring: ‘cd -4’
-    Note that ‘cd -’ is the same as ‘cd -0’
-    Use a regular expression: ‘cd =regexp’
-
-    The ring is saved in ‘~/.eshell/lastdir’.
-    You can increase the ring size by setting ‘eshell-last-dir-ring-size’.
-    Perhaps this is good enough for you, making autojump unnecessary.
-    The only benefit autojump offers is that it sorts the entries
-    by how often you switched there instead of when you switched there.
-
-** alias
-   * the auto-correcting aliasing
-     if you type an invalid command too many times
-     (governed by eshell-bad-command-tolerance, which is 3 by default)
-     Eshell will offer to alias it to its intended command for you
-   #+begin_src emacs-lisp :tangle ~/.emacs
-   ;; eshell will write the alias definitions to eshell-aliases-file
-   (setq eshell-aliases-file "~/.emacs.d/eshell/alias")
-   ;; which in turn is governed by the eshell-directory-name
-   (setq eshell-directory-name "~/.emacs.d/eshell/")
-   #+end_src
-
-** commands history
-   * to use ido-completing-read to access to eshells history
-   #+begin_src emacs-lisp :tangle ~/.emacs
-   (add-hook 'eshell-mode-hook
-                    (lambda ()
-                      (local-set-key (kbd "M-<tab>") 'window->)))
-   #+end_src
-
-* make multi eshell work much easier
-
-** eshell/delete-char-or-kill-buffer
-   1. (goto-char (point-max)) == (end-of-buffer)
-   2. 在 emacs 中 efb 的识别方式有很多 比如:
-      1. (eq (following-char) 0)
-         (char-equal (following-char) 0)
-      2. (eq (point-max) (point))
-   #+begin_src emacs-lisp :tangle ~/.emacs
-   (defun eshell/delete-char-or-kill-buffer ()
-     (interactive)
-
-     (point-to-register ?e)
-     (eshell-bol)
-
-     (if (eq (point-max) (point))
-             (progn
-           (kill-buffer)
-           (delete-frame))
-           (progn
-             (jump-to-register ?e)
-             (delete-char 1))))
-
-   (add-hook 'eshell-mode-hook
-             (lambda ()
-                   (local-set-key (kbd "C-d") 'eshell/delete-char-or-kill-buffer)))
-   #+end_src
-
-** eshell-prompt-function
-   #+begin_src emacs-lisp :tangle ~/.emacs
-   (set 'eshell-prompt-function
-        (lambda ()
-          (concat "\n"
-                  (if (eq eshell-last-command-status 0)
-                      ""
-                      (number-to-string eshell-last-command-status))
-                  "  "
-                  (if (= (user-uid) 0)
-                      "[root]  "
-                      "")
-                  (eshell/pwd)
-                  "\n"
-                  )))
-   #+end_src
-
-** self-defun [before eshell]
-
-*** my-cd-back
-    #+begin_src emacs-lisp :tangle ~/.emacs
-    (defun my-cd-back ()
-      (interactive)
-      (insert "cd ..")
-      (eshell-send-input))
-    (add-hook 'eshell-mode-hook
-              (lambda ()
-                    (local-set-key (kbd "<C-M-backspace>") 'my-cd-back)))
-    #+end_src
-
-*** rebinding normal move-beginning-of-line
-    #+begin_src emacs-lisp :tangle ~/.emacs
-    (add-hook 'eshell-mode-hook
-              (lambda ()
-                    (local-set-key (kbd "C-S-a") 'move-beginning-of-line)))
-    #+end_src
-
-** [open|new]-eshell-for-frame
-
-   #+begin_src emacs-lisp :tangle ~/.emacs
-   ;; in ~/.xbindkeysrc.scm
-   ;; I have the following
-   ;; (xbindkey '(shift mod4 x) "LC_CTYPE=zh_CN.UTF-8 emacsclient -c -e \"(open-eshell-for-frame :on)\"")
-   ;; (xbindkey '(mod4 t) "LC_CTYPE=zh_CN.UTF-8 emacsclient -t -e \"(open-eshell-for-frame :on)\"")
-
-   (defun frame-eshell-name ()
-     (concatenate 'string "eshell:" (frame-parameter nil 'name)))
-
-   (defun open-eshell-for-frame (&optional translucent)
-     (let ()
-       (eshell t)
-       (delete-region 1 (buffer-size))
-       (insert "* (eshell)\n"
-               "  eshell number " (frame-parameter nil 'name) "\n"
-               "  the main eshell for this frame\n")
-       (eshell-interrupt-process)))
-
-   ;; can be used in 'emacs -nw'
-   (defun new-eshell-for-frame (&optional translucent)
-     (interactive)
-     (let* ((.sub-number-string (number-to-string (number-generator))))
-       (eshell t)
-       (delete-region 1 (buffer-size))
-       (insert "* (eshell)\n"
-               "  eshell number " (frame-parameter nil 'name) "\n"
-               "  eshell sub-number " .sub-number-string "\n"
-               "  a sub eshell of this frame\n")
-       (eshell-interrupt-process)))
-
-   (global-set-key (kbd "C-s e") 'new-eshell-for-frame)
-   #+end_src
-
-** my-switch-to-eshell
-   * 下面是黄金搭档 previous-buffer
-   #+begin_src emacs-lisp :tangle ~/.emacs
-   (defun my-switch-to-eshell ()
-     (interactive)
-     (cond
-       ((not (member-string? (frame-eshell-name) (mapcar 'buffer-name (buffer-list))))
-        (open-eshell-for-frame))
-       (:else
-        (switch-to-buffer (frame-eshell-name))))
-     (local-set-key (kbd "C-s C-e") 'previous-buffer))
-   (global-set-key (kbd "C-s C-e") 'my-switch-to-eshell)
-   #+end_src
-
-** init call to (open-eshell-for-frame)
-
-   #+begin_src emacs-lisp :tangle ~/.emacs
-   ;; (open-eshell-for-frame :off)
    #+end_src
 
 * scratch
 
   #+begin_src emacs-lisp :tangle ~/.emacs
-  ;; (setq initial-buffer-choice "~/.emacs.d/scratch/scratch.org")
   (setq initial-buffer-choice "~/todo/TODO.md")
-  #+end_src
-
-* ag
-
-  #+begin_src emacs-lisp :tangle ~/.emacs
-  (add-to-list 'load-path "~/.emacs.d/ag.el/")
-  (require 'ag)
   #+end_src
 
 * projectile
 
   #+begin_src emacs-lisp :tangle ~/.emacs
-  ;; (add-to-list 'load-path "~/.emacs.d/projectile/")
-  ;; (require 'projectile)
-
-  ;; (projectile-mode 1)
-  #+end_src
-
-* ggtags
-
-  #+begin_src emacs-lisp :tangle ~/.emacs
-  ;; (add-to-list 'load-path "~/.emacs.d/ggtags/")
-  ;; (require 'ggtags)
-
-  ;; (add-hook 'c-mode-common-hook
-  ;;           (lambda ()
-  ;;             (when (derived-mode-p 'c-mode 'c++-mode 'java-mode)
-  ;;               (ggtags-mode 1))))
+  (add-to-list 'load-path "~/.emacs.d/projectile/")
+  (require 'projectile)
+  (projectile-mode 1)
   #+end_src
 
 * ido
@@ -3386,39 +1790,14 @@
   (setq ido-vertical-define-keys 'C-n-and-C-p-only)
   #+end_src
 
-* pomidor
-
-  #+begin_src emacs-lisp :tangle ~/.emacs
-  ;; ;; (add-to-list 'load-path "~/.emacs.d/pomidor/")
-  ;; (require 'pomidor)
-
-  ;; (setq pomidor-sound-tick nil
-  ;;       pomidor-sound-tack nil
-  ;;       ;; pomidor-sound-overwork (expand-file-name (concat pomidor-dir "overwork.wav"))
-  ;;       ;; pomidor-sound-break-over (expand-file-name (concat (getenv "HOME") "/Music/overwork.wav"))
-  ;;       )
-
-  ;; ;; (pomidor)
-  #+end_src
-
 * hl-todo
+
+  highlight TODO
 
   #+begin_src emacs-lisp :tangle ~/.emacs
   (add-to-list 'load-path "~/.emacs.d/hl-todo/")
   (require 'hl-todo)
-
   (global-hl-todo-mode)
-
-  (define-key hl-todo-mode-map (kbd "C-c p") 'hl-todo-previous)
-  (define-key hl-todo-mode-map (kbd "C-c n") 'hl-todo-next)
-  (define-key hl-todo-mode-map (kbd "C-c o") 'hl-todo-occur)
-  #+end_src
-
-* pinky-mode
-
-  #+begin_src emacs-lisp :tangle ~/.emacs
-  (add-to-list 'load-path "~/.emacs.d/pinky-mode/")
-  (require 'pinky-mode)
   #+end_src
 
 * auto revert
@@ -3426,13 +1805,4 @@
   #+begin_src emacs-lisp :tangle ~/.emacs
   (global-auto-revert-mode t)
   (setq auto-revert-interval 0.3)
-  #+end_src
-
-* package
-
-  #+begin_src emacs-lisp :tangle ~/.emacs
-  (require 'package)
-  ;; (setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3") ; see remark below
-  (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
-  (package-initialize)
   #+end_src
