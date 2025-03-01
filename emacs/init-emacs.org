@@ -308,6 +308,11 @@
    #+begin_src emacs-lisp :tangle ~/.emacs
    (setq make-backup-files nil)
    (setq delete-old-versions t)
+
+   ;; Put autosave files (ie #foo#) and backup files (ie foo~) in /tmp/.
+   (custom-set-variables
+     '(auto-save-file-name-transforms '((".*" "/tmp/emacs-autosaves/\\1" t)))
+     '(backup-directory-alist '((".*" . "/tmp/emacs-backups/"))))
    #+end_src
 
 ** dired
