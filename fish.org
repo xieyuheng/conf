@@ -267,8 +267,9 @@
 
   #+begin_src fish :tangle ~/.config/fish/config.fish
   function fish_user_key_bindings
-    bind -e \ee
-    bind -e \ev
+    bind --erase --preset \ee
+    bind --erase --preset \ev
+    bind --erase --preset \ep
   end
   #+end_src
 
