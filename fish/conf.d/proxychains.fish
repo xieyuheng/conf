@@ -1,0 +1,1 @@
+alias px "proxychains4 "
