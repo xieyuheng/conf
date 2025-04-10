@@ -1,2 +1,0 @@
-74.125.195.108  smtp.gmail.com
-74.125.195.109  pop.gmail.com

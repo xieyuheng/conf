@@ -1,1 +1,0 @@
-https://wiki.archlinux.org/index.php/disable_clearing_of_boot_messages

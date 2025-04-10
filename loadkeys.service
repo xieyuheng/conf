@@ -1,8 +1,0 @@
-[Unit]
-Description=loadkeys
-
-[Service]
-ExecStart=/usr/local/bin/loadkeys-unit
-
-[Install]
-WantedBy=multi-user.target
