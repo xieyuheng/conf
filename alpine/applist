@@ -1,0 +1,15 @@
+fish emacs rsync lsblk
+ranger wget git tig vim ncdu fastfetch htop btop powertop brightnessctl
+mpv ffmpeg vlc
+networkmanager networkmanager-tui networkmanager-cli networkmanager-wifi network-manager-applet
+okular okular-common okular-lang
+mupdf mupdf-gl zathura zathura-ps zathura-djvu zathura-pdf-mupdf
+rofi xbindkeys flameshot cbatticon xclip scrot feh alacritty
+i3wm i3status
+nodejs npm
+make cmake xz cloc clang valgrind
+libx11 libx11-dev libx11-static
+libxcb libxcb-dev libxcb-static
+shadowsocks-rust proxychains-ng
+fcitx5 fcitx5-lang fcitx5-gtk fcitx5-gtk3 fcitx5-gtk4 fcitx5-qt fcitx5-qt-lang fcitx5-qt-qt5 fcitx5-qt-qt6 fcitx5-rime fcitx5-rime-lang fcitx5-chinese-addons fcitx5-chinese-addons-lang fcitx5-configtool fcitx5-configtool-lang fcitx5-lua
+firefox chromium gimp blender telegram-desktop
