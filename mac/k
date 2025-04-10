@@ -1,1 +1,0 @@
-brew install emacs --HEAD --with-cocoa --with-gnutls
