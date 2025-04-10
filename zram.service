@@ -1,8 +1,0 @@
-[Unit]
-Description=Use zram to get more ram-like swap space.
-
-[Service]
-ExecStart=/home/xyh/conf/zram
-
-[Install]
-WantedBy=multi-user.target

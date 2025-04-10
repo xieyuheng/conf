@@ -1,3 +1,0 @@
-#!/bin/bash
-
-cd ~/conf/emacs/ && ./tangle.el && cd -
