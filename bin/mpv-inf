@@ -1,3 +1,0 @@
-#!/usr/bin/env bash
-
-mpv --no-audio-display --loop-playlist=inf $@

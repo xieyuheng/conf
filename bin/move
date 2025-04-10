@@ -1,7 +1,0 @@
-#!/bin/sh
-
-move() {
-    rsync --recursive --links --perms --times --group --owner --devices --specials --verbose --human-readable --remove-source-files $@
-}
-
-move $@

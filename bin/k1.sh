@@ -1,9 +1,9 @@
-#!/bin/sh
+#!/bin/bash
 
-# xrdb /home/xyh/.Xresources &
-# xmodmap /home/xyh/.xmodmap &
-redshift &
-# rm -rf /home/xyh/Desktop &
+# xrdb ~/.Xresources &
+setxkbmap -option ctrl:nocaps &
+fcitx5 &
+# xmodmap ~/.xmodmap &
 emacs &
-# ksysguard &
-goldendict &
+# goldendict &
+# flameshot &

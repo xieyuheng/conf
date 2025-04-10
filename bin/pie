@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 
-telegram-desktop
+racket -l pie -i $@

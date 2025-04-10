@@ -1,5 +1,0 @@
-#!/usr/bin/env bash
-
-du -sh /var/lib/systemd/coredump
-rm -rf /var/lib/systemd/coredump
-
