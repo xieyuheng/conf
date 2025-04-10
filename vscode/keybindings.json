@@ -119,5 +119,25 @@
     "key": "ctrl+shift+alt+i",
     "command": "search.action.replaceAllInFile",
     "when": "fileMatchFocus && replaceActive && searchViewletVisible"
+  },
+  {
+    "key": "ctrl+pagedown",
+    "command": "-workbench.action.terminal.focusNext",
+    "when": "terminalFocus && terminalHasBeenCreated && !terminalEditorFocus || terminalFocus && terminalProcessSupported && !terminalEditorFocus"
+  },
+  {
+    "key": "ctrl+n",
+    "command": "list.focusDown",
+    "when": "listFocus && !inputFocus && !treestickyScrollFocused"
+  },
+  {
+    "key": "ctrl+p",
+    "command": "list.focusUp",
+    "when": "listFocus && !inputFocus && !treestickyScrollFocused"
+  },
+  {
+    "key": "tab",
+    "command": "list.select",
+    "when": "listFocus && !inputFocus && !treestickyScrollFocused"
   }
 ]
