@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
-grep -Rn $@ .
+# grep -Rn $@ .
 
 # ugrep $@
-# ug $@
+ug $@
 # ag $@
 # rg $@
