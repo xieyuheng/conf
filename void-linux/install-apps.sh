@@ -16,7 +16,7 @@ sudo xbps-install \
     goldendict \
     amber onefetch \
     xorg xorg-fonts \
-    sof-firmware alsa-firmware alsa-utils \
+    sof-firmware alsa-firmware apulse alsa-utils pulseaudio alsa-plugins-pulseaudio \
     chromium firefox telegram-desktop \
     fcitx5 fcitx5-chinese-addons fcitx5-cloudpinyin fcitx5-configtool fcitx5-gtk fcitx5-gtk+2 fcitx5-gtk+3 fcitx5-gtk4 fcitx5-qt fcitx5-qt5 fcitx5-qt6 fcitx5-rime \
     gimp blender
