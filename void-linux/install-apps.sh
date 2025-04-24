@@ -3,7 +3,7 @@ sudo xbps-install \
     git tig nodejs \
     mpv vlc ffmpeg i3 i3status tree wget curl \
     alacritty xfce4-terminal \
-    clang valgrind cloc gdb \
+    clang valgrind cloc gdb libsanitizer libsanitizer-devel \
     libX11-devel SDL2-devel \
     proxychains-ng vim zsh ncdu \
     noto-fonts-cjk noto-fonts-ttf noto-fonts-ttf-extra \
