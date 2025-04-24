@@ -1,4 +1,4 @@
-;; ~/xbindkeysrc.scm
+;; ~/.xbindkeysrc.scm
 
 (xbindkey '(shift mod1 x) "emacsclient -c -e '(eshell t)'")
 ;; (xbindkey '(shift mod1 "c:36") "konsole --workdir $(xcwd)")
