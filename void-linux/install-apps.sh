@@ -1,5 +1,5 @@
 sudo xbps-install \
-    rsync fish-shell starship emacs-gtk3 ranger zfs \
+    rsync fish-shell starship emacs-gtk3 ranger zfs xz \
     git tig nodejs \
     mpv vlc ffmpeg i3 i3status tree wget curl \
     alacritty xfce4-terminal \
