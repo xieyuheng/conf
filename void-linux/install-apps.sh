@@ -9,7 +9,7 @@ sudo xbps-install \
     noto-fonts-cjk noto-fonts-ttf noto-fonts-ttf-extra \
     fastfetch htop btop \
     rofi feh scrot xclip xbindkeys \
-    light flameshot network-manager-applet cbatticon \
+    light brillo flameshot network-manager-applet cbatticon \
     ugrep the_silver_searcher \
     okular mupdf zathura zathura-djvu zathura-pdf-mupdf zathura-ps \
     djview calibre \
