@@ -1,7 +1,6 @@
-# ~/.config/zathura/zathurarc
-
 set font "unifont 16"
 set notification-bg "#000"
 set notification-fg "#fff"
 set smooth-scroll "true"
 set recolor true
+set adjust-open width
