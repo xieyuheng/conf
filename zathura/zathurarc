@@ -1,3 +1,5 @@
+# ~/.config/zathura/zathurarc
+
 set font "unifont 16"
 set notification-bg "#000"
 set notification-fg "#fff"
