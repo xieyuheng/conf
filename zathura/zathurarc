@@ -6,3 +6,4 @@ set notification-fg "#fff"
 set smooth-scroll "true"
 set recolor true
 set adjust-open width
+map <C-t> feedkeys ":exec zathura $FILE -P $PAGE <Return>"
