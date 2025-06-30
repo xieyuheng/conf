@@ -3,7 +3,7 @@
 set font "unifont 16"
 set notification-bg "#000"
 set notification-fg "#fff"
-set smooth-scroll "true"
+set scroll-step 100
 set recolor true
 set adjust-open width
 map <C-t> feedkeys ":exec zathura $FILE -P $PAGE <Return>"
