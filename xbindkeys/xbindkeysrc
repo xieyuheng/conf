@@ -10,7 +10,7 @@
 "dmenu_run -fn unifont-16 -l 20"
   Control+Alt + Return
 
-"input-math-symbol"
+"copy-math-symbol"
   Control+Alt + i
 
 "i3lock"

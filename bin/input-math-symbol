@@ -1,3 +1,0 @@
-#!/usr/bin/env bash
-
-cat ~/bin/math-symbol.list | dmenu -fn unifont-16 -l 20 -i | awk '{print $1}' | tr -d '\n' | xclip -selection clipboard
