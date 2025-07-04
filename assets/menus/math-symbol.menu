@@ -1,7 +1,7 @@
 ± -- [arithmetic] plus and minus
 ≤ -- [arithmetic] less or equal
-⊆ -- [domain theory] less defined, less informative
+⊑ -- [domain theory] less defined, less informative
 ∈ -- [set theory] in, belong to, member of
-⊑ -- [set theory] inclusion
+⊆ -- [set theory] inclusion
 ∀ -- [logic] forall
 ∃ -- [logic] exists
