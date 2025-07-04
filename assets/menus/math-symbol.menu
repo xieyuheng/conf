@@ -9,13 +9,15 @@
 ∅ -- [set theory] empty set
 ∪ -- [set theory] union
 ∩ -- [set theory] intersection
+⊔ -- [set theory] [lattice] disjoint union, join
+⊓ -- [lattice] meet
 ∀ -- [logic] forall
 ∃ -- [logic] exists
 ¬ -- [logic] not
 ⊥ -- [logic] [lattice] false, bottom
 ⊤ -- [logic] [lattice] true, top
 ∨ -- [logic] [lattice] or, disjunction, join
-∨ -- [logic] [lattice] and, conjunction, meet
+∧ -- [logic] [lattice] and, conjunction, meet
 ∑ -- [analysis] [type-theory] sum, sigma
 ∏ -- [analysis] [type-theory] product, pi
 ∞ -- [analysis] infinity
