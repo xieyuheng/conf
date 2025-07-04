@@ -5,3 +5,5 @@
 ⊆ -- [set theory] inclusion
 ∀ -- [logic] forall
 ∃ -- [logic] exists
+⊥ -- [logic] [lattice] false, bottom
+⊤ -- [logic] [lattice] true, top
